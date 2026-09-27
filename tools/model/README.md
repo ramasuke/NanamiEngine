@@ -39,7 +39,7 @@ python -m tools.model <command>        # or: python tools/model.py <command>
 | command | purpose |
 |---|---|
 | `selftest` | correctness gate — run after touching `meta.py`, `mv1.py` or `cli.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 9, best-effort) |
-| `convert FILE OUT --mode mesh\|anim\|full [--with-textures] [--emissive ...]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" / "Emissive" below |
+| `convert FILE OUT --mode mesh\|anim\|full [--with-textures] [--emissive ...] [--recalc-normals]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" / "Emissive" below. `--recalc-normals` checks 読み込みオプション > 法線再計算 before loading (normals rebuilt from the geometry; the previous check state is restored after saving) - use it when a model shows blotchy light/dark patches that flicker, especially with `set-culling none` |
 | `materials MV1` | list the `.mv1`'s materials (index, name, diffuse, emissive) — the names `--emissive` takes |
 | `set-emissive MV1 --emissive ... [--out PATH]` | set the emissive color of an already-converted `.mv1` (in place unless `--out`; the `.meta`/GUID is untouched) |
 | `set-culling MV1 --mode none\|left\|right [--out PATH]` | set the back-face culling of every mesh (DxLib converts with `left`; `none` = double-sided, for models you can see into such as broken buildings; the `.meta`/GUID is untouched) |

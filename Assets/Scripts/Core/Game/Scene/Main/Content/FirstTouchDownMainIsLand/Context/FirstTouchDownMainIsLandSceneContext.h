@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "cereal/types/vector.hpp"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
@@ -25,9 +26,9 @@ namespace GameCore::Scene
         [[nodiscard]] int                                                    AirShipFirstMoveDuring_msecs ()             const   { return airShipFirstMoveDuring_msecs_;  }
         [[nodiscard]] int                                                    AirShipSecondMoveDuring_msecs()             const   { return airShipSecondMoveDuring_msecs_; }
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile>           SummonPlayerAvatarPrefab()                          { return summonPlayerAvatarPrefab_.get(); }
-        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> FirstVirtualCamera()                                { return firstVirtualCamera_.get(); }
-        [[nodiscard]] std::shared_ptr<GameObject::IGameObject>               VirtualCameraFirstMoveTarget()                      { return virtualCameraFirstMoveTarget_.get(); }
-        [[nodiscard]] int                                                    VirtualCameraFirstMoveTargetDuring_msecs()  const   { return virtualCameraFirstMoveTargetDuring_msecs_; }
+        [[nodiscard]] std::shared_ptr<GameObject::IGameObject>               OpeningShots()                                      { return openingShots_.get(); }
+        [[nodiscard]] const std::vector<float>&                              OpeningShotDurations_secs()                 const   { return openingShotDurations_secs_; }
+        [[nodiscard]] std::shared_ptr<GameObject::IGameObject>               AirShipDeckProps()                                  { return airShipDeckProps_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> SecondVirtualCamera()                               { return secondVirtualCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CinemachineCameraBrain>   CameraBrain()                                       { return cameraBrain_.get(); }
         [[nodiscard]] GameObject::Transform&                                 PlayerFirstMoveTarget()                     const   { return playerFirstMoveTargetPos_->Transform(); }
@@ -39,6 +40,7 @@ namespace GameCore::Scene
         [[nodiscard]] const std::weak_ptr<Asset::PrefabGameObjectFile>&                FirstEventDragonPrefab() const { return firstEventDragonPrefab_.get(); }
         [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos () const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
         [[nodiscard]] GamePlay::Prop::Canon&                                           PlayerControllabeCanon   () const { return *playerControllabeCanon_.get(); }
+        [[nodiscard]] bool                                                             HasPlayerControllabeCanon() const { return playerControllabeCanon_.get() != nullptr; }
         [[nodiscard]] Asset::PrefabGameObjectFile&                                     SwordManCameraGroupPrefab() const { return *swordManCameraGroupPrefab_.get(); }
 
     private:
@@ -48,9 +50,6 @@ namespace GameCore::Scene
         [[serialize(2)]] FIELD(GameObject::IGameObject)               airShipSecondMoveFromTargetPos_;
         [[serialize(2)]] int                                          airShipSecondMoveDuring_msecs_ = 0.0f;
         [[serialize(3)]] FIELD(Asset::PrefabGameObjectFile)           summonPlayerAvatarPrefab_;
-        [[serialize(4)]] FIELD(CineMachine::CineMachineVirtualCamera) firstVirtualCamera_;
-        [[serialize(4)]] FIELD(GameObject::IGameObject)               virtualCameraFirstMoveTarget_;
-        [[serialize(4)]] int                                          virtualCameraFirstMoveTargetDuring_msecs_ = 0;
         [[serialize(5)]] FIELD(CineMachine::CineMachineVirtualCamera) secondVirtualCamera_;
         [[serialize(5)]] FIELD(CineMachine::CinemachineCameraBrain)   cameraBrain_;
         [[serialize(6)]] FIELD(GameObject::IGameObject)               playerFirstMoveTargetPos_;
@@ -63,6 +62,11 @@ namespace GameCore::Scene
         [[serialize(14)]] FIELD(GameObject::IGameObject)              firstEventDragonSpawnPos_;
         [[serialize(16)]] FIELD(GamePlay::Prop::Canon)                playerControllabeCanon_;
         [[serialize(19)]] FIELD(Asset::PrefabGameObjectFile)          swordManCameraGroupPrefab_;
+        /** 冒頭のカット。子の VirtualCamera を上から順に映し、その子(あれば)の位置・向きへ動かす */
+        [[serialize(23)]] FIELD(GameObject::IGameObject)              openingShots_;
+        [[serialize(23)]] std::vector<float>                          openingShotDurations_secs_;
+        /** 甲板の小物。子孫の RigidBody は航行中 Kinematic で、着いたら Dynamic にする */
+        [[serialize(24)]] FIELD(GameObject::IGameObject)              airShipDeckProps_;
         
 #pragma region Serialization Function
 public:
@@ -77,9 +81,6 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(airShipSecondMoveFromTargetPos_));
     archive(CEREAL_NVP(airShipSecondMoveDuring_msecs_));
     archive(CEREAL_NVP(summonPlayerAvatarPrefab_));
-    archive(CEREAL_NVP(firstVirtualCamera_));
-    archive(CEREAL_NVP(virtualCameraFirstMoveTarget_));
-    archive(CEREAL_NVP(virtualCameraFirstMoveTargetDuring_msecs_));
     archive(CEREAL_NVP(secondVirtualCamera_));
     archive(CEREAL_NVP(cameraBrain_));
     archive(CEREAL_NVP(playerFirstMoveTargetPos_));
@@ -96,6 +97,9 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(firstEventDragonSpawnPos_));
     archive(CEREAL_NVP(playerControllabeCanon_));
     archive(CEREAL_NVP(swordManCameraGroupPrefab_));
+    archive(CEREAL_NVP(openingShots_));
+    archive(CEREAL_NVP(openingShotDurations_secs_));
+    archive(CEREAL_NVP(airShipDeckProps_));
 }
 
 template<class Archive>
@@ -107,9 +111,12 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 2) archive(CEREAL_NVP(airShipSecondMoveFromTargetPos_));
     if (version >= 2) archive(CEREAL_NVP(airShipSecondMoveDuring_msecs_));
     if (version >= 3) archive(CEREAL_NVP(summonPlayerAvatarPrefab_));
-    if (version >= 4) archive(CEREAL_NVP(firstVirtualCamera_));
-    if (version >= 4) archive(CEREAL_NVP(virtualCameraFirstMoveTarget_));
-    if (version >= 4) archive(CEREAL_NVP(virtualCameraFirstMoveTargetDuring_msecs_));
+    [[serialize(4)]] FIELD(CineMachine::CineMachineVirtualCamera) firstVirtualCamera_;
+    [[serialize(4)]] FIELD(GameObject::IGameObject) virtualCameraFirstMoveTarget_;
+    [[serialize(4)]] int virtualCameraFirstMoveTargetDuring_msecs_ = 0;
+    if (version >= 4 && version <= 22) archive(CEREAL_NVP(firstVirtualCamera_));
+    if (version >= 4 && version <= 22) archive(CEREAL_NVP(virtualCameraFirstMoveTarget_));
+    if (version >= 4 && version <= 22) archive(CEREAL_NVP(virtualCameraFirstMoveTargetDuring_msecs_));
     if (version >= 5) archive(CEREAL_NVP(secondVirtualCamera_));
     if (version >= 5) archive(CEREAL_NVP(cameraBrain_));
     if (version >= 6) archive(CEREAL_NVP(playerFirstMoveTargetPos_));
@@ -128,11 +135,14 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version <= 21) archive(CEREAL_NVP(playerAvatarInitStatus_));
     if (version >= 16) archive(CEREAL_NVP(playerControllabeCanon_));
     if (version >= 19) archive(CEREAL_NVP(swordManCameraGroupPrefab_));
+    if (version >= 23) archive(CEREAL_NVP(openingShots_));
+    if (version >= 23) archive(CEREAL_NVP(openingShotDurations_secs_));
+    if (version >= 24) archive(CEREAL_NVP(airShipDeckProps_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 22);
+CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 24);
 #pragma endregion

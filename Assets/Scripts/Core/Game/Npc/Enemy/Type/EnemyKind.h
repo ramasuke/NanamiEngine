@@ -14,6 +14,7 @@ namespace GameCore::Npc::Enemy
         DesertScorpion = 4,
         SandWorm = 5,
         SkeletonDragon = 6,
+        AncientDragon = 7,
     };
 
     constexpr std::array ENEMY_KINDS
@@ -25,6 +26,7 @@ namespace GameCore::Npc::Enemy
         EnemyKind::DesertScorpion,
         EnemyKind::SandWorm,
         EnemyKind::SkeletonDragon,
+        EnemyKind::AncientDragon,
     };
 
     constexpr std::string_view ToString(const EnemyKind kind)
@@ -38,6 +40,7 @@ namespace GameCore::Npc::Enemy
         case EnemyKind::DesertScorpion: return "DesertScorpion";
         case EnemyKind::SandWorm: return "SandWorm";
         case EnemyKind::SkeletonDragon: return "SkeletonDragon";
+        case EnemyKind::AncientDragon: return "AncientDragon";
         }
 
         return "Unknown";

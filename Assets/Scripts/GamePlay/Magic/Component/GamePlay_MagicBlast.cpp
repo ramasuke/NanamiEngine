@@ -79,7 +79,10 @@ namespace GamePlay::Magic
                     continue;
 
                 ApplySpellDamage(*entity, part, power_);
-                ShowSpellDamageText(caster_, part, power_, HitPartPosition(*part));
+                if (dealDamageTextPrefab_)
+                    ShowSpellDamageText(caster_, part, power_, HitPartPosition(*part), *dealDamageTextPrefab_.get());
+                else
+                    ShowSpellDamageText(caster_, part, power_, HitPartPosition(*part));
                 // NOTE: 揺れは重なるので、何体巻き込んでも 1 回だけ
                 if (!hasShaken)
                     hasShaken = ShakeOnSpellHit(caster_, part, hitShakeIntensity_, hitShakeDuration_secs_);
@@ -100,6 +103,7 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("detonateOnEnter_", detonateOnEnter_);
         ImGuiHelper::OnDrawInputField("hitShakeIntensity_", hitShakeIntensity_);
         ImGuiHelper::OnDrawInputField("hitShakeDuration_secs_", hitShakeDuration_secs_);
+        ImGuiHelper::OnDrawInputField("dealDamageTextPrefab_", dealDamageTextPrefab_);
         ImGui::Text("armed: %s  targets: %d", isArmed_ ? "true" : "false", static_cast<int>(targets_.size()));
     }
 }

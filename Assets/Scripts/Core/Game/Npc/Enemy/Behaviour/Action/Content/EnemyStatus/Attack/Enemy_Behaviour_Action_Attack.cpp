@@ -1,5 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_Attack.h"
 
+#include <algorithm>
+
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
@@ -7,6 +9,7 @@
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../AttackArea/Enemy_AttackArea.h"
+#include "Enemy_AttackWarning.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -14,10 +17,19 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::PhysicsAttack::DoTick(const TickContext& context)
     {
         context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(animationNumber_);
+        if (during_secs_ <= 0.0f && animationSound_)
+            PlaySound(context, *animationSound_.get());
+
         const float delta = Time::DeltaTime();
         during_secs_ += delta;
 
         UpdateMovement(context);
+
+        if (!isWarned_ && warning_ && during_secs_ >= std::max(0.0f, normalAttackOccurrenceDuration_secs_ - warning_->WarningLead_secs()))
+        {
+            FireAttackWarning(context, warning_.get().get(), warningBoneName_, warningBoneOffset_);
+            isWarned_ = true;
+        }
 
         // 発生タイミングで一度攻撃
         if (!isAttacked_ && during_secs_ >= normalAttackOccurrenceDuration_secs_)
@@ -25,23 +37,14 @@ namespace GameCore::Npc::Enemy::Behaviour
             auto& attackArea = context.CatchPrefabObject<AttackArea>(attackAreaName_);
             attackArea.PhysicsAttack(context.EnemyGameObject(), attackPower_);
 
-            const glm::vec3 position = context.EnemyTransform().GetWorldPos();
-            if (attackSound_)
-                GamePlay::Sound::SoundPlayer::PlaySe(*attackSound_.get(), position);
-
-            // 権威側限定Tickなら、他ピアの同じ AttackArea も発火させる(被弾判定は各ピアが自分の所有アバターに対して行う)。
-            // 攻撃音も同様に鳴らさせる
+            // 権威側限定Tickなら、他ピアの同じ AttackArea も発火させる(被弾判定は各ピアが自分の所有アバターに対して行う)
             if (context.IsNetworkAuthority())
             {
                 GameCore::Network::AttackAreaFireRpc::Send(
                     attackArea.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, attackPower_);
-
-                if (attackSound_)
-                {
-                    GameCore::Network::PlaySeRpc::Send(
-                        context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, attackSound_->GetGuid(), position);
-                }
             }
+            if (attackSound_)
+                PlaySound(context, *attackSound_.get());
             isAttacked_ = true;
         }
 
@@ -49,11 +52,29 @@ namespace GameCore::Npc::Enemy::Behaviour
         {
             during_secs_ = 0.0f;
             isAttacked_  = false;
+            isWarned_    = false;
             finishedAttackWriteBlackBoard_.Tick(context);
             return TickStatus::Success;
         }
 
         return TickStatus::Running;
+    }
+
+    void Action::PhysicsAttack::DoReset()
+    {
+        during_secs_ = 0.0f;
+        isAttacked_  = false;
+        isWarned_    = false;
+    }
+
+    void Action::PhysicsAttack::PlaySound(const TickContext& context, const Asset::SoundFile& sound) const
+    {
+        const glm::vec3 position = context.EnemyTransform().GetWorldPos();
+        GamePlay::Sound::SoundPlayer::PlaySe(sound, position);
+
+        // 権威側限定Tickなら、Tickしていない他ピアにも同じSEを鳴らさせる
+        if (context.IsNetworkAuthority())
+            GameCore::Network::PlaySeRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, sound.GetGuid(), position);
     }
 
     void Action::PhysicsAttack::UpdateMovement(const TickContext& context) const
@@ -109,6 +130,10 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("lungeStart_secs_", lungeStart_secs_);
         ImGuiHelper::OnDrawInputField("lungeEnd_secs_", lungeEnd_secs_);
         ImGuiHelper::OnDrawInputField("lungeStopDistance_", lungeStopDistance_);
+        ImGuiHelper::OnDrawInputField("animationSound_", animationSound_);
+        ImGuiHelper::OnDrawInputField("warning_", warning_);
+        ImGuiHelper::OnDrawInputField("warningBoneName_", warningBoneName_);
+        ImGuiHelper::OnDrawInputField("warningBoneOffset_", warningBoneOffset_);
     }
 }
 

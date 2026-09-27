@@ -22,3 +22,4 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsStoryFlag/Friendly_Behaviour_Action_IsStoryFlag.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsRestored/Friendly_Behaviour_Action_IsRestored.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/SetStoryFlag/Friendly_Behaviour_Action_SetStoryFlag.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/DepartForNest/Friendly_Behaviour_Action_DepartForNest.h"

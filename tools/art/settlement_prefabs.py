@@ -1,6 +1,6 @@
 """GrassLand の「荒れた村」と「狩猟民のキャンプ」の建物プレハブを組む。
 
-    python tools/art/settlement_prefabs.py
+    python tools/art/settlement_prefabs.py [Name ...]     # Name を省くと全部
 
 モデルは Assets/Art/Models/Settlement (tools/art/settlement/ の Blender スクリプトで m 単位に作り、tools.model で変換)。
 木や岩のプレハブと同じく「ルート(scale 1) + Model 子(scale 0.08)」で、world = m x 8。
@@ -32,6 +32,7 @@ METERS = 8.0  # Blender 1m = world 8 (Model 0.08 x .mv1 のフレーム倍率 10
 
 RUINS = ['RuinedStoneHouse', 'RuinedTimberHouse', 'CrushedHut', 'BrokenFence', 'RubblePile', 'BrokenCart']
 CAMP = ['HideTent', 'LeanTo', 'Campfire', 'DryingRack', 'Totem', 'Palisade', 'Lookout', 'SupplyPile']
+TRAIL = ['TrailBanner', 'TrailCairn', 'TrailSign', 'TrailStones']  # 野営地への道しるべ (grassland_trail.py が置く)
 
 
 def quat_from_matrix(m):
@@ -98,7 +99,7 @@ def save(prefab, name):
 
 def main():
     colliders = json.loads(COLLIDERS.read_text(encoding='utf-8'))
-    for name in RUINS + CAMP:
+    for name in sys.argv[1:] or RUINS + CAMP + TRAIL:
         build(name, colliders.get(name, []))
 
 

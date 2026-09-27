@@ -42,7 +42,7 @@ EXPECTED_TOOLS = {
     "window_set", "main_window_switch", "scene_list", "scene_load", "scene_reload", "hierarchy",
     "gameobject_find", "gameobject_get", "gameobject_get_json", "gameobject_set_json", "component_get",
     "component_set_params", "gameobject_set_transform", "gameobject_set_enable", "component_set_enable",
-    "gameobject_select", "gameobject_destroy", "play", "stop", "end_play", "time_set_scale",
+    "gameobject_select", "gameobject_destroy", "stop", "end_play", "time_set_scale",
     "hotreload_status", "hotreload_reload",
     "camera_get", "camera_set", "debug_draw_get", "debug_draw_set", "log_tail",
     "assets_find", "assets_reload", "model_view_open", "model_view_state", "model_view_select", "model_view_close",

@@ -74,6 +74,11 @@ void GameCore::Scene::DrySandSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalCameraStart_", arrivalCameraStart_);
     ImGuiHelper::OnDrawInputField("arrivalCameraEnd_", arrivalCameraEnd_);
     ImGuiHelper::OnDrawInputField("arrivalLookAtHeight_", arrivalLookAtHeight_);
+    ImGuiHelper::OnDrawInputField("arrivalOverview_msecs_", arrivalOverview_msecs_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewDescend_msecs_", arrivalOverviewDescend_msecs_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraStart_", arrivalOverviewCameraStart_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraEnd_", arrivalOverviewCameraEnd_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewLookAt_", arrivalOverviewLookAt_);
     ImGuiHelper::OnDrawInputField("floatingStone_", floatingStone_);
 }
 

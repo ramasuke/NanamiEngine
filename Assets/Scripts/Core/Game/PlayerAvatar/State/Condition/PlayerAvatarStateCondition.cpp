@@ -1,12 +1,13 @@
 ﻿#include "PlayerAvatarStateCondition.h"
 
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
 #include "../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h"
 #include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../Game.h"
+#include "../../../Scene/Main/Content/FirstTouchDownMainIsLand/Context/FirstTouchDownMainIsLandSceneContext.h"
+#include "../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
 #include "../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "../../../Scene/Sub/Type/SubSceneType.h"
@@ -54,15 +55,13 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::CanUseCannon() const
     {
-        const auto collisionListener = stateContext_->PlayerAvatarObject()->Components().Catch<Component::CollisionListener>();
-        for (const auto& gameobject : collisionListener.lock()->GetCollisionStayObjects() | std::views::values)
-        {
-            if (const auto canon = gameobject.lock()->Components().Catch<GamePlay::Prop::Canon>().lock();
-                canon && !canon->IsLocked())
-            {
-                return true;
-            }
-        }
-        return false;
+        // NOTE: 近くで E を押すと Canon::OnInteract が要求を立てる (Chatting ステート経由)
+        const auto sceneContext = Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
+        // NOTE: 大砲のないシーン (MainIsland など) では未設定
+        if (!sceneContext || !sceneContext->HasPlayerControllabeCanon())
+            return false;
+
+        const auto& canon = sceneContext->PlayerControllabeCanon();
+        return canon.IsBoardRequested() && !canon.IsLocked();
     }
 }

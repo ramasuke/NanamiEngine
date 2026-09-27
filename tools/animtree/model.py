@@ -42,7 +42,9 @@ FQN_NODE_PATH = "NanamiEngine::Module::AnimationTree::AnimationNodePath"
 # 正本。ここはこのツールキットが常に手で出力する型（遷移、条件グループ、
 # 基底クラスのスタブ）の固定定数で、tools/bt が NODE_CLASS_VERSION を
 # ハードコードしているのと同じ。
-NODE_PATH_CLASS_VERSION = 1
+NODE_PATH_CLASS_VERSION = 2
+# hasExitTime_ を持つ最初の AnimationNodePath バージョン
+NODE_PATH_HAS_EXIT_TIME_VERSION = 2
 COND_GROUP_CLASS_VERSION = 0
 COND_CLASS_VERSION = 0
 PARAM_CLASS_VERSION = 0
@@ -103,6 +105,7 @@ class Transition:
     visual_from_guid: str          # エディタ専用の「描画元」ノード。新規作成した遷移では == from_guid
     duration_secs: float = 0.0
     conditions: list[Condition] = field(default_factory=list)   # AND グループ。[] == 無条件/「常に」
+    has_exit_time: bool = True     # False: クリップ終端を待たずに条件成立の瞬間に遷移する（割り込み）
 
 
 @dataclass
@@ -125,6 +128,9 @@ class Tree:
     transitions: list[Transition] = field(default_factory=list)             # "fromNodeNodePath_N"
     any_state_transitions: list[Transition] = field(default_factory=list)   # "fromAnyStateNodeNodePath_N"
     params: list[Param] = field(default_factory=list)                       # "additionParameters_"
+    # ファイル内の AnimationNodePath の cereal_class_version（全遷移で 1 つ）。既存ファイルを
+    # バイト一致で往復させるため読んだ値を保持し、hasExitTime_ が要るときだけ引き上げる
+    node_path_version: int = NODE_PATH_CLASS_VERSION
 
     def find_node(self, guid: str) -> Optional[Node]:
         if self.entry.guid == guid:

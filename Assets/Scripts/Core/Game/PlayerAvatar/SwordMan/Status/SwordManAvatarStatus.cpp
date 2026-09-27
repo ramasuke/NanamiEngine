@@ -25,12 +25,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         , staminaRegenPerSecond_(30.0f)
         , minStaminaRatioToResumeRun_(0.3f)
         , comboNormalAttack_ {
-            AttackParam(Damage::PhysicsPower(10), EnhancePower(1), 0.2673473869f, 0.5028546333f),
-            AttackParam(Damage::PhysicsPower(12), EnhancePower(2), 0.7004830918f, 0.9738691261f),
-            AttackParam(Damage::PhysicsPower(18), EnhancePower(3), 1.2878787879f, 1.5151515152f)}
+            AttackParam(Damage::PhysicsPower(10, Damage::FlinchPower(10)), EnhancePower(1), 0.2673473869f, 0.5028546333f),
+            AttackParam(Damage::PhysicsPower(12, Damage::FlinchPower(10)), EnhancePower(2), 0.7004830918f, 0.9738691261f),
+            AttackParam(Damage::PhysicsPower(18, Damage::FlinchPower(30)), EnhancePower(3), 1.2878787879f, 1.5151515152f)}
         , comboNormalAttackStateDuration_secs_(1.5151515152f)
         , attackedShockedStateDuration_secs_  (0.9090909091f)
-        , dashAttack_                    (Damage::PhysicsPower(15), EnhancePower(10), 0.5303030303f, 0.6060606061f)
+        , dashAttack_                    (Damage::PhysicsPower(15, Damage::FlinchPower(20)), EnhancePower(10), 0.5303030303f, 0.6060606061f)
         , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
             HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 30.0f),
@@ -41,14 +41,14 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackHoldThreshold_secs_(0.2f)
         , chargeAttackMaxCharge_secs_    (1.0f)
         , chargeAttackMaxHold_secs_      (3.0f)
-        , chargeAttack_                  (Damage::PhysicsPower(35), EnhancePower(15), 0.4333333333f, 0.9083333333f)
+        , chargeAttack_                  (Damage::PhysicsPower(35, Damage::FlinchPower(50)), EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                 (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_   (0.0f)
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)
-        , jumpAttack_                    (Damage::PhysicsPower(22), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttack_                    (Damage::PhysicsPower(22, Damage::FlinchPower(40)), EnhancePower(12), 0.1f, 0.6666666667f)
         , jumpAttackHitFeel_             (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
-        , jumpAttackWindup_secs_         (0.3f)
+        , jumpAttackWindup_secs_         (0.4f)
         , jumpAttackPlungeSpeed_         (120.0f)
         , walkSpeed_                    (24.0f)
         , runSpeed_                      (70.0f)
@@ -60,7 +60,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , jumpCooldown_secs_             (0.58f )
         , jumpStaminaCost_               (15.0f)
         , damageStateDuration_secs_      (1.4545454545f)
-        , avoidRollingStateDuration_secs_(0.6363636364f)
+        , avoidRollingStateDuration_secs_(0.4923076923f)
         , avoidRollingStaminaCost_       (20.0f)
         , deathStateDuration_secs_       (1.8181818182f)
         , downStateDuration_secs_        (13.6363636364f)
@@ -100,9 +100,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackLungeStart_secs_        (initStatus.ChargeAttackLungeStart_secs())
         , chargeAttackLungeSpeed_             (initStatus.ChargeAttackLungeSpeed())
         , chargeAttackStaminaCost_            (initStatus.ChargeAttackStaminaCost())
-        , jumpAttack_                         (Damage::PhysicsPower(6), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttack_                         (Damage::PhysicsPower(6, Damage::FlinchPower(40)), EnhancePower(12), 0.1f, 0.6666666667f)
         , jumpAttackHitFeel_                  (1.5f, 0.15f, 6.5f, 0.8f, 0.22f)
-        , jumpAttackWindup_secs_              (0.3f)
+        , jumpAttackWindup_secs_              (0.4f)
         , jumpAttackPlungeSpeed_              (120.0f)
         , walkSpeed_                          (initStatus.GetWalkSpeed())
         , runSpeed_                           (initStatus.GetRunSpeed())
@@ -225,7 +225,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
-            currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
+            const int damaged = (std::max)(currentHealth_->Get().Value() - damageContext->DamageValue(), minHealth_.Value());
+            currentHealth_->Set(StatusParameter::Health(damaged));
             onChangeHealth_.OnNext(currentHealth_->Get());
         }
         invincibleRemaining_secs_ = invincibleDuration_secs_;
@@ -276,11 +277,26 @@ namespace GameCore::PlayerAvatar::SwordMan
         return !onDamagedStack_.empty();
     }
 
+    bool SwordManAvatarStatus::IsDowned() const
+    {
+        // NOTE: 他プレイヤーのアバターはStateのOnEnterが走らないので、同期されたState種別で判定する
+        if (!stateMachine_)
+            return false;
+
+        const auto type = stateMachine_->GetCurrentStateType();
+        return type == SwordManAvatarStateType::Down || type == SwordManAvatarStateType::FallDown;
+    }
+
     void SwordManAvatarStatus::Revive()
     {
         currentHealth_->Set(StatusParameter::Health(static_cast<int>(maxHealth_.Value() * reviveHealthRatio_)));
         onChangeHealth_.OnNext(currentHealth_->Get());
-        isDowned_ = false;
+    }
+
+    void SwordManAvatarStatus::RestoreFullHealth()
+    {
+        currentHealth_->Set(maxHealth_);
+        onChangeHealth_.OnNext(currentHealth_->Get());
     }
 
     void SwordManAvatarStatus::Heal(const StatusParameter::Health amount)

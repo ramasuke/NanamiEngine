@@ -59,6 +59,8 @@ namespace GamePlay::Weather
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderNearSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound1_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound2_;
+        // シーン固有の雲 (巣の嵐の壁など)。空のドームと同じく嵐の強さで回転を速める
+        [[serialize(0)]] FIELD(Component::Rotator)           wallRotator_;
 
         [[serialize(0)]] NanamiEngine::Color32 clearSkyTint_ = NanamiEngine::Color32(255, 255, 255);
         [[serialize(0)]] NanamiEngine::Color32 stormSkyTint_ = NanamiEngine::Color32( 66,  74,  92);
@@ -89,6 +91,10 @@ namespace GamePlay::Weather
         [[serialize(0)]] float distantThunderThreshold_        = 0.5f;
         [[serialize(0)]] float distantThunderMinInterval_secs_ = 6.0f;
         [[serialize(0)]] float distantThunderMaxInterval_secs_ = 10.0f;
+        // シーンを開いた時点の嵐の強さ(0..1)。0 なら晴れで始まる
+        [[serialize(0)]] float initialStormIntensity_   = 0.0f;
+        [[serialize(0)]] float clearWallRotateSpeedDeg_ = 1.5f;
+        [[serialize(0)]] float stormWallRotateSpeedDeg_ = 6.0f;
 
         float stormIntensity_   = 0.0f;
         float stormTarget_      = 0.0f;
@@ -146,6 +152,10 @@ namespace GamePlay::Weather
             archive(CEREAL_NVP(distantThunderThreshold_));
             archive(CEREAL_NVP(distantThunderMinInterval_secs_));
             archive(CEREAL_NVP(distantThunderMaxInterval_secs_));
+            archive(CEREAL_NVP(wallRotator_));
+            archive(CEREAL_NVP(initialStormIntensity_));
+            archive(CEREAL_NVP(clearWallRotateSpeedDeg_));
+            archive(CEREAL_NVP(stormWallRotateSpeedDeg_));
         }
 
         template<class Archive>
@@ -189,6 +199,10 @@ namespace GamePlay::Weather
             if (version >= 0) archive(CEREAL_NVP(distantThunderThreshold_));
             if (version >= 0) archive(CEREAL_NVP(distantThunderMinInterval_secs_));
             if (version >= 0) archive(CEREAL_NVP(distantThunderMaxInterval_secs_));
+            if (version >= 3) archive(CEREAL_NVP(wallRotator_));
+            if (version >= 3) archive(CEREAL_NVP(initialStormIntensity_));
+            if (version >= 3) archive(CEREAL_NVP(clearWallRotateSpeedDeg_));
+            if (version >= 3) archive(CEREAL_NVP(stormWallRotateSpeedDeg_));
         }
 
     private:
@@ -209,4 +223,4 @@ namespace GamePlay::Weather
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Weather::WeatherService, 2);
+CEREAL_CLASS_VERSION(GamePlay::Weather::WeatherService, 3);

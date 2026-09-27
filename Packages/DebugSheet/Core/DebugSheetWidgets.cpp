@@ -1,5 +1,6 @@
 ﻿#include "DebugSheetWidgets.h"
 
+#if NANAMI_DEBUG_SHEET_ENABLED
 #include <algorithm>
 #include <string>
 #include <unordered_map>
@@ -187,4 +188,16 @@ namespace NanamiEngine::DebugSheet::Widgets
         ImGui::SetNextItemWidth(-FLT_MIN);
         return ImGui::InputInt(("##" + text).c_str(), &value, step, step * 10);
     }
+
+    bool SliderFloat(const std::string_view label, float& value, const float min, const float max, const char* format)
+    {
+        const std::string text(label);
+        ImGui::PushStyleColor(ImGuiCol_Text, ToImVec4(Palette::TEXT_DIM));
+        ImGui::TextUnformatted(text.c_str());
+        ImGui::PopStyleColor();
+
+        ImGui::SetNextItemWidth(-FLT_MIN);
+        return ImGui::SliderFloat(("##" + text).c_str(), &value, min, max, format);
+    }
 }
+#endif

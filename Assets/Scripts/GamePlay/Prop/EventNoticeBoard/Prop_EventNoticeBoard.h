@@ -27,6 +27,7 @@ namespace GamePlay::Prop
         void OnExitInteractable() override;
         void OnInteract        () override;
         [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
+        [[nodiscard]] GameCore::PlayerAvatar::PlayerInteractKind InteractKind() const override { return GameCore::PlayerAvatar::PlayerInteractKind::Read; }
         /** @brief プレイヤーがまだいなくて判定できなければ isResolved_ を立てない */
         void ResolveHasUnread();
         void ApplyIdleIcon() const;

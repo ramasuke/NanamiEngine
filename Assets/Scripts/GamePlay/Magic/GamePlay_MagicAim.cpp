@@ -93,7 +93,7 @@ namespace GamePlay::Magic
 
     GameCore::Damage::PhysicsPower ScaledPower(const GameCore::Damage::PhysicsPower base, const float rate)
     {
-        return GameCore::Damage::PhysicsPower(static_cast<int>(std::lround(static_cast<float>(base.Value()) * rate)));
+        return base.WithValue(static_cast<int>(std::lround(static_cast<float>(base.Value()) * rate)));
     }
 
     bool IsSpellApplicableTarget(GameObject::IGameObject& targetObject)
@@ -122,16 +122,29 @@ namespace GamePlay::Magic
                              const GameCore::Damage::PhysicsPower power,
                              const glm::vec3& position)
     {
-        const auto owner = FindHitEnemyForLocalCaster(caster, hitObject);
-        if (!owner)
+        const auto casterObject = caster.lock();
+        if (!casterObject)
             return;
 
-        const auto magicCaster = caster.lock()->Components().Catch<GameCore::Magic::IMagicCaster>().lock();
+        const auto magicCaster = casterObject->Components().Catch<GameCore::Magic::IMagicCaster>().lock();
         const auto prefab = magicCaster ? magicCaster->DealDamageTextPrefab() : nullptr;
         if (!prefab)
             return;
 
-        Ui::SpawnDealDamageText(*prefab, position, power.Value());
+        ShowSpellDamageText(caster, hitObject, power, position, *prefab);
+    }
+
+    void ShowSpellDamageText(const std::weak_ptr<GameObject::IGameObject>& caster,
+                             const std::shared_ptr<GameObject::IGameObject>& hitObject,
+                             const GameCore::Damage::PhysicsPower power,
+                             const glm::vec3& position,
+                             Asset::PrefabGameObjectFile& prefab)
+    {
+        if (!FindHitEnemyForLocalCaster(caster, hitObject))
+            return;
+
+        // NOTE: 他のピアでは撃ち手の画面から配った分だけを出す(魔法の再実行側は FindHitEnemyForLocalCaster で弾かれる)
+        Ui::SpawnDealDamageTextSynced(prefab, position, power.Value(), *caster.lock());
     }
 
     bool ShakeOnSpellHit(const std::weak_ptr<GameObject::IGameObject>& caster,

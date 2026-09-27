@@ -13,6 +13,11 @@
 #include "Context/SwordManAvatarStateContext.h"
 #include "Transition/SwordManAvatarStateTransition.h"
 
+namespace NanamiEngine::Module::Asset
+{
+    class PrefabGameObjectFile;
+}
+
 namespace GameCore::PlayerAvatar::SwordMan
 {
     using SwordManAvatarStateArgs = PlayerAvatarStateArgs<SwordManAvatarStateContext, SwordManAvatarStateType>;
@@ -82,6 +87,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         bool UpdateTransitions() const;
         void RotateTowardsAttackTarget(AttackTurn& turn, float smoothTime_secs, float maxRotateSpeed) const;
         void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power) const;
+        /** 攻撃の演出を出し、オンラインなら他のピアにも出させる。rotation / scale が無ければプレハブのまま */
+        void SpawnAttackParticle(Asset::PrefabGameObjectFile& prefab, const glm::vec3& position,
+                                 const std::optional<glm::quat>& rotation = std::nullopt, std::optional<float> scale = std::nullopt) const;
         void ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const;
         // 弾かれたら AttackedShocked へ遷移する
         bool TryBlockAttackByWall(PlayerAttackArea& attackArea) const;

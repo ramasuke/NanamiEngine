@@ -3,7 +3,6 @@
 
 void GameCore::PlayerAvatar::SwordMan::State::FallDownState::DoEnter()
 {
-    Status().SetDowned(true);
     HoldHorizontalVelocity();
 }
 

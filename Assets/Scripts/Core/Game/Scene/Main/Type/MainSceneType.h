@@ -10,7 +10,8 @@ namespace GameCore::Scene::Main
         FirstTouchDownMainIsLand = 1,
         MainIsland = 2,
         Title = 3,
-        Desert = 4
+        Desert = 4,
+        DragonNest = 5
     };
 
     constexpr std::array SCENE_TYPES
@@ -20,6 +21,7 @@ namespace GameCore::Scene::Main
         SceneType::MainIsland,
         SceneType::Title,
         SceneType::Desert,
+        SceneType::DragonNest,
     };
 
     constexpr std::string_view ToString(const SceneType type)
@@ -31,6 +33,7 @@ namespace GameCore::Scene::Main
         case SceneType::MainIsland: return "MainIsland";
         case SceneType::Title: return "Title";
         case SceneType::Desert: return "Desert";
+        case SceneType::DragonNest: return "DragonNest";
         }
 
         return "Unknown";

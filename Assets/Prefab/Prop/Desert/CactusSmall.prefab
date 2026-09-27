@@ -26,7 +26,7 @@
                         },
                         "offset_": {
                             "value0": 0.0,
-                            "value1": 9.2,
+                            "value1": 9.199999809265137,
                             "value2": 0.0
                         },
                         "offsetRotation_": {
@@ -36,7 +36,7 @@
                         },
                         "layer_": 0,
                         "isSensor_": false,
-                        "friction_": 0.2
+                        "friction_": 0.20000000298023225
                     },
                     "value1": {
                         "cereal_class_version": 0
@@ -49,7 +49,7 @@
                     },
                     "size_": {
                         "value0": 4.0,
-                        "value1": 18.4,
+                        "value1": 18.399999618530275,
                         "value2": 4.0
                     }
                 }
@@ -107,7 +107,7 @@
             "ptr_wrapper": {
                 "id": 2147483650,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -143,9 +143,7 @@
                                     "value3": {
                                         "cereal_class_version": 0
                                     },
-                                    "value4": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value4": {},
                                     "mv1File_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -179,27 +177,27 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.08,
-                            "value1": 0.08,
-                            "value2": 0.08
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.08,
+                                "value0": 0.07999999821186066,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.08,
+                                "value1": 0.07999999821186066,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 0.08,
+                                "value2": 0.07999999821186066,
                                 "value3": 0.0
                             },
                             "value3": {
@@ -210,10 +208,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

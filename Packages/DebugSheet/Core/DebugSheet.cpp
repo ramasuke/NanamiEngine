@@ -1,5 +1,6 @@
 ﻿#include "DebugSheet.h"
 
+#if NANAMI_DEBUG_SHEET_ENABLED
 #include <algorithm>
 #include <string_view>
 
@@ -105,7 +106,6 @@ namespace NanamiEngine::DebugSheet
     {
         if (!IsGameRunning())
         {
-            // NOTE: プレイを終えたら閉じ、次のプレイはトップページから開く
             if (isOpen_)
             {
                 Close();
@@ -307,3 +307,4 @@ NanamiEngine::DebugSheet::Sheet& NanamiEngine::DebugSheet::Sheet::Instance()
     static Sheet instance;
     return instance;
 }
+#endif

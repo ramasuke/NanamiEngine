@@ -9,7 +9,7 @@
 更新を「早馬が届けた荷」に見立て、荷札に 荷の数・重さ・送り状(版) を書き、ダウンロードの進みを
 蹄の跡で、結果を朱の判子(受領 / 不着)で見せる。
 
-案A 吊り荷札       画面中央に大きな荷札を一枚、釘から麻紐で吊るす。背景は手帳と同じく暗くぼかす
+案A 吊り荷札       画面中央に大きな荷札を一枚、釘から麻紐で吊るす。背景は暗くぼかす
 案B 送り状と荷札   板に留めた横長の送り状に荷の中身を品目ごとに書き、左上に荷札を括り付ける
 案C 隅の小荷札     タイトル絵はほぼそのまま見せ、右下に小さな荷札を吊るす
 
@@ -28,16 +28,15 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from character_select import (  # noqa: E402
-    BODY_FONT, BRUSH_FONT, BRASS, INK, INK_FADE, PARCH, PARCH_OLD, STAMP_RED, bevel, drop_shadow, fbm, font,
+    BODY_FONT, BRUSH_FONT, BRASS, CANDLE, INK, INK_FADE, PARCH, PARCH_OLD, STAMP_RED, bevel, drop_shadow, fbm, font,
     grid, hint_tag, nail, paste, rect_outside, rgba, soften, text, wood_board)
-from pause_menu import dim  # noqa: E402
 
 SCREEN_W, SCREEN_H = 1920, 1080
 TITLE_ART = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'Sample' / 'BackGround.png'
@@ -64,6 +63,20 @@ STATE_LABELS = {'confirm': '更新の確認', 'download': '受け取り中', 'fa
 
 
 # ---------------------------------------------------------------- 背景
+def dim(base, darken=0.62, blur=6.0, vignette=0.55, warm=0.0):
+    """モックの背景を暗くぼかす (もとは冒険者の手帳 pause_menu.py のもの)"""
+    im = base.convert('RGB').filter(ImageFilter.GaussianBlur(blur))
+    arr = np.asarray(im, np.float32) / 255.0
+    xx, yy = grid(SCREEN_W, SCREEN_H)
+    r = np.hypot((xx - SCREEN_W / 2) / (SCREEN_W / 2), (yy - SCREEN_H / 2) / (SCREEN_H / 2))
+    vig = np.clip(r / 1.25, 0, 1) ** 1.7
+    arr = arr * (1 - darken) * (1 - vignette * vig)[..., None]
+    if warm:
+        arr = arr + CANDLE[None, None, :] * warm * (1 - vig)[..., None] * 0.14
+    arr = arr * np.array([1.05, 0.99, 0.92], np.float32)[None, None, :]
+    return Image.fromarray((np.clip(arr, 0, 1) * 255).astype(np.uint8), 'RGB').convert('RGBA')
+
+
 def load_base(shot_path):
     if shot_path:
         im = Image.open(shot_path).convert('RGBA')
@@ -282,7 +295,7 @@ def size_line():
 EMIT_DIR = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'AssetUpdate'
 HINT_CONFIRM_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Confirm.png'
 HINT_CANCEL_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Cancel.png'
-BACKDROP_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'PauseMenu' / 'Backdrop.png'   # 960x540 を 2 倍で敷く
+BACKDROP_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'Backdrop.png'   # 960x540 を 2 倍で敷く
 BLACK_MASK_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'BlackMask.png'
 
 TAG_W, TAG_H = 600, 780

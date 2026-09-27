@@ -39,6 +39,7 @@ class _Ctx:
         # cereal は型の cereal_class_version をアーカイブ内で最初に現れたときだけ書く。
         # 以降の同じ型のインスタンスは同じバージョンで保存されている
         self.node_versions: dict[str, int] = {}
+        self.node_path_version: int = model.NODE_PATH_CLASS_VERSION
 
     def ptr_slot(self, slot: OrderedObj):
         pid = _num(slot["polymorphic_id"])
@@ -241,14 +242,17 @@ def _read_conditions(ctx: _Ctx, slot: OrderedObj) -> list[model.Condition]:
 def _read_transition(ctx: _Ctx, slot: OrderedObj) -> model.Transition:
     s = ctx.ptr_slot(slot)
     data = s["data"]
-    _v, data = _strip_ccv(data)
+    v, data = _strip_ccv(data)
+    if v is not None:
+        ctx.node_path_version = v
     conditions = _read_conditions(ctx, data["additionConditionGroup_"])
     duration = data["transitionDuration_secs_"]  # 生の Num - _vec2 参照
     from_guid = _guid_value(data["fromNodeGuid_"])
     next_guid = _guid_value(data["nextNodeGuid_"])
     visual_from_guid = _guid_value(data["visualFromNodeGuid_"]) if "visualFromNodeGuid_" in data else from_guid
+    has_exit_time = bool(data["hasExitTime_"]) if "hasExitTime_" in data else True
     return model.Transition(from_guid=from_guid, next_guid=next_guid, visual_from_guid=visual_from_guid,
-                            duration_secs=duration, conditions=conditions)
+                            duration_secs=duration, conditions=conditions, has_exit_time=has_exit_time)
 
 
 def _read_params(ctx: _Ctx, slot: OrderedObj) -> list[model.Param]:
@@ -293,7 +297,8 @@ def read_tree(text: str, cat: catalog_mod.Catalog | None = None) -> model.Tree:
                              for i in range(any_path_count)]
 
     return model.Tree(entry=entry, any_state=any_state, nodes=nodes, transitions=transitions,
-                      any_state_transitions=any_state_transitions, params=params)
+                      any_state_transitions=any_state_transitions, params=params,
+                      node_path_version=ctx.node_path_version)
 
 
 def read_tree_file(path) -> model.Tree:

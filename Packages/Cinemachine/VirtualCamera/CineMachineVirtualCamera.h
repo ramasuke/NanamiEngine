@@ -19,7 +19,8 @@ namespace NanamiEngine::CineMachine
         void SetPriority(int priority);
         // このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
         [[nodiscard]] float Fov() const;
-        
+        void SetImmediateApply(const bool enable) { isImmediateApply_ = enable; }
+
         void OnDisable() { priority_.Value(DISABLE_PRIORITY); }
         // BrainがLateUpdateで毎フレーム呼ぶ。BehaviourをStage()の順に更新する
         void UpdateBehaviours() const;
@@ -38,6 +39,8 @@ namespace NanamiEngine::CineMachine
         // Brainの既定FOVではなく、このカメラ独自のFOVを使うか
         bool  overrideFov_ = false;
         float fov_         = 60.0f;
+        // Behaviourに関係なくBrainの追従補間をスキップする(非シリアライズ)
+        bool  isImmediateApply_ = false;
         std::vector<std::weak_ptr<IVirtualCameraBehaviour>> cameraBehaviours_;
     
 #pragma region Serialization Function

@@ -142,7 +142,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
-            currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
+            const int damaged = (std::max)(currentHealth_->Get().Value() - damageContext->DamageValue(), minHealth_.Value());
+            currentHealth_->Set(StatusParameter::Health(damaged));
             onChangeHealth_.OnNext(currentHealth_->Get());
             event_->onDamage_.OnNext(currentHealth_->Get());
         }
@@ -188,6 +189,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         const float duration = cooldownDuration_secs_[static_cast<size_t>(slot)];
         return duration > 0.0f ? cooldownRemaining_secs_[static_cast<size_t>(slot)] / duration : 0.0f;
+    }
+
+    void MagicCasterAvatarStatus::RestoreFullHealth()
+    {
+        currentHealth_->Set(maxHealth_);
+        onChangeHealth_.OnNext(currentHealth_->Get());
     }
 
     void MagicCasterAvatarStatus::Heal(const StatusParameter::Health amount)

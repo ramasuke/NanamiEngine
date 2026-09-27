@@ -2,6 +2,7 @@
 
 #include <optional>
 
+#include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -13,6 +14,7 @@ namespace GamePlay::Ui
         using GameCore::PlayerAvatar::PlayerAvatarControlAcceptance;
         using GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarInput;
         using GameCore::PlayerAvatar::PlayerAvatarInputPhase;
+        using GameCore::PlayerAvatar::PlayerInteractKind;
         using GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStateAction;
         using GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStateType;
     }
@@ -57,7 +59,11 @@ namespace GamePlay::Ui
             case Label::Jump:          return Row::Jump;
             case Label::LockOn:
             case Label::LockOnRelease: return Row::LockOn;
-            case Label::Chat:          return Row::Interact;
+            case Label::Chat:
+            case Label::Open:
+            case Label::Gather:
+            case Label::Read:
+            case Label::Board:         return Row::Interact;
             }
             return Row::Move;
         }
@@ -129,6 +135,7 @@ namespace GamePlay::Ui
             RequestCollector collector;
             state->VisitTransitions(collector);
             requests_ = collector.Requests();
+            ApplyInteractLabel(magicCasterAvatar);
         }
 
         if (!controlGuide_)
@@ -141,6 +148,27 @@ namespace GamePlay::Ui
             rows[i] = ControlGuide::RowRequest{ request.isShown, request.isUsable, GlyphSprite(request.glyph), LabelText(request.label) };
         }
         controlGuide_->Present(acceptance != PlayerAvatarControlAcceptance::None, rows, std::nullopt, false);
+    }
+
+    void MagicCasterControlGuide::ApplyInteractLabel(const std::shared_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar>& magicCasterAvatar)
+    {
+        auto& request = requests_[static_cast<std::size_t>(Row::Interact)];
+        if (!request.isShown || request.label != Label::Chat)
+            return;
+
+        const GameCore::IPlayerAvatar& playerAvatar = *magicCasterAvatar;
+        const auto target = playerAvatar.InteractableArea().CatchInteractTarget().lock();
+        if (!target)
+            return;
+
+        switch (target->InteractKind())
+        {
+        case PlayerInteractKind::Talk:   request.label = Label::Chat;   return;
+        case PlayerInteractKind::Open:   request.label = Label::Open;   return;
+        case PlayerInteractKind::Gather: request.label = Label::Gather; return;
+        case PlayerInteractKind::Read:   request.label = Label::Read;   return;
+        case PlayerInteractKind::Board:  request.label = Label::Board;  return;
+        }
     }
 
     std::shared_ptr<Asset::SpriteFile> MagicCasterControlGuide::GlyphSprite(const Glyph glyph) const
@@ -169,6 +197,10 @@ namespace GamePlay::Ui
         case Label::LockOn:        return lockOnLabel_;
         case Label::LockOnRelease: return lockOnReleaseLabel_;
         case Label::Chat:          return chatLabel_;
+        case Label::Open:          return openLabel_;
+        case Label::Gather:        return gatherLabel_;
+        case Label::Read:          return readLabel_;
+        case Label::Board:         return boardLabel_;
         }
         return moveLabel_;
     }
@@ -198,6 +230,10 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("lockOnLabel_", lockOnLabel_);
         ImGuiHelper::OnDrawInputField("lockOnReleaseLabel_", lockOnReleaseLabel_);
         ImGuiHelper::OnDrawInputField("chatLabel_", chatLabel_);
+        ImGuiHelper::OnDrawInputField("openLabel_", openLabel_);
+        ImGuiHelper::OnDrawInputField("gatherLabel_", gatherLabel_);
+        ImGuiHelper::OnDrawInputField("readLabel_", readLabel_);
+        ImGuiHelper::OnDrawInputField("boardLabel_", boardLabel_);
     }
 }
 

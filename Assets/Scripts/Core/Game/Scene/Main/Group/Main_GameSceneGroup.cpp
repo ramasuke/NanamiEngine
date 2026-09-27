@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <utility>
 #include "../Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
+#include "../Content/DragonNest/DragonNestScene.h"
 #include "../Content/DrySand/DrySandScene.h"
 #include "../Content/GrassLand/GrassLandScene.h"
 #include "../Content/MainIslandScene/MainIsLandScene.h"
@@ -42,6 +43,9 @@ namespace GameCore::Scene::Main
 
         AddScene(SceneType::Desert, std::make_shared<DrySandScene>(
             CatchContext<DrySandSceneContext>(), baseContext));
+
+        AddScene(SceneType::DragonNest, std::make_shared<DragonNestScene>(
+            CatchContext<DragonNestSceneContext>(), baseContext));
     }
 
     void GameSceneGroup::Update()

@@ -8,7 +8,7 @@
 prefab / scene / .loadingRoute の asset guid は既存の .meta を保つので、Game の stageLoadingSceneFile_ などの
 外からの参照は切れない(中の GameObject / Component の guid は毎回新しくなる)。
 
-tools.scene の CLI では届かない所をここで埋める(pause_menu_prefab.py と同じ):
+tools.scene の CLI では届かない所をここで埋める(ui_prefab_base.py と同じ):
   * enum(BlendImageRenderer::blendMode_ / TextRenderer::textAlign_)は 0 固定で書かれるので数値で直接書く
   * add_component は数値を 0 で書くので、ヘッダの初期値を明示する
   * vector<FIELD(T)>(LoadingRouteMap::routeDashes_ など)はカタログが単一の field と見なすので、配列を自前で作る
@@ -26,7 +26,7 @@ from tools.common.cereal_json import Num, to_file_bytes  # noqa: E402
 from tools.scene import catalog as catalog_mod, edits, meta as scene_meta, model, reader, validate, writer  # noqa: E402
 
 import loading_map as art  # noqa: E402
-import pause_menu_prefab as pm  # noqa: E402
+import ui_prefab_base as pm  # noqa: E402
 
 PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI'
 SCENE_PATH = REPO / 'Assets' / 'Scene' / 'StageLoadingScene.scene'
@@ -42,7 +42,7 @@ PAD_GLYPH = pm.asset_guid(REPO / 'Assets/Art/UI/ControlGuide/ControlGuide_Pad_B.
 
 BLEND_ALPHA = 1
 TEXT_ALIGN = {'left': 0, 'center': 1, 'right': 2}
-SCENE_TYPE = {'GrassLand': 0, 'FirstTouchDownMainIsLand': 1, 'MainIsland': 2, 'Title': 3, 'Desert': 4}
+SCENE_TYPE = {'GrassLand': 0, 'FirstTouchDownMainIsLand': 1, 'MainIsland': 2, 'Title': 3, 'Desert': 4, 'DragonNest': 5}
 
 ORDER_DESK = 9000
 ORDER_PAPER_SHADOW = 9005

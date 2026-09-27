@@ -2,6 +2,7 @@
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "../../../../../../../../../../Data/Enemy/AttackWarning/Data_EnemyAttackWarning.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../../../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardInt.h"
@@ -16,7 +17,6 @@ namespace GamePlay::Prop
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * @brief プレイヤーへ向き直ってから一直線に突進し、ChargeStuckObstacle に当たったら頭が刺さったことを黒板に書く
      * @note 刺さった先が ChargeBreakPillar なら柱を倒し、柱のダメージを自分に入れる
      * @note aimAtIntroPillar_ ならプレイヤーではなく登場演出用の柱へ向き直り、プレイヤーには当てない
      */
@@ -70,10 +70,15 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] WriteBlackBoard finishedWriteBlackBoard_ = WriteBlackBoard();
         [[serialize(1)]] bool        aimAtIntroPillar_      = false;
 
+        [[serialize(2)]] FIELD(Asset::EnemyAttackWarning) warning_;
+        [[serialize(2)]] std::string warningBoneName_;
+        [[serialize(2)]] glm::vec3 warningBoneOffset_ = glm::vec3(0.0f);
+
         Phase     phase_         = Phase::WindUp;
         float     during_secs_   = 0.0f;
         glm::vec3 rushDirection_ = glm::vec3(0.0f, 0.0f, -1.0f);
         bool      isAttacked_    = false;
+        bool      isWarned_      = false;
         bool      isStuck_       = false;
         std::weak_ptr<GamePlay::Prop::ChargeBreakPillar> stuckPillar_;
         std::weak_ptr<GamePlay::Prop::ChargeBreakPillar> introPillar_;
@@ -101,6 +106,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(impactSound_));
             archive(CEREAL_NVP(finishedWriteBlackBoard_));
             archive(CEREAL_NVP(aimAtIntroPillar_));
+            archive(CEREAL_NVP(warning_));
+            archive(CEREAL_NVP(warningBoneName_));
+            archive(CEREAL_NVP(warningBoneOffset_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -124,10 +132,13 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(impactSound_));
             if (version >= 0) archive(CEREAL_NVP(finishedWriteBlackBoard_));
             if (version >= 1) archive(CEREAL_NVP(aimAtIntroPillar_));
+            if (version >= 2) archive(CEREAL_NVP(warning_));
+            if (version >= 2) archive(CEREAL_NVP(warningBoneName_));
+            if (version >= 2) archive(CEREAL_NVP(warningBoneOffset_));
         }
     };
 
     REGISTER_ENEMY_ACTION_WITH_NAME(ChargeRush, "Tyrannosaurus::ChargeRush")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChargeRush, 1);
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChargeRush, 2);

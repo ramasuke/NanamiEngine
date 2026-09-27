@@ -34,6 +34,8 @@ namespace GamePlay::Ui
          * 確認中やダウンロード中の押下は黙って受け流す
          */
         [[nodiscard]] bool TryStartGame();
+        /** @brief 札が出ていて、答えを待っているか (その間はタイトルの入力を止める) */
+        [[nodiscard]] bool IsPrompting() const;
 
     private:
         struct Keys

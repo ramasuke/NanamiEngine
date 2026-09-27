@@ -55,6 +55,9 @@ void CineMachine::CineMachineVirtualCamera::OnBecameLive() const
 
 bool CineMachine::CineMachineVirtualCamera::WantsImmediateApply() const
 {
+    if (isImmediateApply_)
+        return true;
+
     for (const auto& cameraBehaviour : cameraBehaviours_)
     {
         if (cameraBehaviour.lock()->WantsImmediateApply())
@@ -90,7 +93,8 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
     ImGuiHelper::OnDrawInputField("overrideFov_", overrideFov_);
     if (overrideFov_)
         ImGuiHelper::OnDrawInputField("fov_", fov_);
-    
+    ImGuiHelper::OnDrawInputField("isImmediateApply_", isImmediateApply_);
+
     if (ImGui::Button("AddCameraBehaviour"))
     {
         ImGui::OpenPopup("AddCameraBehaviourPopup");

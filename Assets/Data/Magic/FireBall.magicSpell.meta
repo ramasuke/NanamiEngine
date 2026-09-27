@@ -58,7 +58,7 @@
                     "ptr_wrapper": {
                         "id": 2147483652,
                         "data": {
-                            "cereal_class_version": 0,
+                            "cereal_class_version": 1,
                             "value0": {
                                 "cereal_class_version": 0
                             },
@@ -78,11 +78,13 @@
                                 }
                             },
                             "power_": {
-                                "cereal_class_version": 0,
-                                "value_": 18
+                                "cereal_class_version": 1,
+                                "value_": 18,
+                                "flinchPower_": 30
                             },
                             "speed_": 180.0,
-                            "range_": 220.0
+                            "range_": 220.0,
+                            "lifetimeMargin_": 1.2000000476837159
                         }
                     }
                 },

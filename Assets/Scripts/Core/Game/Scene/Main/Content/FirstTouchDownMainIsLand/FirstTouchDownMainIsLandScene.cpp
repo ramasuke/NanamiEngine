@@ -70,6 +70,7 @@ namespace GameCore::Scene::Main
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
+            avatar->PlayerStatus().RestoreFullHealth();
             avatar->SaveStatus();
             SaveGameProgression(GameProgresion::MainIsland);
             Story::StoryProgress::Instance().Set(Story::StoryFlag::PrologueCleared);

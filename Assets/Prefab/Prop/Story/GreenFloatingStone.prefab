@@ -60,7 +60,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -164,7 +164,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -189,24 +190,15 @@
                                 "id": 2147483653,
                                 "data": {
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "DDDF2E07-3551-4B75-BB23-3C41722FCBBD"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value4": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "value4": {},
                                     "mv1File_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -275,7 +267,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483655,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 1,
                                     "value0": {
                                         "value0": {}
                                     },
@@ -294,18 +286,13 @@
                                                 "data": {
                                                     "cereal_class_version": 1,
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "DAC852A2-4E53-43AB-B43A-313C5EF700D3"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "particleFile_": {
                                                         "cereal_class_version": 0,
                                                         "value0": {
@@ -371,14 +358,17 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

@@ -7,6 +7,7 @@ namespace GameCore::PlayerAvatar
     class PlayerAttackArea final : public GamePlay::AttackArea<ITakablePlayerAttack>
     {
         void DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamage> context) override;
+        void OnRemoteOwnedTarget(AttackTarget& attackTarget, GameObject::IGameObject& fromObject, Damage::PhysicsPower damagePower) override;
     };
 }
 

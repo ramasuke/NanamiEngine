@@ -18,6 +18,7 @@ namespace GameCore::Damage
                 PhysicsPower damageValue);
         int DamageValue() override;
         [[nodiscard]] glm::vec3 DamageDirection() const override;
+        [[nodiscard]] Damage::FlinchPower FlinchPower() const override { return damageValue_.FlinchPower(); }
 
     private:
         glm::vec3 damageDirection_;

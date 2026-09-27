@@ -28,7 +28,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         CannonFire,
         CycleItem,
         UseItem,
-        OpenMenu,
     };
 
     using ISwordManAvatarTransitionVisitor =

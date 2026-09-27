@@ -67,7 +67,7 @@
         "ptr_wrapper": {
             "id": 2147483653,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 4,
                 "value0": {},
                 "animationFile_": {
                     "cereal_class_version": 0,
@@ -97,7 +97,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -133,7 +134,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -169,7 +171,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -205,7 +208,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -241,7 +245,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -277,7 +282,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -313,7 +319,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -349,7 +356,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -385,7 +393,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -421,7 +430,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -457,7 +467,8 @@
                 "modelAnimationIndex_": 11,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -493,7 +504,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -503,7 +515,7 @@
         "ptr_wrapper": {
             "id": 2147483677,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -525,7 +537,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "BAFB3A9F-E288-4AC8-BDC0-36EDD9196747"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -568,7 +581,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -597,7 +611,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
                 },
@@ -606,7 +620,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -635,7 +650,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
                 },
@@ -644,7 +659,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -682,7 +698,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -720,7 +737,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -758,7 +776,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -796,7 +815,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -834,7 +854,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -872,7 +893,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -910,7 +932,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -948,7 +971,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -986,7 +1010,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "17DA3448-2A52-4EAF-8C60-810F1A40EB82"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     }

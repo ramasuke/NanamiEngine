@@ -54,6 +54,8 @@ namespace NanamiEngine::Module::AnimationTree
         [[serialize(0)]] Guid fromNodeGuid_;
         [[serialize(0)]] Guid nextNodeGuid_;
         [[serialize(1)]] Guid visualFromNodeGuid_;
+        // false: クリップの終端を待たず、条件を満たした瞬間に遷移する(怯みなどの割り込み用)
+        [[serialize(2)]] bool hasExitTime_ = true;
 #pragma region Serialization Function
 public:
 void OnDrawGui() override;
@@ -66,6 +68,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(fromNodeGuid_));
     archive(CEREAL_NVP(nextNodeGuid_));
     archive(CEREAL_NVP(visualFromNodeGuid_));
+    archive(CEREAL_NVP(hasExitTime_));
 }
 
 template<class Archive>
@@ -76,11 +79,12 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 0) archive(CEREAL_NVP(fromNodeGuid_));
     if (version >= 0) archive(CEREAL_NVP(nextNodeGuid_));
     if (version >= 1) archive(CEREAL_NVP(visualFromNodeGuid_));
+    if (version >= 2) archive(CEREAL_NVP(hasExitTime_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationNodePath, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationNodePath, 2);
 #pragma endregion

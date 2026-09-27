@@ -127,9 +127,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
             const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
             const glm::quat yRot = glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f));
-            const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
-            if (const auto particleObject = particle.lock())
-                particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
+            SpawnAttackParticle(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot, hitFeel.ParticleScale());
             DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
             ShakeHitTargets(NormalAttackArea(), hitFeel);
         }

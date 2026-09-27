@@ -66,6 +66,8 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual bool  IsDowned () const { return false; }
         [[nodiscard]] virtual bool  IsDeath  () const { return false; }
         virtual void Revive() {}
+        /** @brief 体力を最大値まで戻す。死亡中でも戻す */
+        virtual void RestoreFullHealth() {}
         [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnBecomeInjured() const
         {
             return NanamiEngine::R4::Observable<NanamiEngine::R4::Unit>::Never();

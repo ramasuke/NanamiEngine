@@ -44,6 +44,8 @@
   心臓は砕けたのではなく、**丸ごと抜けて飛んでいった**（欠片・核片という設定はやめた。2026-09-24）。
 - **島の心臓は引き合い、ものを引き寄せ、持ち上げる**。物語の不思議は、このひとつのルールで説明する。
   - 獣や魔物を引き寄せる。心臓が落ちた島には群れが集まり、強いものほど心臓の傍に居着く。持ち去れば獣は散る。
+    ステージで石が飛び去ると、残っていた獣は石の方を振り向いてから反対へ走り去って消える
+    （`Story::IslandHeartDeparture` + BT アクション `Story::FleeFromIslandHeart`。ハイエナ・サソリ・ワームのツリーの先頭）。
   - 【仮】島の底に埋まっている間は土に抑えられて静かで、むき出しになると呼び始める（埋め戻せば、もう呼ばない）。
   - 周りの土を持ち上げる。落ちた心臓の周りでは土くれや岩がゆっくり浮かぶ（在りかが遠くから分かる。去ると浮かなくなる）。
     → `GreenCoreAura` / `LightCoreAura` の `Debris` / `Chunks`（`tools/art/green_core_effect.py`）。
@@ -61,7 +63,22 @@
 
 岩石地帯はやめた【確定】（ステージ選択の行と `RockyStage.stageData` は削除済み。`QuestType::RockyTyrant` は int で残るので enum に置いたまま）。
 
-見た目【確定・未実装】: 狩り場の外周は山ではなく **崖と雲海** にして、遠景にほかの浮島を置く。到着演出（`StageArrivalMovie`）で島を見下ろすカットを入れる。
+見た目【確定】: 狩り場の外周は山ではなく **崖と雲海** にして、遠景にほかの浮島を置く。到着演出（`StageArrivalMovie`）で島を見下ろすカットを入れる。
+→ 実装済み（遠景の浮島だけ。崖と雲海・見下ろすカットは未着手）: 草原の空に 9、砂の島の空に 11 の浮島が浮かぶ（シーンの `SkyIslands`）。
+  外周の山の外、山越しに島の底の岩まで見える高さに置き、ゆっくり上下して傾く（`GamePlay::Prop::FloatingDrift`）。脇には岩のかけらが浮かぶ。
+  草原の空は拠点の島の周りと同じ丸い島（灰色の岩に草）に、林・廃墟・見張り台。
+  砂の島の空は草原と違って見えるように、形も色も変える: 赤い砂岩に砂の島で、細長い尾根・広く薄い岩盤・2つがくっついた島・
+  段のある台地・細く垂れる岩の塔（`Assets/Art/Models/isLand/Sky/SkyIsland_*_Sand.mv1`。Blender で作る:
+  `tools/art/sky_island_shapes_blender.py` -> `sky_island_models.py`）と丸い島（`SandIsland_Broken.mv1`）に、台地・よその城塞のかけら・
+  神殿・門・砂岩の柱・ヤシの泉。どの島かは決めていない（名前も住人もない、ただの遠景）。
+  拠点の島 (MainIslandScene) の空にも 12 の浮島がある。草の島の形 (`isLand/Sky/SkyIsland_*_Grass.mv1`) と丸い島を、足元より下から見上げる高さまでばらして置いた。
+  島が遠いので、この3つのシーンはカメラの far を 4000、空のドームを 3.5 倍にしている。配置は `python tools/art/sky_islands.py [grass] [desert] [main]`。
+  序章 (FirstTouchDownMainIsLandScene) の空にも同じ配置で置いている (襲撃の前の同じ空)。
+  拠点の島の地面の小物は `python tools/art/main_island_props.py [prologue] [main]`。序章は襲撃の前なので花・木・旗・焚き火の集まり場でにぎやかに、
+  第1章は襲撃のあとなので瓦礫・壊れた柵や荷車・潰れた小屋・倒木と切り株・燻る煙、落ちた島から逃げてきた人の仮住まい (テントと焚き火)、
+  島の中心に心臓が抜けた地割れの跡 (`CoreShardCrater`) を置く。第1章の方が栄えて見えないようにする。
+  周りの島 (噴水の島・家の島・大砲の島・訓練の島) にも置く。落ちる/戻る島の小物は島の子なので一緒に動く。第1章の噴水の島は
+  狩人の一族の野営地 (テント・焚き火・赤い旗)。通り道 (特に訓練の島への橋) はスクリプトが空いているか確かめる。
 拠点の島が沈んでいくのは、雲海が迫ってくる見た目で出す。
 
 ### 昔の話（物語の真相。プレイヤーには少しずつ明かす）
@@ -101,7 +118,7 @@
 | 人物 | アセット | 口調（一人称・例） | 役割 |
 | --- | --- | --- | --- |
 | 主人公 | 剣士 / 魔術師 | 喋らない | 今日の船で着いた新人ハンター。序章でドラゴンを撃ち落とす【確定】 |
-| 教官 | `ActionInstructure` / `IdleActionInstructure` | 「俺」。短い命令形。「口より先に手を動かせ。」 | 序章で主人公を鍛える。襲撃で脚を痛めて前線を退き、島の復興をまとめる（復興ボードの担当）【仮】。竜狩りのことを知っているかは【未設計】 |
+| 教官 | `ActionInstructure` / `IdleActionInstructure` | 「俺」。短い命令形。「口より先に手を動かせ。」 | 序章で主人公を鍛える。襲撃で脚を痛めて前線を退き、島の復興をまとめる（復興ボードの担当）【仮】。竜狩りのことは知っていて、古竜を倒した後に明かす【仮】（2026-09-27） |
 | 旅のクノイチ | `AirShipKunoichi` | 「私」。くだけた口調。「……気をつけなよ。」 | 故郷の島（今は砂の島に墜ちた城塞）を古竜に落とされ、古竜を追っている。島が落ちたとき、割れた島の底から竜の骨が出てくるのを見ていて、真相の一部を知っている【確定】。章の区切りに現れて情報をくれ、終章で共闘する【仮】 |
 | 飛行船の青年 | `AirShipYoungMan` | 「僕」。明るい。「もう胸が躍ってるよ。」 | 空の果てを夢見ている。墜ちた飛行船を直したがっている。造船所の担当にする予定【仮・砂漠と一緒に決める】 |
 | 商人 | `Merchant` | 威勢のいい商売口調。「うちで揃えていきな。」 | 島の雑貨屋。復興が進むと品揃えが増える【確定】 |
@@ -110,7 +127,7 @@
 | 女狩人 | `CampPeopleHuntress` / `ClanHuntress` | 落ち着いた女言葉。「囲まれないで。」 | 狩りの助言役。草原の後、一族と噴水の島に移り住む。一族の家が建つと、復興を手伝いたい一族の者を仲間に出す（キャラ選択）【確定】 |
 | 見張り | `CampPeopleLookout` | 小声で緊張した口調。「しっ、静かに。」 | 大顎を見張っている【確定】 |
 | 負傷者 | `CampPeopleWounded` | 弱々しい。「ごめんなさい、うまく立てなくて。」 | 大顎に襲われた生き残り【確定】 |
-| 古竜 | `FirstEventDragon` | 喋らない | 最後に生き残った竜。仲間の心臓を島々から取り戻し、巣で仲間を蘇らせようとしている【確定】。名前は【未設計】 |
+| 古竜 | `FirstEventDragon` | 喋らない | 最後に生き残った竜。仲間の心臓を島々から取り戻し、巣で仲間を蘇らせようとしている【確定】。名前は「古竜」【確定】（2026-09-27） |
 | 隊商頭 | `CaravanMaster` | 豪快な商売人。「うちの隊商」「〜だぜ」「ありがてえ」寄り | 砂漠のオアシスで足止めされた隊商の頭。サソリ退治の依頼主【確定】 |
 | 水守りの娘 | `CaravanKeeper` | 丁寧で心配性。「私」。「〜です」 | 細っていく泉を守っている。サソリの尾に気をつけろと教える【確定】 |
 | 駱駝番の少年 | `CaravanBoy` | 元気な子供。「おれ」。「すげえ！」 | 砂の下の魔物（ワーム）と、東の竜の骨のことを教える【確定】 |
@@ -126,6 +143,9 @@
 ナレーションは使わず、次の3か所で見せる。
 
 1. 主人公が飛行船で拠点の島に着く。船上でクノイチと青年に会う。（実装済み）
+   冒頭は船と島々を外から映すカット（引き+タイトルロゴ → 船腹 → 船首の先の拠点の島）のあと、甲板で船首楼の方へ歩いて伸びをし、
+   操作が返ってから船が島へ動き出す（`AboardAirShipMovie`。カットはシーンの `AbordAirShipMovie/OpeningShots` の子で、
+   各カメラの子 `End` へ動く。秒数はコンテキストの `openingShotDurations_secs_`。配置は `python tools/art/prologue_opening.py`）。
    青年が窓の外の島を見て、「島の心臓」を話す（`AirShipYoungMan`）。クノイチは「島の心臓の光は、遠くからでも見える。
    ……見えすぎるくらいにね。」と匂わせる（`AirShipKunoichi`）。（台詞は実装済み）
 2. 教官の訓練を受ける（走る・跳ぶ・斬る・転がって躱す）。（実装済み）
@@ -170,6 +190,9 @@
   プレイヤーにはただの昔話に聞こえるように、さらっと言わせる。
 
 - 盆地の村が **大顎**（`Tyrannosaurus`）に潰され、狩人の一族は山の棚の野営地に逃げている。
+  → 実装済み（道しるべ）: スポーン地点は野営地の方（東）を向いていて、分かれ道の立て札（赤い布の板 = 野営地、焼けて爪痕の走る板 = 村の跡）から
+  北の壁沿いの坂を上る道に、一族の赤い旗竿・石積み・踏み石が続く。焚き火には煙の柱（`CampfireSmoke`）が立つ。野営地から盆地へ
+  下りる坂にも旗と石積みがある。赤い布が一族の目印。配置は `python tools/art/grassland_trail.py`（シーンの `Wayfinding`）。
 - 大顎が「村の跡から一歩も動かない」のは、**緑の心臓が村の跡に落ちていて、その力に惹かれているから**。
   石が落ちてから獣が村へ寄ってくるようになり、最後に来た大顎が村を潰した。
 - 西の林のハイエナの群れ（遠吠えで仲間を呼ぶ）も、石に惹かれて集まってきた。群れを減らし、大顎を倒す。
@@ -209,7 +232,7 @@
 - 骸竜を倒した後、クノイチが真相の一部を話す: 島の心臓は竜の心臓だったこと、古竜は仲間の心臓を取り戻して回っていること。
   竜狩りのことは、まだ明かさない。
   倒すと骨は眠り、**光の心臓** を取り戻す（`StoryFlag::DesertCleared`）。石が去ると泉が戻り、サソリも散る。
-- 2つの心臓が島に戻ると、島が自力で飛べるようになる。そのまま終章へ【確定】（演出は【未設計】）。
+- 2つの心臓が島に戻ると、島が自力で飛べるようになる。そのまま終章へ【確定】（演出は【仮】: 下の「終章の流れ」）。
   そろった心臓は、古竜の巣に積まれた仲間の心臓に引かれる（心臓が仲間のもとへ帰ろうとする）【確定】。
 - **鍛冶場（武器の強化）は作らない**【確定】。実装が重すぎるため。
 
@@ -243,7 +266,88 @@
 - エピローグ: ほかの島から人が集まり始める。教官は「駆け出しの島」を再開する。
   ハンターの新しい仕事は、浮かび上がった島々へ渡って拓くこと（→ §4.1 運営）。
 
-ステージの作り方（専用シーンか、ロード画面の演出か）と、骸たちを戦わせるかは【未設計】。
+ステージの作り方は専用シーン（古竜の巣）【仮】。骸たちは戦わせない【仮】。
+
+#### 終章の流れ【仮】（2026-09-27。「一旦全部決めて実装してよい」とのユーザー指示で決めた。実装済み・要確認）
+
+1. **光の心臓が戻る**: 砂漠のクリア後に拠点の島へ戻ると、緑の心臓と同じ演出で光の心臓が飛んできて、島の底の先端の緑の心臓の隣に
+   はまる（`StoryFlag::LightStoneReturned`。シーンの `IslandHeart/LightFloatingStone`、`MainIslandScene::ApplyStageRewards`）。
+2. **教官に驚きアイコン**（`DesertCleared` かつ `NestVoyageStarted` がまだ）。話すと `Instructor_DesertReport`:
+   島が揺れ続けている → 北へ流されていて止まらない → 北の空には古竜が帰っていった嵐がある → 心臓が仲間の心臓に引かれている、
+   あの嵐の奥が古竜の巣 → 逃げ場は無いので島ごと乗り込む → 山頂の大砲（昔の竜撃ちの砲）は教官たちが受け持つ → 支度ができたら声をかけろ。
+   → `NestVoyageStarted` を立てる。
+3. **出発**: その後は話しかけるたびに `Instructor_ToNest`（「行くぞ、何かに掴まっていろ！」）→ BT アクション `Story::DepartForNest` →
+   `MainIslandScene::BeginNestDeparture`: 島の南の外から島と北の空を映すカメラ（`NestDepartureCamera`）に切り替わり、地鳴りとともに
+   揺れがだんだん強くなって（6 秒）、古竜の巣（`SceneType::DragonNest`）へ移る。巣へは島ごと着いた扱いで、見た目はポータルの到着のまま（【未対応】）。
+4. **古竜戦**（`AncientDragon`、`EnemyKind::AncientDragon` = 7。体力 2400、名前「古竜」。序章のドラゴンの姿と戦い方）:
+   - 心臓の山の上で羽ばたいて待つ。プレイヤーが坂を下りて 420 まで近づくと登場: 竜のカメラ → クノイチの声（`AncientDragon_Intro`。
+     追いついた、骸の胸に心臓が戻されている＝仲間を起こすつもり、上から援護する）→ 嵐が強まり、雷とともに降り立って咆哮 → ボス曲。
+   - **大砲の援護**: 体力が 60% と 25% を切ると、教官の声（`AncientDragon_Cannon1/2`「大砲、撃てえ！」）と一緒に山頂の大砲の弾が
+     古竜に降り注ぎ（序章の火球の着弾 `IslandFireImpact`）、古竜がのけぞって 3 秒ほど攻め込める（序章と対になる場面）。
+   - クノイチは声だけの共闘（一緒に戦う NPC は【未対応】）。
+   - 最期: 止まって最後の咆哮 → クノイチの声（`AncientDragon_Defeat`）→ 嵐が晴れ、光になって消える。
+5. **結末**: 古竜が倒れると `AncientDragonDefeated` が立ち、心臓の山を映すカメラ（`NestEndingCamera`）で、巣に積まれていた心臓
+   （`Nest/Hearts` と `Nest/Floating` の心臓）が次々に浮き上がり、それぞれの色の光の尾を引いて四方の空へ飛んでいく
+   （`DragonNestScene` の `PlayHeartScatterAsync`。任意のボタンで飛ばせる）→ 拠点の島へ帰る。
+6. **エピローグ**: 教官に驚きアイコン（`AncientDragonDefeated` かつ `EpilogueHeard` がまだ）。`Instructor_Epilogue`:
+   雲の下から島がいくつも浮かび上がってきている → 散った心臓が沈んでいた島を引き上げた → 巣に刺さっていた銛は俺たちハンターの銛だ
+   → 昔のハンターは竜を狩る者で、島の心臓はその竜から奪ったもの → この島は竜狩りの本拠で、大砲が竜撃ちの砲なのもそのせい
+   → 竜の犠牲の上に暮らしていることを今度こそ忘れずに伝えていく → 浮かび上がった島々は新しい狩り場、この島も駆け出しの島に戻る。
+   → `EpilogueHeard`。以後は `Instructor_AfterEnding`（新しい島々への渡り方は探らせている）。
+   **竜狩りの真相を明かすのは教官**【仮】。浮かび上がった島々を見せる演出は無い（台詞だけ。【未対応】）。
+
+作り直すときは（どれもアセットの GUID は保つ）:
+
+```
+python tools/art/story_npcs.py --only island --only nest   # 教官の会話と BT、古竜の BT が流す会話
+python tools/art/main_island_finale.py                      # 拠点の島の光の心臓・NestDepartureCamera と MainIslandSceneContext (版 6)
+python tools/art/nest_heightgrid_bake.py                    # 古竜の経路探索用の Nest.heightGridMap
+python tools/art/ancient_dragon.py                          # 古竜の BT・プレハブ・EnemyFactory・巣の湧き地点と NestEndingCamera
+python tools/art/nest_context.py                            # DragonNestSceneContext (クリア条件と結末の参照。版 1)
+```
+
+- 古竜の BT は序章のドラゴンの BT の写し（戦いの枝はそのまま、序章だけの枝を巣の枝に替える）。台の数値・位置は
+  `ancient_dragon.py` の先頭（`APPROACH_DISTANCE` / `CANNON_RATES` / `SPAWN_POS` など）。
+- `nest_scene.py` で巣を作り直したら、`ancient_dragon.py place` → `nest_context.py` を必ず流す。
+- 要確認（ビルドとエディタで）: 古竜が降り立つ高さと向き、竜のカメラ（序章のプレハブの子のカメラを流用）の画、大砲の弾の位置、
+  結末のカメラの画と心臓の飛び方、出発のカメラの向き、光の心臓の置き場所。
+
+#### 巣のシーン【仮】（2026-09-27。見た目と入場だけ。入口はデバッグメニューのみ）
+
+`Assets/Scene/DragonNestScene.scene`。巣そのものの見た目を、上の骨格から読み取って作った。
+
+- **嵐の目に浮かぶ黒い岩の島**。周りを嵐の壁（雲の渦）がゆっくり回り、見上げると雲の天井に開いた目の奥にだけ空が見える。
+  島の底は逆さの円錐の岩で、雲の渦の底へ垂れている。
+- 外輪には **岩の爪** が内へ反って並び、島そのものが巣を抱える爪か肋骨に見える。南の切れ目が着き場からの坂道で、
+  坂の上では大きな爪が左右から覆いかぶさって門になる。着き場（南の縁の岩棚）はいまはポータルで着く所で、
+  拠点の島が横付けする場所にする想定（島ごと乗り込むのは未設計）。坂の下に巨大な竜の頭骨。
+- 巣の底の中央に **心臓の山**。拠点の島と同じ緑・光の結晶に、よその島から奪った火・潮（青）・宵（紫）の心臓が積まれている。
+  「心臓は引き合い、ものを引き寄せ、持ち上げる」ので、山の上では岩と、心臓ごと持ち去られた島の瓦礫、心臓のいくつかが宙に浮いて漂う。
+- 山を囲んで **心臓を胸に戻された竜の骸** が5体、山の方を向いて座り込む（起き上がりかけ。北の1体がいちばん起きていて、
+  西と東は半分埋もれている）。心臓の無い骨（`DragonBones`）は伏せたまま。
+- 骸の周りと坂道の脇には **古い竜撃ちの銛** が刺さったまま残る。ハンターがもとは竜狩りだったことの物証
+  （誰が明かすかは【未設計】のまま。銛をきっかけに話させられる）。
+- 敵の湧き地点は古竜 1 体（`AncientDragon`、`AncientDragonDefeated` の後は湧かない）。戦いは上の「終章の流れ」。島が着く演出はまだ無い。
+- `SceneType::DragonNest`（5）/ `DragonNestScene` / `DragonNestSceneContext`（GameManage.scene）で、ほかの狩り場と同じく入れる
+  （部屋のキーは `"DragonNest"`。到着はポータルの演出、BGM は砂漠のまま、クリア条件と空撮は無し）。
+  入口は教官（砂漠の後、`Story::DepartForNest`）と DebugSheet（F1）の Stage Entry / Scene。ステージ選択の欄・ロード画面の航路（`routes_`）は無い（航路が無いと「移動中…」）。
+- 嵐は序章の `WeatherService` 一式（空のドームの下・閃光・突風・雷の音）を `nest_scene.py` が写して置き、
+  `initialStormIntensity_` 0.6 で始まる（遠雷が鳴る）。嵐の壁の回転も `wallRotator_` で嵐の強さに連動する。
+  古竜の BT が登場で `SetStorm` 0.85 → 1.0 へ上げ、倒れるときに序章と同じ "Storm Clear" で下げる。雲の壁と天井は `ModelRenderer` なので嵐で暗くならない（【未対応】）。
+
+作り直すときは上から順に流す（アセットの GUID は保つ。シーンの GameObject の GUID は毎回新しい）:
+
+```
+sh <work>/rebuild_all.sh      # nest_terrain.py (高さ data/nest_terrain.npz とテクスチャ) -> Blender で地形・岩の爪・嵐の壁・銛・骨・頭骨
+                              # -> .mv1 (Assets/Art/Models/Nest)。名前を並べるとそのモデルの変換だけ
+python tools/art/nest_prefabs.py                         # Assets/Prefab/Prop/Nest
+python tools/art/nest_scene.py                           # DragonNestScene.scene (草原のシーンの複製が土台)
+python tools/art/nest_context.py                         # GameManage.scene の DragonNestSceneContext (シーンの GUID を指し直す)
+```
+
+`<work>` は `%USERPROFILE%\NanamiAssetsWork\Nest`（`rebuild_all.sh` と `process_nest.py`、元の `.glb` がある）。
+配置の意図と座標は `nest_terrain.py` の先頭、骸・心臓・銛の並びは `nest_scene.py` の `SKELETONS` / `HEART_COLORS` など。
+潮・宵の心臓（`Nest/TideCoreShard` / `DuskCoreShard`）は `FireCoreShard.mv1` のテクスチャ名を差し替え、色相を回した画像にしたもの。
 
 ### 4.1 運営：浮かび上がった島々【骨格のみ確定】（2026-09-25）
 
@@ -389,13 +493,14 @@ python tools/art/story_npcs.py --only camp     # prologue / dragon / island / ne
 | 序章 | 青年（船上） | `AirShipYoungMan`（浮かぶ島・島の心臓の説明） |
 | 序章 | 教官 | `Introduction ActionInstructure`（自己紹介とハンターの説明）。訓練中の台詞は既存のまま |
 | 序章 | ドラゴン | 撃墜後に `FirstDragon Heart Shatter`（教官が叫ぶ。「心臓が抜かれた」） → 巣へ帰る |
-| 拠点の島 | 教官（`IdleActionInstructure`） | `RestorationStarted` 前: 驚きアイコン → `Instructor_RestorationStart` + 台座を映して `Instructor_PortalGuide` → `RestorationStarted` を立てる／草原前: `Instructor_BeforeGrassLand`／草原後: `Instructor_GrassLandReport`（1回。噴水の島が戻ったこと、狩人の一族がそこに住むこと）→ `Instructor_AfterGrassLand` |
+| 拠点の島 | 教官（`IdleActionInstructure`） | `RestorationStarted` 前: 驚きアイコン → `Instructor_RestorationStart` + 台座を映して `Instructor_PortalGuide` → `RestorationStarted` を立てる／草原前: `Instructor_BeforeGrassLand`／草原後: `Instructor_GrassLandReport`（1回。噴水の島が戻ったこと、狩人の一族がそこに住むこと）→ `Instructor_AfterGrassLand`／砂漠後: 驚きアイコン → `Instructor_DesertReport` → `NestVoyageStarted`／以後: `Instructor_ToNest` → 巣へ出発／古竜後: 驚きアイコン → `Instructor_Epilogue` → `EpilogueHeard` → `Instructor_AfterEnding` |
 | 拠点の島 | 商人（`Merchant`） | `Merchant_First`（1回）／ふだん: `Merchant` → 店を開く |
 | 拠点の島 | 仲介人（`CharacterBroker`） | `CharacterBroker_First`（1回）／一族の家の後: `CharacterBroker_ClanHouse`（一族を訪ねろ）／ふだん: `CharacterBroker`（紹介できる奴がいない）。キャラ選択はしない |
 | 噴水の島 | 女狩人（`ClanHuntress`、一族の家の prefab の中） | `ClanHuntress_First`（1回。一族に手伝いたい者がいる）／ふだん: `ClanHuntress` → キャラ選択 |
 | 拠点の島 | クノイチ・青年（`IslandKunoichi` / `IslandYoungMan`、GameObject "StoryNpcs" の下） | 草原の前: `_First`（1回）→ `_Again`／後: `_Cleared`（1回）→ `_ClearedAgain` |
 | 草原 | 野営地の4人（`CampPeople*`） | 大顎を倒す前: `_First`（1回）→ `_Again`／倒した後: `_Cleared`（1回）→ `_ClearedAgain` |
 | 砂漠 | 隊商の3人（`CaravanMaster` / `Keeper` / `Boy`）、竜の骨の前のクノイチ（`DesertKunoichi`） | 骸竜を倒す前: `_First`（1回）→ `_Again`／倒した後: `_Cleared`（1回）→ `_ClearedAgain`（`story_npcs.py --only desert`） |
+| 古竜の巣 | 古竜（`AncientDragon` の BT、`StartChat`） | 登場: `AncientDragon_Intro`（クノイチ）／体力 60%・25%: `AncientDragon_Cannon1/2`（教官）／最期: `AncientDragon_Defeat`（クノイチ）（`story_npcs.py --only nest`、BT は `ancient_dragon.py`） |
 | 砂漠 | 護衛（`CaravanGuard`） | `CaravanGuard_Lost`（`DesertGuardRescued` を立てる）→ `_Back`／骸竜の後: `_Cleared` |
 
 ### 砂漠のステージの作り方（実装済み・一部は要確認）
@@ -414,15 +519,35 @@ python tools/art/desert_caravan.py place             # 隊商の4人とクノイ
 python tools/art/desert_enemies.py                   # 大サソリ・ワーム・骸竜の AnimTree / BT / プレハブと EnemyFactory
 python tools/art/desert_heightgrid_bake.py           # 敵の経路探索用の Desert.heightGridMap
 python tools/art/desert_quests.py                    # 掲示板の依頼
+python tools/art/desert_sandstorm.py prefabs|place  # 砂嵐と転がる枝玉 (place は desert_scene.py の後に必ず)
+python tools/art/desert_boss_heart.py                # 光の心臓の当たり判定 (HeartHitBox + StormHeart) を prefab とシーンに付ける
+python tools/art/desert_enemies.py --storm-only      # 作り直さずに、骸竜の AnimTree / BT へ砂嵐のギミックだけ足す
+python tools/art/sky_islands.py desert               # 遠景の浮島、カメラの far、空のドーム (desert_scene.py の後に必ず)
 ```
 
 - シーンのコンテキストは `DrySandSceneContext`（中身は草原と同じ）。到着演出は草原と共通の `StageArrivalMovie<TContext>`。
   クリア条件は骸竜（EnemyKind 6）→ `DesertCleared`。光の心臓は `LightFloatingStone.prefab`（`green_core_effect.py` の `LightCoreAura` / `LightStoneLiftOff`）。
+- 砂嵐（`GamePlay::Weather::Sandstorm`、ルート "Sandstorm"）は凪（50〜90 秒）と砂嵐（25〜40 秒）を繰り返し、入場後 40 秒は凪。
+  砂嵐の間は砂色の霧と `tktk2/sandStorm.efkefc` を出し、Dynamic な RigidBody を WindZone の向きへ押す（自分のアバターと、同期していない物だけ）。
+  天候はピアごとに独立で同期しない。枝玉（`GamePlay::Prop::Tumbleweed`、ルート "Tumbleweeds" に 16 個）は砂嵐の間だけ風下へ転がって跳ね、
+  置き場所から 450 離れたら戻る。
 - 敵の AnimTree の State 番号はハイエナと同じ（0 移動 / 11111 待機 / 7 / 8 / 15 / 20 死ぬ / 23-25 攻撃）なので、BT はハイエナの写し。
   骸竜もいまはハイエナと同じ動き（ボスらしい攻撃の組み立ては【未設計】）。
+- 骸竜のギミック「嵐を呼ぶ骸竜」（2026-09-27 ユーザー決定。#186）: 体力が 70% と 35% を切ると、骸竜が止まって
+  `cast_1`（State 30）を再生し、砂嵐を呼ぶ（`Sandstorm::BeginSummoned`。周期を止めて砂嵐にし、最長 60 秒）。
+  砂嵐の間だけ、広場の光の心臓を叩けるようになる（`GamePlay::Prop::StormHeart`。Stone の子の `HeartHitBox`。砂嵐の外では地面の下へ退ける）。
+  3回叩くと心臓が揺らぎ、砂嵐が止んで、骸竜は倒れ込み（`stunstart` 31）→ 伏せ（`stunidle` 32、6 秒）→ 起き上がる（`stunover` 33）。
+  その間が大きく攻め込む時間。心臓が骨を動かしていることを、プレイヤーが手で確かめる場面（終章の伏線）。
+  骸竜の砂嵐はホストの BT が決めて `BossSandstormRpc` で全員へ送る（周期の砂嵐はピアごとのまま）。
+  クライアントで揺らいだ心臓は `StormHeartShakenRpc` でホストへ知らせ、気絶させるのはホストの BT（`SkeletonDragon::HeartStun`）。
+  BT の枝は `desert_enemies.py` の `add_storm_gimmick`、State は `STORM_STATES`。
+  エフェクトと音は仮（叩く: `ItemPickupSparkle` / `HolyGlass`、揺らぐ: `LightStoneLiftOff` / `RockWall_Crumble`）。
+- BGM: フィールドは「砂の街」（`DrySandSceneContext.bgm_`）。骸竜戦は「星の胎動」で、骸竜の BT の先頭の枝が
+  プレイヤーが 220 まで近づくか、攻撃されて警戒したら（Alert 1）1回だけ `PlayBGM` する（`desert_enemies.py` の `add_boss_bgm`）。
+  出典は `docs/ThirdPartyAssets.md`。
 - ロード画面の地図は、もと「未開放」だった島を「砂漠地帯」にした（`loading_map.py`、航路は `loading_map_prefab.py --routes-only`）。
 - 要確認（ビルドとエディタで）: モデルの大きさと向き、.mv1 の中のクリップの並び（名前順と見ている）、NPC と小物の立ち位置、
-  骸竜の当たり判定と攻撃範囲、泉（泥のくぼ地）と水の見た目、BGM（今は草原と同じ）。
+  骸竜の当たり判定と攻撃範囲、泉（泥のくぼ地）と水の見た目、骸竜戦の BGM が切り替わる距離。
 
 ### これから作るもの
 
@@ -451,8 +576,8 @@ python tools/art/desert_quests.py                    # 掲示板の依頼
 
 ## 10. 未決定事項
 
-- 固有名: 島・世界・古竜・クノイチ・教官・青年の名前。
-- 大地が雲に呑まれた理由（運営のイベントで少しずつ明かす候補）。教官が竜狩りのことを知っているか。終章で竜狩りの真相を誰が明かすか。
-- 砂漠の施設（造船所など）と、砂に埋もれた荷の依頼。骸竜のボスらしい攻撃。
+- 固有名: 島・世界・クノイチ・教官・青年の名前。
+- 大地が雲に呑まれた理由（運営のイベントで少しずつ明かす候補）。（教官が竜狩りを知っていて、古竜の後に明かす形で【仮】実装した。変えるなら `Instructor_Epilogue`）
+- 砂漠の施設（造船所など）と、砂に埋もれた荷の依頼。骸竜のボスらしい攻撃（ギミックの「嵐を呼ぶ骸竜」は決定・実装済み。攻撃の組み立ては未設計）。
 - 施設の費用と、依頼報酬の相場。
-- 終章のステージの作り方。
+- 終章: 島が巣に横付けする演出、クノイチと一緒に戦う NPC、浮かび上がった島々を見せる演出（いまは台詞だけ）。

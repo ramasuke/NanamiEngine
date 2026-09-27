@@ -11,6 +11,11 @@ namespace NanamiEngine::Module::GameObject
     class IGameObject;
 }
 
+namespace NanamiEngine::Module::Asset
+{
+    class PrefabGameObjectFile;
+}
+
 namespace GameCore::Magic
 {
     class IMagicCaster;
@@ -38,6 +43,12 @@ namespace GamePlay::Magic
                              const std::shared_ptr<GameObject::IGameObject>& hitObject,
                              GameCore::Damage::PhysicsPower power,
                              const glm::vec3& position);
+    /** @brief 表記のプレハブを撃ち手から取らずに prefab を使う版 */
+    void ShowSpellDamageText(const std::weak_ptr<GameObject::IGameObject>& caster,
+                             const std::shared_ptr<GameObject::IGameObject>& hitObject,
+                             GameCore::Damage::PhysicsPower power,
+                             const glm::vec3& position,
+                             Asset::PrefabGameObjectFile& prefab);
     /** @brief 撃ち手の画面でだけ、hitObject の持ち主が敵ならカメラを揺らす。揺れは重なるので、揺らしたかを返す */
     bool ShakeOnSpellHit(const std::weak_ptr<GameObject::IGameObject>& caster,
                          const std::shared_ptr<GameObject::IGameObject>& hitObject,

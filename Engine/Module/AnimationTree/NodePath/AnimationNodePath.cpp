@@ -59,7 +59,18 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
 {
     if (fromNode_.lock() == nextNode_.lock())
         return;
-    
+
+    if (!hasExitTime_)
+    {
+        if (!isBlending_ && additionConditionGroup_->Check(*additionParams_))
+        {
+            onAddCurrentNode_(nextNode_.lock());
+            onAddNextCurrentNodePath_(this, context.timeScale_);
+            isBlending_ = true;
+        }
+        return;
+    }
+
     // NOTE: 非ループのクリップは during == duration でクランプされるので、< だと遷移時間 0 の遷移が永遠に起きない
     if (fromNode_.lock()->GetAnimDuration_secs() - transitionDuration_secs_ <= context.during_secs_)
     {
@@ -91,6 +102,7 @@ void AnimationTree::AnimationNodePath::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("additionConditionGroup_", additionConditionGroup_);
     ImGuiHelper::OnDrawInputField("transitionDuration_secs_", transitionDuration_secs_);
+    ImGuiHelper::OnDrawInputField("hasExitTime_", hasExitTime_);
     ImGuiHelper::OnDrawInputField("fromNodeGuid_", fromNodeGuid_);
     ImGuiHelper::OnDrawInputField("nextNodeGuid_", nextNodeGuid_);
     ImGuiHelper::OnDrawInputField("visualFromNodeGuid_", visualFromNodeGuid_);

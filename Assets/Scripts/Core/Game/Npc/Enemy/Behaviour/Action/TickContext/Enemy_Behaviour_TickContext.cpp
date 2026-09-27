@@ -23,7 +23,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
         IShowHealthGaugeProvider* const showHealthGaugeProvider,
         const Core::Network::NetworkObjectId networkObjectId,
-        const bool isNetworkAuthority)
+        const bool isNetworkAuthority,
+        std::optional<Damage::FlinchPower>& pendingFlinchPower,
+        const std::uint64_t tickIndex)
             : enemyGameObject_  (enemyGameObject)
             , enemyAnimator_    (enemyGameObject.lock()->Components().Catch<Component::Animator>())
             , enemyRigidBody_   (enemyGameObject.lock()->Components().Catch<Component::RigidBody>())
@@ -33,6 +35,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             , showHealthGaugeProvider_(showHealthGaugeProvider)
             , networkObjectId_  (networkObjectId   )
             , isNetworkAuthority_(isNetworkAuthority)
+            , pendingFlinchPower_(pendingFlinchPower)
+            , tickIndex_        (tickIndex         )
     {
         
     }

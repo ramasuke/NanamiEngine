@@ -35,5 +35,7 @@ namespace GameCore::Scene::Main
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<GrassLandSceneContext>> arrivalMovie_;
         Story::StageClearWatcher stageClearWatcher_;
+        /** @brief このステージでボスを倒したか。抜けるときに体力を満タンにして保存する */
+        bool isStageCleared_ = false;
     };
 }

@@ -676,7 +676,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483676,
                                 "data": {
-                                    "cereal_class_version": 2,
+                                    "cereal_class_version": 3,
                                     "value0": {
                                         "guid_": {
                                             "value_": "69633E59-B462-455B-A7D1-8E52177DC84F"
@@ -725,8 +725,8 @@
                                             }
                                         }
                                     },
-                                    "reticleScale_": 0.6,
-                                    "candidateScale_": 0.7,
+                                    "reticleScale_": 0.6000000238418579,
+                                    "candidateScale_": 0.699999988079071,
                                     "candidateAlpha_": 0.6000000238418579,
                                     "ringRotateSpeed_": 0.25,
                                     "lockedBreathScale_": 0.004999999888241291,
@@ -735,7 +735,7 @@
                                     "releaseDuration_secs_": 0.2199999988079071,
                                     "releaseEndScaleRate_": 1.5,
                                     "referenceDistance_": 60.0,
-                                    "minDistanceScale_": 0.15000000596046448,
+                                    "minDistanceScale_": 0.15000000596046449,
                                     "maxDistanceScale_": 1.600000023841858,
                                     "uiSounds_": {
                                         "cereal_class_version": 0,
@@ -751,7 +751,11 @@
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    "candidateFade_secs_": 0.15000000596046449,
+                                    "candidatePulsePeriod_secs_": 1.399999976158142,
+                                    "lockedBreathPeriod_secs_": 1.600000023841858,
+                                    "engageBracketAngle_rad_": 0.7853981852531433
                                 }
                             }
                         }

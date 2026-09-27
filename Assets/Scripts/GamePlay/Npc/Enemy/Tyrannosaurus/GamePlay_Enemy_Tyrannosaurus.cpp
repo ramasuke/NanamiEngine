@@ -4,9 +4,11 @@
 
 #include "Engine/Module/Component/BoneSync/BoneSync.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../Sound/SoundPlayer.h"
+#include "../../../../Core/Game/Npc/Enemy/Behaviour/Enemy_BehaviourTree.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 
 namespace GamePlay::Npc::Enemy
@@ -14,6 +16,24 @@ namespace GamePlay::Npc::Enemy
     void Tyrannosaurus::DoUpdate()
     {
         TryEmitFootQuake();
+        TickStuckRecovery();
+    }
+
+    void Tyrannosaurus::TickStuckRecovery()
+    {
+        // NOTE: BT は全ピアで回るが、位置は権威側から同期されるので脱出も権威側だけで行う
+        if (GetNetworkObjectId() != NanamiEngine::Core::Network::NetworkObjectId::Invalid() && !HasStateAuthority())
+            return;
+        if (Status().Health().Value() <= 0)
+            return;
+
+        const auto self      = Entity().lock();
+        const auto rigidBody = Components().Catch<NanamiEngine::Module::Component::RigidBody>().lock();
+        if (!self || !rigidBody)
+            return;
+
+        const auto behaviour = BehaviourTree();
+        stuckRecovery_.Tick(*self, *rigidBody, behaviour ? &behaviour->Parameters() : nullptr);
     }
 
     void Tyrannosaurus::TryEmitFootQuake()
@@ -85,6 +105,7 @@ namespace GamePlay::Npc::Enemy
         ImGuiHelper::OnDrawInputField("footQuakeInnerRadius_", footQuakeInnerRadius_);
         ImGuiHelper::OnDrawInputField("footQuakeOuterRadius_", footQuakeOuterRadius_);
         ImGuiHelper::OnDrawInputField("footstepSound_", footstepSound_);
+        stuckRecovery_.DrawGui();
     }
 }
 

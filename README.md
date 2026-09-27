@@ -197,7 +197,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   **`GamePlay/Prop/`**（`AirShip`、`Canon`、`Cloud`、`DestructibleObject`、`IslandPedestial`、
   `LatticeBarrier`、`ProximityReveal`）、**`GamePlay/Ui/`**（`ActionInstructTutorial`、
   `BillBoardNpcChatIcon`、`BossHealthGauge`、`DealDamageTextBillBoard`、`LockOnReticle`、`NpcChatting`、
-  `OtherPlayerStatusUIGroup`、`PlayerStatus`（`Ui_DamageFlash`、`Ui_LowHealthScreenEffect` 等）、
+  `PlayerStatus`（`Ui_DamageFlash`、`Ui_LowHealthScreenEffect` 等）、
   `StageSelect`（Model/Presenter/MapMarker に分割）等）、**`GamePlay/{Network, Spawn, Sound}`**
   （`Game_CustomNetworkRunner`、`PrefabSpawner`、`SoundPlayer`）。
 - **`Core/Network/Packet/`** — エンジン共通のパケット基盤に乗る、ゲーム固有のパケット群
@@ -221,7 +221,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 - `Assets/Prefab/` — `Bullet/CanonBullet`、`Npc/Enemy/{FirstEventDragon, FirstEventDragonFireBall, Hyena, Tyrannosaurus}`、
   `Particle/`（`DragonDefeatSparkle`、`ElectricDust`、`ExplosionParticle`、`FireBallParticle`、
   `FootstepDust`、`SwordManCharge*` 等）、
-  `PlayerAvatar/Swordman/{CameraGroup, Swordman, SwordManStatusPresenter}`、`PlayerAvatar/OtherPlayerStatusPresenter`、
+  `PlayerAvatar/Swordman/{CameraGroup, Swordman, SwordManStatusPresenter}`、
   `UI/`（`ActionInstructTutorialUI`、`BossHealthGaugeUI`、`ChattingUI`、`KnightStatusUI`、`StageSelectUI`、
   `SwordManStatusUI` 等）。
 - `Assets/Scene/` — `TitleScene`、`LoadingScene`、`GameManage`、`MainIslandScene`、

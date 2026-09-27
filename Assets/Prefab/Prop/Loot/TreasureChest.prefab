@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 2,
+                    "cereal_class_version": 3,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -142,7 +142,8 @@
                     },
                     "shakeDuration_secs_": 0.550000011920929,
                     "shakeAngle_deg_": 5.0,
-                    "shakeFrequency_hz_": 9.0
+                    "shakeFrequency_hz_": 9.0,
+                    "shakeHop_": 0.11999999731779099
                 }
             }
         },
@@ -621,7 +622,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483669,
                                 "data": {
-                                    "cereal_class_version": 3,
+                                    "cereal_class_version": 5,
                                     "value0": {
                                         "guid_": {
                                             "value_": "15C5715C-E31F-4540-B65A-94D69799DA4E"
@@ -667,27 +668,12 @@
                                             }
                                         }
                                     },
-                                    "surpriseRimGlow_": {
-                                        "cereal_class_version": 0,
-                                        "value0": {
-                                            "polymorphic_id": 1073741824,
-                                            "ptr_wrapper": {
-                                                "id": 2147483673,
-                                                "data": {
-                                                    "cereal_class_version": 0,
-                                                    "value0": {
-                                                        "value_": "81FBFD07-0473-4563-9F39-B6DA839ADF4F"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
                                     "uiSounds_": {
                                         "cereal_class_version": 0,
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483674,
+                                                "id": 2147483673,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -748,7 +734,7 @@
                         "child": {
                             "polymorphic_id": 4,
                             "ptr_wrapper": {
-                                "id": 2147483675,
+                                "id": 2147483674,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -759,12 +745,12 @@
                                         "value_": "9B2C2361-B6F0-4EF4-9871-3A3515BB1846"
                                     },
                                     "components_": {
-                                        "componentCount": 1,
+                                        "componentCount": 2,
                                         "component_0": {
                                             "polymorphic_id": 2147483656,
                                             "polymorphic_name": "NanamiUi::Billboard3D",
                                             "ptr_wrapper": {
-                                                "id": 2147483676,
+                                                "id": 2147483675,
                                                 "data": {
                                                     "cereal_class_version": 2,
                                                     "value0": {
@@ -779,7 +765,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483677,
+                                                                "id": 2147483676,
                                                                 "data": {
                                                                     "cereal_class_version": 0,
                                                                     "value0": {
@@ -790,6 +776,25 @@
                                                         }
                                                     },
                                                     "angle_": 0.0
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 2147483657,
+                                            "polymorphic_name": "GamePlay::Ui::ChatIconChattableMotion",
+                                            "ptr_wrapper": {
+                                                "id": 2147483677,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "73D3186C-0622-4866-B751-0B43F065E3E5"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "popDuration_secs_": 0.25,
+                                                    "bounceAmplitude_": 0.11999999731779099,
+                                                    "bounceSpeed_": 4.0
                                                 }
                                             }
                                         }
@@ -857,7 +862,7 @@
                                         "value_": "CADC1026-2E82-4090-BC16-615870452792"
                                     },
                                     "components_": {
-                                        "componentCount": 1,
+                                        "componentCount": 2,
                                         "component_0": {
                                             "polymorphic_id": 8,
                                             "ptr_wrapper": {
@@ -884,6 +889,25 @@
                                                         }
                                                     },
                                                     "angle_": 0.0
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 2147483658,
+                                            "polymorphic_name": "GamePlay::Ui::ChatIconChattingMotion",
+                                            "ptr_wrapper": {
+                                                "id": 2147483681,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "ABCB553F-A38D-4B60-A9E5-4AF2BEFDA055"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "popDuration_secs_": 0.25,
+                                                    "breathScale_": 0.05000000074505806,
+                                                    "breathPeriod_secs_": 1.600000023841858
                                                 }
                                             }
                                         }
@@ -940,7 +964,7 @@
                         "child": {
                             "polymorphic_id": 4,
                             "ptr_wrapper": {
-                                "id": 2147483681,
+                                "id": 2147483682,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -951,11 +975,11 @@
                                         "value_": "C7749B00-E512-4CF6-8C91-81F3660B23BE"
                                     },
                                     "components_": {
-                                        "componentCount": 1,
+                                        "componentCount": 2,
                                         "component_0": {
                                             "polymorphic_id": 8,
                                             "ptr_wrapper": {
-                                                "id": 2147483682,
+                                                "id": 2147483683,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -968,7 +992,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483683,
+                                                                "id": 2147483684,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "CFEC4E27-AB82-436A-AD0E-E7750232E82B"
@@ -978,6 +1002,44 @@
                                                         }
                                                     },
                                                     "angle_": 0.0
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 2147483659,
+                                            "polymorphic_name": "GamePlay::Ui::ChatIconSurpriseMotion",
+                                            "ptr_wrapper": {
+                                                "id": 2147483685,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "0C852EDC-F976-4432-8255-769EB4D2966D"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "rimGlow_": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483686,
+                                                                "data": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "value_": "81FBFD07-0473-4563-9F39-B6DA839ADF4F"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "popDuration_secs_": 0.25,
+                                                    "floatAmplitude_": 0.20000000298023225,
+                                                    "floatSpeed_": 2.0,
+                                                    "cycle_secs_": 3.0,
+                                                    "sweepDuration_secs_": 0.6000000238418579,
+                                                    "tiltDuration_secs_": 0.5,
+                                                    "tiltAngle_": 0.20000000298023225
                                                 }
                                             }
                                         }
@@ -1029,7 +1091,7 @@
                                         "child": {
                                             "polymorphic_id": 4,
                                             "ptr_wrapper": {
-                                                "id": 2147483684,
+                                                "id": 2147483687,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {}
@@ -1042,10 +1104,10 @@
                                                     "components_": {
                                                         "componentCount": 1,
                                                         "component_0": {
-                                                            "polymorphic_id": 2147483657,
+                                                            "polymorphic_id": 2147483660,
                                                             "polymorphic_name": "NanamiUi::BillboardAnimation3D",
                                                             "ptr_wrapper": {
-                                                                "id": 2147483685,
+                                                                "id": 2147483688,
                                                                 "data": {
                                                                     "cereal_class_version": 0,
                                                                     "value0": {
@@ -1060,7 +1122,7 @@
                                                                         "value0": {
                                                                             "polymorphic_id": 1073741824,
                                                                             "ptr_wrapper": {
-                                                                                "id": 2147483686,
+                                                                                "id": 2147483689,
                                                                                 "data": {
                                                                                     "cereal_class_version": 0,
                                                                                     "value0": {
@@ -1138,7 +1200,7 @@
         "child": {
             "polymorphic_id": 4,
             "ptr_wrapper": {
-                "id": 2147483687,
+                "id": 2147483690,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1151,10 +1213,10 @@
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483658,
+                            "polymorphic_id": 2147483661,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483688,
+                                "id": 2147483691,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -1170,7 +1232,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483689,
+                                                "id": 2147483692,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

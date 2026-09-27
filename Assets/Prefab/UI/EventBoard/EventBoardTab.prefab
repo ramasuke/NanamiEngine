@@ -186,7 +186,7 @@
                         "g_": 146,
                         "b_": 116
                     },
-                    "selectedScale_": 1.06,
+                    "selectedScale_": 1.059999942779541,
                     "selectedDrop_px_": 8.0
                 }
             }
@@ -243,7 +243,7 @@
             "ptr_wrapper": {
                 "id": 2147483660,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -268,12 +268,8 @@
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -336,7 +332,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -368,9 +365,7 @@
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
                                     "fontFile_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -412,20 +407,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.4666666666666667,
-                            "value1": 0.4666666666666667,
+                            "value0": 0.46666666865348818,
+                            "value1": 0.46666666865348818,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.4666666666666667,
+                                "value0": 0.46666666865348818,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.4666666666666667,
+                                "value1": 0.46666666865348818,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -443,7 +438,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -533,12 +529,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -601,7 +593,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -631,9 +624,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -673,20 +664,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.36666666666666664,
-                                            "value1": 0.36666666666666664,
+                                            "value0": 0.36666667461395266,
+                                            "value1": 0.36666667461395266,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.36666666666666664,
+                                                "value0": 0.36666667461395266,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.36666666666666664,
+                                                "value1": 0.36666667461395266,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -704,14 +695,17 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

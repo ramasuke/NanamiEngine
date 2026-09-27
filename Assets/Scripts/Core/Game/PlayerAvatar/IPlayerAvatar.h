@@ -72,6 +72,8 @@ namespace GameCore
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
         virtual void EnableStateMachiine() = 0;
         virtual void DisableStateMachine() = 0;
+        /** @brief いまの State が操作を受け付けているか。会話や店で止めている間は false */
+        [[nodiscard]] virtual bool IsAcceptingControl() const = 0;
         virtual void ApplySyncState(uint8_t stateValue) = 0;
         
     protected:

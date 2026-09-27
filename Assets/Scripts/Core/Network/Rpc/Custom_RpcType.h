@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include <cstdint>
+#include <optional>
 #include <string>
 
+#include "cereal/types/optional.hpp"
 #include "cereal/types/string.hpp"
 #include "vec3.hpp"
 #include "gtc/quaternion.hpp"
@@ -42,9 +44,22 @@ namespace GameCore::Network
         /** 設置物 */
         ChargePillarCollapse,
 
-        /** 汎用演出RPC (後から足したもの。途中に挟むと既存の番号がずれるので末尾に置く) */
+        /** 汎用演出RPC */
         SpawnFollowingPrefab,
         ChargePillarTremble,
+
+        /** プレイヤーの攻撃 */
+        PlayerAttackDamage,
+        DealDamageText,
+        SpawnOrientedPrefab,
+
+        /** 敵固有 */
+        PlayAttackWarning,
+        EnemyLeave,
+
+        /** 骸竜の砂嵐と光の心臓 */
+        BossSandstorm,
+        StormHeartShaken,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -67,6 +82,8 @@ namespace GameCore::Network
 
     using AttackAreaFireRpc     = Module::Network::RpcDef<ERpcType::AttackAreaFire, Damage::PhysicsPower>;
     using EnemyDeathRpc         = Module::Network::RpcDef<ERpcType::EnemyDeath>;
+    /** 倒されずに狩り場から去った敵。記録帳には付けずに消す */
+    using EnemyLeaveRpc         = Module::Network::RpcDef<ERpcType::EnemyLeave>;
 
     /** 魔法の guid と、撃った画面で決めた MagicCastTarget */
     using CastSpellRpc          = Module::Network::RpcDef<ERpcType::CastSpell, Guid, glm::vec3, glm::quat, glm::vec3, float>;
@@ -76,4 +93,19 @@ namespace GameCore::Network
     using ChargePillarCollapseRpc = Module::Network::RpcDef<ERpcType::ChargePillarCollapse, glm::vec3, glm::vec3>;
     /** 揺らす中心と半径 */
     using ChargePillarTrembleRpc  = Module::Network::RpcDef<ERpcType::ChargePillarTremble, glm::vec3, float>;
+
+    // NOTE: 敵はホストの所有物なので、他のピアの攻撃は被弾した対象の持ち主へダメージを頼む
+    /** 攻撃者の NetworkObjectId と威力 */
+    using PlayerAttackDamageRpc  = Module::Network::RpcDef<ERpcType::PlayerAttackDamage, Core::Network::NetworkObjectId, Damage::PhysicsPower>;
+    /** ダメージ表記のプレハブ guid と位置と値 */
+    using DealDamageTextRpc      = Module::Network::RpcDef<ERpcType::DealDamageText, Guid, glm::vec3, int>;
+    /** プレハブ guid と位置、向きと拡大率(無ければプレハブのまま) */
+    using SpawnOrientedPrefabRpc = Module::Network::RpcDef<ERpcType::SpawnOrientedPrefab, Guid, glm::vec3, std::optional<glm::quat>, std::optional<float>>;
+    /** 送り先の敵のボーンに出す攻撃予兆。IEnemyWarningEffectProvider の guid とボーン名、ボーン空間のオフセット */
+    using PlayAttackWarningRpc = Module::Network::RpcDef<ERpcType::PlayAttackWarning, Guid, std::string, glm::vec3>;
+
+    // NOTE: どちらも骸竜の NetworkObjectId 宛て。砂嵐はホストから全員へ、心臓はクライアントからホストへ
+    /** 骸竜が呼んだ砂嵐を始めるか止めるかと、止めたのが心臓の揺らぎか */
+    using BossSandstormRpc    = Module::Network::RpcDef<ERpcType::BossSandstorm, bool, bool>;
+    using StormHeartShakenRpc = Module::Network::RpcDef<ERpcType::StormHeartShaken>;
 }

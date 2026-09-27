@@ -1,6 +1,4 @@
-﻿// WinMain / NvOptimusEnablement は exe 側に要る (docs/HotReload.md §8)。エンジン lib / DLL ではなく、
-// ゲーム exe プロジェクトが NanamiEngine.Game.props 経由でこのファイルをコンパイルする。DLL 構成では DxLib を見ない
-// NOTE: 起動処理の本体はエンジン側の ApplicationLauncher にある
+﻿// NOTE: 起動処理の本体はエンジン側の ApplicationLauncher にある
 #include <Windows.h>
 
 #include "Engine/Core/Application/Launch/ApplicationLauncher.h"
@@ -11,7 +9,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	namespace Launch = NanamiEngine::Core::Application::Launch;
 
-	// WARNING: ログや設定を読む前に呼ぶこと
 	if (!Launch::ApplyProjectArgument())
 		return 1;
 

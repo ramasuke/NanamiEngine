@@ -60,6 +60,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath() const override { return minHealth_ >= currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsInjured() const override;
+        void                                                             RestoreFullHealth() override;
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnBecomeInjured     () const override { return onBecomeInjured_     .AsObservable(); }
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnRecoverFromInjured() const override { return onRecoverFromInjured_.AsObservable(); }
 

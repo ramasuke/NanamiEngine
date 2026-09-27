@@ -10,6 +10,12 @@
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
 #include "../../../../Story/Story_StoryProgress.h"
+#include "../../../../Game.h"
+#include "../../Group/Main_GameSceneGroup.h"
+#include "../../../../../../GamePlay/Prop/FloatingStone/Prop_StoryMovieParts.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 
 namespace GameCore::Scene::Main
 {
@@ -43,37 +49,77 @@ namespace GameCore::Scene::Main
         attachments_  = loaded.attachments;
 
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
-        ApplyGrassLandReward();
+        isDeparting_ = false;
+        ApplyStageRewards();
         co_return EnterResult::Ok();
     }
 
     namespace
     {
-        Coroutine::Task<void> PlayGrassLandRewardAsync(
-            std::shared_ptr<GamePlay::Prop::FloatingStone> stone,
+        Coroutine::Task<void> PlayStageRewardsAsync(
+            std::shared_ptr<GamePlay::Prop::FloatingStone> greenStone,
             std::shared_ptr<GamePlay::Prop::ReturningIsland> island,
+            std::shared_ptr<GamePlay::Prop::FloatingStone> lightStone,
             std::weak_ptr<IPlayerAvatar> playerAvatar,
             std::function<bool()> canStart)
         {
-            if (stone)
+            // NOTE: シーンを抜けたら残りは次に来たときに改めて流す
+            if (greenStone)
             {
-                co_await stone->PlayReturnAsync(
+                co_await greenStone->PlayReturnAsync(
                     playerAvatar, canStart,
                     [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::GreenStoneReturned); });
-                // NOTE: シーンを抜けたら島は次に来たときに改めて戻す
-                if (stone->DestroyCancellationToken().IsCancellationRequested())
+                if (greenStone->DestroyCancellationToken().IsCancellationRequested())
                     co_return;
             }
-            if (!island)
-                co_return;
+            if (island)
+            {
+                co_await island->PlayReturnAsync(
+                    playerAvatar, canStart,
+                    [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::FountainIslandReturned); });
+                if (island->DestroyCancellationToken().IsCancellationRequested())
+                    co_return;
+            }
+            if (lightStone)
+            {
+                co_await lightStone->PlayReturnAsync(
+                    playerAvatar, canStart,
+                    [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::LightStoneReturned); });
+            }
+        }
 
-            co_await island->PlayReturnAsync(
-                playerAvatar, canStart,
-                [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::FountainIslandReturned); });
+        Coroutine::Task<void> PlayNestDepartureAsync(
+            std::shared_ptr<CineMachine::CineMachineVirtualCamera> camera,
+            std::shared_ptr<Asset::SoundFile> rumble,
+            std::weak_ptr<IPlayerAvatar> playerAvatar,
+            const float departure_secs)
+        {
+            // NOTE: カメラの向きはシーンに置いたまま (島の南の外から、北の嵐と島を一緒に映す)
+            GamePlay::Prop::StoryMovie::CameraScope scope(playerAvatar, camera, nullptr, glm::vec3(0.0f));
+            scope.Begin();
+            if (rumble)
+                rumble->Play();
+
+            float elapsed_secs = 0.0f;
+            while (elapsed_secs < departure_secs)
+            {
+                co_await Coroutine::WaitYield();
+                if (camera && camera->DestroyCancellationToken().IsCancellationRequested())
+                    co_return;
+                elapsed_secs += Time::DeltaTime();
+                // 島が引きずられはじめ、だんだん揺れが強くなる
+                const float rate = GamePlay::Prop::StoryMovie::Rate(elapsed_secs, departure_secs);
+                NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::SustainShakeMainCamera(0.15f + 0.55f * rate);
+            }
+
+            Game::Instance().Scenes().RequestChangeScene(SceneType::DragonNest);
+            // NOTE: ロード画面が覆い切るまで演出のカメラのままにする (シーンが破棄されるとカメラも消える)
+            while (camera && !camera->DestroyCancellationToken().IsCancellationRequested())
+                co_await Coroutine::WaitYield();
         }
     }
 
-    void MainIslandScene::ApplyGrassLandReward()
+    void MainIslandScene::ApplyStageRewards()
     {
         const auto& story = Story::StoryProgress::Instance();
         const auto island = Context()->FountainIsland();
@@ -86,28 +132,47 @@ namespace GameCore::Scene::Main
                 island->Sink();
         }
 
-        const auto stone = Context()->GreenStone();
-        if (!story.IsSet(Story::StoryFlag::GrassLandCleared))
-        {
-            if (stone)
-                stone->SetVisible(false);
-            return;
-        }
+        const auto greenStone = Context()->GreenStone();
+        const bool isGrassLandCleared = story.IsSet(Story::StoryFlag::GrassLandCleared);
+        if (greenStone && !isGrassLandCleared)
+            greenStone->SetVisible(false);
 
-        const bool playsStone  = stone && !story.IsSet(Story::StoryFlag::GreenStoneReturned);
-        const bool playsIsland = island && !isIslandReturned;
-        if (!playsStone && !playsIsland)
+        const auto lightStone = Context()->LightStone();
+        const bool isDesertCleared = story.IsSet(Story::StoryFlag::DesertCleared);
+        if (lightStone && !isDesertCleared)
+            lightStone->SetVisible(false);
+
+        const bool playsGreen  = greenStone && isGrassLandCleared && !story.IsSet(Story::StoryFlag::GreenStoneReturned);
+        const bool playsIsland = island && isGrassLandCleared && !isIslandReturned;
+        const bool playsLight  = lightStone && isDesertCleared && !story.IsSet(Story::StoryFlag::LightStoneReturned);
+        if (!playsGreen && !playsIsland && !playsLight)
             return;
 
         // NOTE: 演出が石を出す。飛んでくるまでは島の底に見えないよう先に隠す
-        if (playsStone)
-            stone->SetVisible(false);
-        Coroutine::StartCoroutine(PlayGrassLandRewardAsync(
-            playsStone  ? stone  : nullptr,
-            playsIsland ? island : nullptr,
+        if (playsGreen)
+            greenStone->SetVisible(false);
+        if (playsLight)
+            lightStone->SetVisible(false);
+        Coroutine::StartCoroutine(PlayStageRewardsAsync(
+            playsGreen  ? greenStone : nullptr,
+            playsIsland ? island     : nullptr,
+            playsLight  ? lightStone : nullptr,
             playerAvatar_,
             // NOTE: 呼ばれるのはシーンが残っている間だけ(抜けたら石と島が破棄され、演出が先に止まる)
             [this] { return !LoadingScreen().IsShown(); }));
+    }
+
+    void MainIslandScene::BeginNestDeparture()
+    {
+        if (isDeparting_ || Game::Instance().Scenes().HasPendingChange())
+            return;
+        isDeparting_ = true;
+
+        Coroutine::StartCoroutine(PlayNestDepartureAsync(
+            Context()->NestDepartureCamera(),
+            Context()->NestDepartureSound(),
+            playerAvatar_,
+            Context()->NestDeparture_secs()));
     }
 
     void MainIslandScene::SwitchPlayerAvatar(const PlayerAvatar::PlayerAvatarType type)

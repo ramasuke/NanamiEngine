@@ -49,6 +49,9 @@ KIND_SCORPION, KIND_WORM, KIND_SKELETON_DRAGON = 4, 5, 6
 FLAG_DESERT_CLEARED = 5
 
 FORTRESS_RADIUS = 175.0
+# 岩のモデルの底面の半径 (m, scale 1)。NanamiAssetsWork/Desert/fbx から測った値。斜面で浮かないよう、この円の中の一番低い所に置く
+ROCK_BASE_M = {'DesertMesa': 16.3, 'SandstoneCliff': 7.63, 'SandstonePillar': 6.37}
+ROCK_SINK = {'DesertMesa': 2.0, 'SandstoneCliff': 8.0, 'SandstonePillar': 6.0}   # --settle-rocks の沈め量 (plan の put と同じ)
 
 
 class Terrain:
@@ -81,6 +84,16 @@ class Terrain:
                                                 z + math.sin(k * math.pi / 4) * radius) for k in range(8)]
         return min(ys)
 
+    def lowest_disk(self, x, z, radius):
+        ys = [self.height(x, z)]
+        for frac in (0.35, 0.7, 1.0):
+            r = radius * frac
+            ys += [self.height(x + math.cos(k * math.pi / 8) * r, z + math.sin(k * math.pi / 8) * r) for k in range(16)]
+        return min(ys)
+
+    def rock_y(self, prefab, x, z, scale, sink):
+        return self.lowest_disk(x, z, ROCK_BASE_M[prefab] * M * scale) - sink
+
 
 class Placement:
     def __init__(self, group, prefab, pos, yaw=0.0, scale=1.0, tilt=(0.0, 0.0)):
@@ -97,7 +110,10 @@ def plan(rng, t):
 
     def put(group, prefab, x, z, r, yaw=None, scale=1.0, sink=0.0, tilt=(0.0, 0.0), footprint=None):
         yaw = rng.uniform(0, 2 * math.pi) if yaw is None else yaw
-        y = t.lowest(x, z, footprint if footprint is not None else r * 0.6) - sink
+        if prefab in ROCK_BASE_M:
+            y = t.rock_y(prefab, x, z, scale, sink)
+        else:
+            y = t.lowest(x, z, footprint if footprint is not None else r * 0.6) - sink
         out.append(Placement(group, prefab, (x, y, z), yaw, scale, tilt))
         taken.append((x, z, r))
 
@@ -360,13 +376,43 @@ def build(placements, spawns, t, dry_run):
     print(f'wrote {SCENE.relative_to(REPO)}  (asset guid {asset_guid(meta)}, {len(placements)} props)')
 
 
+def settle_rocks(t, dry_run):
+    """今のシーンの岩 (Desert/Rocks) の高さだけを ROCK_BASE_M で置き直す。GUID と x/z/向き/大きさは保つ"""
+    scene = reader.read_scene_file(SCENE)
+    rocks = find(scene, 'Desert', 'Rocks')
+    moved = 0
+    for node in rocks.transform.children:
+        if node.name not in ROCK_BASE_M:
+            continue
+        p = node.transform.local_pos
+        x, y, z = (float(v.value) for v in (p.x, p.y, p.z))
+        scale = float(node.transform.local_scale.x.value)
+        new_y = t.rock_y(node.name, x, z, scale, ROCK_SINK[node.name])
+        print(f'  {node.name:16s} ({x:7.1f}, {z:7.1f}) scale {scale:.2f}: y {y:7.2f} -> {new_y:7.2f}')
+        set_trs(node, pos=(x, new_y, z))
+        moved += 1
+    bake_world_matrices(find(scene, 'Desert'))
+    text = writer.write_scene(scene)
+    check(text, validate.validate_scene(scene), SCENE.name)
+    if dry_run:
+        print('dry run: nothing written')
+        return
+    SCENE.write_bytes(to_file_bytes(text))
+    reader.read_scene_file(SCENE)
+    print(f'wrote {SCENE.relative_to(REPO)}  ({moved} rocks settled)')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--seed', type=int, default=20260924)
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--settle-rocks', action='store_true', help='作り直さず、今のシーンの岩の高さだけ直す')
     args = ap.parse_args()
     rng = np.random.default_rng(args.seed)
     t = Terrain()
+    if args.settle_rocks:
+        settle_rocks(t, args.dry_run)
+        return
     placements = plan(rng, t)
     counts = {}
     for p in placements:

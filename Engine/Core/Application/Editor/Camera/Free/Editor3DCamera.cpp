@@ -25,7 +25,8 @@ namespace NanamiEngine::Module::Component
     
         matrix_ = glm::translate(glm::mat4(1.0f), cameraPosition_) * glm::mat4_cast(cameraRotation_);
     
-        SetCameraNearFar(5.0f, 2300.0f);
+        SetCameraNearFar(Core::Application::Configuration::AppConfiguration::GetEditorCameraNear(),
+                         Core::Application::Configuration::AppConfiguration::GetEditorCameraFar());
     
         const auto worldPos = glm::vec3(matrix_[3]);
         const auto forward  = cameraRotation_ * glm::vec3(0, 0, 1);
@@ -54,7 +55,9 @@ namespace NanamiEngine::Module::Component
     glm::mat4 Editor3DCamera::GetProjectionMatrix() const
     {
         const float aspect = static_cast<float>(Core::Application::Configuration::AppConfiguration::GetWindowWidth()) / static_cast<float>(Core::Application::Configuration::AppConfiguration::GetWindowWidth());
-        return glm::perspectiveLH_ZO(fov_, aspect, near_, far_);
+        return glm::perspectiveLH_ZO(fov_, aspect,
+                                     Core::Application::Configuration::AppConfiguration::GetEditorCameraNear(),
+                                     Core::Application::Configuration::AppConfiguration::GetEditorCameraFar());
     }
     
     

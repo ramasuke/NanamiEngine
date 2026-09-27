@@ -39,8 +39,6 @@ namespace GameCore::Scene::Main
      *
      * 入場の流れは基底が持つ: シーンファイルを読み込む → SubScenes を積む → OnEnterAsync → OnEntered。
      * どこかで失敗したらロード画面に出して FallbackSceneOnFailure へ逃がす。
-     * 入場の途中で抜けたら(Dispose / 次の Init)token がキャンセルされるので、OnEnterAsync は co_await のあとで確かめる。
-     * ロード画面の表示と片付けは GameSceneGroup が受け持つ
      */
     template<typename ContextT>
     requires std::derived_from<ContextT, SceneContextBase>
@@ -56,33 +54,28 @@ namespace GameCore::Scene::Main
         void Dispose() override;
         [[nodiscard]] bool IsEntered() const override { return isEntered_; }
         Coroutine::Task<void> EnterAsync(NanamiEngine::R4::CancellationToken token);
-        /** @brief 入場の失敗をロード画面に出し、逃げ先への遷移を頼む */
+        /** @brief 入場の失敗をロード画面に出しセーフ処理 */
         void FailEnter(const NanamiEngine::R4::CancellationToken& token, const std::string& message);
-        /** @brief 失敗の表示を少し見せてから、逃げ先への遷移を頼む */
+        /** @brief 失敗の表示を少し見せてからセーフ処理 */
         Coroutine::Task<void> FallbackAfterFailureAsync(NanamiEngine::R4::CancellationToken token, SceneType fallback);
 
         std::shared_ptr<ContextT> context_;
         GameSceneBaseContext      baseContext_;
         std::weak_ptr<NanamiEngine::Scene::Scene> mainScene_;
-        /** @note CancellationTokenSource は代入しても作り直されないので、入場ごとに emplace する */
+
         std::optional<NanamiEngine::R4::CancellationTokenSource> enterCancellation_;
         bool isEntered_ = false;
 
     protected:
         /** template method pattern */
         virtual void DoDispose() = 0;
-        /** @brief 読み込みを始める前に同期で呼ぶ。読み込んだシーン内の FIELD にはまだ触れない */
         virtual void OnInit() {}
-        /** @brief メインシーンを読み込んだあとに積むサブシーン */
-        [[nodiscard]] virtual std::vector<Sub::SceneType> SubScenes() const { return {}; }
-        /**
-         * @brief メインシーンとサブシーンが揃ってから呼ぶ入場処理。ロード画面はまだ覆っている
-         * @note co_await から戻ったら token.IsCancellationRequested() を確かめる(コルーチンは止められない)
-         */
+        [[nodiscard]] virtual std::vector<Sub::SceneType> SubScenes() const = 0;
+        
         virtual Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) = 0;
-        /** @brief 入場が済み、ロード画面が明け始めるときに呼ぶ */
-        virtual void OnEntered() {}
-        /** @brief 入場に失敗したときの逃げ先。nullopt なら逃がさずにロード画面を明ける */
+        virtual void OnEntered() = 0;
+        
+        /** @brief 入場に失敗したときのセーフ処理　*/
         [[nodiscard]] virtual std::optional<SceneType> FallbackSceneOnFailure() const { return SceneType::MainIsland; }
 
         /** @brief SandBox pattern */
@@ -108,9 +101,10 @@ namespace GameCore::Scene::Main
     template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
     void GameMainSceneBase<ContextT>::Init()
     {
-        // 前回の入場コルーチンが残っていれば、次の co_await 明けで抜けさせる
         if (enterCancellation_)
+        {
             enterCancellation_->Cancel();
+        }
         enterCancellation_.emplace();
         isEntered_ = false;
 
@@ -121,9 +115,10 @@ namespace GameCore::Scene::Main
     template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
     void GameMainSceneBase<ContextT>::Dispose()
     {
-        // 走っている入場コルーチンを無効化する
         if (enterCancellation_)
+        {
             enterCancellation_->Cancel();
+        }
         isEntered_ = false;
 
         DoDispose();
@@ -142,6 +137,7 @@ namespace GameCore::Scene::Main
         const auto loaded = co_await Coroutine::LoadSceneAsync(Context()->LoadSceneFile()->GetContentPath(), token);
         if (token.IsCancellationRequested())
             co_return;
+        
         if (!loaded)
         {
             FailEnter(token, "ステージの読み込みに失敗しました");
@@ -149,11 +145,11 @@ namespace GameCore::Scene::Main
         }
         mainScene_ = loaded.scene;
         LoadingScreen().SetStep(SceneLoadStep::Warmup);
-
-        // メインシーンが揃ってから積むので、サブシーンの Instantiate はメインシーンへ入る
+        
         for (const auto type : SubScenes())
         {
             co_await SubScene().PushAsync(type);
+            
             if (token.IsCancellationRequested())
                 co_return;
         }
@@ -161,6 +157,7 @@ namespace GameCore::Scene::Main
         const EnterResult result = co_await OnEnterAsync(token);
         if (token.IsCancellationRequested())
             co_return;
+        
         if (!result)
         {
             FailEnter(token, result.failure.empty() ? std::string("入場に失敗しました") : result.failure);
@@ -186,14 +183,14 @@ namespace GameCore::Scene::Main
             return;
         }
 
-        // 逃げ先が無ければ、壊れたままでも画面は明ける
         isEntered_ = true;
     }
 
     template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
-    Coroutine::Task<void> GameMainSceneBase<ContextT>::FallbackAfterFailureAsync(const NanamiEngine::R4::CancellationToken token, const SceneType fallback)
+    Coroutine::Task<void> GameMainSceneBase<ContextT>::FallbackAfterFailureAsync(
+        const NanamiEngine::R4::CancellationToken token, 
+        const SceneType fallback)
     {
-        // ロード中は DeltaTime が止まるので、壁時計で待つ
         const int startedMs = Time::NowMilliseconds();
         co_await Coroutine::WaitUntil([startedMs] { return Time::NowMilliseconds() - startedMs >= 2000; });
         if (token.IsCancellationRequested())

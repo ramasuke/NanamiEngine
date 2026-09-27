@@ -20,11 +20,22 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> GreenStone() const { return greenStone_.get(); }
         /** 草原の後に戻ってくる噴水の島。シーン上の位置が戻った位置 */
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::ReturningIsland> FountainIsland() const { return fountainIsland_.get(); }
+        /** 砂漠の後に島の底へ戻る光の浮遊石。シーン上の位置がはまった位置 */
+        [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> LightStone() const { return lightStone_.get(); }
+        /** 巣へ向かう演出で、島の外から嵐の方を映すカメラ */
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> NestDepartureCamera() const { return nestDepartureCamera_.get(); }
+        /** 巣へ向かう演出の地鳴り */
+        [[nodiscard]] std::shared_ptr<Asset::SoundFile> NestDepartureSound() const { return nestDepartureSound_.get(); }
+        [[nodiscard]] float NestDeparture_secs() const { return nestDeparture_secs_; }
         
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
         [[serialize(5)]] FIELD(GamePlay::Prop::FloatingStone)   greenStone_;
         [[serialize(5)]] FIELD(GamePlay::Prop::ReturningIsland) fountainIsland_;
+        [[serialize(6)]] FIELD(GamePlay::Prop::FloatingStone)   lightStone_;
+        [[serialize(6)]] FIELD(CineMachine::CineMachineVirtualCamera) nestDepartureCamera_;
+        [[serialize(6)]] FIELD(Asset::SoundFile) nestDepartureSound_;
+        [[serialize(6)]] float nestDeparture_secs_ = 6.0f;
         
 #pragma region Serialization Function
 public:
@@ -36,6 +47,10 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(bgm_));
     archive(CEREAL_NVP(greenStone_));
     archive(CEREAL_NVP(fountainIsland_));
+    archive(CEREAL_NVP(lightStone_));
+    archive(CEREAL_NVP(nestDepartureCamera_));
+    archive(CEREAL_NVP(nestDepartureSound_));
+    archive(CEREAL_NVP(nestDeparture_secs_));
 }
 
 template<class Archive>
@@ -77,11 +92,18 @@ void load(Archive& archive, const std::uint32_t version) {
         archive(CEREAL_NVP(greenStone_));
         archive(CEREAL_NVP(fountainIsland_));
     }
+    if (version >= 6)
+    {
+        archive(CEREAL_NVP(lightStone_));
+        archive(CEREAL_NVP(nestDepartureCamera_));
+        archive(CEREAL_NVP(nestDepartureSound_));
+        archive(CEREAL_NVP(nestDeparture_secs_));
+    }
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::MainIslandSceneContext, 5);
+CEREAL_CLASS_VERSION(GameCore::Scene::MainIslandSceneContext, 6);
 #pragma endregion

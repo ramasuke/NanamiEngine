@@ -254,11 +254,6 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
 
     # -- プレイモード / 時間 / カメラ / ログ ----------------------------------------
     @tool
-    def play() -> str:
-        """Enter play mode (or resume after stop)."""
-        return _dump(call("play"))
-
-    @tool
     def stop() -> str:
         """Leave play mode but keep the play session state (the editor's Stop / Escape)."""
         return _dump(call("stop"))

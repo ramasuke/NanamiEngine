@@ -67,7 +67,7 @@
         "ptr_wrapper": {
             "id": 2147483653,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 4,
                 "value0": {},
                 "animationFile_": {
                     "cereal_class_version": 0,
@@ -97,7 +97,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -133,7 +134,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -169,7 +171,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -179,7 +182,7 @@
         "ptr_wrapper": {
             "id": 2147483659,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -201,7 +204,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "7DA51AC5-F0B2-40ED-B225-03CA2FDCF8D1"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -244,7 +248,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "3E2EF4C8-6424-4E95-B449-4D6B1F8FF357"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -282,7 +287,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "3E2EF4C8-6424-4E95-B449-4D6B1F8FF357"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -320,7 +326,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "3E2EF4C8-6424-4E95-B449-4D6B1F8FF357"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     }

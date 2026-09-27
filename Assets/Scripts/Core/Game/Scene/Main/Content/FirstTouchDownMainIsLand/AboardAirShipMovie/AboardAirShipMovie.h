@@ -18,6 +18,11 @@ namespace GamePlay::PlayerAvatar::SwordMan
     class SwordManAvatar;
 }
 
+namespace NanamiEngine::Module::GameObject
+{
+    class IGameObject;
+}
+
 namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
     /** @brief AboardAirShipMovieに関連する処理を行うクラス */
@@ -41,16 +46,19 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         [[nodiscard]] std::shared_ptr<FirstTouchDownMainIsLandSceneContext> Context() const { return context_.lock(); }
         Coroutine::Task<void> AboardAirShipMovieMoveAirShipAsync();
         Coroutine::Task<void> AirShipMovieStagingAsync          ();
-        Coroutine::Task<void> AirShipMovieFirstCameraMoveAsync  ();
-        Coroutine::Task<void> AirShipMovieWalkPlayerAsync       ();
-        Coroutine::Task<void> AirShipMovieArmStretchPlayerAsync ();
-        void StartFadeInUi() const;
+        Coroutine::Task<void> AirShipMovieOpeningShotsAsync     ();
+        /** @brief shot の VirtualCamera に切り替え、duration_secs かけて最初の子の位置・向きへ動かす */
+        Coroutine::Task<void> AirShipMovieOpeningShotAsync      (std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> shot, float duration_secs);
+        void FadeOutTitleLogo() const;
+        /** @brief 甲板の小物を Dynamic にして、押したり転がしたりできるようにする */
+        void LoosenDeckProps() const;
 
         //無駄
         // Coroutine::Task<void> AboardAirShipMovie::ArmStretchAsync() const;
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::weak_ptr<FirstTouchDownMainIsLandSceneContext> context_;
-        bool isCancelled_ = false;
+        bool isCancelled_       = false;
+        bool isOpeningFinished_ = false; ///< プレイヤーに操作を返したか。船はそれから動き出す
     };
 }

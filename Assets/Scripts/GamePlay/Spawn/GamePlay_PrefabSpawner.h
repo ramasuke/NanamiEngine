@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <memory>
+#include <optional>
+#include <string>
 
 #include "../glm/vec3.hpp"
 #include "../glm/gtc/quaternion.hpp"
@@ -35,6 +37,16 @@ namespace GamePlay::Spawn
         const std::shared_ptr<GameObject::IGameObject>& target);
 
     /**
+     * プレハブを owner のボーン boneName の位置(ボーン空間の localOffset)に生成し、どちらかが消えるまでそのボーンに付いて行かせる。
+     * owner の BoneSync でボーンを引くので、BoneSync が無い・ボーンが無いときは owner の位置に付いて行く。破棄はプレハブ側に任せる。
+     */
+    std::weak_ptr<GameObject::IGameObject> SpawnBoneFollowingPrefab(
+        Asset::PrefabGameObjectFile& prefab,
+        const std::shared_ptr<GameObject::IGameObject>& owner,
+        const std::string& boneName,
+        const glm::vec3& localOffset);
+
+    /**
      * プレハブを position に生成し、target に対するその位置を保ったまま付いて行かせる(target が傾けばそれに沿って回り込む)。
      * 向きは変えない。lifeTime_secs <= 0 なら時限破棄しない。
      */
@@ -54,4 +66,19 @@ namespace GamePlay::Spawn
         const glm::vec3& targetPos,
         float moveSpeed,
         bool destroyOnFinish);
+
+    /** プレハブを position に生成する。rotation / scale が無ければプレハブのまま */
+    std::weak_ptr<GameObject::IGameObject> SpawnOrientedPrefab(
+        Asset::PrefabGameObjectFile& prefab,
+        const glm::vec3& position,
+        const std::optional<glm::quat>& rotation,
+        std::optional<float> scale);
+
+    /** SpawnOrientedPrefab し、オンラインなら sender の NetworkGameObject 宛てに他のピアへも出させる */
+    std::weak_ptr<GameObject::IGameObject> SpawnOrientedPrefabSynced(
+        Asset::PrefabGameObjectFile& prefab,
+        const glm::vec3& position,
+        const std::optional<glm::quat>& rotation,
+        std::optional<float> scale,
+        GameObject::IGameObject& sender);
 }

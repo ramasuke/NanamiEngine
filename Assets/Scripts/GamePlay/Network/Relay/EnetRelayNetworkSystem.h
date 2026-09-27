@@ -28,8 +28,11 @@ namespace GamePlay::Network
     class EnetRelayNetworkSystem final : public NanamiEngine::Core::Network::INetworkSystem
     {
     public:
-        EnetRelayNetworkSystem(const RelayServerSettings& settings, std::string sessionKey, RelayRoom room,
-                               std::shared_ptr<RelayRoomStatus> status);
+        EnetRelayNetworkSystem(
+            const RelayServerSettings& settings, 
+            std::string sessionKey, 
+            RelayRoom room,
+            std::shared_ptr<RelayRoomStatus> status);
         ~EnetRelayNetworkSystem() override;
         void Update() override;
         void Send(const NanamiEngine::Core::Network::Packet& packet) override;

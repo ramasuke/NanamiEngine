@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include "../DebugSheetConfig.h"
+
+#if NANAMI_DEBUG_SHEET_ENABLED
 #include "Engine/Core/Api/NanamiApi.h"
 #include <initializer_list>
 #include <string_view>
@@ -32,4 +35,7 @@ namespace NanamiEngine::DebugSheet::Widgets
     NANAMI_API bool ConfirmButton(std::string_view label, std::string_view id);
     /** @brief 全幅の整数入力 */
     NANAMI_API bool InputInt(std::string_view label, int& value, int step = 1);
+    /** @brief 全幅の小数スライダー。変わったら true */
+    NANAMI_API bool SliderFloat(std::string_view label, float& value, float min, float max, const char* format = "%.2f");
 }
+#endif

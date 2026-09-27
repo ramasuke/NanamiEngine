@@ -129,6 +129,11 @@ namespace GamePlay::Ui
         }
     }
 
+    bool AssetUpdatePresenter::IsPrompting() const
+    {
+        return view_ && view_->IsShown();
+    }
+
     AssetUpdatePresenter::Keys AssetUpdatePresenter::ReadKeys()
     {
         const auto xInput = Gamepad::Get();

@@ -10,6 +10,7 @@
 #include "Engine/Core/Platform/Render/Environment.h"
 #include "glm.hpp"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Weather/WindZone.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -26,9 +27,14 @@ namespace GamePlay::Prop
 
         // spos.xyz に根元の位置、w に揺れの位相を入れて、葉全体が同じ位相で揺れるようにする。
         // u は根元からの高さ比率、v は葉の高さ(揺れで伸びて見えない補正に使う)
-        Platform::Render::ShaderVertex3D MakeGrassVertex(const glm::vec3& position, const glm::vec3& root, const glm::vec3& normal,
-                                                         const Platform::Render::VertexColor8& color, const float heightRatio, const float bladeHeight,
-                                       const float phase01)
+        Platform::Render::ShaderVertex3D MakeGrassVertex(
+            const glm::vec3& position,
+            const glm::vec3& root,
+            const glm::vec3& normal,
+            const Platform::Render::VertexColor8& color,
+            const float heightRatio,
+            const float bladeHeight,
+            const float phase01)
         {
             Platform::Render::ShaderVertex3D vertex{};
             vertex.position       = position;
@@ -173,7 +179,7 @@ namespace GamePlay::Prop
                 continue;
             }
             Platform::Render::VertexBuffer::SetData(buffer.vertexBuffer, vertices.data(), static_cast<int>(vertices.size()));
-            Platform::Render::IndexBuffer ::SetData(buffer.indexBuffer,  indices.data(),  static_cast<int>(indices.size()));
+            Platform::Render::IndexBuffer ::SetData(buffer.indexBuffer ,  indices.data(),  static_cast<int>(indices.size()));
         }
 
     }
@@ -227,10 +233,10 @@ namespace GamePlay::Prop
         if (cbHandle == -1)
             return;
 
-        // 編集モードでは OnUpdate が回らないので、描画のたびに書き込んで編集中も揺らす
         WriteConstantBuffer(*field, cbHandle);
-
-        Platform::Render::RenderState::ResetWorldTransform();
+        
+        const glm::mat4 world = Transform().GetWorldMatrix();
+        Platform::Render::RenderState::SetWorldTransform(world);
 
         Platform::Render::SetVertexShader(vsFile_->GetVsHandle());
         Platform::Render::SetPixelShader (psFile_->GetPsHandle());
@@ -252,8 +258,15 @@ namespace GamePlay::Prop
             if (buffer.vertexBuffer == -1 || buffer.indexBuffer == -1)
                 continue;
 
-            const glm::vec3 boundsMin = buffer.rootMin - glm::vec3(padding);
-            const glm::vec3 boundsMax = buffer.rootMax + glm::vec3(padding);
+            const glm::vec3 localCenter  = (buffer.rootMin + buffer.rootMax) * 0.5f;
+            const glm::vec3 localExtents = (buffer.rootMax - buffer.rootMin) * 0.5f;
+            const glm::vec3 center = glm::vec3(world * glm::vec4(localCenter, 1.0f));
+            const glm::vec3 extents(
+                std::abs(world[0][0]) * localExtents.x + std::abs(world[1][0]) * localExtents.y + std::abs(world[2][0]) * localExtents.z,
+                std::abs(world[0][1]) * localExtents.x + std::abs(world[1][1]) * localExtents.y + std::abs(world[2][1]) * localExtents.z,
+                std::abs(world[0][2]) * localExtents.x + std::abs(world[1][2]) * localExtents.y + std::abs(world[2][2]) * localExtents.z);
+            const glm::vec3 boundsMin = center - extents - glm::vec3(padding);
+            const glm::vec3 boundsMax = center + extents + glm::vec3(padding);
             if (maxDistance > 0.0f && glm::distance(camera, glm::clamp(camera, boundsMin, boundsMax)) > maxDistance)
                 continue;
             if (Platform::Render::Camera::IsBoxOutsideView(boundsMin, boundsMax))
@@ -264,6 +277,7 @@ namespace GamePlay::Prop
         }
 
         Platform::Render::RenderState::SetBackCulling(backCulling);
+        Platform::Render::RenderState::ResetWorldTransform();
         Platform::Render::SetVertexShader(-1);
         Platform::Render::SetPixelShader(-1);
     }

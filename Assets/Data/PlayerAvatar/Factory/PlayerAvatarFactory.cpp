@@ -8,12 +8,8 @@
 #include "../../../Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
-#include "../../../Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/MagicCaster/Status/Presenter/PlayerAvatar_MagicCaster_StatusPresenter.h"
-#include "../../../Scripts/Core/Game/Scene/Sub/Content/OtherPlayerStatusUI/OtherPlayerStatusUIScene.h"
-#include "../../../Scripts/Core/Game/Scene/Sub/Group/Sub_GameSceneGroup.h"
-#include "../../../Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h"
 #include "../../../Scripts/GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -152,41 +148,11 @@ namespace NanamiEngine::Module::Asset
                 break;
             }
         }
-
-        if (!enableInputAction)
-        {
-            auto statusUiPrefab = Scene::GameObject::Instantiate(*otherPlayerAvatarStatusUiPrefab_.get());
-            auto statusUi = statusUiPrefab.lock()->Components().Catch<GamePlay::Ui::PlayerStatus>();
-            auto presenterObj = Scene::GameObject::Instantiate(*otherPlayerAvatarStatusPresenterPrefab_.get());
-            attachments.objects.push_back(statusUiPrefab);
-            attachments.objects.push_back(presenterObj);
-            attachments.otherPlayerStatusUi = statusUi;
-            /** StatusPresenter */
-            auto statusPresenter = presenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>();
-            statusPresenter.lock()->Initialize(*statusUi.lock(), playerAvatar->PlayerStatus());
-            GameCore::Game::Instance()
-                .SubScenes()
-                .Catch<GameCore::Scene::Sub::OtherPlayerStatusUiScene>(
-                    GameCore::Scene::Sub::SceneType::OtherPlayerStatus)
-                ->Context()
-                .Ui()
-                .AddPlayerStatus(statusUi);
-        }
         return { playerAvatar, attachments };
     }
 
     void PlayerAvatarFactory::DestroyAttachments(const PlayerAvatarAttachments& attachments) const
     {
-        if (const auto statusUi = attachments.otherPlayerStatusUi.lock())
-        {
-            const auto scene = GameCore::Game::Instance()
-                .SubScenes()
-                .Catch<GameCore::Scene::Sub::OtherPlayerStatusUiScene>(
-                    GameCore::Scene::Sub::SceneType::OtherPlayerStatus);
-            if (scene)
-                scene->Context().Ui().RemovePlayerStatus(statusUi);
-        }
-
         for (const auto& weakObject : attachments.objects)
         {
             if (const auto object = weakObject.lock())
@@ -205,8 +171,6 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("magicCasterCameraGroupPrefab_", magicCasterCameraGroupPrefab_);
         ImGuiHelper::OnDrawInputField("magicCasterStatusUiPrefab_", magicCasterStatusUiPrefab_);
         ImGuiHelper::OnDrawInputField("magicCasterStatusPresenterPrefab_", magicCasterStatusPresenterPrefab_);
-        ImGuiHelper::OnDrawInputField("otherPlayerAvatarStatusUiPrefab_", otherPlayerAvatarStatusUiPrefab_);
-        ImGuiHelper::OnDrawInputField("otherPlayerAvatarStatusPresenterPrefab_", otherPlayerAvatarStatusPresenterPrefab_);
     }
 }
 

@@ -6,6 +6,8 @@
 #include "../Content/ChattingUI/Context/ChattingUISceneContext.h"
 #include "../Content/OtherPlayerStatusUI/OtherPlayerStatusUIScene.h"
 #include "../Content/OtherPlayerStatusUI/Context/OtherPlayerStatusUiSceneContext.h"
+#include "../Content/StageReturnUI/StageReturnUiScene.h"
+#include "../Content/StageReturnUI/Context/StageReturnUiSceneContext.h"
 
 namespace GameCore::Scene::Sub
 {
@@ -21,6 +23,11 @@ namespace GameCore::Scene::Sub
             [this]
             {
                 return std::make_shared<OtherPlayerStatusUiScene>(CatchContext<OtherPlayerStatusUiSceneContext>());
+            });
+        Register(SceneType::StageReturn,
+            [this]
+            {
+                return std::make_shared<StageReturnUiScene>(CatchContext<StageReturnUiSceneContext>());
             });
     }
     

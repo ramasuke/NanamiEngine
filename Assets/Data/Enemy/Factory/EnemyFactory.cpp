@@ -38,6 +38,7 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::NormalBoss:
         case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus:
         case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon:
+        case GameCore::Npc::Enemy::EnemyKind::AncientDragon:
             {
                 if (const auto boss = enemyObject->Components().Catch<GameCore::Npc::BossEnemyBase>().lock())
                     AttachBossHealthGauge(*boss);
@@ -72,6 +73,7 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::DesertScorpion: return desertScorpionPrefab_.get();
         case GameCore::Npc::Enemy::EnemyKind::SandWorm:       return sandWormPrefab_      .get();
         case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon: return skeletonDragonPrefab_.get();
+        case GameCore::Npc::Enemy::EnemyKind::AncientDragon:  return ancientDragonPrefab_ .get();
         }
 
         return nullptr;
@@ -114,6 +116,7 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("desertScorpionPrefab_", desertScorpionPrefab_);
         ImGuiHelper::OnDrawInputField("sandWormPrefab_", sandWormPrefab_);
         ImGuiHelper::OnDrawInputField("skeletonDragonPrefab_", skeletonDragonPrefab_);
+        ImGuiHelper::OnDrawInputField("ancientDragonPrefab_", ancientDragonPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugeUiPrefab_", bossHealthGaugeUiPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugePresenterPrefab_", bossHealthGaugePresenterPrefab_);
     }

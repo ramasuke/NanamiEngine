@@ -6,6 +6,7 @@
 #include <vector>
 #include <functional>
 #include <optional>
+#include <memory>
 #include "../Engine_Module_LocalPrefs.h"
 
 #include "../LibCore/ImGui/Helper/ImGuiHelper.h"
@@ -101,11 +102,12 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         {
             SaveWithPath<T>(subPath, key, makeDefault());
         };
-        info.drawEditGui = [key, subPath, makeDefault, state = std::optional<T>{}]() mutable
+        // NOTE: std::function needs a copyable lambda, and T may be move-only (MagicCasterAvatarStatus)
+        info.drawEditGui = [key, subPath, makeDefault, state = std::make_shared<std::optional<T>>()]()
         {
-            if (!state.has_value())
-                state = LoadOrDefaultWithPath<T>(subPath, key, makeDefault());
-            T& value = state.value();
+            if (!state->has_value())
+                *state = LoadOrDefaultWithPath<T>(subPath, key, makeDefault());
+            T& value = state->value();
 
             ImGui::PushID(key.c_str());
             DrawLocalPrefWidget(key, value);
@@ -120,7 +122,7 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
             }
             ImGui::SameLine();
             if (ImGui::SmallButton("Reload"))
-                state.reset();
+                state->reset();
             ImGui::PopID();
         };
         LocalPrefsRegistry::GetInstance().Register(std::move(info));

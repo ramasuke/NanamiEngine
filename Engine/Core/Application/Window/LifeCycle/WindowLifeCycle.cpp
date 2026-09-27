@@ -51,11 +51,10 @@ namespace NanamiEngine::Core::Application
     }
 
     void WindowLifeCycle::OnUpdateForGame()
-    {
-        // ロード中もフレームは回し続ける。暖機前のオブジェクトに OnUpdate が飛ばないよう、
-        // 暖機と各グループへの追加反映を止め、コライダーが揃うまで物理も進めない
+    { 
         const bool isLoadingResource = Module::Asset::Asset::IsLoadingResource();
 
+        // 暖機と各グループへの追加反映を止め、コライダーが揃うまで物理を進めない
         if (!isLoadingResource)
         {
             initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
@@ -66,8 +65,7 @@ namespace NanamiEngine::Core::Application
 
         const auto fixedDeltaTime = 1.0f / static_cast<float>(Configuration::PhysicsConfiguration::GetFixedUpdateRate());
         Time::SetFixedDeltaTime(fixedDeltaTime);
-        // 止めた暖機が済むまでは新しいシーンのコライダーが無く、先に Instantiate された Body だけが落ちて床を抜ける。
-        // ロード明けにまとめて追いつかないよう、時間も貯めない
+        
         if (isLoadingResource || hasDeferredPushedContents_)
         {
             accumulator_ = 0.0f;
@@ -88,7 +86,7 @@ namespace NanamiEngine::Core::Application
             {
                 preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
                 fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
-                // 物理ボディを動かす待機(WaitForTweenBody など)。ここで積んだ速度指示は直後の OnBeginPhysics で反映される
+
                 coroutineScheduler_->InvokeFixed(fixedDeltaTime);
                 ApplicationBase::Physics().Bodies().Flush();
                 beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
@@ -120,8 +118,6 @@ namespace NanamiEngine::Core::Application
         uiRenderableCallbacks_    .Invoke([](auto& obj) { obj.OnUserInterfaceRender(); });
         guiRenderableCallbacks_   .Invoke([](auto& obj) { obj.OnDebugRender        (); });
 
-        // フレームの途中で要求されたロード(同期のシーン読み込みなど)でも止めるため、ここで取り直す。
-        // ロード明けの最初のフレームは反映がフレーム末なので、その物理も hasDeferredPushedContents_ で止める
         if (Module::Asset::Asset::IsLoadingResource())
         {
             hasDeferredPushedContents_ = true;

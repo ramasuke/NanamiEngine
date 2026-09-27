@@ -140,8 +140,9 @@ def N(name, *, kind='sprite', tex=None, blend=ADD, life=30, count=1, interval=0,
       rot=None, rot_rand=None, spin=None, size=None, grow=None, grow_xyz=None,
       color=(255, 255, 255, 255), color_to=None, color_spread=None, ease=(0, 0),
       billboard=FACE, fade_in=None, fade_out=None, emit=None, gravity=None, attract=None,
-      uv_anim=None, uv_scroll=None, ring=None, model=None, children=None):
-    """Effekseer のノード1つ。``kind`` は 'sprite' | 'ring' | 'model' | 'group' (``model`` = .efkmodel のパス)。"""
+      uv_anim=None, uv_scroll=None, ring=None, model=None, children=None, ztest=None):
+    """Effekseer のノード1つ。``kind`` は 'sprite' | 'ring' | 'model' | 'group' (``model`` = .efkmodel のパス)。
+    ``ztest=False`` で深度を無視して最前面に描く (ZWrite も切る)。"""
     common = _common(count=count, interval=interval, delay=delay, life=life, infinite=infinite,
                      bind=bind, bind_rot=bind_rot, bind_scale=bind_scale)
     kw = dict(common=common, location=_location(at, at_rand, vel, acc, move), rotation=_rotation(rot, rot_rand, spin),
@@ -156,6 +157,8 @@ def N(name, *, kind='sprite', tex=None, blend=ADD, life=30, count=1, interval=0,
         return P.group_node(name, children=children or [], **kw)
 
     rc = dict(filter_=1, alpha_blend=blend, fade_in=_fade(fade_in), fade_out=_fade(fade_out))
+    if ztest is not None:
+        rc.update(ztest=ztest, zwrite=False if not ztest else None)
     if tex:
         rc['color_texture'] = f'Texture/{tex}.png'
     if uv_anim:

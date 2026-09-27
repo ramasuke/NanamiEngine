@@ -27,8 +27,6 @@ namespace NanamiEngine::Module::Component
         void OnUpdateCameraPosition();
 
         float fov_      = glm::radians(60.0f);
-        float near_ = 3.0f;
-        float far_  = 2300.0f;
         glm::ivec2 previewMousePos_;
         glm::vec3 cameraPosition_;
         glm::quat cameraRotation_;

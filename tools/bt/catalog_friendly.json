@@ -1,5 +1,5 @@
 {
-  "generated_from": "fc0faef33751e3c99df0b27e0d6fdad99ff0ae63",
+  "generated_from": "bef3dd46b91c5252394f5f9a6db8f28aac8e9460",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -366,6 +366,14 @@
         }
       ]
     },
+    "Story::DepartForNest": {
+      "class": "DepartForNest",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::DepartForNest",
+      "leaf": "DepartForNest",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/DepartForNest/Friendly_Behaviour_Action_DepartForNest.h",
+      "params": []
+    },
     "Story::IsRestored": {
       "class": "IsRestored",
       "fqn": "GameCore::Npc::Friendly::Behaviour::Action::IsRestored",
@@ -508,6 +516,7 @@
   "by_fqn": {
     "GameCore::Npc::Friendly::Behaviour::Action::Chat": "NpcStatus::Chat::ChattableChat",
     "GameCore::Npc::Friendly::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "GameCore::Npc::Friendly::Behaviour::Action::DepartForNest": "Story::DepartForNest",
     "GameCore::Npc::Friendly::Behaviour::Action::GameObjectInstantiate": "GameObject::Instantiate",
     "GameCore::Npc::Friendly::Behaviour::Action::GameObjectSetEnable": "GameObject::SetEnable",
     "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat": "NpcStatus::Chat::Chat",
@@ -534,6 +543,7 @@
   "by_leaf": {
     "Chat": "NpcStatus::Chat::ChattableChat",
     "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "DepartForNest": "Story::DepartForNest",
     "GameObjectInstantiate": "GameObject::Instantiate",
     "GameObjectSetEnable": "GameObject::SetEnable",
     "ImplementChat": "NpcStatus::Chat::Chat",

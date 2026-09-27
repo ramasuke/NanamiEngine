@@ -52,6 +52,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(2)]] FIELD(PrefabGameObjectFile) desertScorpionPrefab_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) sandWormPrefab_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) skeletonDragonPrefab_;
+        [[serialize(3)]] FIELD(PrefabGameObjectFile) ancientDragonPrefab_;
         /** 全ボス共通のHPゲージUIと、その購読を受け持つ Presenter */
         [[serialize(0)]] FIELD(PrefabGameObjectFile) bossHealthGaugeUiPrefab_;
         [[serialize(0)]] FIELD(PrefabGameObjectFile) bossHealthGaugePresenterPrefab_;
@@ -75,6 +76,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(desertScorpionPrefab_));
             archive(CEREAL_NVP(sandWormPrefab_));
             archive(CEREAL_NVP(skeletonDragonPrefab_));
+            archive(CEREAL_NVP(ancientDragonPrefab_));
         }
 
         template<class Archive>
@@ -93,11 +95,12 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(sandWormPrefab_));
                 archive(CEREAL_NVP(skeletonDragonPrefab_));
             }
+            if (version >= 3) archive(CEREAL_NVP(ancientDragonPrefab_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyFactory, 2);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyFactory, 3);
 #pragma endregion

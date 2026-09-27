@@ -1,5 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_ChargeRush.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include "Engine/Core/Application/Time/Time.h"
@@ -16,6 +17,7 @@
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../../../Damage/Game_Damage_IDamage.h"
 #include "../../../../../AttackArea/Enemy_AttackArea.h"
+#include "../../EnemyStatus/Attack/Enemy_AttackWarning.h"
 #include "../glm/gtx/quaternion.hpp"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -89,6 +91,12 @@ namespace GameCore::Npc::Enemy::Behaviour
             else
             {
                 RotateToPlayer(context);
+                // NOTE: 登場演出の柱への突進はプレイヤーに当てないので予兆も出さない
+                if (!isWarned_ && warning_ && during_secs_ >= std::max(0.0f, windUp_secs_ - warning_->WarningLead_secs()))
+                {
+                    FireAttackWarning(context, warning_.get().get(), warningBoneName_, warningBoneOffset_);
+                    isWarned_ = true;
+                }
             }
             if (during_secs_ < windUp_secs_)
                 return TickStatus::Running;
@@ -275,6 +283,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         phase_       = Phase::WindUp;
         during_secs_ = 0.0f;
         isAttacked_  = false;
+        isWarned_    = false;
         isStuck_     = false;
         stuckPillar_.reset();
         introPillar_.reset();
@@ -300,6 +309,9 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("impactSound_", impactSound_);
         ImGuiHelper::OnDrawInputField("finishedWriteBlackBoard_", finishedWriteBlackBoard_);
         ImGuiHelper::OnDrawInputField("aimAtIntroPillar_", aimAtIntroPillar_);
+        ImGuiHelper::OnDrawInputField("warning_", warning_);
+        ImGuiHelper::OnDrawInputField("warningBoneName_", warningBoneName_);
+        ImGuiHelper::OnDrawInputField("warningBoneOffset_", warningBoneOffset_);
     }
 }
 

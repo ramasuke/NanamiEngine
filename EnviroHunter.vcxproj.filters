@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_AncientDragon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.cpp">
       <Filter>Assets</Filter>
     </ClCompile>
@@ -37,6 +40,21 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\Presenter\GameOverPresenter.cpp">
       <Filter>Assets</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Title\TitleCameraDirector.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Weather\SceneFog.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Title\Ui_TitleScreen.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Title\Presenter\TitleScreenPresenter.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_AncientDragon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.h">
       <Filter>Assets</Filter>
     </ClInclude>
@@ -64,6 +82,18 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameOver\Presenter\GameOverPresenter.h">
       <Filter>Assets</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Title\TitleCameraDirector.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Weather\SceneFog.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Title\Ui_TitleScreen.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Title\Presenter\TitleScreenPresenter.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Loading\Main_SceneLoadStep.h">
       <Filter>Assets</Filter>
     </ClInclude>
@@ -88,6 +118,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_IslandHeartDeparture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyLeave\Rpc_EnemyLeave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -110,6 +146,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\StuckRecovery\StuckRecovery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Status\EnemyStatus.cpp">
@@ -418,6 +457,12 @@
     <ClCompile Include="Assets\Data\Restoration\Data_RestorationFacility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Damage\Flinch\Game_Damage_FlinchPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Damage\Flinch\Game_Damage_FlinchResistance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -437,6 +482,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_Behaviour_Action_Attack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_AttackWarning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\Condition_ArriveDuration\Enemy_Behaviour_Action_ConditionArriveDuration.cpp">
@@ -649,6 +697,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\SetStoryFlag\Friendly_Behaviour_Action_SetStoryFlag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\DepartForNest\Friendly_Behaviour_Action_DepartForNest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -826,6 +877,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\Context\ChattingUISceneContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\StageReturnUI\StageReturnUiScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\StageReturnUI\Context\StageReturnUiSceneContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Context\Sub_SceneContextBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -880,6 +937,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShipWingFlap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -902,6 +962,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconPopMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconChattableMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconChattingMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconSurpriseMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.cpp">
@@ -935,6 +1007,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\Drop\Data_DropTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Enemy\AttackWarning\Data_EnemyAttackWarning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.cpp">
@@ -1048,6 +1123,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\DrySandScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DragonNest\Context\DragonNestSceneContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DragonNest\DragonNestScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1097,6 +1178,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ChargeBreakPillar\GamePlay_ChargeBreakPillar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Tumbleweed\GamePlay_Tumbleweed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\StormHeart\GamePlay_StormHeart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingDrift\GamePlay_FloatingDrift.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Weather\Sandstorm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp">
@@ -1213,19 +1306,10 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Format\Ui_MoneyFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Model\PauseMenuModel.cpp">
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageReturn\Ui_StageReturnNotice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Presenter\PauseMenuPresenter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Row\Ui_PauseMenuRow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\ItemCell\Ui_PauseMenuItemCell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Ui_PauseMenu.cpp">
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageReturn\Presenter\StageReturnPresenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.cpp">
@@ -1241,6 +1325,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnFollowingPrefab\Rpc_SpawnFollowingPrefab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayAttackWarning\Rpc_PlayAttackWarning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayerAttackDamage\Rpc_PlayerAttackDamage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\DealDamageText\Rpc_DealDamageText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnOrientedPrefab\Rpc_SpawnOrientedPrefab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Network\GamePlay_NetworkObjectIdOf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Item\GamePlay_ItemUseCue.cpp">
@@ -1336,6 +1435,24 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerCannon\Enemy_Behaviour_Action_UnlockPlayerCannon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Flinch\Enemy_Behaviour_Action_Flinch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\FleeFromIslandHeart\Enemy_Behaviour_Action_FleeFromIslandHeart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\BossSandstorm\Enemy_Behaviour_Action_BossSandstorm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\IsBossSandstorm\Enemy_Behaviour_Action_IsBossSandstorm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\HeartStun\Enemy_Behaviour_Action_HeartStun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1351,7 +1468,34 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SceneDebugPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StageEntryDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\CheatDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\WeatherDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\TimeScaleDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\PlayerTypeDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\HealthCheat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\HealthDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\QuestDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\NetworkInfoDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\PlayerInfoDebugPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.h">
@@ -1373,6 +1517,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_IslandHeartDeparture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.h">
@@ -1400,6 +1547,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\StuckRecovery\StuckRecovery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\ShowHealthGaugeProvider\IShowHealthGaugeProvider.h">
@@ -1738,6 +1888,12 @@
     <ClInclude Include="Assets\Data\Restoration\Data_RestorationFacility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Damage\Flinch\Game_Damage_FlinchPower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Damage\Flinch\Game_Damage_FlinchResistance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1757,6 +1913,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_Behaviour_Action_Attack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_AttackWarning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\Condition_ArriveDuration\Enemy_Behaviour_Action_ConditionArriveDuration.h">
@@ -1966,6 +2125,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\SetStoryFlag\Friendly_Behaviour_Action_SetStoryFlag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\DepartForNest\Friendly_Behaviour_Action_DepartForNest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2173,6 +2335,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\Context\ChattingUISceneContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\StageReturnUI\StageReturnUiScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\StageReturnUI\Context\StageReturnUiSceneContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Context\Sub_SceneContextBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2230,6 +2398,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShipWingFlap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2255,6 +2426,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconPopMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconChattableMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconChattingMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconSurpriseMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.h">
@@ -2294,6 +2477,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Drop\Data_DropTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Enemy\AttackWarning\Data_EnemyAttackWarning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Warning\IEnemyWarningEffectProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Drop\Data_ItemDrop.h">
@@ -2434,6 +2623,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\DrySandScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DragonNest\Context\DragonNestSceneContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DragonNest\DragonNestScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2489,6 +2684,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ChargeBreakPillar\GamePlay_ChargeBreakPillar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Tumbleweed\GamePlay_Tumbleweed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\StormHeart\GamePlay_StormHeart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingDrift\GamePlay_FloatingDrift.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Weather\Sandstorm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h">
@@ -2608,19 +2815,10 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Format\Ui_MoneyFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Model\PauseMenuModel.h">
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageReturn\Ui_StageReturnNotice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Presenter\PauseMenuPresenter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Row\Ui_PauseMenuRow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\ItemCell\Ui_PauseMenuItemCell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Ui_PauseMenu.h">
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageReturn\Presenter\StageReturnPresenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Type\EnemyKind.h">
@@ -2657,6 +2855,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicCasting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Network\GamePlay_NetworkObjectIdOf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Item\GamePlay_ItemUseCue.h">
@@ -2746,7 +2947,28 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerCannon\Enemy_Behaviour_Action_UnlockPlayerCannon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Flinch\Enemy_Behaviour_Action_Flinch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\FleeFromIslandHeart\Enemy_Behaviour_Action_FleeFromIslandHeart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\BossSandstorm\Enemy_Behaviour_Action_BossSandstorm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\IsBossSandstorm\Enemy_Behaviour_Action_IsBossSandstorm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\HeartStun\Enemy_Behaviour_Action_HeartStun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Debug\DebugSheet\HealthCheat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

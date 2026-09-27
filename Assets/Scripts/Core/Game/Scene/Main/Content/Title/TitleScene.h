@@ -11,7 +11,9 @@ namespace GameCore::Scene::Main
 
     private:
         void OnInit() override;
+        [[nodiscard]] std::vector<Sub::SceneType> SubScenes() const override { return {}; }
         Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
+        void OnEntered() override {}
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;

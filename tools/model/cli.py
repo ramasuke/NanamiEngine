@@ -284,7 +284,8 @@ def cmd_convert(args: argparse.Namespace) -> int:
     debug_dir = Path(args.debug_dir) if args.debug_dir else None
     try:
         dxlib_modelviewer.convert(in_path, out_path, exe_path, mode=args.mode,
-                                   timeout=args.timeout, debug_dir=debug_dir)
+                                   timeout=args.timeout, debug_dir=debug_dir,
+                                   recalc_normals=args.recalc_normals)
     except dxlib_modelviewer.AutomationError as e:
         msg = f"conversion failed at step {e.step!r}: {e}"
         if e.debug_path:
@@ -459,6 +460,8 @@ def register(sub: argparse._SubParsersAction) -> None:
                      help=_EMISSIVE_HELP + "; applied to the output after saving; not valid with --mode anim")
     sp.add_argument("--modelviewer-path", default=None,
                      help="override the DxLibModelViewer_64bit.exe path")
+    sp.add_argument("--recalc-normals", action="store_true",
+                    help="turn on the viewer's 読み込みオプション > 法線再計算 while loading (normals rebuilt from the geometry)")
     sp.add_argument("--timeout", type=float, default=60.0, metavar="SECONDS")
     sp.add_argument("--force", action="store_true", help="overwrite an existing output file")
     sp.add_argument("--debug-dir", default=None,

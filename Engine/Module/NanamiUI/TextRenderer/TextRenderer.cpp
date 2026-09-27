@@ -73,6 +73,7 @@ namespace NanamiEngine::Module::NanamiUi
         {
             if (!line.empty() && line.back() == '\r')
                 line.pop_back();
+            
             maxWidth = std::max(maxWidth, GetDrawStringWidthToHandle(line.c_str(), static_cast<int>(line.size()), fontHandle));
         }
         return static_cast<float>(maxWidth);

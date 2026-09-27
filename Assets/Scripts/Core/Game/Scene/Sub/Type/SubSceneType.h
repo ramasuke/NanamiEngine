@@ -7,5 +7,6 @@ namespace GameCore::Scene::Sub
         Inventory,
         ChattingUI,
         OtherPlayerStatus,
+        StageReturn,
     };
 }

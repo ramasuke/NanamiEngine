@@ -44,6 +44,8 @@ namespace GamePlay::Magic
         [[serialize(0)]] bool  detonateOnEnter_ = false;
         [[serialize(1)]] float hitShakeIntensity_     = 0.6f;
         [[serialize(1)]] float hitShakeDuration_secs_ = 0.18f;
+        /** @brief 撃ち手が表記のプレハブを持たないとき(剣士が置いた爆弾など)に使う */
+        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile) dealDamageTextPrefab_;
 
         std::vector<BlastTarget> targets_;
         std::weak_ptr<GameObject::IGameObject> caster_;
@@ -65,6 +67,7 @@ namespace GamePlay::Magic
             archive(CEREAL_NVP(detonateOnEnter_));
             archive(CEREAL_NVP(hitShakeIntensity_));
             archive(CEREAL_NVP(hitShakeDuration_secs_));
+            archive(CEREAL_NVP(dealDamageTextPrefab_));
         }
 
         template<class Archive>
@@ -76,9 +79,10 @@ namespace GamePlay::Magic
             if (version >= 0) archive(CEREAL_NVP(detonateOnEnter_));
             if (version >= 1) archive(CEREAL_NVP(hitShakeIntensity_));
             if (version >= 1) archive(CEREAL_NVP(hitShakeDuration_secs_));
+            if (version >= 2) archive(CEREAL_NVP(dealDamageTextPrefab_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Magic::MagicBlast, 1);
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicBlast, 2);

@@ -22,7 +22,7 @@ namespace NanamiEngine::Core::Application::Launch
 {
     namespace
     {
-        // argv[0] (exe パス) を除いたコマンドライン引数
+        // コマンドライン引数
         std::vector<std::wstring> CommandLineArguments()
         {
             std::vector<std::wstring> arguments;
@@ -33,6 +33,7 @@ namespace NanamiEngine::Core::Application::Launch
 
             for (int i = 1; i < argc; ++i)
                 arguments.emplace_back(argv[i]);
+            
             LocalFree(argv);
             return arguments;
         }

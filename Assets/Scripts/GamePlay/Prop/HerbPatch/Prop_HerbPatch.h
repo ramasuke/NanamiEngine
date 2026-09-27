@@ -23,6 +23,7 @@ namespace GamePlay::Prop
         void OnInteract        () override;
         [[nodiscard]] bool CanInteract() const override { return !isHarvested_; }
         [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
+        [[nodiscard]] GameCore::PlayerAvatar::PlayerInteractKind InteractKind() const override { return GameCore::PlayerAvatar::PlayerInteractKind::Gather; }
         [[nodiscard]] glm::vec3 DropPosition() const;
 
         [[serialize(0)]] FIELD(Asset::ItemData) item_;

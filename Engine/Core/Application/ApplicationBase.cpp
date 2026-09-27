@@ -83,12 +83,13 @@ namespace NanamiEngine::Core::Application
         SetZBufferBitDepth     (Configuration::AppConfiguration::GetZBufferBitDepth());
         SetUseZBuffer3D        (TRUE          );
         SetWriteZBuffer3D      (TRUE          );
-        SetDrawScreen          (DX_SCREEN_BACK);
         SetUseIMEFlag          (TRUE          );
         SetAlwaysRunFlag       (Configuration::AppConfiguration::GetAlwaysRun() ? TRUE : FALSE);
         SetASyncLoadThreadNum  (ApplicationBaseAsyncLoadThreadNum());
         DxLib_Init             (              );
         Display::WindowDisplayModeController::ApplyAfterInit();
+        // NOTE: DxLib_Init が描画先を DX_SCREEN_FRONT に戻すので Init の後で指定する
+        SetDrawScreen          (DX_SCREEN_BACK);
 
         /** リソースの初期化 */
         SetUseASyncLoadFlag(true);

@@ -95,36 +95,45 @@ namespace NanamiEngine::Core::Application::HotReload
 
     void GameModule::ClearStagingRoot() const
     {
-        std::error_code ec;
-        if (!std::filesystem::is_directory(stagingRoot_, ec))
+        std::error_code errorCode;
+        if (!std::filesystem::is_directory(stagingRoot_, errorCode))
             return;
+        
         // 読み込み中のフォルダは消せないので、消せるものだけ消す
-        for (const auto& entry : std::filesystem::directory_iterator(stagingRoot_, ec))
-            std::filesystem::remove_all(entry.path(), ec);
+        for (const auto& entry : std::filesystem::directory_iterator(stagingRoot_, errorCode))
+        {
+            std::filesystem::remove_all(entry.path(), errorCode);
+        }
     }
 
     bool GameModule::LoadGeneration(std::string& outError)
     {
-        std::error_code ec;
+        std::error_code errorCode;
         const std::filesystem::path directory = stagingRoot_ / std::to_wstring(generation_ + 1);
-        std::filesystem::create_directories(directory, ec);
-        if (ec)
+        std::filesystem::create_directories(directory, errorCode);
+        if (errorCode)
         {
-            outError = "世代フォルダを作れません: " + PathToUtf8(directory) + " (" + ec.message() + ")";
+            outError = "世代フォルダを作れません: " + PathToUtf8(directory) + " (" + errorCode.message() + ")";
             return false;
         }
 
         const std::filesystem::path dll = directory / source_.filename();
-        std::filesystem::copy_file(source_, dll, std::filesystem::copy_options::overwrite_existing, ec);
-        if (ec)
+        std::filesystem::copy_file(source_, dll, std::filesystem::copy_options::overwrite_existing, errorCode);
+        if (errorCode)
         {
-            outError = "ゲーム DLL をコピーできません: " + PathToUtf8(dll) + " (" + ec.message() + ")";
+            outError = "ゲーム DLL をコピーできません: " + PathToUtf8(dll) + " (" + errorCode.message() + ")";
             return false;
         }
         // PDB は DLL に埋め込まれたファイル名で探されるので、同じ名前で隣に置く
         const std::filesystem::path sourcePdb = std::filesystem::path(source_).replace_extension(L".pdb");
-        if (std::filesystem::is_regular_file(sourcePdb, ec))
-            std::filesystem::copy_file(sourcePdb, directory / sourcePdb.filename(), std::filesystem::copy_options::overwrite_existing, ec);
+        if (std::filesystem::is_regular_file(sourcePdb, errorCode))
+        {
+            std::filesystem::copy_file(
+                sourcePdb, 
+                directory / sourcePdb.filename(),
+                std::filesystem::copy_options::overwrite_existing, 
+                errorCode);
+        }
 
         const HMODULE module = LoadLibraryExW(dll.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
         if (module == nullptr)
@@ -132,6 +141,7 @@ namespace NanamiEngine::Core::Application::HotReload
             outError = "ゲーム DLL を読めません: " + PathToUtf8(dll) + " (" + LastErrorText() + ")";
             return false;
         }
+        
         current_ = ModuleHandle(module);
         ++generation_;
         Module::Log("HotReload: ゲーム DLL を読みました (世代 " + std::to_string(generation_) + "): " + PathToUtf8(dll));
@@ -194,16 +204,22 @@ namespace NanamiEngine::Core::Application::HotReload
         
         current_ = {};
         if (keepOldModules_ || hasLeftover)
+        {
             retired_.push_back(oldModule);
+        }
         else if (!FreeLibrary(static_cast<HMODULE>(oldModule.Raw())))
+        {
             Module::LogError("HotReload: FreeLibrary に失敗しました (" + LastErrorText() + ")");
+        }
         Module::Serialization::SerializationModuleUnloader::ClearClassVersions();
 
         // 6. 新しい DLL
         std::string error;
         const bool loaded = LoadGeneration(error);
         if (!loaded)
+        {
             Module::LogError("HotReload: " + error);
+        }
 
         // 7. アセットとシーンを新しい型で作り直す
         ApplicationBase::ResetAssetsDirectory();

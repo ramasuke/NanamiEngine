@@ -9,8 +9,6 @@ namespace GameCore::Scene
         airShip_                       .Init();
         airShipFirstMoveFromTargetPos_ .Init();
         airShipSecondMoveFromTargetPos_.Init();
-        firstVirtualCamera_            .Init();
-        virtualCameraFirstMoveTarget_  .Init();
         secondVirtualCamera_           .Init();
         cameraBrain_                   .Init();
         playerFirstMoveTargetPos_      .Init();
@@ -20,6 +18,9 @@ namespace GameCore::Scene
         firstEventDragonSpawnPos_      .Init();
         playerControllabeCanon_        .Init();
         swordManCameraGroupPrefab_     .Init();
+        openingShots_                  .Init();
+        airShipDeckProps_              .Init();
+        bgm_                           .Init();
     }
     
     void FirstTouchDownMainIsLandSceneContext::OnDrawGui()
@@ -30,9 +31,6 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("airShipSecondMoveFromTargetPos_", airShipSecondMoveFromTargetPos_);
         ImGuiHelper::OnDrawInputField("airShipSecondMoveDuring_msecs_", airShipSecondMoveDuring_msecs_);
         ImGuiHelper::OnDrawInputField("summonPlayerAvatarPrefab_", summonPlayerAvatarPrefab_);
-        ImGuiHelper::OnDrawInputField("firstVirtualCamera_", firstVirtualCamera_);
-        ImGuiHelper::OnDrawInputField("virtualCameraFirstMoveTarget_", virtualCameraFirstMoveTarget_);
-        ImGuiHelper::OnDrawInputField("virtualCameraFirstMoveTargetDuring_msecs_", virtualCameraFirstMoveTargetDuring_msecs_);
         ImGuiHelper::OnDrawInputField("secondVirtualCamera_", secondVirtualCamera_);
         ImGuiHelper::OnDrawInputField("cameraBrain_", cameraBrain_);
         ImGuiHelper::OnDrawInputField("playerFirstMoveTargetPos_", playerFirstMoveTargetPos_);
@@ -45,6 +43,13 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("firstEventDragonSpawnPos_", firstEventDragonSpawnPos_);
         ImGuiHelper::OnDrawInputField("playerControllabeCanon_", playerControllabeCanon_);
         ImGuiHelper::OnDrawInputField("swordManCameraGroupPrefab_", swordManCameraGroupPrefab_);
+        ImGuiHelper::OnDrawInputField("openingShots_", openingShots_);
+        ImGuiHelper::OnDrawInputField("openingShotDurations_secs_", openingShotDurations_secs_, [this]
+        {
+            if (ImGui::Button("Add"))
+                openingShotDurations_secs_.push_back(4.0f);
+        });
+        ImGuiHelper::OnDrawInputField("airShipDeckProps_", airShipDeckProps_);
     }
 }
 

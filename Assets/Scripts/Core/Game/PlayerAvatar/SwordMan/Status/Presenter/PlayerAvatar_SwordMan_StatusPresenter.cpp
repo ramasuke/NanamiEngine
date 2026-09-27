@@ -6,7 +6,6 @@
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
-#include "../../../../../../GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -33,15 +32,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
             }
         }
 
-        if (pauseMenuPrefab_)
-        {
-            if (const auto pauseMenuObject = Scene::GameObject::Instantiate(*pauseMenuPrefab_.get(), Entity().lock()).lock())
-            {
-                if (const auto pauseMenu = pauseMenuObject->Components().Catch<Ui::PauseMenuPresenter>().lock())
-                    pauseMenu->Initialize(swordManAvatar);
-            }
-        }
-
         if (!controlGuidePrefab_)
             return;
         if (const auto controlGuideObject = Scene::GameObject::Instantiate(*controlGuidePrefab_.get(), Entity().lock()).lock())
@@ -56,7 +46,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
         ImGuiHelper::OnDrawInputField("lowHealthScreenEffect_", lowHealthScreenEffect_);
         ImGuiHelper::OnDrawInputField("controlGuidePrefab_", controlGuidePrefab_);
         ImGuiHelper::OnDrawInputField("itemBarPrefab_", itemBarPrefab_);
-        ImGuiHelper::OnDrawInputField("pauseMenuPrefab_", pauseMenuPrefab_);
     }
 }
 

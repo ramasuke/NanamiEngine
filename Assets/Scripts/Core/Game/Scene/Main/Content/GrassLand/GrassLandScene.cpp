@@ -50,7 +50,7 @@ namespace GameCore::Scene::Main
 
     std::vector<Sub::SceneType> GrassLandScene::SubScenes() const
     {
-        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus };
+        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus, Sub::SceneType::StageReturn };
     }
 
     Coroutine::Task<EnterResult> GrassLandScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
@@ -79,7 +79,8 @@ namespace GameCore::Scene::Main
         playerAvatar_ = networkRunner.SpawnPlayerAvatar(
             PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
-            glm::quat());
+            // NOTE: 着いたら野営地への道しるべが正面に見えるよう、マーカーの向きで出す
+            Context()->PlayerSpawnRotation());
 
         // 敵はホスト側だけがスポーンする。クライアント側は
         // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
@@ -115,6 +116,8 @@ namespace GameCore::Scene::Main
 
     void GrassLandScene::OnStageClear(const Story::StoryFlag flag)
     {
+        isStageCleared_ = true;
+
         // 初めて立てたときだけ。倒し直しでは石はもう無い
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
@@ -134,6 +137,8 @@ namespace GameCore::Scene::Main
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
+            if (isStageCleared_)
+                avatar->PlayerStatus().RestoreFullHealth();
             avatar->SaveStatus();
         }
         playerAvatar_.reset();

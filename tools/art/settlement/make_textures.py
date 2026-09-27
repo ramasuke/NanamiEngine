@@ -8,6 +8,7 @@ Settle_Hide       : なめし革(まだら + 縫い目 + 赤土の文様の帯)
 Settle_Bark       : 丸太の樹皮(V 方向の縦筋)
 Settle_Bone       : 骨・角(黄ばんだ白 + 細かな筋)
 Settle_Ash        : 焚き火跡の灰と炭
+Settle_Cloth      : 赤土で染めた布(生成りの帯と三角文様。一族の旗・道しるべ)
 
     python tools/art/settlement/make_textures.py <work>     # <work>/tex/*.png
 """
@@ -241,6 +242,30 @@ def bone():
     save('Settle_Bone', col)
 
 
+# ------------------------------------------------------------ 染めた布 (一族の旗・道しるべ)
+def cloth():
+    """赤土で染めた粗い織りの布。V の上寄りに生成りの帯と三角の連続文様、下端はほつれて暗い"""
+    X, Y = np.meshgrid(np.arange(N), np.arange(N))
+    weave = (np.sin(X / 3.0 * np.pi) * np.sin(Y / 3.0 * np.pi)) * 0.5 + 0.5
+    n1 = tile_noise(N, 6, 91)
+    n2 = tile_noise(N, 48, 92)
+    base = np.array([0.62, 0.17, 0.09])
+    col = base[None, None, :] * (0.78 + 0.3 * n1[..., None]) * (0.9 + 0.12 * weave[..., None]) * (0.92 + 0.12 * n2[..., None])
+    v = Y / N
+    pale = np.array([0.86, 0.78, 0.60])
+    band = (np.abs(v - 0.16) < 0.05)
+    tri_phase = (X % 128) / 128.0
+    tri = (v > 0.12) & (v < 0.20) & (np.abs(tri_phase - 0.5) * 2 < (v - 0.12) / 0.08)
+    stripe = (np.abs(v - 0.27) < 0.012) | (np.abs(v - 0.05) < 0.012)
+    wear = tile_noise(N, 24, 93) > 0.3
+    col = np.where((band & ~tri & wear)[..., None], pale * (0.85 + 0.2 * n2[..., None]), col)
+    col = np.where(((stripe) & wear)[..., None], pale * 0.9, col)
+    # 下端の汚れ・色あせ
+    dirt = np.clip((v - 0.75) * 4, 0, 1) * (0.6 + 0.4 * n2)
+    col *= (1 - 0.35 * dirt)[..., None]
+    save('Settle_Cloth', col)
+
+
 def ash():
     n1 = tile_noise(N, 10, 71)
     n2 = tile_noise(N, 80, 72)
@@ -260,3 +285,4 @@ if __name__ == '__main__':
     hide()
     bone()
     ash()
+    cloth()

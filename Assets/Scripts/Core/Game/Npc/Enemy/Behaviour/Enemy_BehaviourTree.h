@@ -29,7 +29,8 @@ namespace GameCore::Npc::Enemy
                   const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
                   IShowHealthGaugeProvider* showHealthGaugeProvider,
                   Core::Network::NetworkObjectId networkObjectId,
-                  bool isNetworkAuthority) const;
+                  bool isNetworkAuthority,
+                  std::optional<Damage::FlinchPower>& pendingFlinchPower) const;
         void OnSave();
         void OnDrawGraphEditorGui();
         void OnDrawGui() override;
@@ -44,5 +45,6 @@ namespace GameCore::Npc::Enemy
 
         std::shared_ptr<Editor::Npc::Behaviour::EntryNode> entryNode_;
         std::unique_ptr<BlackBoard::ParameterGroup> parameters_;
+        mutable std::uint64_t tickIndex_ = 0;
     };
 }

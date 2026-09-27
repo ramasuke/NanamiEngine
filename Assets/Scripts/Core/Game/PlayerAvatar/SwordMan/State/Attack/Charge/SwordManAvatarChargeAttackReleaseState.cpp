@@ -84,7 +84,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         {
             const glm::vec3 areaPos = NormalAttackArea().Transform().GetWorldPos();
             const glm::vec3 impactPos(areaPos.x, Transform().GetWorldPos().y, areaPos.z);
-            NanamiEngine::Scene::GameObject::Instantiate(Resources().ChargeImpactParticlePrefab(), impactPos, yRot);
+            SpawnAttackParticle(Resources().ChargeImpactParticlePrefab(), impactPos, yRot);
         }
 
         if (!isHit)
@@ -93,9 +93,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         const auto& hitFeel = Status().ChargeHitFeel();
         NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
 
-        const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
-        if (const auto particleObject = particle.lock())
-            particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
+        SpawnAttackParticle(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot, hitFeel.ParticleScale());
         DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
         ShakeHitTargets(NormalAttackArea(), hitFeel);
     }

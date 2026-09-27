@@ -1,0 +1,54 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EnemyAttackWarning",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Enemy\\AttackWarning/AttackWarningGold.enemyAttackWarning",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "9D2C4DDA-4288-441D-B162-24BA9CD49CAF"
+                    }
+                },
+                "effectPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "01C71919-3F93-472B-9643-88AE8221832C"
+                                }
+                            }
+                        }
+                    }
+                },
+                "sound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "2018C927-FA31-4D78-8B14-246DCE995239"
+                                }
+                            }
+                        }
+                    }
+                },
+                "lead_secs_": 0.65
+            }
+        }
+    }
+}

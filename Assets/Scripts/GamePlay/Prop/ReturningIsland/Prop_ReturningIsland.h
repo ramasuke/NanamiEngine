@@ -26,7 +26,7 @@ namespace GamePlay::Prop
         /** @brief 戻る前の島と階段を隠し、コライダーごと雲の下へ退避させる。シーンに入ったときに一度だけ呼ぶ */
         void Sink();
 
-        /** @brief 戻った島と階段を出す(シーンでは隠してある) */
+        /** @brief 戻った島と階段を出し、橋の出口をふさぐ壁をどける(シーンでは島と階段を隠してある) */
         void Show();
 
         /**
@@ -47,6 +47,8 @@ namespace GamePlay::Prop
         /** カメラが見る所。島の子(一緒に上がってくる物)にする */
         [[serialize(0)]] FIELD(GameObject::IGameObject) focus_;
         [[serialize(0)]] IslandReturnShot shot_;
+        /** 戻るまで島の縁の橋の出口をふさぐ壁。戻ったら雲の下へどける */
+        [[serialize(1)]] FIELD(GameObject::IGameObject) blockers_;
 
 #pragma region Serialization Function
     public:
@@ -60,6 +62,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(camera_));
             archive(CEREAL_NVP(focus_));
             archive(CEREAL_NVP(shot_));
+            archive(CEREAL_NVP(blockers_));
         }
 
         template<class Archive>
@@ -70,9 +73,10 @@ namespace GamePlay::Prop
             if (version >= 0) archive(CEREAL_NVP(camera_));
             if (version >= 0) archive(CEREAL_NVP(focus_));
             if (version >= 0) archive(CEREAL_NVP(shot_));
+            if (version >= 1) archive(CEREAL_NVP(blockers_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Prop::ReturningIsland, 0);
+CEREAL_CLASS_VERSION(GamePlay::Prop::ReturningIsland, 1);

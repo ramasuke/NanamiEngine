@@ -67,6 +67,9 @@ _MENU_ID_OPEN = 2
 _MENU_ID_SAVE_AS = 5
 _MENU_ID_SAVE_MESH_ONLY = 6
 _MENU_ID_SAVE_ANIM_ONLY = 7
+# 読み込みオプションのメニュー (チェックの切り替え。読み込み時に効く)
+_MENU_ID_RECALC_NORMALS = 10       # 法線再計算
+_MF_CHECKED = 0x8
 
 # convert() の ``mode`` -> (ファイルメニューのコマンド id, エラー用の人が読める名前)。
 SAVE_MODES: dict[str, tuple[int, str]] = {
@@ -162,6 +165,22 @@ def _find_menu_item(menu, target_id: int):
             if found is not None:
                 return found
     return None
+
+
+def _set_menu_checked(window, item_id: int, checked: bool) -> bool:
+    """チェック付きのメニュー項目を ``checked`` にそろえ、元の状態を返す"""
+    item = _find_menu_item(window.menu(), item_id)
+    if item is None:
+        raise RuntimeError(f"no menu item with command id {item_id} - DxLibModelViewer version mismatch?")
+    was = bool(item.state() & _MF_CHECKED)
+    if was != checked:
+        item.click()
+        deadline = time.monotonic() + 5.0
+        while bool(_find_menu_item(window.menu(), item_id).state() & _MF_CHECKED) != checked:
+            if time.monotonic() > deadline:
+                raise RuntimeError(f"menu item {item_id} did not become checked={checked}")
+            time.sleep(_POLL_INTERVAL)
+    return was
 
 
 def _find_filename_edit(dlg):
@@ -331,7 +350,7 @@ def _wait_for_output_settled(app, mv1_path: Path, timeout: float, debug_dir: Pat
 
 
 def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
-            timeout: float = 60.0, debug_dir: Path | None = None) -> None:
+            timeout: float = 60.0, debug_dir: Path | None = None, recalc_normals: bool = False) -> None:
     """DxLibModelViewer を起動して ``fbx_path`` を読み込み、``mode``
     (:data:`SAVE_MODES` のキー) で選んだファイルメニューの項目で ``mv1_path`` として保存する:
 
@@ -345,6 +364,9 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
     (既定: 新しい一時ディレクトリ。パスは常にエラーに付く) に保存する。呼び出しの間は
     本物のウィンドウが作られる - ヘッドレスな処理ではない。``tools/model/README.md``
     を参照。
+
+    ``recalc_normals`` は 読み込みオプション > 法線再計算 を入れてから読み込む (FBX の法線を捨て、
+    ビューアが形から計算し直す)。設定はビューアに残るかもしれないので、保存の後で元に戻す。
     """
     if mode not in SAVE_MODES:
         raise ValueError(f"unknown save mode {mode!r}; expected one of {sorted(SAVE_MODES)}")
@@ -367,6 +389,13 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
 
         def by_handle():
             return app.window(handle=main_handle)
+
+        # --- 読み込みオプション ---
+        recalc_was = None
+        try:
+            recalc_was = _set_menu_checked(by_handle(), _MENU_ID_RECALC_NORMALS, recalc_normals)
+        except Exception as e:  # noqa: BLE001
+            raise AutomationError("options", str(e), _dump_debug(app, debug_dir)) from e
 
         # --- 開く ---
         try:
@@ -428,6 +457,11 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
             raise AutomationError("save", str(e), _dump_debug(app, debug_dir)) from e
 
         _wait_for_output_settled(app, Path(mv1_path), timeout, debug_dir)
+        if recalc_was is not None and recalc_was != recalc_normals:
+            try:
+                _set_menu_checked(by_handle(), _MENU_ID_RECALC_NORMALS, recalc_was)
+            except Exception:  # noqa: BLE001
+                pass
     finally:
         if app is not None:
             try:

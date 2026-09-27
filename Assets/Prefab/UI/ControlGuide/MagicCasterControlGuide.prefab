@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -201,7 +201,11 @@
                     "jumpLabel_": "ジャンプ",
                     "lockOnLabel_": "ロックオン",
                     "lockOnReleaseLabel_": "ロックオン解除",
-                    "chatLabel_": "会話"
+                    "chatLabel_": "会話",
+                    "openLabel_": "開ける",
+                    "gatherLabel_": "採る",
+                    "readLabel_": "見る",
+                    "boardLabel_": "乗る"
                 }
             }
         },

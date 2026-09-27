@@ -1,5 +1,5 @@
 {
-  "generated_from": "fc0faef33751e3c99df0b27e0d6fdad99ff0ae63",
+  "generated_from": "bef3dd46b91c5252394f5f9a6db8f28aac8e9460",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -544,7 +544,7 @@
       "class": "MagicBlast",
       "fqn": "GamePlay::Magic::MagicBlast",
       "leaf": "MagicBlast",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -586,6 +586,13 @@
           "member": "hitShakeDuration_secs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "dealDamageTextPrefab_",
+          "member": "dealDamageTextPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
         }
       ]
     },
@@ -1108,23 +1115,6 @@
         }
       ]
     },
-    "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter": {
-      "class": "StatusPresenter",
-      "fqn": "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
-      "leaf": "StatusPresenter",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h",
-      "params": []
-    },
     "GamePlay::PlayerAvatar::PickupArea": {
       "class": "PickupArea",
       "fqn": "GamePlay::PlayerAvatar::PickupArea",
@@ -1195,7 +1185,7 @@
       "class": "StatusPresenter",
       "fqn": "GamePlay::PlayerAvatar::SwordMan::StatusPresenter",
       "leaf": "StatusPresenter",
-      "version": 5,
+      "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1224,13 +1214,6 @@
         {
           "key": "itemBarPrefab_",
           "member": "itemBarPrefab_",
-          "named": true,
-          "shape": "field",
-          "type": "PrefabGameObjectFile"
-        },
-        {
-          "key": "pauseMenuPrefab_",
-          "member": "pauseMenuPrefab_",
           "named": true,
           "shape": "field",
           "type": "PrefabGameObjectFile"
@@ -1291,7 +1274,7 @@
       "class": "Canon",
       "fqn": "GamePlay::Prop::Canon",
       "leaf": "Canon",
-      "version": 5,
+      "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1361,6 +1344,13 @@
           "named": true,
           "shape": "field",
           "type": "CannonCooldownGauge"
+        },
+        {
+          "key": "boardHint_",
+          "member": "boardHint_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
         }
       ]
     },
@@ -1686,6 +1676,48 @@
           "named": true,
           "shape": "field",
           "type": "EventBoardData"
+        }
+      ]
+    },
+    "GamePlay::Prop::FloatingDrift": {
+      "class": "FloatingDrift",
+      "fqn": "GamePlay::Prop::FloatingDrift",
+      "leaf": "FloatingDrift",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/FloatingDrift/GamePlay_FloatingDrift.h",
+      "params": [
+        {
+          "key": "bobHeight_",
+          "member": "bobHeight_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bobPeriod_secs_",
+          "member": "bobPeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tiltDegrees_",
+          "member": "tiltDegrees_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tiltPeriod_secs_",
+          "member": "tiltPeriod_secs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2078,7 +2110,7 @@
       "class": "ReturningIsland",
       "fqn": "GamePlay::Prop::ReturningIsland",
       "leaf": "ReturningIsland",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2117,6 +2149,77 @@
           "named": true,
           "shape": "unknown",
           "type": "IslandReturnShot"
+        },
+        {
+          "key": "blockers_",
+          "member": "blockers_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "GamePlay::Prop::StormHeart": {
+      "class": "StormHeart",
+      "fqn": "GamePlay::Prop::StormHeart",
+      "leaf": "StormHeart",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/StormHeart/GamePlay_StormHeart.h",
+      "params": [
+        {
+          "key": "requiredHits_",
+          "member": "requiredHits_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "hitInterval_secs_",
+          "member": "hitInterval_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "effectOffset_",
+          "member": "effectOffset_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "hitParticle_",
+          "member": "hitParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "shakenParticle_",
+          "member": "shakenParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "hitSound_",
+          "member": "hitSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "shakenSound_",
+          "member": "shakenSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
         }
       ]
     },
@@ -2275,6 +2378,84 @@
         {
           "key": "ambient_",
           "member": "ambient_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Prop::Tumbleweed": {
+      "class": "Tumbleweed",
+      "fqn": "GamePlay::Prop::Tumbleweed",
+      "leaf": "Tumbleweed",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/Tumbleweed/GamePlay_Tumbleweed.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rollSpeed_",
+          "member": "rollSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rollAcceleration_",
+          "member": "rollAcceleration_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hopSpeed_",
+          "member": "hopSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hopMin_secs_",
+          "member": "hopMin_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hopMax_secs_",
+          "member": "hopMax_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "calmKeepPerSecond_",
+          "member": "calmKeepPerSecond_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "roamDistance_",
+          "member": "roamDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "returnHeight_",
+          "member": "returnHeight_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallLimit_",
+          "member": "fallLimit_",
           "named": true,
           "shape": "float"
         }
@@ -2696,7 +2877,7 @@
       "class": "BillBoardNpcChatIcon",
       "fqn": "GamePlay::Ui::BillBoardNpcChatIcon",
       "leaf": "BillBoardNpcChatIcon",
-      "version": 4,
+      "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2730,84 +2911,11 @@
           "type": "IGameObject"
         },
         {
-          "key": "surpriseRimGlow_",
-          "member": "surpriseRimGlow_",
-          "named": true,
-          "shape": "field",
-          "type": "BillboardAnimation3D"
-        },
-        {
           "key": "uiSounds_",
           "member": "uiSounds_",
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
-        },
-        {
-          "key": "popDuration_secs_",
-          "member": "popDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseFloatAmplitude_",
-          "member": "surpriseFloatAmplitude_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseFloatSpeed_",
-          "member": "surpriseFloatSpeed_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseCycle_secs_",
-          "member": "surpriseCycle_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseSweepDuration_secs_",
-          "member": "surpriseSweepDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseTiltDuration_secs_",
-          "member": "surpriseTiltDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "surpriseTiltAngle_",
-          "member": "surpriseTiltAngle_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "chattableBounceAmplitude_",
-          "member": "chattableBounceAmplitude_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "chattableBounceSpeed_",
-          "member": "chattableBounceSpeed_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "chattingBreathScale_",
-          "member": "chattingBreathScale_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "chattingBreathPeriod_secs_",
-          "member": "chattingBreathPeriod_secs_",
-          "named": true,
-          "shape": "float"
         }
       ]
     },
@@ -3754,7 +3862,7 @@
       "class": "DealDamageTextBillBoard",
       "fqn": "GamePlay::Ui::DealDamageTextBillBoard",
       "leaf": "DealDamageTextBillBoard",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3837,6 +3945,18 @@
           "member": "popTime_secs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "lowColor_",
+          "member": "lowColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "maxColor_",
+          "member": "maxColor_",
+          "named": true,
+          "shape": "color32"
         }
       ]
     },
@@ -6855,7 +6975,7 @@
       "class": "MagicCasterControlGuide",
       "fqn": "GamePlay::Ui::MagicCasterControlGuide",
       "leaf": "MagicCasterControlGuide",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6999,6 +7119,30 @@
           "member": "chatLabel_",
           "named": true,
           "shape": "string"
+        },
+        {
+          "key": "openLabel_",
+          "member": "openLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "gatherLabel_",
+          "member": "gatherLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "readLabel_",
+          "member": "readLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "boardLabel_",
+          "member": "boardLabel_",
+          "named": true,
+          "shape": "string"
         }
       ]
     },
@@ -7045,269 +7189,6 @@
           "named": true,
           "shape": "field",
           "type": "TextRenderer"
-        }
-      ]
-    },
-    "GamePlay::Ui::OtherPlayerStatusUiGroup": {
-      "class": "OtherPlayerStatusUiGroup",
-      "fqn": "GamePlay::Ui::OtherPlayerStatusUiGroup",
-      "leaf": "OtherPlayerStatusUiGroup",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h",
-      "params": [
-        {
-          "key": "spacing_",
-          "member": "spacing_",
-          "named": true,
-          "shape": "vec3"
-        }
-      ]
-    },
-    "GamePlay::Ui::PauseMenuItemCell": {
-      "class": "PauseMenuItemCell",
-      "fqn": "GamePlay::Ui::PauseMenuItemCell",
-      "leaf": "PauseMenuItemCell",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/ItemCell/Ui_PauseMenuItemCell.h",
-      "params": [
-        {
-          "key": "icon_",
-          "member": "icon_",
-          "named": true,
-          "shape": "field",
-          "type": "ImageRenderer"
-        },
-        {
-          "key": "countText_",
-          "member": "countText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        }
-      ]
-    },
-    "GamePlay::Ui::PauseMenuPresenter": {
-      "class": "PauseMenuPresenter",
-      "fqn": "GamePlay::Ui::PauseMenuPresenter",
-      "leaf": "PauseMenuPresenter",
-      "version": 1,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h",
-      "params": [
-        {
-          "key": "uiSounds_",
-          "member": "uiSounds_",
-          "named": true,
-          "shape": "field",
-          "type": "UiSoundBankData"
-        }
-      ]
-    },
-    "GamePlay::Ui::PauseMenuRow": {
-      "class": "PauseMenuRow",
-      "fqn": "GamePlay::Ui::PauseMenuRow",
-      "leaf": "PauseMenuRow",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Row/Ui_PauseMenuRow.h",
-      "params": [
-        {
-          "key": "nameText_",
-          "member": "nameText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "descriptionText_",
-          "member": "descriptionText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "numberText_",
-          "member": "numberText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "marker_",
-          "member": "marker_",
-          "named": true,
-          "shape": "field",
-          "type": "ImageRenderer"
-        },
-        {
-          "key": "underline_",
-          "member": "underline_",
-          "named": true,
-          "shape": "field",
-          "type": "ImageRenderer"
-        }
-      ]
-    },
-    "GamePlay::Ui::PauseMenuUi": {
-      "class": "PauseMenuUi",
-      "fqn": "GamePlay::Ui::PauseMenuUi",
-      "leaf": "PauseMenuUi",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Ui_PauseMenu.h",
-      "params": [
-        {
-          "key": "book_",
-          "member": "book_",
-          "named": true,
-          "shape": "field",
-          "type": "IGameObject"
-        },
-        {
-          "key": "rowPrefab_",
-          "member": "rowPrefab_",
-          "named": true,
-          "shape": "field",
-          "type": "PrefabGameObjectFile"
-        },
-        {
-          "key": "rowsRoot_",
-          "member": "rowsRoot_",
-          "named": true,
-          "shape": "field",
-          "type": "IGameObject"
-        },
-        {
-          "key": "character_",
-          "member": "character_",
-          "named": true,
-          "shape": "field",
-          "type": "CharacterData"
-        },
-        {
-          "key": "nameText_",
-          "member": "nameText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "readingText_",
-          "member": "readingText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "taglineText_",
-          "member": "taglineText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "statPips_",
-          "member": "statPips_",
-          "named": true,
-          "shape": "field",
-          "type": "StageDifficultyPips"
-        },
-        {
-          "key": "healthBar_",
-          "member": "healthBar_",
-          "named": true,
-          "shape": "field",
-          "type": "Slider"
-        },
-        {
-          "key": "healthText_",
-          "member": "healthText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "staminaBar_",
-          "member": "staminaBar_",
-          "named": true,
-          "shape": "field",
-          "type": "Slider"
-        },
-        {
-          "key": "staminaText_",
-          "member": "staminaText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "moneyText_",
-          "member": "moneyText_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "itemCellPrefab_",
-          "member": "itemCellPrefab_",
-          "named": true,
-          "shape": "field",
-          "type": "PrefabGameObjectFile"
-        },
-        {
-          "key": "itemsRoot_",
-          "member": "itemsRoot_",
-          "named": true,
-          "shape": "field",
-          "type": "IGameObject"
-        },
-        {
-          "key": "maxItemCells_",
-          "member": "maxItemCells_",
-          "named": true,
-          "shape": "int"
         }
       ]
     },
@@ -8449,6 +8330,202 @@
         }
       ]
     },
+    "GamePlay::Ui::StageReturnNoticeUi": {
+      "class": "StageReturnNoticeUi",
+      "fqn": "GamePlay::Ui::StageReturnNoticeUi",
+      "leaf": "StageReturnNoticeUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/StageReturn/Ui_StageReturnNotice.h",
+      "params": [
+        {
+          "key": "visualRoot_",
+          "member": "visualRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "noticeRoot_",
+          "member": "noticeRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "veilBlack_",
+          "member": "veilBlack_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "veil_",
+          "member": "veil_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "soloNotice_",
+          "member": "soloNotice_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "hostNotice_",
+          "member": "hostNotice_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "hostNoteText_",
+          "member": "hostNoteText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "returnLabel_",
+          "member": "returnLabel_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "returnUnderline_",
+          "member": "returnUnderline_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "returnStamp_",
+          "member": "returnStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "stayLabel_",
+          "member": "stayLabel_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "stayUnderline_",
+          "member": "stayUnderline_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "stayStamp_",
+          "member": "stayStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "confirmButton_",
+          "member": "confirmButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "cancelButton_",
+          "member": "cancelButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "selectedColor_",
+          "member": "selectedColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "unselectedColor_",
+          "member": "unselectedColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "veilBlendRate_",
+          "member": "veilBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "veilBlackBlendRate_",
+          "member": "veilBlackBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "dropDistance_px_",
+          "member": "dropDistance_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "enterDuration_secs_",
+          "member": "enterDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampDuration_secs_",
+          "member": "stampDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampStartScale_",
+          "member": "stampStartScale_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::StageReturnPresenter": {
+      "class": "StageReturnPresenter",
+      "fqn": "GamePlay::Ui::StageReturnPresenter",
+      "leaf": "StageReturnPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/StageReturn/Presenter/StageReturnPresenter.h",
+      "params": [
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        }
+      ]
+    },
     "GamePlay::Ui::StageSelectPresenter": {
       "class": "StageSelectPresenter",
       "fqn": "GamePlay::Ui::StageSelectPresenter",
@@ -9033,7 +9110,7 @@
       "class": "SwordManControlGuide",
       "fqn": "GamePlay::Ui::SwordManControlGuide",
       "leaf": "SwordManControlGuide",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -9253,6 +9330,181 @@
           "member": "cannonFireLabel_",
           "named": true,
           "shape": "string"
+        },
+        {
+          "key": "openLabel_",
+          "member": "openLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "gatherLabel_",
+          "member": "gatherLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "readLabel_",
+          "member": "readLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "boardLabel_",
+          "member": "boardLabel_",
+          "named": true,
+          "shape": "string"
+        }
+      ]
+    },
+    "GamePlay::Weather::Sandstorm": {
+      "class": "Sandstorm",
+      "fqn": "GamePlay::Weather::Sandstorm",
+      "leaf": "Sandstorm",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Weather/Sandstorm.h",
+      "params": [
+        {
+          "key": "sandParticle_",
+          "member": "sandParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "ParticleSystem"
+        },
+        {
+          "key": "calmMin_secs_",
+          "member": "calmMin_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "calmMax_secs_",
+          "member": "calmMax_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormMin_secs_",
+          "member": "stormMin_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormMax_secs_",
+          "member": "stormMax_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "blend_secs_",
+          "member": "blend_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "firstCalm_secs_",
+          "member": "firstCalm_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormFogColor_",
+          "member": "stormFogColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "stormFogStart_",
+          "member": "stormFogStart_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormFogEnd_",
+          "member": "stormFogEnd_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "clearFogStart_",
+          "member": "clearFogStart_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "clearFogEnd_",
+          "member": "clearFogEnd_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormLightColor_",
+          "member": "stormLightColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "maxSustainShake_",
+          "member": "maxSustainShake_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "particlePlayThreshold_",
+          "member": "particlePlayThreshold_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "particleYawOffsetDeg_",
+          "member": "particleYawOffsetDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pushSpeed_",
+          "member": "pushSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pushAcceleration_",
+          "member": "pushAcceleration_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "playerPushSpeed_",
+          "member": "playerPushSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rescan_secs_",
+          "member": "rescan_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "summonBlend_secs_",
+          "member": "summonBlend_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "summonedMax_secs_",
+          "member": "summonedMax_secs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -9260,7 +9512,7 @@
       "class": "WeatherService",
       "fqn": "GamePlay::Weather::WeatherService",
       "leaf": "WeatherService",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -9494,6 +9746,31 @@
         {
           "key": "distantThunderMaxInterval_secs_",
           "member": "distantThunderMaxInterval_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "wallRotator_",
+          "member": "wallRotator_",
+          "named": true,
+          "shape": "field",
+          "type": "Rotator"
+        },
+        {
+          "key": "initialStormIntensity_",
+          "member": "initialStormIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "clearWallRotateSpeedDeg_",
+          "member": "clearWallRotateSpeedDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stormWallRotateSpeedDeg_",
+          "member": "stormWallRotateSpeedDeg_",
           "named": true,
           "shape": "float"
         }
@@ -11550,6 +11827,470 @@
       "interleaved_bases": false,
       "header": "Engine/Module/Network/Object/Component/Transform/Engine_Network_NetworkTransform.h",
       "params": []
+    },
+    "GamePlay::Title::TitleCameraDirector": {
+      "class": "TitleCameraDirector",
+      "fqn": "GamePlay::Title::TitleCameraDirector",
+      "leaf": "TitleCameraDirector",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Title/TitleCameraDirector.h",
+      "params": [
+        {
+          "key": "shotsRoot_",
+          "member": "shotsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "dipMask_",
+          "member": "dipMask_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "shotDurations_secs_",
+          "member": "shotDurations_secs_",
+          "named": true,
+          "shape": "vector",
+          "elem": "float"
+        },
+        {
+          "key": "defaultShotDuration_secs_",
+          "member": "defaultShotDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dipDuration_secs_",
+          "member": "dipDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shotPriority_",
+          "member": "shotPriority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "GamePlay::Ui::TitleScreenUi": {
+      "class": "TitleScreenUi",
+      "fqn": "GamePlay::Ui::TitleScreenUi",
+      "leaf": "TitleScreenUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Title/Ui_TitleScreen.h",
+      "params": [
+        {
+          "key": "veil_",
+          "member": "veil_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "logo_",
+          "member": "logo_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "pressText_",
+          "member": "pressText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "pressDeco_",
+          "member": "pressDeco_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "startText_",
+          "member": "startText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "exitText_",
+          "member": "exitText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "startButton_",
+          "member": "startButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "exitButton_",
+          "member": "exitButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "selectBand_",
+          "member": "selectBand_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "moveHintTag_",
+          "member": "moveHintTag_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "moveHintText_",
+          "member": "moveHintText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "confirmHintTag_",
+          "member": "confirmHintTag_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "confirmHintText_",
+          "member": "confirmHintText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "veilOpen_secs_",
+          "member": "veilOpen_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "logoDelay_secs_",
+          "member": "logoDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "logoFade_secs_",
+          "member": "logoFade_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pressDelay_secs_",
+          "member": "pressDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pressFade_secs_",
+          "member": "pressFade_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pressPulsePeriod_secs_",
+          "member": "pressPulsePeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pressPulseMinRate_",
+          "member": "pressPulseMinRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "menuFade_secs_",
+          "member": "menuFade_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "menuStagger_secs_",
+          "member": "menuStagger_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "menuSlide_px_",
+          "member": "menuSlide_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "menuInputGuard_secs_",
+          "member": "menuInputGuard_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bandFollowRate_",
+          "member": "bandFollowRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "unselectedTextRate_",
+          "member": "unselectedTextRate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::TitleScreenPresenter": {
+      "class": "TitleScreenPresenter",
+      "fqn": "GamePlay::Ui::TitleScreenPresenter",
+      "leaf": "TitleScreenPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Title/Presenter/TitleScreenPresenter.h",
+      "params": [
+        {
+          "key": "assetUpdatePrefab_",
+          "member": "assetUpdatePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        }
+      ]
+    },
+    "GamePlay::Weather::SceneFog": {
+      "class": "SceneFog",
+      "fqn": "GamePlay::Weather::SceneFog",
+      "leaf": "SceneFog",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Weather/SceneFog.h",
+      "params": [
+        {
+          "key": "fogColor_",
+          "member": "fogColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "fogStart_",
+          "member": "fogStart_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fogEnd_",
+          "member": "fogEnd_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::ChatIconChattableMotion": {
+      "class": "ChatIconChattableMotion",
+      "fqn": "GamePlay::Ui::ChatIconChattableMotion",
+      "leaf": "ChatIconChattableMotion",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconChattableMotion.h",
+      "params": [
+        {
+          "key": "popDuration_secs_",
+          "member": "popDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.25
+        },
+        {
+          "key": "bounceAmplitude_",
+          "member": "bounceAmplitude_",
+          "named": true,
+          "shape": "float",
+          "default": 0.12
+        },
+        {
+          "key": "bounceSpeed_",
+          "member": "bounceSpeed_",
+          "named": true,
+          "shape": "float",
+          "default": 4.0
+        }
+      ]
+    },
+    "GamePlay::Ui::ChatIconChattingMotion": {
+      "class": "ChatIconChattingMotion",
+      "fqn": "GamePlay::Ui::ChatIconChattingMotion",
+      "leaf": "ChatIconChattingMotion",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconChattingMotion.h",
+      "params": [
+        {
+          "key": "popDuration_secs_",
+          "member": "popDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.25
+        },
+        {
+          "key": "breathScale_",
+          "member": "breathScale_",
+          "named": true,
+          "shape": "float",
+          "default": 0.05
+        },
+        {
+          "key": "breathPeriod_secs_",
+          "member": "breathPeriod_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 1.6
+        }
+      ]
+    },
+    "GamePlay::Ui::ChatIconSurpriseMotion": {
+      "class": "ChatIconSurpriseMotion",
+      "fqn": "GamePlay::Ui::ChatIconSurpriseMotion",
+      "leaf": "ChatIconSurpriseMotion",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconSurpriseMotion.h",
+      "params": [
+        {
+          "key": "rimGlow_",
+          "member": "rimGlow_",
+          "named": true,
+          "shape": "field",
+          "type": "BillboardAnimation3D"
+        },
+        {
+          "key": "popDuration_secs_",
+          "member": "popDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.25
+        },
+        {
+          "key": "floatAmplitude_",
+          "member": "floatAmplitude_",
+          "named": true,
+          "shape": "float",
+          "default": 0.2
+        },
+        {
+          "key": "floatSpeed_",
+          "member": "floatSpeed_",
+          "named": true,
+          "shape": "float",
+          "default": 2.0
+        },
+        {
+          "key": "cycle_secs_",
+          "member": "cycle_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 3.0
+        },
+        {
+          "key": "sweepDuration_secs_",
+          "member": "sweepDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.6
+        },
+        {
+          "key": "tiltDuration_secs_",
+          "member": "tiltDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.5
+        },
+        {
+          "key": "tiltAngle_",
+          "member": "tiltAngle_",
+          "named": true,
+          "shape": "float",
+          "default": 0.2
+        }
+      ]
     }
   },
   "by_leaf": {
@@ -11715,6 +12456,9 @@
     "EventNoticeBoard": [
       "GamePlay::Prop::EventNoticeBoard"
     ],
+    "FloatingDrift": [
+      "GamePlay::Prop::FloatingDrift"
+    ],
     "FloatingStone": [
       "GamePlay::Prop::FloatingStone"
     ],
@@ -11862,23 +12606,8 @@
     "NpcChatting": [
       "GamePlay::Ui::NpcChatting"
     ],
-    "OtherPlayerStatusUiGroup": [
-      "GamePlay::Ui::OtherPlayerStatusUiGroup"
-    ],
     "ParticleSystem": [
       "NanamiEngine::Module::Component::ParticleSystem"
-    ],
-    "PauseMenuItemCell": [
-      "GamePlay::Ui::PauseMenuItemCell"
-    ],
-    "PauseMenuPresenter": [
-      "GamePlay::Ui::PauseMenuPresenter"
-    ],
-    "PauseMenuRow": [
-      "GamePlay::Ui::PauseMenuRow"
-    ],
-    "PauseMenuUi": [
-      "GamePlay::Ui::PauseMenuUi"
     ],
     "PickupArea": [
       "GamePlay::PlayerAvatar::PickupArea"
@@ -11918,6 +12647,9 @@
     ],
     "SampleTitleScene": [
       "GamePlay::Ui::SampleTitleScene"
+    ],
+    "Sandstorm": [
+      "GamePlay::Weather::Sandstorm"
     ],
     "SceneContextBase": [
       "GameCore::Scene::SceneContextBase",
@@ -11980,6 +12712,12 @@
     "StageMapMarker": [
       "GamePlay::Ui::StageMapMarker"
     ],
+    "StageReturnNoticeUi": [
+      "GamePlay::Ui::StageReturnNoticeUi"
+    ],
+    "StageReturnPresenter": [
+      "GamePlay::Ui::StageReturnPresenter"
+    ],
     "StageSelectPresenter": [
       "GamePlay::Ui::StageSelectPresenter"
     ],
@@ -11997,11 +12735,13 @@
     ],
     "StatusPresenter": [
       "GamePlay::PlayerAvatar::MagicCaster::StatusPresenter",
-      "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
       "GamePlay::PlayerAvatar::SwordMan::StatusPresenter"
     ],
     "StatusPresenterBase": [
       "GamePlay::PlayerAvatar::StatusPresenterBase"
+    ],
+    "StormHeart": [
+      "GamePlay::Prop::StormHeart"
     ],
     "SwordManActionInstructTutorial": [
       "GamePlay::Ui::SwordManActionInstructTutorial"
@@ -12021,6 +12761,9 @@
     "TreeLeafSway": [
       "GamePlay::Prop::TreeLeafSway"
     ],
+    "Tumbleweed": [
+      "GamePlay::Prop::Tumbleweed"
+    ],
     "VerticalLayoutGroup": [
       "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup"
     ],
@@ -12038,6 +12781,27 @@
     ],
     "WindZone": [
       "GamePlay::Weather::WindZone"
+    ],
+    "TitleCameraDirector": [
+      "GamePlay::Title::TitleCameraDirector"
+    ],
+    "TitleScreenUi": [
+      "GamePlay::Ui::TitleScreenUi"
+    ],
+    "TitleScreenPresenter": [
+      "GamePlay::Ui::TitleScreenPresenter"
+    ],
+    "SceneFog": [
+      "GamePlay::Weather::SceneFog"
+    ],
+    "ChatIconChattableMotion": [
+      "GamePlay::Ui::ChatIconChattableMotion"
+    ],
+    "ChatIconChattingMotion": [
+      "GamePlay::Ui::ChatIconChattingMotion"
+    ],
+    "ChatIconSurpriseMotion": [
+      "GamePlay::Ui::ChatIconSurpriseMotion"
     ]
   },
   "bases": {

@@ -2,6 +2,7 @@
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
+#include "Libs/glm/gtc/quaternion.hpp"
 #include "../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../PlayerAvatar/SwordMan/CameraGroup/SwordManAvatarCameraGroup.h"
 
@@ -14,6 +15,8 @@ namespace GameCore::Scene
         ~SceneContextBase() override = default;
         [[nodiscard]] std::shared_ptr<Asset::SceneFile> LoadSceneFile() const { return loadSceneFile_.get(); }
         [[nodiscard]] glm::vec3 PlayerSpawnPoint() const;
+        /** @brief スポーン地点のマーカーの向き。プレイヤーはこの -Z を向いて出てくる */
+        [[nodiscard]] glm::quat PlayerSpawnRotation() const;
         [[nodiscard]] Asset::PlayerAvatarFactory&        PlayerAvatarFactory() const { return *playerAvatarFactory_.get(); }
 
     private:

@@ -2,6 +2,7 @@
 
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Sound
@@ -38,7 +39,11 @@ namespace GamePlay::Sound
 
         const auto soundFile = sound.lock();
         if (!soundFile)
+        {
+            // NOTE: シーンのコンテキストで bgm_ が解決できていないと、ここで黙って無音になる
+            Module::LogWarning("SoundPlayer: BGM が設定されていないか、読み込めていません");
             return;
+        }
 
         instance_->audioSource_ = instance_->RequireComponent<Component::AudioSource>();
 

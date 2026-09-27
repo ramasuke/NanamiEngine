@@ -11,6 +11,9 @@
 `NANAMI_DEBUG_SHEET_ENABLED`（`DebugSheetConfig.h`）はエディタと **Debug** 構成のゲームビルドで 1、Release の
 ゲームビルドで 0。F1 で開閉する。
 
+パッケージ自身（`Core/` の `.h` / `.cpp`）も中身を丸ごと `#if NANAMI_DEBUG_SHEET_ENABLED` で囲んでいるので、Release の
+ゲームビルドでは `Sheet` / `Widgets` ごと消える。呼ぶ側も同じ `#if` の中から使う。
+
 プレイ中のデバッグ機能なので、開けるのは**ゲーム実行中だけ**（`GameWindow::IsPlaying()`）。エディタではプレイ中と
 一時停止中に開け、編集モードでは F1 も `Open()` も効かない。プレイを終えると閉じ、次のプレイはトップページから開く。
 ゲームビルドは起動時に Play するので常に開ける。
@@ -68,7 +71,7 @@ REGISTER_DEBUG_SHEET_PAGE(GodMode, "チート/無敵", 40, GamePlay::Debug::Draw
 ```
 
 - `ID` は翻訳単位内で一意。`PATH` は `/` で何段でも掘れる。`ORDER` は同じ階層内の並び順（小さい方が上）。カテゴリは子ページの最小の order の位置に並び、同じ order は名前順。
-- 部品は `Widgets`（`Header` / `Note` / `Button` / `NavigationCell` / `Toggle` / `Label` / `ButtonRow` / `ConfirmButton` / `InputInt`）を使うとシートのデザインに揃う。素の `ImGui::` もシートのスタイルで描かれる。
+- 部品は `Widgets`（`Header` / `Note` / `Button` / `NavigationCell` / `Toggle` / `Label` / `ButtonRow` / `ConfirmButton` / `InputInt` / `SliderFloat`）を使うとシートのデザインに揃う。素の `ImGui::` もシートのスタイルで描かれる。
 - 取り返しのつかない操作は `ConfirmButton`（3 秒以内にもう一度押すと実行）にする。
 
 ## このプロジェクトのページ
@@ -78,4 +81,7 @@ REGISTER_DEBUG_SHEET_PAGE(GodMode, "チート/無敵", 40, GamePlay::Debug::Draw
 - セーブ/全初期化（`SaveDataReset`。`LocalPrefs/` の `.json` から `Display/` `Network/` `Settings/` を除いて消す）
 - ストーリー/フラグ
 - シーン/移動
+- シーン/ステージへ出発（部屋の入り方 公開 / 作成 / 参加+コード を決めて `Matchmaker().SetNextRoom` → ステージへ移動）
 - チート/所持金・アイテム（手元のアバターは `GameCore::PlayerAvatar::Owner()`）
+- チート/職業（拠点でだけ。`MainIslandScene::SwitchPlayerAvatar` でその場で作り直す）
+- 時間/タイムスケール（`NanamiEngine::Time::SetTimeScale`。0 で停止）

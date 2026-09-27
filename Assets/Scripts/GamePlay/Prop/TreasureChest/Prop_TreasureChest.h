@@ -31,6 +31,7 @@ namespace GamePlay::Prop
         void OnInteract        () override;
         [[nodiscard]] bool CanInteract() const override { return !isOpened_; }
         [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
+        [[nodiscard]] GameCore::PlayerAvatar::PlayerInteractKind InteractKind() const override { return GameCore::PlayerAvatar::PlayerInteractKind::Open; }
         [[nodiscard]] glm::vec3 DropPosition() const;
         void SetLidAngle(float angle_deg);
         void ApplyShake(float elapsed_secs);

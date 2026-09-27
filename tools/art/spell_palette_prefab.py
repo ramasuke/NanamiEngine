@@ -5,7 +5,7 @@
     python tools/art/spell_palette_prefab.py --wire  # 加えて MagicCasterStatusPresenter.prefab を MagicCaster::StatusPresenter にする
 
 各 prefab の .meta(asset guid)は既存があれば保つので、組み直しても外からの参照は切れない
-(中の GameObject / Component の guid は毎回新しくなる)。組み方は tools/art/pause_menu_prefab.py と同じ。
+(中の GameObject / Component の guid は毎回新しくなる)。組み方は tools/art/ui_prefab_base.py の道具を使う。
 """
 import argparse
 import sys
@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tools.common.cereal_json import Num, to_file_bytes  # noqa: E402
 from tools.scene import catalog as catalog_mod, edits, reader, validate, writer  # noqa: E402
 
-import pause_menu_prefab as base  # noqa: E402
+import ui_prefab_base as base  # noqa: E402
 import spell_palette as art  # noqa: E402
 
 base.PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'SpellPalette'
@@ -158,13 +158,12 @@ def build_palette(geo, slot_prefab):
 
 
 def wire_status_presenter(palette_prefab):
-    """OtherPlayer::StatusPresenter を MagicCaster::StatusPresenter(spellPalettePrefab_) に差し替える"""
+    """MagicCaster::StatusPresenter(spellPalettePrefab_) を付け直す"""
     prefab = reader.read_prefab_file(STATUS_PRESENTER_PREFAB)
     root = prefab.root
     cat = catalog_mod.load()
     for i, comp in enumerate(list(root.components)):
-        if comp.fqn in ('GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter',
-                        'GamePlay::PlayerAvatar::MagicCaster::StatusPresenter'):
+        if comp.fqn == 'GamePlay::PlayerAvatar::MagicCaster::StatusPresenter':
             edits.remove_component(prefab, root.guid, i)
             break
     comp = edits.add_component(prefab, root.guid, 'GamePlay::PlayerAvatar::MagicCaster::StatusPresenter', cat=cat,

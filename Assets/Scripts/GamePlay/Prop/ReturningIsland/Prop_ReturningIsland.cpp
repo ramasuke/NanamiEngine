@@ -37,6 +37,15 @@ namespace GamePlay::Prop
             if (target)
                 target->SetEnable(true);
         }
+
+        // NOTE: 無効にしてもコライダーは当たり続けるので、島と同じく雲の下へどける
+        const auto blockers = blockers_.get();
+        if (blockers && blockers->IsEnable())
+        {
+            blockers->SetEnable(false);
+            StoryMovie::MoveBy(*blockers, SUNK_OFFSET);
+            StoryMovie::RebuildColliders(*blockers);
+        }
     }
 
     Coroutine::Task<void> ReturningIsland::PlayReturnAsync(
@@ -168,6 +177,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("stairs_", stairs_);
         ImGuiHelper::OnDrawInputField("camera_", camera_);
         ImGuiHelper::OnDrawInputField("focus_",  focus_);
+        ImGuiHelper::OnDrawInputField("blockers_", blockers_);
         if (ImGui::TreeNode("shot_"))
         {
             shot_.OnDrawGui();

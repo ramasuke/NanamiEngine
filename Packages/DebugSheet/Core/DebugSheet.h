@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include "../DebugSheetConfig.h"
+
+#if NANAMI_DEBUG_SHEET_ENABLED
 #include "Engine/Core/Api/NanamiApi.h"
 #include "Engine/Core/Api/NanamiModule.h"
 #include <functional>
@@ -79,3 +82,4 @@ namespace NanamiEngine::DebugSheet
         bool               isImGuiReady_    = false;
     };
 }
+#endif

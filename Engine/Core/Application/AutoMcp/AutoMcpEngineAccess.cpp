@@ -51,11 +51,6 @@ namespace NanamiEngine::Core::Application::AutoMcp
         return newScene;
     }
 
-    void AutoMcpEngineAccess::Play(MainWindow::GameWindow& gameWindow)
-    {
-        gameWindow.Play();
-    }
-
     void AutoMcpEngineAccess::Stop(MainWindow::GameWindow& gameWindow)
     {
         gameWindow.Stop();

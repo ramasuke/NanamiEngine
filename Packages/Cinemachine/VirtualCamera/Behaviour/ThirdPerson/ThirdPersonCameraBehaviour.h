@@ -31,6 +31,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         void UpdateMouseInput();
         void UpdateGamepadInput();
 
+        // Alt 押下中はカーソルの固定を外す。Game ビルドでは OS カーソルも表示する
+        static void SetCursorReleased(bool released);
+
         void UpdateFollowTargetBehaviour() const;
         void UpdateLookAtTargetBehaviour() const;
 
@@ -39,6 +42,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         // NOTE: マウスカーソルは1つなので、どのインスタンスが固定したかは問わず全体で共有する(IsMousePinned 用)
         static int lastMousePinnedMs_;
+        static bool isCursorReleased_;
 
         bool isLockMousePos_ = true;
         bool isImmediateApply_ = true;

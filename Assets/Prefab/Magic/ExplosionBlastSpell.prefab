@@ -78,7 +78,7 @@
             "ptr_wrapper": {
                 "id": 2147483651,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 2,
                     "value0": {
                         "guid_": {
                             "value_": "4380F7FF-FB9D-47C9-9812-6A5DE5245E02"
@@ -101,7 +101,22 @@
                         }
                     },
                     "detonateEffectLifeTime_secs_": 2.2699999809265138,
-                    "detonateOnEnter_": false
+                    "detonateOnEnter_": false,
+                    "hitShakeIntensity_": 0.6000000238418579,
+                    "hitShakeDuration_secs_": 0.18000000715255738,
+                    "dealDamageTextPrefab_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "D3CBEF3A-9FEF-472A-8D2D-152A4F85279A"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -155,7 +170,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483654,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -175,7 +190,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483654,
+                                "id": 2147483655,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -195,7 +210,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483655,
+                                                "id": 2147483656,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -214,7 +229,7 @@
                             "polymorphic_id": 2147483654,
                             "polymorphic_name": "GamePlay::Sound::SpawnSound",
                             "ptr_wrapper": {
-                                "id": 2147483656,
+                                "id": 2147483657,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -228,7 +243,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483657,
+                                                "id": 2147483658,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

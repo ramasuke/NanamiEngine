@@ -145,7 +145,7 @@
         "ptr_wrapper": {
             "id": 2147483657,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -167,7 +167,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "701B7A6F-386F-4670-883B-D5719F3280A0"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -201,7 +202,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "AAFF0086-BB0C-4F6A-8A90-BF17855A1240"
                 },
@@ -210,7 +211,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "AAFF0086-BB0C-4F6A-8A90-BF17855A1240"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },
@@ -239,7 +241,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "AAFF0086-BB0C-4F6A-8A90-BF17855A1240"
                 },
@@ -248,7 +250,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "AAFF0086-BB0C-4F6A-8A90-BF17855A1240"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     }

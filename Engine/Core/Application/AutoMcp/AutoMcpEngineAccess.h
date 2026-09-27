@@ -62,7 +62,6 @@ namespace NanamiEngine::Core::Application::AutoMcp
         /** @brief 読み込み済みシーンをファイルから読み直して差し替える。見つからなければ nullptr */
         static std::shared_ptr<NanamiEngine::Scene::Scene> ReloadScene(MainWindow::GameWindow& gameWindow, const ::Guid& guid);
 
-        static void Play(MainWindow::GameWindow& gameWindow);
         static void Stop(MainWindow::GameWindow& gameWindow);
         static void End(MainWindow::GameWindow& gameWindow);
 

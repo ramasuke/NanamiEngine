@@ -107,10 +107,14 @@ namespace NanamiEngine::Module
             return wide;
         }
 
-        void Record(const LogLevel level, const std::string& prefix, const std::string& text,
-                    std::ostream& consoleStream, const std::source_location& location)
+        void Record(
+            const LogLevel level,
+            const std::string& prefix,
+            const std::string& text,
+            std::ostream& consoleStream,
+            const std::source_location& location)
         {
-            std::lock_guard lock(LogMutex());
+            std::scoped_lock lock(LogMutex());
             const std::string locatedText = "[" + FormatLocation(location) + "] " + LogNormalizeToUtf8(text);
 
             consoleStream << locatedText << '\n';
@@ -125,7 +129,9 @@ namespace NanamiEngine::Module
             auto& history = LogHistoryBuffer();
             history.push_back(LogRecord{ .level = level, .text = locatedText });
             if (history.size() > kMaxLogHistory)
+            {
                 history.pop_front();
+            }
         }
     }
 
@@ -144,7 +150,9 @@ namespace NanamiEngine::Module
         Record(LogLevel::Error, "[Error] ", text, std::cerr, location);
 
         if (BreakOnLogErrorEnabledFlag().load(std::memory_order_relaxed) && IsDebuggerPresent())
+        {
             __debugbreak();
+        }
     }
 
     bool IsBreakOnLogErrorEnabled()
@@ -159,9 +167,10 @@ namespace NanamiEngine::Module
 
     std::vector<LogRecord> LogHistory()
     {
-        std::lock_guard lock(LogMutex());
+        std::scoped_lock lock(LogMutex());
         const auto& history = LogHistoryBuffer();
-        return std::vector<LogRecord>(history.begin(), history.end());
+        
+        return std::vector(history.begin(), history.end());
     }
 
     void ClearLogHistory()

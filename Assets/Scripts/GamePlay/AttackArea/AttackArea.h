@@ -84,6 +84,8 @@ namespace GamePlay
 
     protected:
         virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
+        /** 対象を他のピアが所有していてダメージを適用しなかったときに呼ばれる */
+        virtual void OnRemoteOwnedTarget(AttackTarget& attackTarget, GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower) {}
 
     private:
         void ApplyPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
@@ -120,7 +122,10 @@ namespace GamePlay
         {
             // 被弾側判定: 自分が所有していない(他ピアの)アバターにはダメージを与えない
             if (!IsDamageApplicableTarget(attackTarget.GameObject()))
+            {
+                OnRemoteOwnedTarget(attackTarget, fromObject, damagePower);
                 continue;
+            }
 
             DoAttack(attackTarget, std::make_unique<GameCore::Damage::Physics>(
                 fromObject,

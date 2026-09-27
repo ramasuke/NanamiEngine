@@ -61,9 +61,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath  () const override { return minHealth_ >= currentHealth_->Get();   }
         [[nodiscard]] bool                                               IsInjured() const override;
-        [[nodiscard]] bool                                               IsDowned () const override { return isDowned_; }
-                      void                                               SetDowned(bool downed) { isDowned_ = downed; }
+        [[nodiscard]] bool                                               IsDowned () const override;
                       void                                               Revive() override;
+                      void                                               RestoreFullHealth() override;
         [[nodiscard]] R4::Observable<R4::Unit>               OnBecomeInjured    () const override { return onBecomeInjured_    .AsObservable(); }
         [[nodiscard]] R4::Observable<R4::Unit>               OnRecoverFromInjured() const override { return onRecoverFromInjured_.AsObservable(); }
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override { return maxStamina_;           }
@@ -194,7 +194,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(16)]] float                     fallDownStateDuration_secs_ = 1.3333333333f;
         [[serialize(16)]] float                     getUpStateDuration_secs_    = 1.7666666667f;
         [[serialize(0)]] float                      reviveHealthRatio_      = 0.3f;
-        bool                                         isDowned_               = false;
 
         [[serialize(0)]] float                          injuredHealthRatio_ = 0.3f;
         bool                                            wasInjured_         = false;

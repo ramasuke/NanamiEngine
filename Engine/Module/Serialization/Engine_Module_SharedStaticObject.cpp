@@ -1,5 +1,8 @@
 ﻿#include "Engine_Module_SharedStaticObject.h"
 
+// NOTE: dllexport comes from the declaration in the cereal patch
+#include "cereal/cereal.hpp"
+
 #include <mutex>
 #include <string>
 #include <unordered_map>

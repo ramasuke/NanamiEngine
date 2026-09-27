@@ -292,7 +292,8 @@ def _find_transition_index(tree: model.Tree, *, any_state: bool, index: Optional
 
 
 def add_transition(tree: model.Tree, *, from_guid: str, next_guid: str, any_state: bool = False,
-                   duration_secs: float = 0.0, visual_from_guid: Optional[str] = None) -> model.Transition:
+                   duration_secs: float = 0.0, visual_from_guid: Optional[str] = None,
+                   has_exit_time: bool = True) -> model.Transition:
     if tree.find_node(from_guid) is None:
         raise EditError(f"--from: node not found: {from_guid}")
     if tree.find_node(next_guid) is None:
@@ -308,7 +309,8 @@ def add_transition(tree: model.Tree, *, from_guid: str, next_guid: str, any_stat
         )
     t = model.Transition(from_guid=from_guid, next_guid=next_guid,
                          visual_from_guid=visual_from_guid or from_guid,
-                         duration_secs=float(duration_secs), conditions=[])
+                         duration_secs=float(duration_secs), conditions=[],
+                         has_exit_time=bool(has_exit_time))
     _transition_list(tree, any_state).append(t)
     return t
 
@@ -324,7 +326,8 @@ def remove_transition(tree: model.Tree, *, any_state: bool = False, index: Optio
 def set_transition_params(tree: model.Tree, *, any_state: bool = False, index: Optional[int] = None,
                           from_guid: Optional[str] = None, next_guid: Optional[str] = None,
                           duration_secs: Optional[float] = None,
-                          visual_from_guid: Optional[str] = None) -> model.Transition:
+                          visual_from_guid: Optional[str] = None,
+                          has_exit_time: Optional[bool] = None) -> model.Transition:
     lst = _transition_list(tree, any_state)
     idx = _find_transition_index(tree, any_state=any_state, index=index,
                                  from_guid=from_guid, next_guid=next_guid)
@@ -333,6 +336,8 @@ def set_transition_params(tree: model.Tree, *, any_state: bool = False, index: O
         t.duration_secs = float(duration_secs)
     if visual_from_guid is not None:
         t.visual_from_guid = visual_from_guid
+    if has_exit_time is not None:
+        t.has_exit_time = bool(has_exit_time)
     return t
 
 
@@ -433,7 +438,8 @@ def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = N
                 t = add_transition(tree, from_guid=op["from"], next_guid=op["next"],
                                    any_state=bool(op.get("any_state", False)),
                                    duration_secs=float(op.get("duration_secs", 0.0)),
-                                   visual_from_guid=op.get("visual_from"))
+                                   visual_from_guid=op.get("visual_from"),
+                                   has_exit_time=bool(op.get("has_exit_time", True)))
                 log.append(f"add-transition {t.from_guid} -> {t.next_guid}")
             elif op_kind == "remove-transition":
                 remove_transition(tree, any_state=bool(op.get("any_state", False)),
@@ -443,7 +449,8 @@ def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = N
                 set_transition_params(tree, any_state=bool(op.get("any_state", False)),
                                       index=op.get("index"), from_guid=op.get("from"), next_guid=op.get("next"),
                                       duration_secs=op.get("duration_secs"),
-                                      visual_from_guid=op.get("visual_from"))
+                                      visual_from_guid=op.get("visual_from"),
+                                      has_exit_time=op.get("has_exit_time"))
                 log.append("set-transition-params")
             elif op_kind == "add-condition":
                 add_condition(tree, any_state=bool(op.get("any_state", False)),

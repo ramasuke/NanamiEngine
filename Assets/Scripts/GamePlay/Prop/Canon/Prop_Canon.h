@@ -3,7 +3,9 @@
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
 #include "../../Ui/CannonCooldownGauge/Ui_CannonCooldownGauge.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 
@@ -11,7 +13,8 @@ namespace GamePlay::Prop
 {
     class Canon final : public Component::ComponentBase,
                         public LifeCycleCallback::IAwakable,
-                        public LifeCycleCallback::IUpdatable
+                        public LifeCycleCallback::IUpdatable,
+                        public GameCore::PlayerAvatar::IPlayerInteractable
     {
     public:
         void Use();
@@ -20,17 +23,28 @@ namespace GamePlay::Prop
         void RightRotate();
         void LeftRotate();
 
-        // NOTE: イベント演出に入ったら乗れなくする。乗っている Player は UseCanon ステートから降りる
-        void Lock() { isLocked_ = true; }
+        void Lock  () { isLocked_ = true;  }
+        void Unlock() { isLocked_ = false; }
         [[nodiscard]] bool IsLocked() const { return isLocked_; }
+        [[nodiscard]] bool IsBoardRequested() const { return isBoardRequested_; }
 
     private:
         void OnAwake() override;
         void OnUpdate() override;
+        void OnInteractable    () override { isPlayerInRange_ = true;  }
+        void OnExitInteractable() override { isPlayerInRange_ = false; }
+        void OnInteract        () override { isBoardRequested_ = true; }
+        [[nodiscard]] bool CanInteract() const override { return !isLocked_ && !isInUse_; }
+        [[nodiscard]] const GameObject::Transform& InteractableTransform() const override { return Transform(); }
+        [[nodiscard]] GameCore::PlayerAvatar::PlayerInteractKind InteractKind() const override { return GameCore::PlayerAvatar::PlayerInteractKind::Board; }
 
         
         glm::vec3 position_;
-        bool isLocked_ = false;
+        bool isLocked_         = true;
+        bool isInUse_          = false;
+        bool isPlayerInRange_  = false;
+        bool isBoardRequested_ = false;
+        bool isBoardHintShown_ = true;
         int  prevCameraPriority_ = 0;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bulletPrefab_;
@@ -45,6 +59,7 @@ namespace GamePlay::Prop
         float shootCooldownDuring_secs_ = 0.0f;
 
         [[serialize(5)]] FIELD(GamePlay::Ui::CannonCooldownGauge) cannonUi_;
+        [[serialize(6)]] FIELD(GameObject::IGameObject) boardHint_;
         
         
 #pragma region Serialization Function
@@ -62,6 +77,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(shootBulletDirection_));
             archive(CEREAL_NVP(shootCooldown_secs_));
             archive(CEREAL_NVP(cannonUi_));
+            archive(CEREAL_NVP(boardHint_));
         }
 
         template<class Archive>
@@ -76,6 +92,7 @@ namespace GamePlay::Prop
             if (version >= 3) archive(CEREAL_NVP(shootBulletDirection_));
             if (version >= 4) archive(CEREAL_NVP(shootCooldown_secs_));
             if (version >= 5) archive(CEREAL_NVP(cannonUi_));
+            if (version >= 6) archive(CEREAL_NVP(boardHint_));
         }
 #pragma endregion
     };
@@ -83,4 +100,4 @@ namespace GamePlay::Prop
     
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 5);
+CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 6);

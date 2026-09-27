@@ -157,7 +157,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483654,
                                 "data": {
-                                    "cereal_class_version": 4,
+                                    "cereal_class_version": 5,
                                     "value0": {
                                         "cereal_class_version": 6,
                                         "value0": {
@@ -187,7 +187,20 @@
                                     },
                                     "simplifyEnabled_": true,
                                     "maxSimplifyError_": 0.5,
-                                    "minTriangleRatio_": 0.05000000074505806
+                                    "minTriangleRatio_": 0.05000000074505806,
+                                    "collisionMv1File_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "38BEB8B1-F7CD-4E1A-AF88-354DDE3FA519"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -244,7 +257,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483655,
+                "id": 2147483656,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -260,7 +273,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483656,
+                                "id": 2147483657,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -276,7 +289,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483657,
+                                                "id": 2147483658,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -295,7 +308,7 @@
                             "polymorphic_id": 2147483654,
                             "polymorphic_name": "GamePlay::Sound::SpawnSound",
                             "ptr_wrapper": {
-                                "id": 2147483658,
+                                "id": 2147483659,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -309,7 +322,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483659,
+                                                "id": 2147483660,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

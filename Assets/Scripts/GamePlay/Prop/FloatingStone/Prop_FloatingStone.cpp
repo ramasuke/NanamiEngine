@@ -7,6 +7,7 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 #include "Prop_StoryMovieParts.h"
+#include "../../../Core/Game/Story/Story_IslandHeartDeparture.h"
 
 namespace GamePlay::Prop
 {
@@ -127,6 +128,8 @@ namespace GamePlay::Prop
                 if (burstParticle_)
                     Scene::GameObject::Instantiate(burstParticle_.get(), basePos);
                 trail.Spawn();
+                // 心臓に引かれて集まっていた獣が散りはじめる
+                GameCore::Story::IslandHeartDeparture::Notify(stone, basePos);
             }
 
             if (elapsed_secs < flyStart_secs)

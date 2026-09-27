@@ -433,7 +433,7 @@ The project MCP server `nanami` (`.mcp.json` -> `python -m tools.automcp serve`,
 `pip install "mcp>=2.2"`) lets you drive the **running editor**: `screenshot` (mode `full` with ImGui,
 `game` = 3D only) to check real rendering, `windows_list`/`window_open`/`window_set`, `hierarchy`/
 `gameobject_find`/`gameobject_get`, `component_get`/`component_set_params`, `gameobject_set_transform`,
-`play`/`stop`/`end_play`, `camera_set`, `debug_draw_set` (collider/frustum drawing), `log_tail`, and the asset viewers (`assets_find` -> `model_view_open` / `animation_view_open` + `animation_view_set_clip`, `preview_camera` for the angle), etc. It only answers while the editor runs with
+`stop`/`end_play` (no `play`: entering play mode is left to the user), `camera_set`, `debug_draw_set` (collider/frustum drawing), `log_tail`, and the asset viewers (`assets_find` -> `model_view_open` / `animation_view_open` + `animation_view_set_clip`, `preview_camera` for the angle), etc. It only answers while the editor runs with
 *Config > AutoMCP > Enable AutoMCP* checked (engine side: `Engine/Core/Application/AutoMcp/`, polled
 from `EditorApplication::OnFrame`, 127.0.0.1:47321 by default, `NANAMI_AUTOMCP_PORT` to change).
 

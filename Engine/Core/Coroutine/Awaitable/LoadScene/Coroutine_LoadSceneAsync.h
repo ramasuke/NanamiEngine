@@ -30,5 +30,5 @@ namespace Coroutine
      * @brief シーンをワーカースレッドで読み込み、メインシーンへ差し替わるまで待つ。待っている間もフレームは回る
      * @note キャンセルされても読み込みは止めない。捨てるのは GameWindow::CancelSceneLoad の役目
      */
-    Task<SceneLoadResult> LoadSceneAsync(std::string filePath, NanamiEngine::R4::CancellationToken token = {});
+    NANAMI_API Task<SceneLoadResult> LoadSceneAsync(std::string filePath, NanamiEngine::R4::CancellationToken token = {});
 }

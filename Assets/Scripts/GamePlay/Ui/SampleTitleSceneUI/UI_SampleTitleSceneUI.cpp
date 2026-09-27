@@ -34,14 +34,15 @@ namespace GamePlay::Ui
             return;
         }
 
-        // UIは world 座標がそのままスクリーン座標
         if (const auto ui = Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f)).lock())
+        {
             assetUpdate_ = ui->Components().Catch<AssetUpdatePresenter>();
+        }
     }
 
     void SampleTitleScene::OnGameStart()
     {
-        // 更新が済んでいなければ荷札を出し直す。確認中・受け取り中の押下は受け流す
+        // 更新が済んでいなければ荷札を出し直す。
         if (const auto assetUpdate = assetUpdate_.lock(); assetUpdate && !assetUpdate->TryStartGame())
             return;
 

@@ -85,6 +85,21 @@ position_: {value0: x, value1: y} }` (`position_` is editor-canvas coords).
 | `Editor::Npc::Enemy::Behaviour::ActionNode` | 1 | `name_` (label), `action_` (`unique_ptr<GameCore::Npc::Enemy::Behaviour::ActionBase>`) |
 | `Editor::Npc::Friendly::Behaviour::ActionNode` | 1 | `name_` (label), `action_` (`unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase>`) |
 
+Selector/Sequence keep no state, so an earlier branch that starts succeeding or running takes over
+from a later one that was `Running`. For enemy actions the pre-empted action notices this
+(`ActionBase::Tick`: it returned Running but wasn't ticked in the previous tree tick,
+`TickContext::TickIndex()`), and it calls `Reset()` before its next tick. So an interrupted attack or
+wait restarts from the beginning instead of resuming halfway through. Only actions are reset;
+composite and decorator state (RandomSelector's pick, OnceExecute) is left alone.
+
+**Flinch / attack cancel (enemies):** every damage source carries a flinch value in
+`Damage::PhysicsPower::flinchPower_` (player attacks in `SwordManInitStatus`, spells / items /
+cannon in their data). `EnemyStatus::Flinch` returns `Running` for `flinch_secs_` once a hit's flinch
+value exceeds `flinchResistance_`, and sets the Animator's `State` to `animatorSetParam_`. Put it in the
+root Selector's damage branch, after `OnDamage` and the death sequence. The animation needs an
+any-state transition with `--no-exit-time` (see `docs/AnimationTree.md`) so that it cuts the current
+clip. Set `isStopHorizontalMove_` to false when `OnDamage` applies knockback. Hyena is the reference setup.
+
 A file mixes only one ActionNode flavor - which one it is fixes the whole
 tree's `--npc-kind` (`tools/bt` detects this on read and records it as `Tree.kind`;
 `new-tree` and `add-action` take it as an explicit flag instead, since there's

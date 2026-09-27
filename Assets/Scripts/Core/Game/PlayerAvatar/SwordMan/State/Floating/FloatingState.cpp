@@ -13,6 +13,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void FloatingState::DoEnter()
     {
         fallSpeed_ = 0.0f;
+        hasEmittedLandingParticle_ = false;
     }
 
     void FloatingState::DoFixedUpdate()
@@ -26,9 +27,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         UpdateTransitions();
     }
 
-    void FloatingState::TryEmitLandingParticle() const
+    void FloatingState::TryEmitLandingParticle()
     {
-        if (!Resources().HasLandingParticlePrefab() || !Conditions().IsGround())
+        // NOTE: GroundCheckRadius だと段差の縁や壁際を落ちている最中も接地扱いになるため、着地遷移と同じ半径で判定する
+        if (hasEmittedLandingParticle_ || !Resources().HasLandingParticlePrefab()
+            || !Conditions().IsGround(Resources().JumpAttackGroundCheckRadius()))
             return;
 
         const float minFallSpeed = Resources().LandingParticleMinFallSpeed();
@@ -39,6 +42,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         const float fallRate   = speedRange > 0.0f ? std::clamp((fallSpeed_ - minFallSpeed) / speedRange, 0.0f, 1.0f) : 1.0f;
         const float scale      = std::lerp(Resources().LandingParticleMinScale(), Resources().LandingParticleMaxScale(), fallRate);
 
+        hasEmittedLandingParticle_ = true;
         const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().LandingParticlePrefab(), FeatStepPos());
         if (const auto particleObject = particle.lock())
             particleObject->Transform().SetLocalScale(particleObject->Transform().GetLocalScale() * scale);

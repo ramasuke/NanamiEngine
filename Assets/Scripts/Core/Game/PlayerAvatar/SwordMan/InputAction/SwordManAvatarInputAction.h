@@ -23,7 +23,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] InputRef<void     >& CycleItemNext() const { return *cycleItemNext_; }
         [[nodiscard]] InputRef<void     >& CycleItemPrev() const { return *cycleItemPrev_; }
         [[nodiscard]] InputRef<void     >& UseItem      () const { return *useItem_      ; }
-        [[nodiscard]] InputRef<void     >& OpenMenu     () const { return *openMenu_     ; }
 
         void OnDrawGui() override;
 
@@ -45,6 +44,5 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > cycleItemNext_= MakeInputAction([this] { return IsKeyDown(Key::X) || IsPadDown(PadButton::DPadRight); });
         Input<void     > cycleItemPrev_= MakeInputAction([this] { return IsKeyDown(Key::Z) || IsPadDown(PadButton::DPadLeft); });
         Input<void     > useItem_      = MakeInputAction([this] { return IsKeyDown(Key::R) || IsPadDown(PadButton::LeftShoulder); });
-        Input<void     > openMenu_     = MakeInputAction([this] { return IsKeyDown(Key::At) || IsPadDown(PadButton::Start); });
     };
 }

@@ -115,6 +115,8 @@ namespace GameCore::Scene::Main
 
     void DrySandScene::OnStageClear(const Story::StoryFlag flag)
     {
+        isStageCleared_ = true;
+
         // 初めて立てたときだけ。倒し直しでは石はもう無い
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
@@ -134,6 +136,8 @@ namespace GameCore::Scene::Main
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
+            if (isStageCleared_)
+                avatar->PlayerStatus().RestoreFullHealth();
             avatar->SaveStatus();
         }
         playerAvatar_.reset();

@@ -839,13 +839,6 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("destroyed", MakeString(found.gameObject->GetGuid().Value(), allocator), allocator);
         }
 
-        static void CommandPlay(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
-        {
-            const auto gameWindow = RequireGameWindow();
-            AutoMcpEngineAccess::Play(*gameWindow);
-            AddPlayState(result, *gameWindow, allocator);
-        }
-
         static void CommandStop(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
@@ -1500,7 +1493,6 @@ namespace NanamiEngine::Core::Application::AutoMcp
             {"gameobject.select",       {AutoMcpPhase::FrameEnd,   CommandGameObjectSelect}},
             {"gameobject.destroy",      {AutoMcpPhase::FrameEnd,   CommandGameObjectDestroy}},
             {"component.set_enable",    {AutoMcpPhase::FrameEnd,   CommandComponentSetEnable}},
-            {"play",                    {AutoMcpPhase::FrameEnd,   CommandPlay}},
             {"stop",                    {AutoMcpPhase::FrameEnd,   CommandStop}},
             {"end",                     {AutoMcpPhase::FrameEnd,   CommandEnd}},
             {"time.set_scale",          {AutoMcpPhase::FrameEnd,   CommandTimeSetScale}},

@@ -117,7 +117,8 @@ def cmd_add_transition(a: argparse.Namespace) -> int:
     path = _path(a.file)
     text, tree = _load(path)
     t = edits.add_transition(tree, from_guid=a.from_, next_guid=a.next, any_state=a.any_state,
-                             duration_secs=a.duration, visual_from_guid=a.visual_from)
+                             duration_secs=a.duration, visual_from_guid=a.visual_from,
+                             has_exit_time=not a.no_exit_time)
     print(f"new transition: {t.from_guid} -> {t.next_guid}")
     return _commit(path, text, tree, dry_run=a.dry_run)
 
@@ -133,6 +134,7 @@ def cmd_set_transition_params(a: argparse.Namespace) -> int:
     path = _path(a.file)
     text, tree = _load(path)
     edits.set_transition_params(tree, duration_secs=a.duration, visual_from_guid=a.visual_from,
+                                has_exit_time=a.has_exit_time,
                                 **_transition_addr(a))
     return _commit(path, text, tree, dry_run=a.dry_run)
 
@@ -262,6 +264,8 @@ def register(sub: argparse._SubParsersAction) -> None:
                    help="an any-state transition (--from must be the AnyState node's guid)")
     p.add_argument("--duration", type=float, default=0.0, dest="duration")
     p.add_argument("--visual-from", dest="visual_from", help="editor-only; defaults to --from")
+    p.add_argument("--no-exit-time", action="store_true", dest="no_exit_time",
+                   help="fire as soon as the conditions hold instead of at the end of the current clip")
     _add_dry(p)
     p.set_defaults(func=cmd_add_transition)
 
@@ -276,6 +280,10 @@ def register(sub: argparse._SubParsersAction) -> None:
     _add_transition_addr_args(p)
     p.add_argument("--duration", type=float, dest="duration")
     p.add_argument("--visual-from", dest="visual_from")
+    p.add_argument("--exit-time", dest="has_exit_time", action="store_true", default=None,
+                   help="wait for the end of the current clip (default for new transitions)")
+    p.add_argument("--no-exit-time", dest="has_exit_time", action="store_false",
+                   help="fire as soon as the conditions hold")
     _add_dry(p)
     p.set_defaults(func=cmd_set_transition_params)
 

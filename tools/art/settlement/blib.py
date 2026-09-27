@@ -4,13 +4,16 @@ GrassLand の「荒れた村」「狩猟民のキャンプ」の建物を作る�
   1. python tools/art/settlement/make_textures.py <work>            # <work>/tex にテクスチャ
   2. Blender (4.5, MCP か Python コンソール) で
          g = {'SETTLEMENT_WORK': r'<work>'}
-         for f in ('blib.py', 'assets_ruins.py', 'assets_camp.py'):
+         for f in ('blib.py', 'assets_ruins.py', 'assets_camp.py', 'assets_trail.py'):
              exec(open(r'<repo>/tools/art/settlement/' + f, encoding='utf-8').read(), g)
          g['reset']()
-         for b in g['RUIN_BUILDERS'] + g['CAMP_BUILDERS']:
+         for b in g['RUIN_BUILDERS'] + g['CAMP_BUILDERS'] + g['TRAIL_BUILDERS']:
              g['export'](b())                                          # <work>/fbx/<Name>.fbx + .colliders.json
+     (blender.exe -b --factory-startup --python <script> でも動く。開いている Blender のシーンを消さずに済む)
   3. python tools/art/settlement/install_models.py <work>           # .mv1 へ変換して Assets へ、当たり判定を data へ
+     変換後に python -m tools.model set-emissive で自己発光を付ける (テクスチャのある材質 0.36、色だけの材質は色 x 0.45)
   4. python tools/art/settlement_prefabs.py && python tools/art/settlement_scatter.py
+     道しるべ (TRAIL_BUILDERS) は python tools/art/grassland_trail.py が置く
 
 - 部品はすべてローカル座標で作って UV を張ってから配置し、最後に1オブジェクトへ結合する
 - UV は面の法線の主軸で投影し、材質ごとの繰り返し長(m)で割る。木目・藁の向きは grain で指定する
@@ -39,6 +42,7 @@ MATERIALS = {
     'Bark': ('Settle_Bark.png', 1.2, 'v', None),
     'Bone': ('Settle_Bone.png', 1.0, 'v', None),
     'Ash': ('Settle_Ash.png', 1.5, None, None),
+    'Cloth': ('Settle_Cloth.png', 2.4, None, None),
     'Meat': (None, 1.0, None, (0.36, 0.09, 0.07)),
     'Rope': (None, 1.0, None, (0.52, 0.42, 0.27)),
     'Iron': (None, 1.0, None, (0.16, 0.15, 0.15)),

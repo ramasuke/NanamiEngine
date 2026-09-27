@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 5,
+                    "cereal_class_version": 6,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -60,19 +60,6 @@
                                 "data": {
                                     "value0": {
                                         "value_": "5251EEFC-2F8B-40E8-A3ED-B3D3D25EE1D3"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "pauseMenuPrefab_": {
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483653,
-                                "data": {
-                                    "value0": {
-                                        "value_": "20962F2E-9E48-436C-BECA-DA496395B1E2"
                                     }
                                 }
                             }
@@ -131,7 +118,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483654,
+                "id": 2147483653,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -151,7 +138,7 @@
                             "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483655,
+                                "id": 2147483654,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -171,9 +158,9 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "GamePlay::Ui::LowHealthScreenEffect",
                             "ptr_wrapper": {
-                                "id": 2147483656,
+                                "id": 2147483655,
                                 "data": {
-                                    "cereal_class_version": 1,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "1173A2A0-8946-4D37-A379-B5710B7479C0"
@@ -185,7 +172,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483657,
+                                                "id": 2147483656,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -212,7 +199,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483658,
+                                                "id": 2147483657,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -223,7 +210,9 @@
                                         }
                                     },
                                     "heartbeatMinVolume_": 90,
-                                    "heartbeatMaxVolume_": 200
+                                    "heartbeatMaxVolume_": 200,
+                                    "pulseDecay_secs_": 0.09000000357627869,
+                                    "dubPulseStrength_": 0.6000000238418579
                                 }
                             }
                         }
@@ -275,7 +264,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483659,
+                                "id": 2147483658,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -291,7 +280,7 @@
                                             "polymorphic_id": 2147483653,
                                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
                                             "ptr_wrapper": {
-                                                "id": 2147483660,
+                                                "id": 2147483659,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -311,7 +300,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483661,
+                                                                "id": 2147483660,
                                                                 "data": {
                                                                     "cereal_class_version": 0,
                                                                     "value0": {
@@ -378,7 +367,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483662,
+                                "id": 2147483661,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -393,7 +382,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483663,
+                                                "id": 2147483662,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -409,7 +398,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483664,
+                                                                "id": 2147483663,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "0B1C74AC-EEB9-4DC3-B1AB-AAE937B0D605"
@@ -426,7 +415,7 @@
                                             "polymorphic_id": 2147483654,
                                             "polymorphic_name": "GamePlay::Ui::DamageFlashUI",
                                             "ptr_wrapper": {
-                                                "id": 2147483665,
+                                                "id": 2147483664,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

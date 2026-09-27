@@ -37,7 +37,6 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::VisitTrans
     VisitLockOnAction(visitor);
     visitor.Action(SwordManAvatarStateAction::CycleItem, true);
     visitor.Action(SwordManAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
-    visitor.Action(SwordManAvatarStateAction::OpenMenu, true);
     visitor.OnInput(SwordManAvatarStateType::DashAttack, SwordManAvatarInput::DashAttack, PlayerAvatarInputPhase::Pressed, true);
     visitor.Automatic(SwordManAvatarStateType::UseCanon, Conditions().CanUseCannon());
     visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());

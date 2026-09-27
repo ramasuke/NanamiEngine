@@ -10,14 +10,18 @@ namespace GamePlay::Prop
 {
     void Canon::Use()
     {
+        isInUse_ = true;
+        isBoardRequested_ = false;
         prevCameraPriority_ = shootCamera_->Priority().CurrentValue();
         shootCamera_->SetPriority(100);
+        shootCamera_->SetImmediateApply(true);
         if (cannonUi_)
             cannonUi_->Show();
     }
 
     void Canon::Leave()
     {
+        isInUse_ = false;
         // NOTE: 100 のままだと同じ priority の演出カメラと競合する
         shootCamera_->SetPriority(prevCameraPriority_);
         if (cannonUi_)
@@ -64,6 +68,13 @@ namespace GamePlay::Prop
         if (cannonUi_)
             cannonUi_->SetCooldown(shootCooldownDuring_secs_, shootCooldown_secs_);
         Transform().SetWorldPos(position_);
+        // NOTE: SetEnable は子と Component 全体に伝播するので切り替わった時だけ呼ぶ
+        if (const bool showHint = isPlayerInRange_ && CanInteract();
+            boardHint_ && showHint != isBoardHintShown_)
+        {
+            isBoardHintShown_ = showHint;
+            boardHint_->SetEnable(showHint);
+        }
     }
 
     void Canon::OnDrawGui()
@@ -78,6 +89,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("shootCooldown_secs_", shootCooldown_secs_);
         ImGuiHelper::OnDrawInputField("shootCooldownDuring_secs_", shootCooldownDuring_secs_);
         ImGuiHelper::OnDrawInputField("cannonUi_", cannonUi_);
+        ImGuiHelper::OnDrawInputField("boardHint_", boardHint_);
     }
 }
 

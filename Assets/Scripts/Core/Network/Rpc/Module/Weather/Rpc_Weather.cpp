@@ -1,6 +1,8 @@
 ﻿#include "../../Custom_RpcType.h"
 #include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../../GamePlay/Weather/WeatherService.h"
+#include "../../../../../GamePlay/Weather/Sandstorm.h"
+#include "../../../../../GamePlay/Prop/StormHeart/GamePlay_StormHeart.h"
 
 namespace
 {
@@ -14,6 +16,20 @@ namespace
                 {
                     if (auto* weather = GamePlay::Weather::WeatherService::Instance())
                         weather->SetStorm(intensity, blendSeconds);
+                },
+                NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
+
+            GameCore::Network::BossSandstormRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
+                [](NanamiEngine::Module::Network::NetworkGameObject&, bool isSummon, bool isShakenByHeart)
+                {
+                    if (isSummon)
+                    {
+                        GamePlay::Weather::Sandstorm::BeginSummoned();
+                        return;
+                    }
+                    GamePlay::Weather::Sandstorm::EndSummoned();
+                    if (isShakenByHeart)
+                        GamePlay::Prop::StormHeart::PlayShakenBurst();
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
 

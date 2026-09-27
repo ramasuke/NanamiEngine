@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include "../DebugSheetConfig.h"
+
+#if NANAMI_DEBUG_SHEET_ENABLED
 #include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::DebugSheet
@@ -41,3 +44,4 @@ namespace NanamiEngine::DebugSheet
         int varCount_   = 0;
     };
 }
+#endif

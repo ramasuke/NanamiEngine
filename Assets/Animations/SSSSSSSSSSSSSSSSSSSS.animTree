@@ -52,7 +52,7 @@
         "ptr_wrapper": {
             "id": 2147483652,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 4,
                 "value0": {},
                 "animationFile_": {
                     "cereal_class_version": 0,
@@ -82,7 +82,8 @@
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -92,7 +93,7 @@
         "ptr_wrapper": {
             "id": 2147483654,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -114,7 +115,8 @@
                 },
                 "visualFromNodeGuid_": {
                     "value_": "C289C273-8DC9-4C01-9E55-BDA74BB88FDF"
-                }
+                },
+                "hasExitTime_": true
             }
         }
     },

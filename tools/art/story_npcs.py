@@ -1,7 +1,7 @@
 """docs/Story.md の筋に沿って、NPC の会話 (.npcChat) と BT を作り直す。台詞の正はこのファイル。
 
     python tools/art/story_npcs.py                # 全部
-    python tools/art/story_npcs.py --only camp    # camp / island / newcomers / clan / prologue / dragon / desert のどれか
+    python tools/art/story_npcs.py --only camp    # camp / island / newcomers / clan / prologue / dragon / desert / nest のどれか
 
 - 会話は camp_people.write_npc_chat で書く (本体は 0 バイト、中身は .meta。GUID は保つ)。
   1ページ2行・1行 22 字まで・CP932 に無い字は不可 (write_npc_chat が弾く)。
@@ -30,9 +30,12 @@ from camp_people import BT_DIR, apply_ops, asset_guid, recreate, run, write_npc_
 # Story_StoryFlag.h / Story_Facility.h の値 (末尾に足す約束なので固定でよい)
 PROLOGUE_CLEARED, RESTORATION_STARTED, GRASSLAND_CLEARED = 0, 1, 2
 DESERT_CLEARED, DESERT_GUARD_RESCUED = 5, 6
+LIGHT_STONE_RETURNED, NEST_VOYAGE_STARTED, ANCIENT_DRAGON_DEFEATED, EPILOGUE_HEARD = 7, 8, 9, 10
 FLAG_NAMES = {PROLOGUE_CLEARED: 'PrologueCleared', RESTORATION_STARTED: 'RestorationStarted',
               GRASSLAND_CLEARED: 'GrassLandCleared', DESERT_CLEARED: 'DesertCleared',
-              DESERT_GUARD_RESCUED: 'DesertGuardRescued'}
+              DESERT_GUARD_RESCUED: 'DesertGuardRescued', LIGHT_STONE_RETURNED: 'LightStoneReturned',
+              NEST_VOYAGE_STARTED: 'NestVoyageStarted', ANCIENT_DRAGON_DEFEATED: 'AncientDragonDefeated',
+              EPILOGUE_HEARD: 'EpilogueHeard'}
 FACILITY_CLAN_HOUSE = 4
 
 # キャラ選択の画面と、MainIslandScene の展示台 (一族の家の前に置いてある)
@@ -109,6 +112,36 @@ CHATS = {
     ],
     'Instructor_AfterGrassLand': [
         '最後の心臓は、砂の島の城塞跡に落ちた。\n掲示板に依頼を出しておいたぞ。',
+    ],
+    # 砂漠の後、光の心臓が戻ってから (驚きアイコン)。島が巣へ引かれていると告げる (docs/Story.md 終章)
+    'Instructor_DesertReport': [
+        '光の心臓も戻ったか。……よくやった。\nこれで島は、二つとも揃った。',
+        '……だが、妙だ。\nさっきから、島が揺れ続けている。',
+        '見張りの報せだ。島が北へ流されている。\n止めようにも、止まらん。',
+        '北の空には、あの嵐がある。\n……奴が帰っていった、あの嵐だ。',
+        '心臓が、仲間の心臓に引かれてるんだろう。\nあの嵐の奥が、古竜の巣だ。',
+        '逃げ場は無い。なら、島ごと乗り込む。\nここで決着をつけるぞ。',
+        '山頂の大砲は、俺たちが受け持つ。\n昔の竜撃ちの砲だ。まだ撃てる。',
+        '支度ができたら、俺に声をかけろ。\n……島の舵は、お前に預ける。',
+    ],
+    # 話しかけるたびに巣へ渡る (Story::DepartForNest)
+    'Instructor_ToNest': [
+        '支度はいいな。\n……行くぞ、何かに掴まっていろ！',
+    ],
+    # 古竜を倒した後 (驚きアイコン、1回)。竜狩りの真相は教官が明かす【仮】
+    'Instructor_Epilogue': [
+        '……戻ったか。\nよく、生きて帰ってきた。',
+        '見ろ。雲の下から、島がいくつも\n浮かび上がってきている。',
+        '巣から散った心臓が、沈んでいた島を\n一つずつ引き上げたんだろう。',
+        '……巣に刺さっていた銛、見たか。\nあれは、俺たちハンターの銛だ。',
+        '昔のハンターは、竜を狩る者だった。\n島の心臓は、その竜から奪ったものだ。',
+        'この島は竜狩りの本拠だった。\n大砲が竜撃ちの砲なのも、そのせいだ。',
+        '俺たちは、竜の犠牲の上に暮らしてる。\n……それを、今度こそ忘れずに伝えていく。',
+        '浮かび上がった島々には、まだ誰も\n渡ったことがない。',
+        '新しい狩り場だ。この島もまた、\n駆け出しの島に戻る。……頼んだぞ。',
+    ],
+    'Instructor_AfterEnding': [
+        '新しい島々への渡り方は、今探らせている。\nそれまでは、島の立て直しを頼む。',
     ],
     'Merchant_First': [
         'いらっしゃい！……と言いたいが、\n店もこの有様でね。',
@@ -337,6 +370,26 @@ CHATS = {
     'DesertKunoichi_ClearedAgain': [
         '古竜の巣は、嵐の向こう。\n……その時は、私も行く。',
     ],
+
+    # --- 古竜の巣 (DragonNestScene)。古竜の BT の StartChat で流す (tools/art/ancient_dragon.py)
+    'AncientDragon_Intro': [
+        '追いついた！　……こいつが古竜。\n私の島を落とした竜だよ。',
+        '骸の胸に、心臓が戻されてる……。\n仲間を起こすつもりなんだ。',
+        '上から援護する。\n……ここで、終わらせよう！',
+    ],
+    'AncientDragon_Cannon1': [
+        '待たせたな！　大砲、撃てえ！\n奴の翼を狙え！',
+        '今だ、怯んだぞ！\n一気に畳みかけろ！',
+    ],
+    'AncientDragon_Cannon2': [
+        '弾はこれで最後だ！\n……外すなよ、撃てえ！',
+        '奴が落ちた！\n決めろ、今しかない！',
+    ],
+    'AncientDragon_Defeat': [
+        '……倒れた。\n古竜も、もう動かない。',
+        '見て、心臓が……！\n巣から、空へ散っていく！',
+        '心臓が、落ちた島を探しに行くんだ。\n……私の島も、きっと。',
+    ],
 }
 
 # どの BT にも使われなくなった会話。作り直したら消す
@@ -435,6 +488,7 @@ def refs(tree_name, *action_names):
 
 
 # 作り直した後の BT でも同じ名前のアクションを残すので、2回目以降もここから拾える
+NEST_CHATS = ['AncientDragon_Intro', 'AncientDragon_Cannon1', 'AncientDragon_Cannon2', 'AncientDragon_Defeat']
 INSTRUCTOR_REFS = ('Enable SurpriseIcon', 'Enable PortalGuideCamera')
 MERCHANT_REFS = ('Open Shop',)
 
@@ -448,6 +502,7 @@ def instructor():
     def build(o):
         o.bb('ReportTalked')
         o.bb('GuideStep')
+        o.bb('Depart')
         root = o.node('entry', 'selector')
 
         # 最初の会話の続き。Chat が会話中を下ろすので IsChat の外で続ける
@@ -458,6 +513,12 @@ def instructor():
         o.action(guide, 'Disable PortalGuideCamera', 'PurposeCamera', purposeCamera_=camera, onPurposeCameraEnable_=False)
         o.action(guide, 'Set RestorationStarted', 'SetStoryFlag', flag_=RESTORATION_STARTED)
         o.write_bb(guide, 'GuideStep', 2)
+
+        # 「行くぞ」の続き。島が巣へ引かれていく演出を流して巣へ移る
+        depart = o.node(root, 'sequence')
+        o.read_bb(depart, 'Depart', 1)
+        o.write_bb(depart, 'Depart', 2)
+        o.action(depart, 'Depart For Nest', 'DepartForNest')
 
         talk = o.node(root, 'sequence')
         o.action(talk, 'IsChat', 'IsChat')
@@ -470,6 +531,29 @@ def instructor():
         o.flag(start, RESTORATION_STARTED, False)
         o.chat(start, 'Restoration Start', 'Instructor_RestorationStart')
         o.write_bb(start, 'GuideStep', 1)
+
+        # 古竜を倒した後。エピローグ (1回) → ふだん
+        epilogue = o.node(pick, 'sequence')
+        o.flag(epilogue, ANCIENT_DRAGON_DEFEATED)
+        o.flag(epilogue, EPILOGUE_HEARD, False)
+        o.chat(epilogue, 'Epilogue', 'Instructor_Epilogue')
+        o.action(epilogue, 'Set EpilogueHeard', 'SetStoryFlag', flag_=EPILOGUE_HEARD)
+
+        ending = o.node(pick, 'sequence')
+        o.flag(ending, ANCIENT_DRAGON_DEFEATED)
+        o.chat(ending, 'After Ending', 'Instructor_AfterEnding')
+
+        # 島が巣へ引かれていると聞いた後は、話しかけるたびに巣へ渡る
+        to_nest = o.node(pick, 'sequence')
+        o.flag(to_nest, NEST_VOYAGE_STARTED)
+        o.chat(to_nest, 'To Nest', 'Instructor_ToNest')
+        o.write_bb(to_nest, 'Depart', 1)
+
+        # 砂漠の後。島が北の嵐 (古竜の巣) へ流されていると告げる
+        desert_report = o.node(pick, 'sequence')
+        o.flag(desert_report, DESERT_CLEARED)
+        o.chat(desert_report, 'Desert Report', 'Instructor_DesertReport')
+        o.action(desert_report, 'Set NestVoyageStarted', 'SetStoryFlag', flag_=NEST_VOYAGE_STARTED)
 
         report = o.node(pick, 'sequence')
         o.flag(report, GRASSLAND_CLEARED)
@@ -491,6 +575,16 @@ def instructor():
         o.flag(waiting, RESTORATION_STARTED, False)
         o.icon(waiting, 'Hide ChatIcon', ICON_HIDDEN)
         o.action(waiting, 'Enable SurpriseIcon', 'GameObjectSetEnable', enableGameObject_=surprise, isEnable_=True)
+
+        # 砂漠の後と、古竜の後も驚きアイコンで呼ぶ
+        for label, flag, heard in (('Desert', DESERT_CLEARED, NEST_VOYAGE_STARTED),
+                                   ('Ending', ANCIENT_DRAGON_DEFEATED, EPILOGUE_HEARD)):
+            calling = o.node(root, 'sequence')
+            o.flag(calling, flag)
+            o.flag(calling, heard, False)
+            o.icon(calling, f'Hide ChatIcon {label}', ICON_HIDDEN)
+            o.action(calling, f'Enable SurpriseIcon {label}', 'GameObjectSetEnable', enableGameObject_=surprise,
+                     isEnable_=True)
 
         idle = o.node(o.node(root, 'once-exec'), 'sequence')
         o.action(idle, 'Disable SurpriseIcon', 'GameObjectSetEnable', enableGameObject_=surprise, isEnable_=False)
@@ -554,6 +648,7 @@ def broker():
 def island():
     write_chats(['Instructor_RestorationStart', 'Instructor_PortalGuide', 'Instructor_BeforeGrassLand',
                  'Instructor_GrassLandReport', 'Instructor_AfterGrassLand',
+                 'Instructor_DesertReport', 'Instructor_ToNest', 'Instructor_Epilogue', 'Instructor_AfterEnding',
                  'Merchant_First', 'Merchant',
                  'CharacterBroker_First', 'CharacterBroker', 'CharacterBroker_ClanHouse'])
     instructor()
@@ -878,8 +973,13 @@ def dragon():
     run('tools.bt', 'validate', DRAGON_TREE)
 
 
+def nest():
+    """古竜の巣で流す会話だけ作る。古竜の BT は tools/art/ancient_dragon.py (この会話の GUID を読む)"""
+    write_chats(NEST_CHATS)
+
+
 STEPS = {'prologue': prologue, 'dragon': dragon, 'island': island, 'newcomers': newcomers, 'camp': camp,
-         'clan': clan, 'desert': desert}
+         'clan': clan, 'desert': desert, 'nest': nest}
 
 
 def main():

@@ -67,8 +67,9 @@ namespace NanamiEngine::Module::Asset
 
         std::uint16_t ReadGrassU16(const std::string& bytes, const std::size_t offset)
         {
-            return static_cast<std::uint16_t>(static_cast<unsigned char>(bytes[offset]) |
-                                              static_cast<unsigned char>(bytes[offset + 1]) << 8);
+            return static_cast<std::uint16_t>(
+                static_cast<unsigned char>(bytes[offset]) |
+                static_cast<unsigned char>(bytes[offset + 1]) << 8);
         }
 
         bool IsGrassableHit(const Physics::RaycastHit& hit)
@@ -204,6 +205,7 @@ namespace NanamiEngine::Module::Asset
 
         if (!isPlacing_ || !ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             return;
+        
         if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGuizmo::IsOver())
             return;
 

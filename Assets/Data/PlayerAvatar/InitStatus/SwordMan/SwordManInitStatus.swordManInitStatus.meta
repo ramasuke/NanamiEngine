@@ -39,8 +39,9 @@
                 "dashAttack_": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 0,
-                        "value_": 15
+                        "cereal_class_version": 1,
+                        "value_": 15,
+                        "flinchPower_": 20
                     },
                     "value1": {
                         "cereal_class_version": 0,
@@ -53,7 +54,7 @@
                 "comboHitFeel_": [
                     {
                         "cereal_class_version": 3,
-                        "value0": 0.225,
+                        "value0": 0.22499999403953553,
                         "value1": 0.1090909093618393,
                         "value2": 1.0,
                         "value3": 0.25,
@@ -91,7 +92,8 @@
                 "chargeAttackMaxHold_secs_": 3.0,
                 "chargeAttack_": {
                     "value0": {
-                        "value_": 35
+                        "value_": 35,
+                        "flinchPower_": 50
                     },
                     "value1": {
                         "value0": 15
@@ -125,7 +127,7 @@
                 "jumpCooldown_secs_": 0.0,
                 "jumpStaminaCost_": 15.0,
                 "damageStateDuration_secs_": 0.6363636255264282,
-                "avoidRollingStateDuration_secs_": 0.40909090638160708,
+                "avoidRollingStateDuration_secs_": 0.4923076927661896,
                 "avoidRollingStaminaCost_": 20.0,
                 "deathStateDuration_secs_": 1.8181818723678589,
                 "injuredHealthRatio_": 0.30000001192092898,

@@ -76,8 +76,9 @@
                                     }
                                 },
                                 "power_": {
-                                    "cereal_class_version": 0,
-                                    "value_": 60
+                                    "cereal_class_version": 1,
+                                    "value_": 200,
+                                    "flinchPower_": 80
                                 },
                                 "fuse_secs_": 3.0,
                                 "distance_": 8.0
@@ -115,8 +116,8 @@
                     }
                 },
                 "useMotion_": 3,
-                "useEffectTime_secs_": 1.59,
-                "useTotalDuration_secs_": 2.78
+                "useEffectTime_secs_": 1.590000033378601,
+                "useTotalDuration_secs_": 2.7799999713897707
             }
         }
     }

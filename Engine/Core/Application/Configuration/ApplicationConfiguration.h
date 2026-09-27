@@ -62,6 +62,12 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetLightDifG(float g);
         static void                SetLightDifB(float b);
 
+        /** エディタの自由カメラの Near / Far (ゲームのカメラは CinemachineCameraBrain が持つ) */
+        [[nodiscard]] static float GetEditorCameraNear();
+        [[nodiscard]] static float GetEditorCameraFar();
+        static void                SetEditorCameraNear(float cameraNear);
+        static void                SetEditorCameraFar(float cameraFar);
+
         [[nodiscard]] static int               GetParticleMax();
         static void                            SetParticleMax(int max);
 
@@ -91,6 +97,9 @@ namespace NanamiEngine::Core::Application::Configuration
         static float lightDifR_;
         static float lightDifG_;
         static float lightDifB_;
+
+        static float editorCameraNear_;
+        static float editorCameraFar_;
 
         static int         particleMax_;
         static std::string assetsDirectoryPath_;

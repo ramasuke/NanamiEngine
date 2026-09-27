@@ -32,10 +32,13 @@ namespace GameCore::Npc::Enemy
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
         IShowHealthGaugeProvider* const showHealthGaugeProvider,
         const Core::Network::NetworkObjectId networkObjectId,
-        const bool isNetworkAuthority) const
+        const bool isNetworkAuthority,
+        std::optional<Damage::FlinchPower>& pendingFlinchPower) const
     {
+        ++tickIndex_;
         entryNode_->Tick(Behaviour::Action::TickContext(
-            enemyGameObject, enemyStatus, parameters_, onDamagedStack, showHealthGaugeProvider, networkObjectId, isNetworkAuthority));
+            enemyGameObject, enemyStatus, parameters_, onDamagedStack, showHealthGaugeProvider, networkObjectId, isNetworkAuthority,
+            pendingFlinchPower, tickIndex_));
     }
     
     void BehaviourTree::OnSave()

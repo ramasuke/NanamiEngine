@@ -141,7 +141,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483653,
                                 "data": {
-                                    "cereal_class_version": 4,
+                                    "cereal_class_version": 5,
                                     "value0": {
                                         "cereal_class_version": 6,
                                         "value0": {
@@ -171,7 +171,20 @@
                                     },
                                     "simplifyEnabled_": true,
                                     "maxSimplifyError_": 0.5,
-                                    "minTriangleRatio_": 0.05000000074505806
+                                    "minTriangleRatio_": 0.05000000074505806,
+                                    "collisionMv1File_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "BE28B4D5-B58C-4363-AD9C-378E347A6665"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

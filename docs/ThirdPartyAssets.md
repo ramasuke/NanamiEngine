@@ -25,3 +25,26 @@ CC BY（CC Attribution 4.0）のアセットは、配布するゲームのどこ
 | `Monster/SkeletonDragon` | Skeleton Dragon | LivindorCreation | CC BY | https://sketchfab.com/3d-models/0ae92a30d2c242069acd61ed432f6c32 |
 
 `DragonBones` の骨の色は、元のモデルにテクスチャが無いため `Settlement/Settle_Bone.png` を投影で張った。
+
+## 古竜の巣（Sketchfab、2026-09-27 取得）
+
+元の `.glb` は `%USERPROFILE%\NanamiAssetsWork\Nest\sketchfab\`、切り出しは同じフォルダの `process_nest.py`（`Desert/process_props.py` の関数を使う）。
+地形・岩の爪・嵐の壁・竜撃ちの銛・色違いの心臓は自作（`tools/art/nest_*.py`）。
+
+| 使っている所 | 作品 | 作者 | ライセンス | URL |
+| --- | --- | --- | --- | --- |
+| `Nest/NestSkeleton` | Dragon skeleton low-poly（`DragonBones` と同じ。頭と胸を抜かない全身） | SawWinHtike | CC BY | https://sketchfab.com/3d-models/195861853eba45e3a7d499a532cb93be |
+| `Nest/NestSkull` | Dragon Skull | dgeraci | CC BY | https://sketchfab.com/3d-models/239e53da30624980990c43a1f2415255 |
+
+## BGM（OpenTracks（旧DOVA-SYNDROME）、2026-09-26 取得）
+
+ライセンスは OpenTracks の音源利用ライセンス（商用可・ゲームへの組み込み可・クレジット任意）。作曲者の利用条件はどれも「サイト準拠」。
+どれもループ版のトラック。
+
+| 使っている所 | 作品 | 作者 | URL |
+| --- | --- | --- | --- |
+| `Audio/BGM/Desert_SandTown`（砂漠のフィールド） | 砂の街 | shimtone | https://opentracks.com/bgm/detail/12985 |
+| `Audio/BGM/Boss_SkeletonDragon`（骸竜戦） | 星の胎動 | MAKOOTO | https://opentracks.com/bgm/detail/9754 |
+| `Audio/BGM/Title_Dawn`（タイトル画面、2026-09-27 取得） | オープニングオーケストラ「夜明け」 | 今川彰人オーケストラ | https://opentracks.com/bgm/detail/7311 |
+| `Audio/BGM/FirstTouchdown_Tabigarasu`（序章、2026-09-27 取得） | 旅がらす | MAKOOTO | https://opentracks.com/bgm/detail/9133 |
+| `Audio/BGM/MainIsland_ToriiMae`（拠点の島、2026-09-27 取得。トラック2） | 鳥居の前にて | マニーラ | https://opentracks.com/bgm/detail/14981 |

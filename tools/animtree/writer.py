@@ -175,11 +175,11 @@ class _W:
             data[f"value{i}"] = self.condition_slot(c)
         return OrderedObj([("ptr_wrapper", OrderedObj([("valid", Num.of_int(1)), ("data", data)]))])
 
-    def transition_slot(self, t: model.Transition) -> OrderedObj:
+    def transition_slot(self, t: model.Transition, path_version: int) -> OrderedObj:
         slot = OrderedObj([("polymorphic_id", Num.of_int(EXACT_PID))])
         kid = self.new_k()
         data = OrderedObj()
-        self.emit_ver(("type", "AnimationNodePath"), model.NODE_PATH_CLASS_VERSION, data)
+        self.emit_ver(("type", "AnimationNodePath"), path_version, data)
         iobj = OrderedObj()
         self.emit_ver(("type", "IObject"), model.IOBJECT_CLASS_VERSION, iobj)
         data["value0"] = iobj
@@ -188,6 +188,8 @@ class _W:
         data["fromNodeGuid_"] = self.guid_obj(t.from_guid)
         data["nextNodeGuid_"] = self.guid_obj(t.next_guid)
         data["visualFromNodeGuid_"] = self.guid_obj(t.visual_from_guid)
+        if path_version >= model.NODE_PATH_HAS_EXIT_TIME_VERSION:
+            data["hasExitTime_"] = bool(t.has_exit_time)
         slot["ptr_wrapper"] = OrderedObj([("id", Num.of_int(kid)), ("data", data)])
         return slot
 
@@ -220,6 +222,9 @@ class _W:
 def write_tree(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> str:
     cat = cat or catalog_mod.load()
     versions.unify_node_versions(tree, cat)
+    all_paths = [*tree.transitions, *tree.any_state_transitions]
+    if any(not t.has_exit_time for t in all_paths):
+        tree.node_path_version = max(tree.node_path_version, model.NODE_PATH_HAS_EXIT_TIME_VERSION)
     w = _W(cat)
     root = OrderedObj()
     root["additionParameters_"] = w.params_block(tree.params)
@@ -232,11 +237,11 @@ def write_tree(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> str:
 
     root["fromNodeNodePathCount"] = Num.of_int(len(tree.transitions))
     for i, t in enumerate(tree.transitions):
-        root[f"fromNodeNodePath_{i}"] = w.transition_slot(t)
+        root[f"fromNodeNodePath_{i}"] = w.transition_slot(t, tree.node_path_version)
 
     root["fromAnyStateNodeNodePathCount"] = Num.of_int(len(tree.any_state_transitions))
     for i, t in enumerate(tree.any_state_transitions):
-        root[f"fromAnyStateNodeNodePath_{i}"] = w.transition_slot(t)
+        root[f"fromAnyStateNodeNodePath_{i}"] = w.transition_slot(t, tree.node_path_version)
 
     return dumps(root)
 

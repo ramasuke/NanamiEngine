@@ -136,7 +136,9 @@ namespace GamePlay::Network
 
         ENetPacket* packet = enet_packet_create(bytes.data(), bytes.size(), ENET_PACKET_FLAG_RELIABLE);
         if (enet_peer_send(relay_, NanamiRelay::CHANNEL_CONTROL, packet) != 0)
+        {
             enet_packet_destroy(packet);
+        }
     }
 
     void EnetRelayNetworkSystem::OnControlReceived(const std::uint8_t* data, const std::size_t size)
@@ -347,7 +349,9 @@ namespace GamePlay::Network
     {
         playerId_ = playerId;
         if (state_ == ConnectionState::Connecting)
+        {
             state_ = ConnectionState::Connected;
+        }
     }
 
     NanamiEngine::R4::Observable<PlayerId> EnetRelayNetworkSystem::OnConnectPlayer()

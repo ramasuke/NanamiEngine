@@ -1,5 +1,7 @@
 ﻿#include "EnemyBase.h"
 
+#include <algorithm>
+
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
@@ -72,7 +74,10 @@ namespace GameCore::Npc
             if (behaviour_)
             {
                 // ゲート内では isAuthorityGated == true ⇔ 自分が権威(他ピアはTickしていない)
-                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, showHealthGaugeProvider_, GetNetworkObjectId(), isAuthorityGated);
+                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, showHealthGaugeProvider_, GetNetworkObjectId(), isAuthorityGated,
+                                pendingFlinchPower_);
+                // NOTE: Flinch を持たないツリーや届かない枝で、古い怯みが後から効かないよう毎 Tick 捨てる
+                pendingFlinchPower_.reset();
             }
         }
         DoUpdate();
@@ -80,6 +85,8 @@ namespace GameCore::Npc
 
     void EnemyBase::OnTakeDamage(std::unique_ptr<IDamage> context)
     {
+        const Damage::FlinchPower flinchPower = context->FlinchPower();
+        pendingFlinchPower_ = pendingFlinchPower_ ? std::max(*pendingFlinchPower_, flinchPower) : flinchPower;
         onDamagedStack_->push(std::move(context));
     }
 

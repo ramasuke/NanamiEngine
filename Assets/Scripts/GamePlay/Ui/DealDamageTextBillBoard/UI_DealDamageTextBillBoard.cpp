@@ -6,6 +6,8 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../../Core/Network/Rpc/Custom_RpcType.h"
+#include "../../Network/GamePlay_NetworkObjectIdOf.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -20,6 +22,18 @@ namespace GamePlay::Ui
 
         if (const auto billBoard = damageText->Components().Catch<DealDamageTextBillBoard>().lock())
             billBoard->Play(value);
+    }
+
+    void SpawnDealDamageTextSynced(Asset::PrefabGameObjectFile& prefab,
+                                   const glm::vec3& position,
+                                   const int value,
+                                   GameObject::IGameObject& attacker)
+    {
+        SpawnDealDamageText(prefab, position, value);
+
+        const auto attackerId = Network::NetworkObjectIdOf(attacker);
+        if (attackerId != Core::Network::NetworkObjectId::Invalid())
+            GameCore::Network::DealDamageTextRpc::Send(attackerId, Core::Network::DeliveryMode::Reliable, prefab.GetGuid(), position, value);
     }
 
     float DealDamageTextBillBoard::LogRate(const int value, const int from, const int to)

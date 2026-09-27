@@ -2,6 +2,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../../GamePlay/Prop/ChargeBreakPillar/GamePlay_ChargeBreakPillar.h"
+#include "../../../../../GamePlay/Prop/StormHeart/GamePlay_StormHeart.h"
 
 namespace
 {
@@ -34,6 +35,14 @@ namespace
                     GamePlay::Prop::ChargeBreakPillar::TrembleAll(center, radius);
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
+
+            // 他のピアで揺らいだ光の心臓を、骸竜を持つホストで揺らいだことにする
+            GameCore::Network::StormHeartShakenRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
+                [](NanamiEngine::Module::Network::NetworkGameObject&)
+                {
+                    GamePlay::Prop::StormHeart::ShakeByRemote();
+                },
+                NanamiEngine::Module::Network::RpcOwnershipFilter::OnlyIfOwner);
         }
     };
     static PropRpcRegistration s_propRpcRegistration;

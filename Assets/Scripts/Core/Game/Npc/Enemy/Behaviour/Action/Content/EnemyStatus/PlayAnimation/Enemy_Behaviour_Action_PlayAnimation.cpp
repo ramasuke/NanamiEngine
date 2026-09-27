@@ -8,12 +8,19 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::PlayAnimation::DoTick(const TickContext& context)
     {
-        context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(animatorSetParamNumber_);
-        
-        if (waitAnimationSound_secs_.Tick(context) == TickStatus::Success)
+        auto& param = context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME);
+        // NOTE: Sequence は後ろの Wait が終わるまで毎フレームこのノードを Tick し直すので、音はアニメーションに入ったときに 1 回だけ鳴らす
+        if (param.Get() != animatorSetParamNumber_)
+        {
+            waitAnimationSound_secs_.Reset();
+            isSoundPending_ = true;
+        }
+        param.Set(animatorSetParamNumber_);
+
+        if (isSoundPending_ && waitAnimationSound_secs_.Tick(context) == TickStatus::Success)
         {
             animationSound_.Tick(context);
-            waitAnimationSound_secs_.Reset();
+            isSoundPending_ = false;
         }
         return TickStatus::Success;
     }
@@ -21,6 +28,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     void Action::PlayAnimation::DoReset()
     {
         waitAnimationSound_secs_.Reset();
+        isSoundPending_ = true;
     }
 
     void Action::PlayAnimation::DoDrawGui()

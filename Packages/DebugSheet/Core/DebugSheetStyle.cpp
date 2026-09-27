@@ -1,5 +1,6 @@
 ﻿#include "DebugSheetStyle.h"
 
+#if NANAMI_DEBUG_SHEET_ENABLED
 namespace NanamiEngine::DebugSheet
 {
     namespace
@@ -61,3 +62,4 @@ namespace NanamiEngine::DebugSheet
         ImGui::PopStyleColor(colorCount_);
     }
 }
+#endif

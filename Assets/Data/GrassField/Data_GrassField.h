@@ -91,7 +91,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float     BendAmount     () const { return bendAmount_;      }
         [[nodiscard]] float     ColorVariation () const { return colorVariation_;  }
         [[nodiscard]] glm::vec3 BaseColor      () const { return baseColor_.ToVec3(); }
-        [[nodiscard]] glm::vec3 TipColor       () const { return tipColor_.ToVec3();  }
+        [[nodiscard]] glm::vec3 TipColor       () const { return tipColor_ .ToVec3();  }
         [[nodiscard]] float     Ambient        () const { return ambient_;         }
         [[nodiscard]] float     WindStrength   () const { return windStrength_;    }
         [[nodiscard]] float     MaxDrawDistance() const { return maxDrawDistance_; }
@@ -116,8 +116,8 @@ namespace NanamiEngine::Module::Asset
         float widthMax_   = 8.0f;
         float bendAmount_ = 0.25f;
 
-        NanamiEngine::Color32 baseColor_      {31, 82, 20};
-        NanamiEngine::Color32 tipColor_       {140, 199, 77};
+        Color32 baseColor_ {31, 82, 20};
+        Color32 tipColor_  {140, 199, 77};
         float                 colorVariation_ = 0.25f;
         float                 ambient_        = 0.4f;
 

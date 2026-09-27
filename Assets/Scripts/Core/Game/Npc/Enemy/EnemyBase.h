@@ -2,6 +2,7 @@
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../../Data/EnemyBehaviour/Data_EnemyBehaviourFile.h"
+#include "../../Damage/Flinch/Game_Damage_FlinchPower.h"
 #include "../../PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 #include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
@@ -46,6 +47,7 @@ namespace GameCore::Npc
         FIELD(Asset::EnemyBehaviourFile) behaviourData_;
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
+        std::optional<Damage::FlinchPower> pendingFlinchPower_;
         bool hasNetworkBehaviourTree_ = false;
         bool isDefeatRecorded_ = false;
         Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;

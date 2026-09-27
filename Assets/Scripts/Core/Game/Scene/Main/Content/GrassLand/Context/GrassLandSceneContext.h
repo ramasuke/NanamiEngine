@@ -56,6 +56,15 @@ namespace GameCore::Scene
         [[nodiscard]] const glm::vec3& ArrivalCameraEnd  () const { return arrivalCameraEnd_;   }
         /** 歩いているプレイヤーの、足元から注視点までの高さ */
         [[nodiscard]] float ArrivalLookAtHeight() const { return arrivalLookAtHeight_; }
+        /** 島を見下ろす空撮の尺。0なら空撮せず、ポータルのショットから始める */
+        [[nodiscard]] int ArrivalOverview_msecs       () const { return arrivalOverview_msecs_;        }
+        /** 空撮の終点からポータルのショットの始点まで降りてくる尺 */
+        [[nodiscard]] int ArrivalOverviewDescend_msecs() const { return arrivalOverviewDescend_msecs_; }
+        /** 空撮のカメラの始点と終点 (ワールド座標) */
+        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraStart() const { return arrivalOverviewCameraStart_; }
+        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraEnd  () const { return arrivalOverviewCameraEnd_;   }
+        /** 空撮で注視する島の中心 (ワールド座標) */
+        [[nodiscard]] const glm::vec3& ArrivalOverviewLookAt     () const { return arrivalOverviewLookAt_;      }
         /** このステージのクリア条件。どちらかが -1 なら無し */
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
@@ -85,6 +94,11 @@ namespace GameCore::Scene
         [[serialize(11)]] int      clearEnemyKind_                = -1;
         [[serialize(11)]] int      clearStoryFlag_                = -1;
         [[serialize(14)]] FIELD(GamePlay::Prop::FloatingStone) floatingStone_;
+        [[serialize(15)]] int       arrivalOverview_msecs_        = 0;
+        [[serialize(15)]] int       arrivalOverviewDescend_msecs_ = 3500;
+        [[serialize(15)]] glm::vec3 arrivalOverviewCameraStart_   = glm::vec3(0.0f);
+        [[serialize(15)]] glm::vec3 arrivalOverviewCameraEnd_     = glm::vec3(0.0f);
+        [[serialize(15)]] glm::vec3 arrivalOverviewLookAt_        = glm::vec3(0.0f);
 
 #pragma region Serialization Function
     public:
@@ -114,6 +128,11 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(clearEnemyKind_));
             archive(CEREAL_NVP(clearStoryFlag_));
             archive(CEREAL_NVP(floatingStone_));
+            archive(CEREAL_NVP(arrivalOverview_msecs_));
+            archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
+            archive(CEREAL_NVP(arrivalOverviewCameraStart_));
+            archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
+            archive(CEREAL_NVP(arrivalOverviewLookAt_));
         }
 
         template<class Archive>
@@ -186,11 +205,19 @@ namespace GameCore::Scene
                 archive(cereal::make_nvp("stoneDepartShot_", oldDepartShot));
             }
             if (version >= 14) archive(CEREAL_NVP(floatingStone_));
+            if (version >= 15)
+            {
+                archive(CEREAL_NVP(arrivalOverview_msecs_));
+                archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
+                archive(CEREAL_NVP(arrivalOverviewCameraStart_));
+                archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
+                archive(CEREAL_NVP(arrivalOverviewLookAt_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 14);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 15);
 #pragma endregion

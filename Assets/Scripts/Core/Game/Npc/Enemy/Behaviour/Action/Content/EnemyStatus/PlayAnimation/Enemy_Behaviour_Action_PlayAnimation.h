@@ -15,7 +15,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] int animatorSetParamNumber_ = 0;
         [[serialize(2)]] WaitSeconds waitAnimationSound_secs_;
         [[serialize(2)]] PlaySE animationSound_;
-        
+        bool isSoundPending_ = true;
+
 #pragma region Serialization Function
     public:
         template<class Archive>

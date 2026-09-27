@@ -15,6 +15,7 @@
 #include <limits>
 
 #include "Packages/DebugSheet/DebugSheet.h"
+#include "../../GamePlay/Debug/DebugSheet/HealthCheat.h"
 #include "../../GamePlay/Debug/DebugSheet/SaveDataReset.h"
 #endif
 
@@ -101,15 +102,17 @@ namespace GameCore
     void Game::OnUpdate()
     {
         sceneGroup_->Update();
+        
 #if NANAMI_DEBUG_SHEET_ENABLED
         GamePlay::Debug::SaveDataReset::Update();
+        GamePlay::Debug::HealthCheat::Update();
 #endif
     }
 
 #if NANAMI_DEBUG_SHEET_ENABLED
     void Game::OnUserInterfaceRender()
     {
-        // NOTE: UI 描画はエディタの非プレイ中も回るが、プレイ中以外は Sheet 側で開かない
+        // NOTE: UI プレイ中以外は Sheet 側で開かない
         auto& debugSheet = NanamiEngine::DebugSheet::Sheet::Instance();
         debugSheet.Update();
         debugSheet.Render();
@@ -124,7 +127,9 @@ namespace GameCore
     void Game::OnDestroy()
     {
         if (instance_ == this)
+        {
             instance_ = nullptr;
+        }
     }
     
     void Game::OnDrawGui()

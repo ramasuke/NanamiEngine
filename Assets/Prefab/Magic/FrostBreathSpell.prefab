@@ -82,7 +82,7 @@
             "ptr_wrapper": {
                 "id": 2147483651,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "guid_": {
                             "value_": "FF52D857-F7E6-49F5-8E50-4AEE2FEE7F82"
@@ -105,7 +105,9 @@
                         }
                     },
                     "hitEffectLifeTime_secs_": 0.7699999809265137,
-                    "linger_secs_": 0.5
+                    "linger_secs_": 0.5,
+                    "hitShakeIntensity_": 0.15000000596046449,
+                    "hitShakeDuration_secs_": 0.07999999821186066
                 }
             }
         }

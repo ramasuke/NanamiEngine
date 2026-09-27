@@ -21,6 +21,7 @@
 #include "../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
+#include "../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
 #include "../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../Npc/Friendly/IFriendlyNpc.h"
 #include "../../Interactable/IPlayerInteractable.h"
@@ -198,8 +199,14 @@ namespace GameCore::PlayerAvatar::SwordMan
                                             mask);
 
             const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
-            GamePlay::Ui::SpawnDealDamageText(Resources().DealDamageTextBillBoardPrefab(), textPos, power.Value());
+            GamePlay::Ui::SpawnDealDamageTextSynced(Resources().DealDamageTextBillBoardPrefab(), textPos, power.Value(), Player());
         }
+    }
+
+    void SwordManAvatarStateBase::SpawnAttackParticle(Asset::PrefabGameObjectFile& prefab, const glm::vec3& position,
+                                                      const std::optional<glm::quat>& rotation, const std::optional<float> scale) const
+    {
+        GamePlay::Spawn::SpawnOrientedPrefabSynced(prefab, position, rotation, scale, Player());
     }
 
     void SwordManAvatarStateBase::ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const
@@ -248,7 +255,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         const glm::vec3 blockPos = raycastHit.Position() - direction / reach * WALL_BLOCK_PARTICLE_SURFACE_OFFSET;
 
         if (Resources().HasAttackBlockedParticlePrefab())
-            Scene::GameObject::Instantiate(Resources().AttackBlockedParticlePrefab(), blockPos);
+            SpawnAttackParticle(Resources().AttackBlockedParticlePrefab(), blockPos);
 
         PlayRandomSe(Resources().AttackBlockedSounds(), blockPos);
 
@@ -294,7 +301,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         const float rate = Status().AttackPowerRate();
         if (rate == 1.0f)
             return base;
-        return Damage::PhysicsPower(static_cast<int>(static_cast<float>(base.Value()) * rate));
+        return base.WithValue(static_cast<int>(static_cast<float>(base.Value()) * rate));
     }
 
     void SwordManAvatarStateBase::OnLockOnEngaged() const

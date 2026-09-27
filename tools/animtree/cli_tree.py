@@ -105,7 +105,7 @@ def _print_transitions(title: str, transitions: list) -> None:
     print(f"\n{title}:")
     for i, t in enumerate(transitions):
         cond = "; ".join(f"{c.name}=={model.numval(c.value)}" for c in t.conditions) or "always"
-        print(f"  [{i}] {t.from_guid} -> {t.next_guid}  duration={model.numval(t.duration_secs):g}  ({cond})")
+        print(f"  [{i}] {t.from_guid} -> {t.next_guid}  duration={model.numval(t.duration_secs):g}{'' if t.has_exit_time else '  no-exit-time'}  ({cond})")
 
 
 def _p(pos) -> str:

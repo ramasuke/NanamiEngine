@@ -2,18 +2,20 @@
 #include "../../Core/Game/Game.h"
 #include "../../Core/Game/Npc/Enemy/AttackArea/Enemy_AttackArea.h"
 #include "../../Core/Game/Npc/Enemy/Content/SampleEnemy/SampleEnemy.h"
-#include "../../Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h"
 #include "../../Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h"
 #include "../../Core/Game/PlayerAvatar/MagicCaster/Status/Presenter/PlayerAvatar_MagicCaster_StatusPresenter.h"
 #include "../../Core/Game/Scene/Main/Content/FirstTouchDownMainIsLand/Context/FirstTouchDownMainIsLandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/GrassLand/Context/GrassLandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/DrySand/Context/DrySandSceneContext.h"
+#include "../../Core/Game/Scene/Main/Content/DragonNest/Context/DragonNestSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/MainIslandScene/Context/MainIsLandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/Title/Context/TitleSceneContext.h"
 #include "../../Core/Game/Scene/Sub/Content/ChattingUI/Context/ChattingUISceneContext.h"
 #include "../../Core/Game/Scene/Sub/Content/OtherPlayerStatusUI/Context/OtherPlayerStatusUiSceneContext.h"
+#include "../../Core/Game/Scene/Sub/Content/StageReturnUI/Context/StageReturnUiSceneContext.h"
 #include "../../GamePlay/Network/Game_CustomNetworkRunner.h"
 #include "../../GamePlay/Npc/Enemy/FirstEventDragon/GamePlay_Enemy_FirstEventDragon.h"
+#include "../../GamePlay/Npc/Enemy/FirstEventDragon/GamePlay_Enemy_AncientDragon.h"
 #include "../../GamePlay/Npc/Enemy/Hyena/GamePlay_Enemy_Hyena.h"
 #include "../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "../../GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h"
@@ -34,6 +36,7 @@
 #include "../../GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h"
 #include "../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../GamePlay/Prop/AirShip/Prop_AirShip.h"
+#include "../../GamePlay/Prop/AirShip/Prop_AirShipWingFlap.h"
 #include "../../GamePlay/Prop/ProximityReveal/ProximityReveal.h"
 #include "../../GamePlay/Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
@@ -47,15 +50,18 @@
 #include "../../GamePlay/Prop/LatticeBarrier/LatticeBarrierEffect.h"
 #include "../../GamePlay/Prop/Tree/TreeLeafSway.h"
 #include "../../GamePlay/Weather/WindZone.h"
+#include "../../GamePlay/Weather/Sandstorm.h"
 #include "../../GamePlay/Sound/SoundPlayer.h"
 #include "../../GamePlay/Sound/SpawnSound.h"
 #include "../../GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
+#include "../../GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconChattableMotion.h"
+#include "../../GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconChattingMotion.h"
+#include "../../GamePlay/Ui/BillBoardNpcChatIcon/Motion/ChatIconSurpriseMotion.h"
 #include "../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../GamePlay/Ui/GaugeEffects/Ui_GaugeEffects.h"
 #include "../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
-#include "../../GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h"
 #include "../../GamePlay/Ui/Sample/UI_SampleTitleLogo.h"
 #include "../../GamePlay/Ui/SampleTitleSceneUI/UI_SampleTitleSceneUI.h"
 #include "../../GamePlay/Ui/SpellPalette/Ui_SpellPalette.h"
@@ -76,14 +82,17 @@
 #include "../../GamePlay/Ui/GameOver/Ui_GameOverScreen.h"
 #include "../../GamePlay/Ui/GameOver/DeathCamera/GameOverDeathCamera.h"
 #include "../../GamePlay/Ui/GameOver/Presenter/GameOverPresenter.h"
-#include "../../GamePlay/Ui/PauseMenu/Ui_PauseMenu.h"
-#include "../../GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h"
+#include "../../GamePlay/Ui/StageReturn/Ui_StageReturnNotice.h"
+#include "../../GamePlay/Ui/StageReturn/Presenter/StageReturnPresenter.h"
 #include "../../GamePlay/Prop/CharacterPodium/Prop_CharacterPodium.h"
 #include "../../GamePlay/Prop/EventNoticeBoard/Prop_EventNoticeBoard.h"
 #include "../../GamePlay/Prop/HerbPatch/Prop_HerbPatch.h"
 #include "../../GamePlay/Prop/ChargeStuckObstacle/GamePlay_ChargeStuckObstacle.h"
 #include "../../GamePlay/Prop/TreasureChest/Prop_TreasureChest.h"
 #include "../../GamePlay/Prop/ChargeBreakPillar/GamePlay_ChargeBreakPillar.h"
+#include "../../GamePlay/Prop/Tumbleweed/GamePlay_Tumbleweed.h"
+#include "../../GamePlay/Prop/StormHeart/GamePlay_StormHeart.h"
+#include "../../GamePlay/Prop/FloatingDrift/GamePlay_FloatingDrift.h"
 #include "../../GamePlay/Ui/EventBoard/UI_EventBoard.h"
 #include "../../GamePlay/Ui/EventBoard/Row/Ui_EventBoard_Row.h"
 #include "../../GamePlay/Ui/EventBoard/Presenter/EventBoardPresenter.h"
@@ -113,6 +122,7 @@ namespace Editor::AddComponentMenu
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::MainIslandSceneContext>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::GrassLandSceneContext>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::DrySandSceneContext>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::DragonNestSceneContext>(addComponent);
                     ImGui::TreePop();
                     ImGui::Spacing();
                 }
@@ -120,6 +130,7 @@ namespace Editor::AddComponentMenu
                 {
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::Sub::ChattingUISceneContext>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::Sub::OtherPlayerStatusUiSceneContext>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::Sub::StageReturnUiSceneContext>(addComponent);
                     ImGui::TreePop();
                     ImGui::Spacing();
                 }
@@ -146,6 +157,9 @@ namespace Editor::AddComponentMenu
             {
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::NpcChatting         >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::BillBoardNpcChatIcon>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ChatIconChattableMotion>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ChatIconChattingMotion>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ChatIconSurpriseMotion>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleLogo >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PlayerStatus    >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::GaugeEffects    >(addComponent);
@@ -166,10 +180,8 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ShopRow>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ShopReceipt>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::ShopPresenter>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuUi>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuRow>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuItemCell>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuPresenter>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::StageReturnNoticeUi>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::StageReturnPresenter>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::LoadingScreenUi>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::LoadingHintCard>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::LoadingRouteMap>(addComponent);
@@ -178,7 +190,6 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::GameOverPresenter>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::GameOverDeathCamera>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::OtherPlayerStatusUiGroup>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SpellPalette>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SpellSlot>(addComponent);
                 ImGui::TreePop();
@@ -190,7 +201,6 @@ namespace Editor::AddComponentMenu
                 {
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar           >(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>(addComponent);
-                    AddComponent::OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>(addComponent);
                     ImGui::TreePop();
                     ImGui::Spacing();    
                 }
@@ -248,6 +258,7 @@ namespace Editor::AddComponentMenu
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::DesertScorpion>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::SandWorm>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::SkeletonDragon>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::AncientDragon>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
                     if (ImGui::TreeNode("Attack"))
                     {
@@ -266,6 +277,7 @@ namespace Editor::AddComponentMenu
             if (ImGui::TreeNode("Prop"))
             {
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::AirShip        >(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::AirShipWingFlap>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::CharacterPodium>(addComponent);
@@ -279,6 +291,9 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ChargeStuckObstacle>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ChargeBreakPillar>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::Tumbleweed>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::StormHeart>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::FloatingDrift>(addComponent);
                 if (ImGui::TreeNode("Grass"))
                 {
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::Grassable    >(addComponent);
@@ -301,6 +316,7 @@ namespace Editor::AddComponentMenu
             if (ImGui::TreeNode("Environment"))
             {
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Weather::WindZone>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Weather::Sandstorm>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

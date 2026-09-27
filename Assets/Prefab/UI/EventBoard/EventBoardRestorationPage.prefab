@@ -348,7 +348,7 @@
             "ptr_wrapper": {
                 "id": 2147483668,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -407,7 +407,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -507,7 +508,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -537,12 +539,8 @@
                                         },
                                         "isEnable_": false
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -605,7 +603,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -635,12 +634,8 @@
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -703,7 +698,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -733,12 +729,8 @@
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -801,7 +793,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -833,9 +826,7 @@
                                         },
                                         "isEnable_": false
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
                                     "fontFile_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -877,20 +868,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.4,
-                            "value1": 0.4,
+                            "value0": 0.4000000059604645,
+                            "value1": 0.4000000059604645,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.4,
+                                "value0": 0.4000000059604645,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.4,
+                                "value1": 0.4000000059604645,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -908,7 +899,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -998,9 +990,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1040,20 +1030,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.6666666666666666,
-                                            "value1": 0.6666666666666666,
+                                            "value0": 0.6666666865348816,
+                                            "value1": 0.6666666865348816,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.6666666666666666,
+                                                "value0": 0.6666666865348816,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.6666666666666666,
+                                                "value1": 0.6666666865348816,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1071,7 +1061,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1101,9 +1092,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1143,20 +1132,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.4,
-                                            "value1": 0.4,
+                                            "value0": 0.4000000059604645,
+                                            "value1": 0.4000000059604645,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.4,
+                                                "value0": 0.4000000059604645,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.4,
+                                                "value1": 0.4000000059604645,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1174,7 +1163,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1204,9 +1194,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1246,20 +1234,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.36666666666666664,
-                                            "value1": 0.36666666666666664,
+                                            "value0": 0.36666667461395266,
+                                            "value1": 0.36666667461395266,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.36666666666666664,
+                                                "value0": 0.36666667461395266,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.36666666666666664,
+                                                "value1": 0.36666667461395266,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1277,7 +1265,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1307,9 +1296,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1349,20 +1336,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.5333333333333333,
-                                            "value1": 0.5333333333333333,
+                                            "value0": 0.5333333611488342,
+                                            "value1": 0.5333333611488342,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.5333333333333333,
+                                                "value0": 0.5333333611488342,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.5333333333333333,
+                                                "value1": 0.5333333611488342,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1380,7 +1367,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1410,9 +1398,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1452,20 +1438,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.4666666666666667,
-                                            "value1": 0.4666666666666667,
+                                            "value0": 0.46666666865348818,
+                                            "value1": 0.46666666865348818,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.4666666666666667,
+                                                "value0": 0.46666666865348818,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.4666666666666667,
+                                                "value1": 0.46666666865348818,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1483,7 +1469,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1513,9 +1500,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1555,20 +1540,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.5333333333333333,
-                                            "value1": 0.5333333333333333,
+                                            "value0": 0.5333333611488342,
+                                            "value1": 0.5333333611488342,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.5333333333333333,
+                                                "value0": 0.5333333611488342,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.5333333333333333,
+                                                "value1": 0.5333333611488342,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1586,7 +1571,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1616,9 +1602,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1658,20 +1642,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.35,
-                                            "value1": 0.35,
+                                            "value0": 0.3499999940395355,
+                                            "value1": 0.3499999940395355,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.35,
+                                                "value0": 0.3499999940395355,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.35,
+                                                "value1": 0.3499999940395355,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1689,7 +1673,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1719,9 +1704,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1761,20 +1744,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.35,
-                                            "value1": 0.35,
+                                            "value0": 0.3499999940395355,
+                                            "value1": 0.3499999940395355,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.35,
+                                                "value0": 0.3499999940395355,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.35,
+                                                "value1": 0.3499999940395355,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1792,7 +1775,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1822,12 +1806,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1859,20 +1839,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.62,
-                                            "value1": 0.62,
+                                            "value0": 0.6200000047683716,
+                                            "value1": 0.6200000047683716,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.62,
+                                                "value0": 0.6200000047683716,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.62,
+                                                "value1": 0.6200000047683716,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1890,14 +1870,17 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

@@ -185,6 +185,10 @@ python -m tools.animtree add-transition       Wolf --from <anystate-guid> --next
 python -m tools.animtree add-condition        Wolf --any-state --from <anystate-guid> --next <walk-guid> --name State --kind int --value 1
 python -m tools.animtree remove-condition     Wolf --any-state --index 0 --condition-index 0
 python -m tools.animtree set-transition-params Wolf --index 0 --duration 0.5
+# hasExitTime_ = false (AnimationNodePath v2): fires as soon as the condition holds instead of at the end
+# of the current clip - hit reactions / flinch. The file's path version is raised to 2 only when needed.
+python -m tools.animtree add-transition       Wolf --from <anystate-guid> --next <flinch-guid> --any-state --duration 0.05 --no-exit-time
+python -m tools.animtree set-transition-params Wolf --any-state --index 3 --no-exit-time
 python -m tools.animtree remove-transition    Wolf --index 0
 
 # --- parameters ---

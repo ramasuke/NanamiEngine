@@ -19,9 +19,12 @@ namespace GameCore::Npc::Enemy::Behaviour
         /** templateMethodパターン */
         //LifeCycleCallback::Update()で呼ばれる。
         virtual TickStatus DoTick(const Action::TickContext& context) = 0;
-        // RandomSelector がこのアクションを含む枝を選び直したときに呼ばれる。
+        // RandomSelector がこのアクションを含む枝を選び直したとき、Running 中に割り込まれて次に呼ばれたときに呼ばれる。
         virtual void DoReset();
         virtual void DoDrawGui();
+
+        std::uint64_t lastTickIndex_ = 0;
+        bool wasRunning_ = false;
         
 #pragma region Serialization Function
     public:

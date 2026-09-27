@@ -8,6 +8,11 @@ namespace NanamiEngine::Module::Asset
     class PrefabGameObjectFile;
 }
 
+namespace NanamiEngine::Module::GameObject
+{
+    class IGameObject;
+}
+
 namespace GamePlay::Ui
 {
     class DealDamageTextBillBoard final : public Component::ComponentBase,
@@ -111,6 +116,12 @@ namespace GamePlay::Ui
     void SpawnDealDamageText(Asset::PrefabGameObjectFile& prefab,
                              const glm::vec3& position,
                              int value);
+
+    /** @brief SpawnDealDamageText し、オンラインなら attacker の NetworkGameObject 宛てに他のピアへも出させる */
+    void SpawnDealDamageTextSynced(Asset::PrefabGameObjectFile& prefab,
+                                   const glm::vec3& position,
+                                   int value,
+                                   GameObject::IGameObject& attacker);
 }
 
 CEREAL_CLASS_VERSION(GamePlay::Ui::DealDamageTextBillBoard, 4);

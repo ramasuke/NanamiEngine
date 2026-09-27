@@ -66,7 +66,11 @@ namespace NanamiEngine::Platform::Render
         return CreateVertexBuffer(vertexCount, DX_VERTEX_TYPE_SHADER_3D);
     }
 
-    bool VertexBuffer::SetData(const int handle, const ShaderVertex3D* vertices, const int count, const int offset)
+    bool VertexBuffer::SetData(
+        const int handle, 
+        const ShaderVertex3D* vertices,
+        const int count,
+        const int offset)
     {
         return SetVertexBufferData(offset, vertices, count, handle) == 0;
     }

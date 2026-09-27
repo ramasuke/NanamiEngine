@@ -65,6 +65,8 @@ namespace GamePlay::Weather
         distantThunderTimer_secs_ = distantThunderMaxInterval_secs_;
         if (flashRenderer_)
             flashRenderer_->SetBlendRate(0);
+
+        SetStorm(initialStormIntensity_, 0.0f);
     }
 
     void WeatherService::OnUpdate()
@@ -168,6 +170,9 @@ namespace GamePlay::Weather
         if (lowerRotator_)
             lowerRotator_->SetRotateSpeedDegPerSec(
                 Lerp(clearLowerRotateSpeedDeg_, stormLowerRotateSpeedDeg_, stormIntensity_));
+        if (wallRotator_)
+            wallRotator_->SetRotateSpeedDegPerSec(
+                Lerp(clearWallRotateSpeedDeg_, stormWallRotateSpeedDeg_, stormIntensity_));
     }
 
     void WeatherService::ApplyFog() const
@@ -237,6 +242,7 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("thunderNearSound_", thunderNearSound_);
         ImGuiHelper::OnDrawInputField("thunderFarSound1_", thunderFarSound1_);
         ImGuiHelper::OnDrawInputField("thunderFarSound2_", thunderFarSound2_);
+        ImGuiHelper::OnDrawInputField("wallRotator_",      wallRotator_     );
         clearSkyTint_   .DrawColorEdit("clearSkyTint_");
         stormSkyTint_   .DrawColorEdit("stormSkyTint_");
         ImGuiHelper::OnDrawInputField("clearUpperRotateSpeedDeg_", clearUpperRotateSpeedDeg_);
@@ -264,6 +270,9 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("distantThunderThreshold_",        distantThunderThreshold_);
         ImGuiHelper::OnDrawInputField("distantThunderMinInterval_secs_", distantThunderMinInterval_secs_);
         ImGuiHelper::OnDrawInputField("distantThunderMaxInterval_secs_", distantThunderMaxInterval_secs_);
+        ImGuiHelper::OnDrawInputField("initialStormIntensity_",   initialStormIntensity_  );
+        ImGuiHelper::OnDrawInputField("clearWallRotateSpeedDeg_", clearWallRotateSpeedDeg_);
+        ImGuiHelper::OnDrawInputField("stormWallRotateSpeedDeg_", stormWallRotateSpeedDeg_);
 
         ImGui::Separator();
         ImGui::Text("stormIntensity_: %.3f -> %.3f", stormIntensity_, stormTarget_);

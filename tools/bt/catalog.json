@@ -1,5 +1,5 @@
 {
-  "generated_from": "fc0faef33751e3c99df0b27e0d6fdad99ff0ae63",
+  "generated_from": "bef3dd46b91c5252394f5f9a6db8f28aac8e9460",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -522,6 +522,39 @@
         }
       ]
     },
+    "EnemyStatus::Flinch": {
+      "class": "Flinch",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Flinch",
+      "leaf": "Flinch",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Flinch/Enemy_Behaviour_Action_Flinch.h",
+      "params": [
+        {
+          "key": "flinchResistance_",
+          "member": "flinchResistance_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "animatorSetParam_",
+          "member": "animatorSetParam_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "flinch_secs_",
+          "member": "flinch_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isStopHorizontalMove_",
+          "member": "isStopHorizontalMove_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
     "EnemyStatus::OnDamage": {
       "class": "OnDamage",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
@@ -581,7 +614,7 @@
       "class": "PhysicsAttack",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack",
       "leaf": "PhysicsAttack",
-      "version": 5,
+      "version": 7,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Attack/Enemy_Behaviour_Action_Attack.h",
       "params": [
         {
@@ -664,6 +697,32 @@
           "member": "lungeStopDistance_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "animationSound_",
+          "member": "animationSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "warning_",
+          "member": "warning_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyAttackWarning"
+        },
+        {
+          "key": "warningBoneName_",
+          "member": "warningBoneName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "warningBoneOffset_",
+          "member": "warningBoneOffset_",
+          "named": true,
+          "shape": "vec3"
         }
       ]
     },
@@ -1293,6 +1352,89 @@
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerCannon/Enemy_Behaviour_Action_LockPlayerCannon.h",
       "params": []
     },
+    "Scene::UnlockPlayerCannon": {
+      "class": "UnlockPlayerCannon",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerCannon",
+      "leaf": "UnlockPlayerCannon",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/UnlockPlayerCannon/Enemy_Behaviour_Action_UnlockPlayerCannon.h",
+      "params": []
+    },
+    "SkeletonDragon::BossSandstorm": {
+      "class": "BossSandstorm",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::BossSandstorm",
+      "leaf": "BossSandstorm",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/BossSandstorm/Enemy_Behaviour_Action_BossSandstorm.h",
+      "params": [
+        {
+          "key": "isSummon_",
+          "member": "isSummon_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "SkeletonDragon::HeartStun": {
+      "class": "HeartStun",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::HeartStun",
+      "leaf": "HeartStun",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/HeartStun/Enemy_Behaviour_Action_HeartStun.h",
+      "params": [
+        {
+          "key": "stunStartState_",
+          "member": "stunStartState_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "stunIdleState_",
+          "member": "stunIdleState_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "stunOverState_",
+          "member": "stunOverState_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "start_secs_",
+          "member": "start_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "idle_secs_",
+          "member": "idle_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "over_secs_",
+          "member": "over_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "SkeletonDragon::IsBossSandstorm": {
+      "class": "IsBossSandstorm",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::IsBossSandstorm",
+      "leaf": "IsBossSandstorm",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/IsBossSandstorm/Enemy_Behaviour_Action_IsBossSandstorm.h",
+      "params": [
+        {
+          "key": "isActive_",
+          "member": "isActive_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
     "Sound::PlayBGM": {
       "class": "PlayBGM",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM",
@@ -1322,6 +1464,75 @@
           "named": true,
           "shape": "field",
           "type": "SoundFile"
+        }
+      ]
+    },
+    "Story::FleeFromIslandHeart": {
+      "class": "FleeFromIslandHeart",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::FleeFromIslandHeart",
+      "leaf": "FleeFromIslandHeart",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Story/FleeFromIslandHeart/Enemy_Behaviour_Action_FleeFromIslandHeart.h",
+      "params": [
+        {
+          "key": "reactMin_secs_",
+          "member": "reactMin_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "reactMax_secs_",
+          "member": "reactMax_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "startle_secs_",
+          "member": "startle_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fleeSpreadDegrees_",
+          "member": "fleeSpreadDegrees_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "vanishDistance_",
+          "member": "vanishDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxFlee_secs_",
+          "member": "maxFlee_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationStartleNumber_",
+          "member": "animationStartleNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "animationMoveNumber_",
+          "member": "animationMoveNumber_",
+          "named": true,
+          "shape": "int"
         }
       ]
     },
@@ -1423,7 +1634,7 @@
       "class": "ChargeRush",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChargeRush",
       "leaf": "ChargeRush",
-      "version": 1,
+      "version": 2,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Tyrannosaurus/ChargeRush/Enemy_Behaviour_Action_ChargeRush.h",
       "params": [
         {
@@ -1536,6 +1747,25 @@
           "member": "aimAtIntroPillar_",
           "named": true,
           "shape": "bool"
+        },
+        {
+          "key": "warning_",
+          "member": "warning_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyAttackWarning"
+        },
+        {
+          "key": "warningBoneName_",
+          "member": "warningBoneName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "warningBoneOffset_",
+          "member": "warningBoneOffset_",
+          "named": true,
+          "shape": "vec3"
         }
       ]
     },
@@ -1623,11 +1853,17 @@
   "structs": {
     "PhysicsPower": {
       "fqn": "PhysicsPower",
-      "version": 0,
+      "version": 1,
       "params": [
         {
           "key": "value_",
           "member": "value_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "flinchPower_",
+          "member": "flinchPower_",
           "named": true,
           "shape": "int"
         }
@@ -1669,6 +1905,7 @@
   "by_fqn": {
     "GameCore::Npc::Enemy::Behaviour::Action::AddRotation": "Transform::Rotation::AddRotation",
     "GameCore::Npc::Enemy::Behaviour::Action::AttachParticle": "Particle::AttachParticle",
+    "GameCore::Npc::Enemy::Behaviour::Action::BossSandstorm": "SkeletonDragon::BossSandstorm",
     "GameCore::Npc::Enemy::Behaviour::Action::CallAllies": "Hyena::CallAllies",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
@@ -1680,7 +1917,11 @@
     "GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
     "GameCore::Npc::Enemy::Behaviour::Action::FallIsland": "GameObject::FallIsland",
+    "GameCore::Npc::Enemy::Behaviour::Action::FleeFromIslandHeart": "Story::FleeFromIslandHeart",
+    "GameCore::Npc::Enemy::Behaviour::Action::Flinch": "EnemyStatus::Flinch",
     "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle": "Particle::GenerateParticle",
+    "GameCore::Npc::Enemy::Behaviour::Action::HeartStun": "SkeletonDragon::HeartStun",
+    "GameCore::Npc::Enemy::Behaviour::Action::IsBossSandstorm": "SkeletonDragon::IsBossSandstorm",
     "GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
@@ -1715,6 +1956,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "GameCore::Npc::Enemy::Behaviour::Action::TremblePillars": "Tyrannosaurus::TremblePillars",
+    "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerCannon": "Scene::UnlockPlayerCannon",
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
     "GameCore::Npc::Enemy::Behaviour::Action::WanderMove": "Basic::WanderMove",
     "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard<Int>",
@@ -1723,6 +1965,7 @@
   "by_leaf": {
     "AddRotation": "Transform::Rotation::AddRotation",
     "AttachParticle": "Particle::AttachParticle",
+    "BossSandstorm": "SkeletonDragon::BossSandstorm",
     "CallAllies": "Hyena::CallAllies",
     "ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "ChangeIsGravity": "RigidBody::ChangeIsGravity",
@@ -1734,7 +1977,11 @@
     "CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
     "FallIsland": "GameObject::FallIsland",
+    "FleeFromIslandHeart": "Story::FleeFromIslandHeart",
+    "Flinch": "EnemyStatus::Flinch",
     "GenerateParticle": "Particle::GenerateParticle",
+    "HeartStun": "SkeletonDragon::HeartStun",
+    "IsBossSandstorm": "SkeletonDragon::IsBossSandstorm",
     "IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
@@ -1769,6 +2016,7 @@
     "ToPlayerDistance": "Basic::ToPlayerDistance",
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "TremblePillars": "Tyrannosaurus::TremblePillars",
+    "UnlockPlayerCannon": "Scene::UnlockPlayerCannon",
     "WaitSeconds": "Wait::Seconds::WaitSeconds",
     "WanderMove": "Basic::WanderMove",
     "WriteBlackBoard": "Other::WriteBlackBoard<Int>",

@@ -35,7 +35,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
         [[serialize(3)]] FIELD(Ui::LowHealthScreenEffect) lowHealthScreenEffect_;
         [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile) controlGuidePrefab_;
         [[serialize(4)]] FIELD(Asset::PrefabGameObjectFile) itemBarPrefab_;
-        [[serialize(5)]] FIELD(Asset::PrefabGameObjectFile) pauseMenuPrefab_;
 
 #pragma region Serialization Function
     public:
@@ -47,7 +46,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(lowHealthScreenEffect_));
             archive(CEREAL_NVP(controlGuidePrefab_));
             archive(CEREAL_NVP(itemBarPrefab_));
-            archive(CEREAL_NVP(pauseMenuPrefab_));
         }
 
         template <class Archive>
@@ -57,10 +55,15 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if (version >= 3) archive(CEREAL_NVP(lowHealthScreenEffect_));
             if (version >= 2) archive(CEREAL_NVP(controlGuidePrefab_));
             if (version >= 4) archive(CEREAL_NVP(itemBarPrefab_));
-            if (version >= 5) archive(CEREAL_NVP(pauseMenuPrefab_));
+            // NOTE: v5 だけにあった冒険者の手帳の prefab。手帳は消したので読み捨てる
+            if (version == 5)
+            {
+                FIELD(Asset::PrefabGameObjectFile) pauseMenuPrefab_;
+                archive(CEREAL_NVP(pauseMenuPrefab_));
+            }
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::StatusPresenter, 5);
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::StatusPresenter, 6);

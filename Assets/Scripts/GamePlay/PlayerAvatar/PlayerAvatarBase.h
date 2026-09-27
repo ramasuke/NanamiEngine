@@ -13,6 +13,7 @@
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachineBase.h"
+#include "../../Core/Game/PlayerAvatar/State/Transition/PlayerAvatarStateTransition.h"
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
@@ -68,6 +69,7 @@ namespace GamePlay::PlayerAvatar
         void BindQuestJournal();
         void EnableStateMachiine() override;
         void DisableStateMachine() override;
+        [[nodiscard]] bool IsAcceptingControl() const override;
 
     protected:
         [[nodiscard]] std::weak_ptr<CameraGroup> AvatarCameraGroup() const { return cameraGroup_; }
@@ -280,6 +282,13 @@ namespace GamePlay::PlayerAvatar
     void PlayerAvatarBase<TraitsT>::DisableStateMachine()
     {
         stateMachine_->OnDisable();
+    }
+
+    template <RequireType::Traits TraitsT>
+    bool PlayerAvatarBase<TraitsT>::IsAcceptingControl() const
+    {
+        const auto state = stateMachine_ ? stateMachine_->CurrentStateValue() : nullptr;
+        return state && state->ControlAcceptance() == GameCore::PlayerAvatar::PlayerAvatarControlAcceptance::Accept;
     }
 
     template <RequireType::Traits TraitsT>

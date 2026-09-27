@@ -7,6 +7,7 @@
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
 #include "../../../../Core/Game/Npc/Enemy/Boss/BossEnemyBase.h"
+#include "../../../../Core/Game/Npc/Enemy/StuckRecovery/StuckRecovery.h"
 #include "../../../Ui/BossHealthGauge/Ui_BossHealthGauge.h"
 
 namespace GamePlay::Npc::Enemy
@@ -25,6 +26,7 @@ namespace GamePlay::Npc::Enemy
         /** @brief 足が着地した瞬間にローカルプレイヤーとの距離で減衰させたカメラシェイクを掛ける */
         void TryEmitFootQuake();
         void EmitFootQuake(const glm::vec3& stepPos) const;
+        void TickStuckRecovery();
 
         [[serialize(5)]] std::vector<std::string> footBoneNames_ = { "jt_Foot_L", "jt_Foot_R" };
         /** 足元からこの高さより上がった足が降りてきたら着地とみなす */
@@ -36,6 +38,7 @@ namespace GamePlay::Npc::Enemy
         [[serialize(5)]] float footQuakeOuterRadius_ = 3000.0f;
         [[serialize(5)]] FIELD(Asset::SoundFile) footstepSound_;
         std::vector<FootLatch> footLatches_;
+        [[serialize(6)]] GameCore::Npc::Enemy::StuckRecovery stuckRecovery_;
 
 #pragma region Serialization Function
     public:
@@ -49,6 +52,7 @@ namespace GamePlay::Npc::Enemy
             archive(CEREAL_NVP(footQuakeInnerRadius_));
             archive(CEREAL_NVP(footQuakeOuterRadius_));
             archive(CEREAL_NVP(footstepSound_));
+            archive(CEREAL_NVP(stuckRecovery_));
         }
 
         template<class Archive>
@@ -73,6 +77,7 @@ namespace GamePlay::Npc::Enemy
                 archive(CEREAL_NVP(footQuakeOuterRadius_));
                 archive(CEREAL_NVP(footstepSound_));
             }
+            if (version >= 6) archive(CEREAL_NVP(stuckRecovery_));
         }
 
         void BasedOnDrawgui() override;
@@ -80,5 +85,5 @@ namespace GamePlay::Npc::Enemy
     };
 }
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::Tyrannosaurus, 5);
+CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::Tyrannosaurus, 6);
 #pragma endregion

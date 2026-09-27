@@ -23,6 +23,7 @@
 #include "../../../../../PlayerAvatar/StateMachine/EventScene/PlayerAvatarEventSceneStateType.h"
 #include "../Context/GrassLandSceneContext.h"
 #include "../../DrySand/Context/DrySandSceneContext.h"
+#include "../../DragonNest/Context/DragonNestSceneContext.h"
 
 namespace GameCore::Scene::GrassLand
 {
@@ -110,6 +111,7 @@ namespace GameCore::Scene::GrassLand
         };
         cameraStartPos_ = shotPos(context->ArrivalCameraStart());
         cameraEndPos_   = shotPos(context->ArrivalCameraEnd  ());
+        hasOverview_    = context->ArrivalOverview_msecs() > 0;
 
         if (context->HasArrivalPortalPrefab())
         {
@@ -138,12 +140,14 @@ namespace GameCore::Scene::GrassLand
             if (follow && lookAt)
             {
                 // Follow/LookAtのtargetはどちらもスポーン地点のマーカーなので、そこからのオフセットで置く
-                follow->followOffset_ = cameraStartPos_ - spawnPos;
-                lookAt->SetOffsetPos(PortalCenter() - spawnPos);
+                const glm::vec3 firstCameraPos = hasOverview_ ? context->ArrivalOverviewCameraStart() : cameraStartPos_;
+                const glm::vec3 firstLookAt    = hasOverview_ ? context->ArrivalOverviewLookAt()      : PortalCenter();
+                follow->followOffset_ = firstCameraPos - spawnPos;
+                lookAt->SetOffsetPos(firstLookAt - spawnPos);
 
                 // Follow/LookAtが次に動くまでカメラは古い姿勢のままなので、先に合わせてからBrainをスナップさせる。
                 // スナップしないと、シーンに置かれたBrainの初期位置(スポーン地点から約1700離れている)から補間で飛んでくる
-                camera->Transform().SetWorldPos(cameraStartPos_);
+                camera->Transform().SetWorldPos(firstCameraPos);
                 lookAt->LookAtTarget();
                 if (const auto brain = context->CameraBrain())
                     brain->SnapToVirtualCamera(*camera);
@@ -159,6 +163,14 @@ namespace GameCore::Scene::GrassLand
         // ChangeMainSceneがSkipNextFrameを60回積んでいる間はDeltaTimeが0で、コルーチンごと凍る
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
         if (self->isCanceled_ || !self->isBegun_)
+            co_return;
+
+        if (co_await PlayOverviewAsync(self))
+        {
+            self->Finish();
+            co_return;
+        }
+        if (self->isCanceled_)
             co_return;
 
         const auto context = self->context_.lock();
@@ -201,8 +213,7 @@ namespace GameCore::Scene::GrassLand
         cameraOffset.Play(std::move(cameraOffsetTween));
 
         float elapsed_secs = 0.0f;
-        bool isWalking   = false;
-        bool isSkipArmed = false;
+        bool isWalking = false;
         while (elapsed_secs * 1000.0f < static_cast<float>(end_msecs))
         {
             co_await Coroutine::WaitYield();
@@ -254,14 +265,80 @@ namespace GameCore::Scene::GrassLand
             if (const auto follow = self->cameraFollow_.lock())
                 follow->followOffset_ = cameraOffset.Value();
 
-            // ステージ選択の決定キーを押しっぱなしで来ても即スキップにならないよう、一度離すまで待つ
-            const bool isDown = ArrivalIsSkipInputDown();
-            isSkipArmed |= !isDown;
-            if (isSkipArmed && isDown)
+            if (self->IsSkipRequested())
                 break;
         }
 
         self->Finish();
+    }
+
+    template<class TContext>
+    Coroutine::Task<bool> StageArrivalMovie<TContext>::PlayOverviewAsync(std::shared_ptr<StageArrivalMovie> self)
+    {
+        const auto context = self->context_.lock();
+        if (!context || !self->hasOverview_)
+            co_return false;
+
+        const int overview_msecs = ArrivalDuring_msecs(context->ArrivalOverview_msecs       ());
+        const int descend_msecs  = ArrivalDuring_msecs(context->ArrivalOverviewDescend_msecs());
+        const glm::vec3 anchor      = context->PlayerSpawnPoint();
+        const glm::vec3 cameraStart = context->ArrivalOverviewCameraStart();
+        const glm::vec3 cameraEnd   = context->ArrivalOverviewCameraEnd  ();
+        const glm::vec3 overviewLookAt = context->ArrivalOverviewLookAt();
+
+        // 降りるときは高さを遅らせて、上空で寄ってから最後に潜り込む。先に下がると崖や地形を突き抜ける
+        auto horizontalTween = tweeny::from(cameraStart)
+            .to(cameraEnd            ).during(overview_msecs).via(Tween::Ease(EaseType::InOutSine))
+            .to(self->cameraStartPos_).during(descend_msecs ).via(Tween::Ease(EaseType::InOutSine));
+        auto heightTween = tweeny::from(cameraStart.y)
+            .to(cameraEnd.y            ).during(overview_msecs).via(Tween::Ease(EaseType::InOutSine))
+            .to(self->cameraStartPos_.y).during(descend_msecs ).via(Tween::Ease(EaseType::InOutCubic));
+        auto lookAtTween = tweeny::from(overviewLookAt)
+            .to(overviewLookAt       ).during(overview_msecs)
+            .to(self->PortalCenter()).during(descend_msecs ).via(Tween::Ease(EaseType::InOutSine));
+        const std::uint32_t end_msecs = horizontalTween.duration();
+
+        LibCore::Tween::TweenPlayer<glm::vec3> horizontal;
+        LibCore::Tween::TweenPlayer<float>     height;
+        LibCore::Tween::TweenPlayer<glm::vec3> lookAtPos;
+        horizontal.Play(std::move(horizontalTween));
+        height    .Play(std::move(heightTween    ));
+        lookAtPos .Play(std::move(lookAtTween    ));
+
+        float elapsed_secs = 0.0f;
+        while (elapsed_secs * 1000.0f < static_cast<float>(end_msecs))
+        {
+            co_await Coroutine::WaitYield();
+            if (self->isCanceled_)
+                co_return false;
+
+            const float deltaTime = Time::DeltaTime();
+            elapsed_secs += deltaTime;
+            horizontal.Tick(deltaTime);
+            height    .Tick(deltaTime);
+            lookAtPos .Tick(deltaTime);
+
+            if (const auto follow = self->cameraFollow_.lock())
+            {
+                const glm::vec3 pos(horizontal.Value().x, height.Value(), horizontal.Value().z);
+                follow->followOffset_ = pos - anchor;
+            }
+            if (const auto lookAt = self->cameraLookAt_.lock())
+                lookAt->SetOffsetPos(lookAtPos.Value() - anchor);
+
+            if (self->IsSkipRequested())
+                co_return true;
+        }
+        co_return false;
+    }
+
+    template<class TContext>
+    bool StageArrivalMovie<TContext>::IsSkipRequested()
+    {
+        // ステージ選択の決定キーを押しっぱなしで来ても即スキップにならないよう、一度離すまで待つ
+        const bool isDown = ArrivalIsSkipInputDown();
+        isSkipArmed_ |= !isDown;
+        return isSkipArmed_ && isDown;
     }
 
     template<class TContext>
@@ -337,4 +414,5 @@ namespace GameCore::Scene::GrassLand
 
     template class StageArrivalMovie<GrassLandSceneContext>;
     template class StageArrivalMovie<DrySandSceneContext>;
+    template class StageArrivalMovie<DragonNestSceneContext>;
 }

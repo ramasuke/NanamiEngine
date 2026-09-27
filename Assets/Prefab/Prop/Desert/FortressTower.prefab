@@ -60,7 +60,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -125,7 +125,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483652,
                                 "data": {
-                                    "cereal_class_version": 4,
+                                    "cereal_class_version": 5,
                                     "value0": {
                                         "cereal_class_version": 6,
                                         "value0": {
@@ -146,7 +146,7 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
                                     "scale_": {
                                         "value0": 100.0,
@@ -155,7 +155,20 @@
                                     },
                                     "simplifyEnabled_": true,
                                     "maxSimplifyError_": 1.0,
-                                    "minTriangleRatio_": 0.05
+                                    "minTriangleRatio_": 0.05000000074505806,
+                                    "collisionMv1File_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483653,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "ABAB64F4-6219-432A-8AA3-D26DC1A27046"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -173,27 +186,27 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.08,
-                            "value1": 0.08,
-                            "value2": 0.08
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.08,
+                                "value0": 0.07999999821186066,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.08,
+                                "value1": 0.07999999821186066,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 0.08,
+                                "value2": 0.07999999821186066,
                                 "value3": 0.0
                             },
                             "value3": {
@@ -204,10 +217,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

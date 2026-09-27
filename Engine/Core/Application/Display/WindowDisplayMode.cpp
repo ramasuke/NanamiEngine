@@ -182,11 +182,14 @@ namespace NanamiEngine::Core::Application::Display
             ApplyFullscreenSettings();
             if (GetWindowModeFlag() != 0)
                 ChangeWindowMode(FALSE);
+            // NOTE: 画面モードを変えると描画先が DX_SCREEN_FRONT に戻る
+            SetDrawScreen(DX_SCREEN_BACK);
             return;
         }
 
         if (GetWindowModeFlag() == 0)
             ChangeWindowMode(TRUE);
+        SetDrawScreen(DX_SCREEN_BACK);
 
         if (mode == WindowDisplayMode::Borderless)
             ApplyBorderless();

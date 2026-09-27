@@ -30,7 +30,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textRenderer_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) npcNameTextBox_;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
-        // 台詞がいくつ続くかの印 (●●○)。1つだけの会話では出さない
         [[serialize(3)]] FIELD(NanamiUi::TextRenderer) pageText_;
 
         mutable bool isDisplaying_ = false;

@@ -66,16 +66,23 @@ def _git_head() -> str:
         return "unknown"
 
 
+RE_EXPORT_MACRO = re.compile(r"\b(?:NANAMI_API|NANAMI_NO_API)\b\s*")
+
+
 def _read(path: Path) -> str:
     raw = path.read_bytes()
     if raw[:3] == b"\xef\xbb\xbf":
         raw = raw[3:]
     for enc in ("utf-8", "cp932", "latin-1"):
         try:
-            return raw.decode(enc)
+            text = raw.decode(enc)
+            break
         except UnicodeDecodeError:
             continue
-    return raw.decode("utf-8", "replace")
+    else:
+        text = raw.decode("utf-8", "replace")
+    # NOTE: `class NANAMI_API X` を `class X` として読む (エクスポート指定は宣言の形を変えるだけ)
+    return RE_EXPORT_MACRO.sub("", text)
 
 
 def _search_register_type(path: Path, text: str):

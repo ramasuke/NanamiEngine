@@ -22,6 +22,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 {
     // NOTE: 初回の差分が大きくても固定していない扱いになるよう、十分昔にしておく
     int ThirdPersonCameraBehaviour::lastMousePinnedMs_ = -MOUSE_PIN_HOLD_MS * 100;
+    bool ThirdPersonCameraBehaviour::isCursorReleased_ = false;
 
     void ThirdPersonCameraBehaviour::SetTarget(const std::shared_ptr<GameObject::IGameObject>& target)
     {
@@ -66,6 +67,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (!IsEnable())
         {
             isMouseDeltaStale_ = true;
+            SetCursorReleased(false);
             return;
         }
 
@@ -80,6 +82,15 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateMouseInput()
     {
+        // NOTE: Alt 押下中は固定もカメラ回転もしない。離した最初の差分は stale として捨てる
+        const bool altDown = CheckHitKey(KEY_INPUT_LALT) != 0 || CheckHitKey(KEY_INPUT_RALT) != 0;
+        SetCursorReleased(altDown);
+        if (altDown)
+        {
+            isMouseDeltaStale_ = true;
+            return;
+        }
+
         int mouseX, mouseY;
         GetMousePoint(&mouseX, &mouseY);
         
@@ -104,7 +115,19 @@ namespace NanamiEngine::CineMachine::Behaviour
         }
 
         yaw_   += dx * mouseSensitivity_;
-        pitch_ += dy * mouseSensitivity_;
+        pitch_ -= dy * mouseSensitivity_;
+    }
+
+    void ThirdPersonCameraBehaviour::SetCursorReleased(const bool released)
+    {
+        if (released == isCursorReleased_)
+            return;
+
+        isCursorReleased_ = released;
+        // NOTE: エディタは OS カーソルを常に出しているので、消しているゲームだけ切り替える
+        using namespace Core::Application::Configuration;
+        if constexpr (APPLICATION_MODE == ApplicationMode::Game)
+            SetMouseDispFlag(released ? TRUE : FALSE);
     }
 
     void ThirdPersonCameraBehaviour::UpdateGamepadInput()
@@ -124,7 +147,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const float ry = NormalizeStick(xi.ThumbRY);
 
         yaw_   += rx * mouseSensitivity_ * 15.0f;
-        pitch_ -= ry * mouseSensitivity_ * 15.0f;
+        pitch_ += ry * mouseSensitivity_ * 15.0f;
     }
 
     void ThirdPersonCameraBehaviour::UpdateFollowTargetBehaviour() const

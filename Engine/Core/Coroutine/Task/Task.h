@@ -2,6 +2,7 @@
 #include <coroutine>
 #include <exception>
 #include <string>
+#include <utility>
 
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Application/ApplicationBase.h"
@@ -59,7 +60,8 @@ namespace Coroutine
 
         T await_resume() const noexcept
         {
-            return handle_.promise().result();
+            // NOTE: 終わったフレームは破棄されないので、値を残すと shared_ptr が握られ続ける(読み込んだ Scene が消えない)
+            return std::move(handle_.promise().result());
         }
 
         void Resume() const

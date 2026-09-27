@@ -47,7 +47,7 @@
                     "value3": {
                         "cereal_class_version": 0
                     },
-                    "radius_": 20.0
+                    "radius_": 50.0
                 }
             }
         },
@@ -78,7 +78,7 @@
             "ptr_wrapper": {
                 "id": 2147483651,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 2,
                     "value0": {
                         "guid_": {
                             "value_": "9CEAAC60-F012-4E5C-91BD-590EE72667A1"
@@ -94,14 +94,29 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "16C58450-4A47-488F-94F6-665E35CBCBB1"
+                                        "value_": "2135B13A-2ACD-4471-9D37-377768DDC1F0"
                                     }
                                 }
                             }
                         }
                     },
-                    "detonateEffectLifeTime_secs_": 2.2699999809265138,
-                    "detonateOnEnter_": false
+                    "detonateEffectLifeTime_secs_": 2.5999999046325685,
+                    "detonateOnEnter_": false,
+                    "hitShakeIntensity_": 0.6000000238418579,
+                    "hitShakeDuration_secs_": 0.18000000715255738,
+                    "dealDamageTextPrefab_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C9DF1FAB-B64A-4007-8937-89E235ACC158"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -155,7 +170,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483654,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -175,7 +190,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483654,
+                                "id": 2147483655,
                                 "data": {
                                     "cereal_class_version": 5,
                                     "value0": {
@@ -199,7 +214,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483655,
+                                                "id": 2147483656,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -227,9 +242,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.11999999731779099,
-                            "value1": 0.11999999731779099,
-                            "value2": 0.11999999731779099
+                            "value0": 0.30000001192092896,
+                            "value1": 0.30000001192092896,
+                            "value2": 0.30000001192092896
                         },
                         "worldMatrix_": {
                             "value0": {

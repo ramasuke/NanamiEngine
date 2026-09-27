@@ -15,6 +15,11 @@ namespace GameCore::Scene
         return playerSpawnPoint_->Transform().GetWorldPos();
     }
 
+    glm::quat SceneContextBase::PlayerSpawnRotation() const
+    {
+        return playerSpawnPoint_->Transform().GetWorldRot();
+    }
+
     void SceneContextBase::BasedOnDrawgui()
     {
         ImGuiHelper::OnDrawInputField("loadSceneFile_", loadSceneFile_);

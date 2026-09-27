@@ -9,6 +9,9 @@ namespace GameCore::Scene
         bgm_.Init();
         greenStone_.Init();
         fountainIsland_.Init();
+        lightStone_.Init();
+        nestDepartureCamera_.Init();
+        nestDepartureSound_.Init();
     }
 
     void MainIslandSceneContext::OnDrawGui()
@@ -16,6 +19,10 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("bgm_", bgm_);
         ImGuiHelper::OnDrawInputField("greenStone_", greenStone_);
         ImGuiHelper::OnDrawInputField("fountainIsland_", fountainIsland_);
+        ImGuiHelper::OnDrawInputField("lightStone_", lightStone_);
+        ImGuiHelper::OnDrawInputField("nestDepartureCamera_", nestDepartureCamera_);
+        ImGuiHelper::OnDrawInputField("nestDepartureSound_", nestDepartureSound_);
+        ImGuiHelper::OnDrawInputField("nestDeparture_secs_", nestDeparture_secs_);
     }
 }
 

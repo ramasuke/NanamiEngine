@@ -1,21 +1,21 @@
 ﻿#pragma once
-// NanamiRelay wire protocol, shared by the relay server and every game client.
-// NOTE: NanamiEngine keeps a copy at Assets/Scripts/GamePlay/Network/Relay/RelayProtocol.h - keep both identical and bump
-//       PROTOCOL_VERSION whenever the bytes on the wire change.
+// NanamiRelay の通信プロトコル。中継サーバーとすべてのゲームクライアントで共有する。
+// 注意: NanamiEngine 側にも Assets/Scripts/GamePlay/Network/Relay/RelayProtocol.h として同じものがある。両方をそろえ、
+//       やり取りするバイト列が変わるときは PROTOCOL_VERSION を上げること。
 //
-// Every peer connects with PROTOCOL_VERSION as the enet connect data, then sends one request on CHANNEL_CONTROL:
-//   JoinOrHost : public matchmaking. The relay answers Hosted (you are the room's host) or Joined (you joined an open room).
-//   CreateRoom : a private room. The relay picks a ROOM_CODE_LENGTH-digit code and answers RoomCreated{code}.
-//   JoinRoom   : the private room with that code. Joined, or a disconnect with RoomNotFound / RoomFull / SessionMismatch.
-// Private rooms are never matched by JoinOrHost.
+// どの peer も enet の connect data に PROTOCOL_VERSION を入れて接続し、CHANNEL_CONTROL でリクエストを 1 つ送る:
+//   JoinOrHost : 公開マッチング。中継は Hosted（部屋のホストになった）か Joined（空いている部屋に入った）を返す。
+//   CreateRoom : 非公開部屋。中継が ROOM_CODE_LENGTH 桁のコードを選び、RoomCreated{code} を返す。
+//   JoinRoom   : そのコードの非公開部屋に入る。Joined か、RoomNotFound / RoomFull / SessionMismatch で切断。
+// 非公開部屋が JoinOrHost で選ばれることはない。
 //
-// Game data (CHANNEL_RELIABLE / CHANNEL_UNRELIABLE):
-//   client <-> relay : the game packet as is
-//   host   -> relay  : [target slot:u8 | TARGET_ALL] + game packet
-//   relay  -> host   : [source slot:u8] + game packet
-// The relay never looks inside a game packet.
+// ゲームデータ（CHANNEL_RELIABLE / CHANNEL_UNRELIABLE）:
+//   クライアント <-> 中継 : ゲームのパケットそのまま
+//   ホスト       -> 中継  : [宛先 slot:u8 | TARGET_ALL] + ゲームのパケット
+//   中継         -> ホスト: [送り主 slot:u8] + ゲームのパケット
+// 中継はゲームのパケットの中身を一切見ない。
 //
-// A rejected or dropped peer is disconnected with a DisconnectReason as the enet disconnect data.
+// 拒否・切断する peer には、enet の disconnect data に DisconnectReason を入れて切断する。
 
 #include <cstddef>
 #include <cstdint>
@@ -25,9 +25,9 @@
 
 namespace NanamiRelay
 {
-    // 2: CreateRoom / RoomCreated / JoinRoom and the private room disconnect reasons
+    // 2: CreateRoom / RoomCreated / JoinRoom と、非公開部屋の切断理由を追加
     constexpr std::uint32_t PROTOCOL_VERSION = 2;
-    // The relay still accepts clients down to this version; they only ever send JoinOrHost
+    // 中継はこのバージョンまでのクライアントを受け付ける（古いクライアントは JoinOrHost しか送らない）
     constexpr std::uint32_t MIN_PROTOCOL_VERSION = 1;
 
     constexpr std::uint8_t CHANNEL_RELIABLE   = 0;
@@ -36,7 +36,7 @@ namespace NanamiRelay
     constexpr std::size_t  CHANNEL_COUNT      = 3;
 
     constexpr std::uint8_t TARGET_ALL = 0xFF;
-    // Slots are 0..MAX_CLIENTS_PER_ROOM-1; TARGET_ALL is never a slot
+    // slot は 0..MAX_CLIENTS_PER_ROOM-1。TARGET_ALL が slot になることはない
     constexpr std::uint8_t MAX_CLIENTS_PER_ROOM = 254;
 
     constexpr std::size_t   MAX_NAME_LENGTH  = 64;
@@ -46,14 +46,14 @@ namespace NanamiRelay
 
     enum class ControlType : std::uint8_t
     {
-        JoinOrHost  = 1, // client -> relay: appId:str8, sessionKey:str8, maxClients:u8
-        Hosted      = 2, // relay -> client
-        Joined      = 3, // relay -> client
-        PeerJoined  = 4, // relay -> host: slot:u8
-        PeerLeft    = 5, // relay -> host: slot:u8
-        CreateRoom  = 6, // client -> relay: appId:str8, sessionKey:str8, maxClients:u8
-        RoomCreated = 7, // relay -> client: roomCode:str8
-        JoinRoom    = 8, // client -> relay: appId:str8, sessionKey:str8, roomCode:str8
+        JoinOrHost  = 1, // クライアント -> 中継: appId:str8, sessionKey:str8, maxClients:u8
+        Hosted      = 2, // 中継 -> クライアント
+        Joined      = 3, // 中継 -> クライアント
+        PeerJoined  = 4, // 中継 -> ホスト: slot:u8
+        PeerLeft    = 5, // 中継 -> ホスト: slot:u8
+        CreateRoom  = 6, // クライアント -> 中継: appId:str8, sessionKey:str8, maxClients:u8
+        RoomCreated = 7, // 中継 -> クライアント: roomCode:str8
+        JoinRoom    = 8, // クライアント -> 中継: appId:str8, sessionKey:str8, roomCode:str8
     };
 
     enum class DisconnectReason : std::uint32_t
@@ -64,9 +64,9 @@ namespace NanamiRelay
         JoinTimeout     = 3,
         HostLeft        = 4,
         ServerShutdown  = 5,
-        RoomNotFound    = 6, // JoinRoom: no private room has that code
-        RoomFull        = 7, // JoinRoom: the room has no free slot
-        SessionMismatch = 8, // JoinRoom: the room was made with another sessionKey (another stage)
+        RoomNotFound    = 6, // JoinRoom: そのコードの非公開部屋が無い
+        RoomFull        = 7, // JoinRoom: 部屋に空きが無い
+        SessionMismatch = 8, // JoinRoom: 部屋が別の sessionKey（別のステージ）で作られている
     };
 
     struct JoinOrHostRequest
@@ -80,9 +80,9 @@ namespace NanamiRelay
     struct ControlMessage
     {
         ControlType  type = ControlType::Hosted;
-        std::uint8_t slot = 0;     // PeerJoined / PeerLeft only
-        JoinOrHostRequest request; // JoinOrHost / CreateRoom / JoinRoom only
-        std::string  roomCode;     // RoomCreated only
+        std::uint8_t slot = 0;     // PeerJoined / PeerLeft のときだけ
+        JoinOrHostRequest request; // JoinOrHost / CreateRoom / JoinRoom のときだけ
+        std::string  roomCode;     // RoomCreated のときだけ
     };
 
     namespace Detail
@@ -105,7 +105,7 @@ namespace NanamiRelay
             return true;
         }
 
-        /** JoinOrHost or CreateRoom */
+        /** JoinOrHost か CreateRoom */
         inline std::vector<std::uint8_t> EncodeHostRequest(const ControlType type, const JoinOrHostRequest& request)
         {
             std::vector<std::uint8_t> out;

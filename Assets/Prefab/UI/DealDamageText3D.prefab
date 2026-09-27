@@ -59,7 +59,7 @@
             "ptr_wrapper": {
                 "id": 2147483651,
                 "data": {
-                    "cereal_class_version": 3,
+                    "cereal_class_version": 4,
                     "value0": {
                         "guid_": {
                             "value_": "AEBD5F0A-53E7-4783-8D7D-A91548D712F7"
@@ -71,17 +71,27 @@
                     "riseAmount_": 20.0,
                     "fallAmount_": 10.0,
                     "minScaleDamage_": 10,
-                    "maxScaleDamage_": 300,
-                    "minScale_": 0.800000011920929,
-                    "maxScale_": 2.0,
-                    "heavyDamage_": 150,
+                    "maxScaleDamage_": 100,
+                    "minScale_": 2.5,
+                    "maxScale_": 4.8,
+                    "heavyDamage_": 30,
                     "heavyColor_": {
                         "r_": 255,
                         "g_": 140,
                         "b_": 0
                     },
                     "popScaleRate_": 1.600000023841858,
-                    "popTime_secs_": 0.15000000596046448
+                    "popTime_secs_": 0.15000000596046449,
+                    "lowColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    },
+                    "maxColor_": {
+                        "r_": 255,
+                        "g_": 40,
+                        "b_": 20
+                    }
                 }
             }
         }

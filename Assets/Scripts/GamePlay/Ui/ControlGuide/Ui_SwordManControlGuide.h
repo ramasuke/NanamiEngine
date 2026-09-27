@@ -58,6 +58,10 @@ namespace GamePlay::Ui
             WakeUp,
             CannonTurn,
             CannonFire,
+            Open,
+            Gather,
+            Read,
+            Board,
         };
 
         // 下から並ぶ順。行はこの順に生成する
@@ -86,6 +90,8 @@ namespace GamePlay::Ui
 
         void OnUpdate() override;
 
+        /// 調べる行の文言を、いちばん近い対象に合わせる
+        void ApplyInteractLabel(const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar);
         /// チュートリアルが指した行は、State が出していなくても薄く出す
         void ApplyFocusRequest(GameCore::PlayerAvatar::SwordMan::SwordManControlGuideFocus target);
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GlyphSprite(Glyph glyph) const;
@@ -129,6 +135,10 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::string wakeUpLabel_;
         [[serialize(0)]] std::string cannonTurnLabel_;
         [[serialize(0)]] std::string cannonFireLabel_;
+        [[serialize(4)]] std::string openLabel_;
+        [[serialize(4)]] std::string gatherLabel_;
+        [[serialize(4)]] std::string readLabel_;
+        [[serialize(4)]] std::string boardLabel_;
 
         std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> swordManAvatar_;
         RowRequests requests_{};
@@ -173,6 +183,10 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(wakeUpLabel_));
             archive(CEREAL_NVP(cannonTurnLabel_));
             archive(CEREAL_NVP(cannonFireLabel_));
+            archive(CEREAL_NVP(openLabel_));
+            archive(CEREAL_NVP(gatherLabel_));
+            archive(CEREAL_NVP(readLabel_));
+            archive(CEREAL_NVP(boardLabel_));
         }
 
         template<class Archive>
@@ -226,9 +240,13 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(wakeUpLabel_));
             if (version >= 0) archive(CEREAL_NVP(cannonTurnLabel_));
             if (version >= 0) archive(CEREAL_NVP(cannonFireLabel_));
+            if (version >= 4) archive(CEREAL_NVP(openLabel_));
+            if (version >= 4) archive(CEREAL_NVP(gatherLabel_));
+            if (version >= 4) archive(CEREAL_NVP(readLabel_));
+            if (version >= 4) archive(CEREAL_NVP(boardLabel_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManControlGuide, 3);
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManControlGuide, 4);

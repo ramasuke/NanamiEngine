@@ -1,5 +1,7 @@
 ﻿#pragma once
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <string>
 
@@ -9,6 +11,7 @@
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Namespace/EngineNamespace.h"
+#include "../../../../../Damage/Flinch/Game_Damage_FlinchPower.h"
 
 namespace GameCore::PlayerAvatar::Quest
 {
@@ -77,7 +80,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
             IShowHealthGaugeProvider* showHealthGaugeProvider,
             Core::Network::NetworkObjectId networkObjectId,
-            bool isNetworkAuthority);
+            bool isNetworkAuthority,
+            std::optional<Damage::FlinchPower>& pendingFlinchPower,
+            std::uint64_t tickIndex);
         ~TickContext();
         
 
@@ -90,6 +95,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
+
+        [[nodiscard]] std::optional<Damage::FlinchPower>& PendingFlinchPower() const { return pendingFlinchPower_; }
+        // ツリーの Tick 毎に 1 増える。
+        // 前回の Tick で呼ばれなかったアクションの判定に使う
+        [[nodiscard]] std::uint64_t TickIndex() const { return tickIndex_; }
         // ボスHPゲージを持たない敵は nullptr
         [[nodiscard]] IShowHealthGaugeProvider* ShowHealthGaugeProvider() const { return showHealthGaugeProvider_; }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
@@ -133,5 +143,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         IShowHealthGaugeProvider* const showHealthGaugeProvider_;
         const Core::Network::NetworkObjectId networkObjectId_;
         const bool isNetworkAuthority_;
+        std::optional<Damage::FlinchPower>& pendingFlinchPower_;
+        const std::uint64_t tickIndex_;
     };
 }

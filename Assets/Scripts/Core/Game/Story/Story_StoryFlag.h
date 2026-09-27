@@ -21,6 +21,14 @@ namespace GameCore::Story
         DesertCleared,
         // 城塞の手前で座り込んでいた隊商の護衛を見つけ、泉へ帰した
         DesertGuardRescued,
+        // 光の浮遊石が拠点の島の底に戻った(戻ってくる演出を見た)
+        LightStoneReturned,
+        // 教官から、島が古竜の巣へ引かれていると聞いた (巣へ渡れるようになる)
+        NestVoyageStarted,
+        // 巣で古竜を倒し、積まれていた心臓が空へ散った
+        AncientDragonDefeated,
+        // 古竜を倒した後の話 (エピローグ) を教官から聞いた
+        EpilogueHeard,
     };
 
     constexpr std::string_view ToString(const StoryFlag flag)
@@ -34,6 +42,10 @@ namespace GameCore::Story
         case StoryFlag::FountainIslandReturned: return "FountainIslandReturned";
         case StoryFlag::DesertCleared:      return "DesertCleared";
         case StoryFlag::DesertGuardRescued: return "DesertGuardRescued";
+        case StoryFlag::LightStoneReturned: return "LightStoneReturned";
+        case StoryFlag::NestVoyageStarted:  return "NestVoyageStarted";
+        case StoryFlag::AncientDragonDefeated: return "AncientDragonDefeated";
+        case StoryFlag::EpilogueHeard:      return "EpilogueHeard";
         }
         return "UnknownStoryFlag";
     }
@@ -46,5 +58,9 @@ namespace GameCore::Story
         StoryFlag::FountainIslandReturned,
         StoryFlag::DesertCleared,
         StoryFlag::DesertGuardRescued,
+        StoryFlag::LightStoneReturned,
+        StoryFlag::NestVoyageStarted,
+        StoryFlag::AncientDragonDefeated,
+        StoryFlag::EpilogueHeard,
     };
 }

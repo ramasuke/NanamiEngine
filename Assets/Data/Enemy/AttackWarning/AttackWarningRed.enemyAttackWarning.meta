@@ -1,0 +1,54 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EnemyAttackWarning",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Enemy\\AttackWarning/AttackWarningRed.enemyAttackWarning",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "4B8F0F34-668D-4505-A60F-1F7CDF62872B"
+                    }
+                },
+                "effectPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "D7553B9E-337D-4322-9AA4-A15B52B44702"
+                                }
+                            }
+                        }
+                    }
+                },
+                "sound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "445C50F2-102A-4D07-96B9-12971CD52924"
+                                }
+                            }
+                        }
+                    }
+                },
+                "lead_secs_": 0.65
+            }
+        }
+    }
+}

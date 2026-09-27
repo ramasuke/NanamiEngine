@@ -23,7 +23,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 namespace GameCore::Scene::GrassLand
 {
     /**
-     * @brief 狩り場に着いたときの、ポータルから歩いて出てくる演出
+     * @brief 狩り場に着いたときの、島を見下ろしてから降りてきて、ポータルから歩いて出てくる演出
      * @tparam TContext 到着演出の設定 (ArrivalCamera / ArrivalPortalPrefab / Arrival*_msecs など) を持つシーンのコンテキスト。
      *                  草原と砂漠で使うので、.cpp で両方を明示的に実体化している
      */
@@ -39,7 +39,7 @@ namespace GameCore::Scene::GrassLand
         void Cancel() { isCanceled_ = true; }
 
         /**
-         * @brief ポータルを開き、プレイヤーを歩かせてカメラで見上げ、終わったら三人称へ返す
+         * @brief 島を見下ろしてからポータルの前へ降り、ポータルを開き、プレイヤーを歩かせてカメラで見上げ、終わったら三人称へ返す
          * @param self コルーチンが走っている間の生存を保証するための自分自身
          */
         static Coroutine::Task<void> PlayAsync(std::shared_ptr<StageArrivalMovie> self);
@@ -50,6 +50,10 @@ namespace GameCore::Scene::GrassLand
         [[nodiscard]] glm::vec3 PortalCenter() const;
         void DestroyPortal();
         void SetAvatarVisible(bool isVisible) const;
+        /** @return スキップされたか。空撮しない設定なら何もせず false */
+        static Coroutine::Task<bool> PlayOverviewAsync(std::shared_ptr<StageArrivalMovie> self);
+        /** @brief 押しっぱなしで来た入力では反応しないよう、一度離してから押されたときだけ true */
+        bool IsSkipRequested();
         /** @brief ポータルを片付けてカメラを返す。歩き終える前にスキップされたときは、立ち止まる位置へ送ってから操作を返す */
         void Finish();
 
@@ -65,6 +69,8 @@ namespace GameCore::Scene::GrassLand
         glm::vec3 cameraStartPos_ = glm::vec3(0.0f);
         glm::vec3 cameraEndPos_   = glm::vec3(0.0f);
         bool isBegun_        = false; ///< Beginで演出の準備が済んだか。プレイヤーが居なければ何もしない
+        bool hasOverview_    = false; ///< ポータルのショットの前に島を見下ろす空撮をするか
+        bool isSkipArmed_    = false;
         bool isWalkFinished_ = false;
         bool isCanceled_     = false;
         bool isFinished_     = false;

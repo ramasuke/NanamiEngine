@@ -25,6 +25,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_LIGHT_DIF_R        = 1.0f;
     constexpr auto DEFAULT_LIGHT_DIF_G        = 1.0f;
     constexpr auto DEFAULT_LIGHT_DIF_B        = 1.0f;
+    constexpr auto DEFAULT_EDITOR_CAMERA_NEAR = 5.0f;
+    constexpr auto DEFAULT_EDITOR_CAMERA_FAR  = 6000.0f;
     constexpr auto DEFAULT_PARTICLE_MAX             = 8000;
     constexpr auto DEFAULT_ASSETS_DIRECTORY_PATH   = "Assets";
 
@@ -43,6 +45,8 @@ namespace NanamiEngine::Core::Application::Configuration
     float AppConfiguration::lightDifR_        = DEFAULT_LIGHT_DIF_R;
     float AppConfiguration::lightDifG_        = DEFAULT_LIGHT_DIF_G;
     float AppConfiguration::lightDifB_        = DEFAULT_LIGHT_DIF_B;
+    float AppConfiguration::editorCameraNear_ = DEFAULT_EDITOR_CAMERA_NEAR;
+    float AppConfiguration::editorCameraFar_  = DEFAULT_EDITOR_CAMERA_FAR;
     int         AppConfiguration::particleMax_           = DEFAULT_PARTICLE_MAX;
     std::string AppConfiguration::assetsDirectoryPath_   = DEFAULT_ASSETS_DIRECTORY_PATH;
 
@@ -62,6 +66,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_LIGHT_DR_KEY    = "LightDifR";
     constexpr auto APP_CONFIG_LIGHT_DG_KEY    = "LightDifG";
     constexpr auto APP_CONFIG_LIGHT_DB_KEY    = "LightDifB";
+    constexpr auto APP_CONFIG_EDITOR_NEAR_KEY = "EditorCameraNear";
+    constexpr auto APP_CONFIG_EDITOR_FAR_KEY  = "EditorCameraFar";
     constexpr auto APP_CONFIG_PARTICLE_MAX_KEY       = "ParticleMax";
     constexpr auto APP_CONFIG_ASSETS_DIR_PATH_KEY    = "AssetsDirectoryPath";
     constexpr auto APP_CONFIG_CRASH_RECOVERY_KEY     = "CrashRecoveryEnabled";
@@ -87,6 +93,8 @@ namespace NanamiEngine::Core::Application::Configuration
         lightDifR_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   DEFAULT_LIGHT_DIF_R);
         lightDifG_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   DEFAULT_LIGHT_DIF_G);
         lightDifB_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   DEFAULT_LIGHT_DIF_B);
+        editorCameraNear_ = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_EDITOR_NEAR_KEY, DEFAULT_EDITOR_CAMERA_NEAR);
+        editorCameraFar_  = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_EDITOR_FAR_KEY,  DEFAULT_EDITOR_CAMERA_FAR);
         particleMax_         = Module::ProjectConfig::LoadOrDefaultWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    DEFAULT_PARTICLE_MAX);
         assetsDirectoryPath_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, std::string(DEFAULT_ASSETS_DIRECTORY_PATH));
 
@@ -115,6 +123,8 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   lightDifR_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   lightDifG_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   lightDifB_);
+        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_EDITOR_NEAR_KEY, editorCameraNear_);
+        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_EDITOR_FAR_KEY,  editorCameraFar_);
         Module::ProjectConfig::SaveWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    particleMax_);
         Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, assetsDirectoryPath_);
 
@@ -159,6 +169,11 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetLightDifR(float r)       { lightDifR_ = r; }
     void  AppConfiguration::SetLightDifG(float g)       { lightDifG_ = g; }
     void  AppConfiguration::SetLightDifB(float b)       { lightDifB_ = b; }
+
+    float AppConfiguration::GetEditorCameraNear()               { return editorCameraNear_; }
+    float AppConfiguration::GetEditorCameraFar()                { return editorCameraFar_; }
+    void  AppConfiguration::SetEditorCameraNear(float cameraNear) { editorCameraNear_ = cameraNear; }
+    void  AppConfiguration::SetEditorCameraFar(float cameraFar)   { editorCameraFar_  = cameraFar; }
 
     int   AppConfiguration::GetParticleMax()        { return particleMax_; }
     void  AppConfiguration::SetParticleMax(int max) { particleMax_ = max; }
@@ -285,6 +300,20 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");
+
+        ImGui::Spacing();
+        ImGui::Text("Editor Camera");
+        ImGui::Separator();
+
+        float editorNearFar[2] = { GetEditorCameraNear(), GetEditorCameraFar() };
+        ImGui::SetNextItemWidth(200);
+        if (ImGui::InputFloat2("Near / Far", editorNearFar))
+        {
+            //NOTE: Near が 0 以下や Far 以上だと SetCameraNearFar が効かない
+            SetEditorCameraNear((std::max)(editorNearFar[0], 0.01f));
+            SetEditorCameraFar ((std::max)(editorNearFar[1], GetEditorCameraNear() + 1.0f));
+            Save();
+        }
 
         ImGui::Spacing();
         ImGui::Text("Effekseer");

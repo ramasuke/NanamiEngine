@@ -48,6 +48,10 @@ namespace GamePlay::Ui
             LockOn,
             LockOnRelease,
             Chat,
+            Open,
+            Gather,
+            Read,
+            Board,
         };
 
         // 下から並ぶ順。行はこの順に生成する
@@ -73,6 +77,9 @@ namespace GamePlay::Ui
         using RowRequests = std::array<RowRequest, static_cast<std::size_t>(Row::Count)>;
 
         void OnUpdate() override;
+
+        /// 調べる行の文言を、いちばん近い対象に合わせる
+        void ApplyInteractLabel(const std::shared_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar>& magicCasterAvatar);
 
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GlyphSprite(Glyph glyph) const;
         [[nodiscard]] const std::string& LabelText(Label label) const;
@@ -100,6 +107,10 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::string lockOnLabel_;
         [[serialize(0)]] std::string lockOnReleaseLabel_;
         [[serialize(0)]] std::string chatLabel_;
+        [[serialize(1)]] std::string openLabel_;
+        [[serialize(1)]] std::string gatherLabel_;
+        [[serialize(1)]] std::string readLabel_;
+        [[serialize(1)]] std::string boardLabel_;
 
         std::weak_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar> magicCasterAvatar_;
         RowRequests requests_{};
@@ -132,6 +143,10 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(lockOnLabel_));
             archive(CEREAL_NVP(lockOnReleaseLabel_));
             archive(CEREAL_NVP(chatLabel_));
+            archive(CEREAL_NVP(openLabel_));
+            archive(CEREAL_NVP(gatherLabel_));
+            archive(CEREAL_NVP(readLabel_));
+            archive(CEREAL_NVP(boardLabel_));
         }
 
         template<class Archive>
@@ -157,9 +172,13 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(lockOnLabel_));
             if (version >= 0) archive(CEREAL_NVP(lockOnReleaseLabel_));
             if (version >= 0) archive(CEREAL_NVP(chatLabel_));
+            if (version >= 1) archive(CEREAL_NVP(openLabel_));
+            if (version >= 1) archive(CEREAL_NVP(gatherLabel_));
+            if (version >= 1) archive(CEREAL_NVP(readLabel_));
+            if (version >= 1) archive(CEREAL_NVP(boardLabel_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::MagicCasterControlGuide, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::MagicCasterControlGuide, 1);
