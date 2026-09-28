@@ -1,5 +1,5 @@
 {
-  "generated_from": "bef3dd46b91c5252394f5f9a6db8f28aac8e9460",
+  "generated_from": "9da1694d6dc061040d890b5fe1baf86cd9776fad",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -138,6 +138,40 @@
           "member": "stuckThreshold_secs_",
           "named": true,
           "shape": "float"
+        }
+      ]
+    },
+    "Basic::PlayerAngleDispatch": {
+      "class": "PlayerAngleDispatch",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayerAngleDispatch",
+      "leaf": "PlayerAngleDispatch",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/PlayerAngleDispatch/Enemy_Behaviour_Action_PlayerAngleDispatch.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "ranges_",
+          "member": "ranges_",
+          "named": true,
+          "shape": "vector",
+          "elem": "Range"
+        },
+        {
+          "key": "useFallback_",
+          "member": "useFallback_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "fallbackValue_",
+          "member": "fallbackValue_",
+          "named": true,
+          "shape": "int"
         }
       ]
     },
@@ -533,7 +567,8 @@
           "key": "flinchResistance_",
           "member": "flinchResistance_",
           "named": true,
-          "shape": "int"
+          "shape": "unknown",
+          "type": "FlinchResistance"
         },
         {
           "key": "animatorSetParam_",
@@ -730,7 +765,7 @@
       "class": "PlayAnimation",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation",
       "leaf": "PlayAnimation",
-      "version": 2,
+      "version": 3,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/PlayAnimation/Enemy_Behaviour_Action_PlayAnimation.h",
       "params": [
         {
@@ -752,6 +787,12 @@
           "named": true,
           "shape": "nested",
           "type": "PlaySE"
+        },
+        {
+          "key": "holdSeconds_",
+          "member": "holdSeconds_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -990,6 +1031,28 @@
           "member": "successRate_",
           "named": true,
           "shape": "int"
+        }
+      ]
+    },
+    "Other::RandomWriteBlackBoard<Int>": {
+      "class": "RandomWriteBlackBoard",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::RandomWriteBlackBoard",
+      "leaf": "RandomWriteBlackBoard",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/RandomWriteBlackBoard/Enemy_Behaviour_Action_RandomWriteBlackBoard.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "choices_",
+          "member": "choices_",
+          "named": true,
+          "shape": "vector",
+          "elem": "Choice"
         }
       ]
     },
@@ -1604,6 +1667,40 @@
         }
       ]
     },
+    "Timeline::ActionTimeline": {
+      "class": "ActionTimeline",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ActionTimeline",
+      "leaf": "ActionTimeline",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Timeline/ActionTimeline/Enemy_Behaviour_Action_ActionTimeline.h",
+      "params": [
+        {
+          "key": "cues_",
+          "member": "cues_",
+          "named": true,
+          "shape": "vector",
+          "elem": "Cue"
+        },
+        {
+          "key": "duration_secs_",
+          "member": "duration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "failOnChildFailure_",
+          "member": "failOnChildFailure_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "once_",
+          "member": "once_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
     "Transform::Rotation::AddRotation": {
       "class": "AddRotation",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::AddRotation",
@@ -1881,7 +1978,8 @@
           "key": "flinchPower_",
           "member": "flinchPower_",
           "named": true,
-          "shape": "int"
+          "shape": "unknown",
+          "type": "FlinchPower"
         }
       ]
     },
@@ -1919,6 +2017,7 @@
     }
   },
   "by_fqn": {
+    "GameCore::Npc::Enemy::Behaviour::Action::ActionTimeline": "Timeline::ActionTimeline",
     "GameCore::Npc::Enemy::Behaviour::Action::AddRotation": "Transform::Rotation::AddRotation",
     "GameCore::Npc::Enemy::Behaviour::Action::AttachParticle": "Particle::AttachParticle",
     "GameCore::Npc::Enemy::Behaviour::Action::BossSandstorm": "SkeletonDragon::BossSandstorm",
@@ -1943,6 +2042,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
     "GameCore::Npc::Enemy::Behaviour::Action::Lightning": "Weather::Lightning",
     "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerCannon": "Scene::LockPlayerCannon",
+    "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerControl": "Scene::LockPlayerControl",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute": "RigidBody::MoveEventRoute",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "GameCore::Npc::Enemy::Behaviour::Action::OnDamage": "EnemyStatus::OnDamage",
@@ -1951,9 +2051,11 @@
     "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation": "EnemyStatus::PlayAnimation",
     "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM": "Sound::PlayBGM",
     "GameCore::Npc::Enemy::Behaviour::Action::PlaySE": "Sound::PlaySE",
+    "GameCore::Npc::Enemy::Behaviour::Action::PlayerAngleDispatch": "Basic::PlayerAngleDispatch",
     "GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera": "Camera::PurposeCamera",
     "GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile": "GameObject::RadiateProjectile",
     "GameCore::Npc::Enemy::Behaviour::Action::Random": "Other::Random",
+    "GameCore::Npc::Enemy::Behaviour::Action::RandomWriteBlackBoard": "Other::RandomWriteBlackBoard<Int>",
     "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoard": "Other::ReadBlackBoard<Int>",
     "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
     "GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
@@ -1973,14 +2075,14 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "GameCore::Npc::Enemy::Behaviour::Action::TremblePillars": "Tyrannosaurus::TremblePillars",
     "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerCannon": "Scene::UnlockPlayerCannon",
+    "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerControl": "Scene::UnlockPlayerControl",
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
     "GameCore::Npc::Enemy::Behaviour::Action::WanderMove": "Basic::WanderMove",
     "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard<Int>",
-    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>",
-    "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerControl": "Scene::LockPlayerControl",
-    "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerControl": "Scene::UnlockPlayerControl"
+    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
   },
   "by_leaf": {
+    "ActionTimeline": "Timeline::ActionTimeline",
     "AddRotation": "Transform::Rotation::AddRotation",
     "AttachParticle": "Particle::AttachParticle",
     "BossSandstorm": "SkeletonDragon::BossSandstorm",
@@ -2005,6 +2107,7 @@
     "IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
     "Lightning": "Weather::Lightning",
     "LockPlayerCannon": "Scene::LockPlayerCannon",
+    "LockPlayerControl": "Scene::LockPlayerControl",
     "MoveEventRoute": "RigidBody::MoveEventRoute",
     "MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "OnDamage": "EnemyStatus::OnDamage",
@@ -2013,9 +2116,11 @@
     "PlayAnimation": "EnemyStatus::PlayAnimation",
     "PlayBGM": "Sound::PlayBGM",
     "PlaySE": "Sound::PlaySE",
+    "PlayerAngleDispatch": "Basic::PlayerAngleDispatch",
     "PurposeCamera": "Camera::PurposeCamera",
     "RadiateProjectile": "GameObject::RadiateProjectile",
     "Random": "Other::Random",
+    "RandomWriteBlackBoard": "Other::RandomWriteBlackBoard<Int>",
     "ReadBlackBoard": "Other::ReadBlackBoard<Int>",
     "ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
     "RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
@@ -2035,12 +2140,11 @@
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "TremblePillars": "Tyrannosaurus::TremblePillars",
     "UnlockPlayerCannon": "Scene::UnlockPlayerCannon",
+    "UnlockPlayerControl": "Scene::UnlockPlayerControl",
     "WaitSeconds": "Wait::Seconds::WaitSeconds",
     "WanderMove": "Basic::WanderMove",
     "WriteBlackBoard": "Other::WriteBlackBoard<Int>",
-    "WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>",
-    "LockPlayerControl": "Scene::LockPlayerControl",
-    "UnlockPlayerControl": "Scene::UnlockPlayerControl"
+    "WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
   },
   "nodes": {
     "Editor::Npc::Behaviour::EntryNode": {
@@ -2065,6 +2169,10 @@
     },
     "Editor::Npc::Behaviour::OnceSuccessNode": {
       "leaf": "OnceSuccessNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::BlackBoardGate": {
+      "leaf": "BlackBoardGate",
       "version": 0
     },
     "Editor::Npc::Enemy::Behaviour::ActionNode": {

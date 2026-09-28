@@ -36,14 +36,16 @@ python -m tools.scene add-component --guid <gameobject-guid> --type Animator --p
 
 Drawn with ImGuizmo's `GraphEditor` (`Libs/ImGuizmo/GraphEditor.{h,cpp}`, locally patched — every
 change is marked `NanamiEngine patch`). Nodes are still positioned by each node's saved `position_`, so the
-editor changes nothing in the `.animTree` format.
+editor changes nothing in the `.animTree` format. `AnimationTreeGraphDelegate` derives from
+`Gui::Graph::GraphDelegateBase` (`Engine/Module/Gui/Graph/Editor/`), which it shares with the BehaviourTree
+editor (`docs/BehaviourTree.md` §1).
 
 | action | how |
 |---|---|
 | pan / zoom / fit | middle-drag / wheel / `F` or toolbar *Fit All* (*Fit Selected* for the selection) |
 | select | click a node (shows it in the Inspector), left-drag on empty space for a box, Shift to add |
 | move | drag selected nodes |
-| add a transition | drag from a node's output slot (right) to a clip node's input slot (left); from *Any State* it becomes a `fromAnyStateNodeNodePath` |
+| add a transition | drag from a node's output slot (right) to a clip node's input slot (left); from *Any State* it becomes a `fromAnyStateNodeNodePath`. A clip node takes any number of incoming transitions |
 | edit a transition | click the link (arrow shows the direction) — its `AnimationNodePath` opens in the Inspector |
 | delete | right-click a link / node, or select it and press `Delete` (Entry / Any State can't be deleted; deleting a clip node also removes its transitions) |
 | add a clip node | right-click on empty space → *Add AnimationClipNode* |

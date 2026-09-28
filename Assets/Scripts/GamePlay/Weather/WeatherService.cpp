@@ -65,6 +65,8 @@ namespace GamePlay::Weather
         distantThunderTimer_secs_ = distantThunderMaxInterval_secs_;
         if (flashRenderer_)
             flashRenderer_->SetBlendRate(0);
+        if (clearFog_)
+            clearFog_->SetDrivenExternally(true);
 
         SetStorm(initialStormIntensity_, 0.0f);
     }
@@ -177,17 +179,24 @@ namespace GamePlay::Weather
 
     void WeatherService::ApplyFog() const
     {
-        if (stormIntensity_ <= 0.0f)
+        const std::shared_ptr<SceneFog> clearFog = clearFog_.get();
+        if (stormIntensity_ <= 0.0f && !clearFog)
         {
             Platform::Render::Environment::SetFogEnabled(false);
             return;
         }
 
+        const NanamiEngine::Color32 color = clearFog
+            ? NanamiEngine::Color32::FromVec3(Lerp(clearFog->FogColor().ToVec3(), stormFogColor_.ToVec3(), stormIntensity_))
+            : stormFogColor_;
+        const float clearStart = clearFog ? clearFog->FogStart() : clearFogStart_;
+        const float clearEnd   = clearFog ? clearFog->FogEnd()   : clearFogEnd_;
+
         Platform::Render::Environment::SetFogEnabled(true);
-        Platform::Render::Environment::SetFogColor(stormFogColor_);
+        Platform::Render::Environment::SetFogColor(color);
         Platform::Render::Environment::SetFogStartEnd(
-            Lerp(clearFogStart_, stormFogStart_, stormIntensity_),
-            Lerp(clearFogEnd_,   stormFogEnd_,   stormIntensity_));
+            Lerp(clearStart, stormFogStart_, stormIntensity_),
+            Lerp(clearEnd,   stormFogEnd_,   stormIntensity_));
     }
 
     void WeatherService::ApplyLight() const
@@ -243,6 +252,7 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("thunderFarSound1_", thunderFarSound1_);
         ImGuiHelper::OnDrawInputField("thunderFarSound2_", thunderFarSound2_);
         ImGuiHelper::OnDrawInputField("wallRotator_",      wallRotator_     );
+        ImGuiHelper::OnDrawInputField("clearFog_",         clearFog_        );
         clearSkyTint_   .DrawColorEdit("clearSkyTint_");
         stormSkyTint_   .DrawColorEdit("stormSkyTint_");
         ImGuiHelper::OnDrawInputField("clearUpperRotateSpeedDeg_", clearUpperRotateSpeedDeg_);

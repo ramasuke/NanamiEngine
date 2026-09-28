@@ -7,6 +7,8 @@
 #include "Scene/Sub/Context/Sub_SceneContextBase.h"
 #include "Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "Story/Story_StoryProgress.h"
+#include "Settings/GameSettings.h"
+#include "../../GamePlay/Sound/SoundPlayer.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
@@ -88,11 +90,16 @@ namespace GameCore
         }
 
         // ロード画面と同じく、メインシーンの入れ替えを跨いで残す
-        Core::Application::ApplicationBase::GameWindow()->AddContent(gameOverSceneFile_->LoadScene());
+        const auto scene = gameOverSceneFile_->LoadScene();
+        Core::Application::ApplicationBase::GameWindow()->AddContent(scene);
+        gameOverScene_ = scene;
     }
 
     void Game::OnAwake()
     {
+        // 保存してある音量を最初の音が鳴る前に反映する
+        (void)GameSettings::GetInstance();
+
         InitStageLoadingScene();
         InitGameOverScene();
         InitSubSceneGroup();
@@ -126,6 +133,23 @@ namespace GameCore
 
     void Game::OnDestroy()
     {
+        // NOTE: SoundPlayer が先に破棄されていれば、そちらの OnDestroy で止まっている
+        GamePlay::Sound::SoundPlayer::StopAllBgm();
+
+        // NOTE: End / ホットリロードでセーブが走らないよう Dispose ではなく Shutdown で外す
+        if (sceneGroup_)
+            sceneGroup_->Dispose();
+        if (subSceneGroup_)
+            subSceneGroup_->Clear();
+
+        const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
+        gameWindow->RemoveContent(stageLoadingScene_.lock());
+        gameWindow->RemoveContent(gameOverScene_.lock());
+
+        sceneGroup_.reset();
+        subSceneGroup_.reset();
+        loadingScreen_.reset();
+
         if (instance_ == this)
         {
             instance_ = nullptr;

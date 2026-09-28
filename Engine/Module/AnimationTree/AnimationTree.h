@@ -43,15 +43,11 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         void OnSave();
         void OnUpdate(int modelHandle, float timeScale) const;
-        /**
-         * @brief グラフエディタのウィンドウを描画する（ImGuizmo GraphEditor）
-         * @param readOnly 実行中ツリーの表示用。ノードの移動・遷移の編集を禁止する
-         */
         void OnDrawGraphEditorGui(bool readOnly = false);
         void OnDrawGui() override;
         [[nodiscard]] BlackBoard::ParameterGroup& Param() const { return *additionConditionParameters_; }
         [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
-        /** @brief 現在再生中のノード。ブレンド中は [0]=フェードアウト側, [末尾]=遷移先。エディタ表示時は空 */
+
         [[nodiscard]] const std::vector<std::shared_ptr<IAnimationNode>>& CurrentNodes() const { return currentNodes_; }
 
         /** @warning Playモード時は呼び出し必須 */
@@ -60,13 +56,12 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] AnimationStateSnapshot GetCurrentState() const;
         void ApplyRemoteState(const AnimationStateSnapshot& state, int modelHandle);
 
-        /** @brief 指定名のクリップが現在再生中なら、その再生進捗を返す。再生中でなければ std::nullopt */
+        /** @brief 指定名クリップの再生進捗 */
         [[nodiscard]] std::optional<ClipProgress> GetClipProgress(const std::string& clipName) const;
-        /** @brief 現在再生中（primary）のクリップの再生進捗。再生中のクリップが無ければ std::nullopt */
+        /** @brief 現在再生中クリップの再生進捗*/
         [[nodiscard]] std::optional<ClipProgress> GetCurrentClipProgress() const;
 
     private:
-        /** @brief グラフエディタはノード・遷移の追加 / 削除 / 再生状態の表示のため内部を直接触る */
         friend class AnimationTreeGraphDelegate;
 
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);
@@ -88,7 +83,6 @@ namespace NanamiEngine::Module::AnimationTree
         AnimationNodePath*                              currentNodePath_ = nullptr;
         std::shared_ptr<BlackBoard::ParameterGroup> additionConditionParameters_ = std::make_shared<BlackBoard::ParameterGroup>();
 
-        /** @note エディタ表示状態（パン・ズーム・選択）。初回の OnDrawGraphEditorGui で作る。保存しない */
         std::shared_ptr<Gui::Graph::GraphEditorHost> graphHost_;
         std::shared_ptr<AnimationTreeGraphDelegate>  graphDelegate_;
     };

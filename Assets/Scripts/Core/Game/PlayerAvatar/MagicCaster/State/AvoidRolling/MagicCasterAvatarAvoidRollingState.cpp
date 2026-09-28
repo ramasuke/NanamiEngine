@@ -19,18 +19,18 @@ void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoFixedUpdat
 {
     MoveAvoidRolling();
 
-    // NOTE: 転がっている間の被ダメージは受け流す(捨てる)
+    // NOTE: 転がっている間の被ダメージは受け流す(捨てる)。演出は出だしの窓で受け流した時だけ
     if (Status().IsDamaged())
     {
-        if (!isAvoided_)
+        if (!isAvoided_ && During_secs() <= Status().JustAvoidWindow_secs())
         {
             if (const auto particle = Context().SuccessAvoidRollingParticle())
                 particle->Play();
             if (const auto sound = Resources().JustAvoidRollingSound())
                 GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+            isAvoided_ = true;
         }
         Status().DiscardDamage();
-        isAvoided_ = true;
     }
 
     if (Status().AvoidRollingStateDuration_secs() <= During_secs())

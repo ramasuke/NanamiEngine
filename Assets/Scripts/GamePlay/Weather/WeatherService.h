@@ -9,6 +9,7 @@
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/Color/Color32.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "SceneFog.h"
 
 namespace GamePlay::Weather
 {
@@ -61,6 +62,8 @@ namespace GamePlay::Weather
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound2_;
         // シーン固有の雲 (巣の嵐の壁など)。空のドームと同じく嵐の強さで回転を速める
         [[serialize(0)]] FIELD(Component::Rotator)           wallRotator_;
+        // 晴れのフォグ。あれば晴れの間もフォグを掛け、嵐へはこの値から補間する
+        [[serialize(0)]] FIELD(SceneFog)                     clearFog_;
 
         [[serialize(0)]] NanamiEngine::Color32 clearSkyTint_ = NanamiEngine::Color32(255, 255, 255);
         [[serialize(0)]] NanamiEngine::Color32 stormSkyTint_ = NanamiEngine::Color32( 66,  74,  92);
@@ -156,6 +159,7 @@ namespace GamePlay::Weather
             archive(CEREAL_NVP(initialStormIntensity_));
             archive(CEREAL_NVP(clearWallRotateSpeedDeg_));
             archive(CEREAL_NVP(stormWallRotateSpeedDeg_));
+            archive(CEREAL_NVP(clearFog_));
         }
 
         template<class Archive>
@@ -203,6 +207,7 @@ namespace GamePlay::Weather
             if (version >= 3) archive(CEREAL_NVP(initialStormIntensity_));
             if (version >= 3) archive(CEREAL_NVP(clearWallRotateSpeedDeg_));
             if (version >= 3) archive(CEREAL_NVP(stormWallRotateSpeedDeg_));
+            if (version >= 4) archive(CEREAL_NVP(clearFog_));
         }
 
     private:
@@ -223,4 +228,4 @@ namespace GamePlay::Weather
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Weather::WeatherService, 3);
+CEREAL_CLASS_VERSION(GamePlay::Weather::WeatherService, 4);

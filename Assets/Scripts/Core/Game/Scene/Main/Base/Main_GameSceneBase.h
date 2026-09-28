@@ -51,7 +51,12 @@ namespace GameCore::Scene::Main
         void Init() final;
 
     private:
+        void Exit() override;
         void Dispose() override;
+        /** @brief 読み込み中の入場を止める */
+        void CancelEnter();
+        /** @brief 読み込んだメインシーンとサブシーンを外す */
+        void Unload();
         [[nodiscard]] bool IsEntered() const override { return isEntered_; }
         Coroutine::Task<void> EnterAsync(NanamiEngine::R4::CancellationToken token);
         /** @brief 入場の失敗をロード画面に出しセーフ処理 */
@@ -68,7 +73,7 @@ namespace GameCore::Scene::Main
 
     protected:
         /** template method pattern */
-        virtual void DoDispose() = 0;
+        virtual void DoExit() = 0;
         virtual void OnInit() {}
         [[nodiscard]] virtual std::vector<Sub::SceneType> SubScenes() const = 0;
         
@@ -84,7 +89,7 @@ namespace GameCore::Scene::Main
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
         /** @brief GameManage.scene と一緒に常駐しているロード画面 */
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return baseContext_.LoadingScreen(); }
-        /** @brief 入場で読み込んだシーン。Dispose で自動的に外す */
+        /** @brief 入場で読み込んだシーン。Exit / Dispose で自動的に外す */
         [[nodiscard]] std::weak_ptr<NanamiEngine::Scene::Scene> MainScene() const { return mainScene_; }
     };
 
@@ -113,16 +118,33 @@ namespace GameCore::Scene::Main
     }
 
     template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
+    void GameMainSceneBase<ContextT>::Exit()
+    {
+        CancelEnter();
+        DoExit();
+        Unload();
+    }
+
+    template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
     void GameMainSceneBase<ContextT>::Dispose()
+    {
+        CancelEnter();
+        Unload();
+    }
+
+    template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
+    void GameMainSceneBase<ContextT>::CancelEnter()
     {
         if (enterCancellation_)
         {
             enterCancellation_->Cancel();
         }
         isEntered_ = false;
+    }
 
-        DoDispose();
-
+    template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
+    void GameMainSceneBase<ContextT>::Unload()
+    {
         if (const auto scene = mainScene_.lock())
             Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene);
         mainScene_.reset();

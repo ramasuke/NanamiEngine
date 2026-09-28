@@ -26,6 +26,7 @@ FQN_SEQUENCE = "Editor::Npc::Behaviour::SequenceNode"
 FQN_RANDOM = "Editor::Npc::Behaviour::RandomSelectorNode"
 FQN_ONCE_EXEC = "Editor::Npc::Behaviour::OnceExecute"
 FQN_ONCE_SUCCESS = "Editor::Npc::Behaviour::OnceSuccessNode"
+FQN_BB_GATE = "Editor::Npc::Behaviour::BlackBoardGate"
 
 FQN_ACTION_NODE_ENEMY = "Editor::Npc::Enemy::Behaviour::ActionNode"
 FQN_ACTION_NODE_FRIENDLY = "Editor::Npc::Friendly::Behaviour::ActionNode"
@@ -44,6 +45,7 @@ NODE_CLASS_VERSION = {
     FQN_RANDOM: 1,
     FQN_ONCE_EXEC: 0,
     FQN_ONCE_SUCCESS: 0,
+    FQN_BB_GATE: 0,
     FQN_ACTION_NODE_ENEMY: 1,
     FQN_ACTION_NODE_FRIENDLY: 1,
 }
@@ -90,6 +92,18 @@ class OnceSuccess(Node):
 
 
 @dataclass
+class BlackBoardGate(Node):
+    """ブラックボードの int 条件がすべて一致したときだけ子を実行するデコレータ。
+    各リストは (keyName, value) の組。子が無ければ条件判定だけのノードになる。"""
+
+    child: Optional["AnyNode"] = None
+    conditions: list[tuple[str, int]] = field(default_factory=list)
+    writes_on_start: list[tuple[str, int]] = field(default_factory=list)
+    writes_on_success: list[tuple[str, int]] = field(default_factory=list)
+    once: bool = False
+
+
+@dataclass
 class Action(Node):
     """ActionNode: 具象 ActionBase を1つラップするエディタ上のラベル（`name`）。"""
 
@@ -109,10 +123,10 @@ class Action(Node):
 
 
 CompositeNode = Union[Selector, Sequence, RandomSelector]
-AnyNode = Union[Selector, Sequence, RandomSelector, OnceExecute, OnceSuccess, Action]
+AnyNode = Union[Selector, Sequence, RandomSelector, OnceExecute, OnceSuccess, BlackBoardGate, Action]
 
 CHILDLESS = (Action,)
-SINGLE_CHILD = (OnceExecute, OnceSuccess)
+SINGLE_CHILD = (OnceExecute, OnceSuccess, BlackBoardGate)
 MULTI_CHILD = (Selector, Sequence, RandomSelector)
 
 
@@ -133,6 +147,9 @@ class Tree:
     #: （tools/bt/npc_kind.py 参照）。writer が各 Action リーフをどの ActionNode FQN で
     #: ラップするかを決める。それ以外の値は無関係（かつ未テスト）。
     kind: str = "enemy"
+    #: 浮きノード（エディタのグラフで親から切り離したサブツリーの根）。実行はされない。
+    #: ファイルの ``detachedNodes_``（無ければ空）。walk() / find() は辿らない。
+    detached: list["AnyNode"] = field(default_factory=list)
 
     # -- 探索ヘルパー ------------------------------------------------
     def walk(self):

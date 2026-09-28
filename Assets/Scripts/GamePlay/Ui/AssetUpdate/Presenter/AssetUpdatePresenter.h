@@ -20,7 +20,7 @@ namespace GamePlay::Ui
      *   更新あり      A 受け取る → 落として入れる / B あとで → 札を引っ込める (ゲームはまだ始められない)
      *   失敗          A もう一度 / B あとで
      *   本体が古い    B 閉じる
-     *   入れ終えた    A 再起動する (予約してウィンドウを閉じる)
+     *   入れ終えた    A 閉じる (ゲームを終了し、起動し直してもらう)
      * 確認中・最新・未インストール (エディタ)・オフラインでは何も出さない。
      * 実装を差し替えるときは CreateAssetUpdater だけを変える。
      */
@@ -66,7 +66,7 @@ namespace GamePlay::Ui
         void ShowProgress();
         void Confirm();
         void Cancel();
-        void Relaunch() const;
+        void Quit() const;
         [[nodiscard]] AssetUpdateParcel Parcel() const;
         void PlaySound(const FIELD(Asset::SoundFile)& sound) const;
         void UpdatePreview();
@@ -80,7 +80,6 @@ namespace GamePlay::Ui
         std::unique_ptr<AssetUpdater::AssetUpdateTask> task_;
         AssetUpdater::AssetUpdateState shownState_ = AssetUpdater::AssetUpdateState::Idle;
         Keys previousKeys_;
-        bool canRelaunch_ = false;
 
         Preview preview_ = Preview::None;
         /** 偽の受け取りの進み 0..1 */

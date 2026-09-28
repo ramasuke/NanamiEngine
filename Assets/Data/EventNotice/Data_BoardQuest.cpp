@@ -1,7 +1,5 @@
 ﻿#include "Data_BoardQuest.h"
 
-#include <algorithm>
-
 #include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestType.h"
 #include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_TakeableQuestFactory.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -13,17 +11,15 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
-    bool BoardQuest::IsUnlocked(const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& context) const
+    bool BoardQuest::IsUnlocked(const GameCore::Condition::ConditionContext& context) const
     {
-        return GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockConditionList::AreAllSatisfied(unlockConditions_, context);
+        return GameCore::Condition::ConditionList::AreAllSatisfied(unlockConditions_, context);
     }
 
     void BoardQuest::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("title_", title_);
         LibCore::ImGuiHelper::OnDrawInputField("clientName_", clientName_);
-        LibCore::ImGuiHelper::OnDrawInputField("rank_", rank_);
-        rank_ = std::clamp(rank_, 1, BOARD_QUEST_MAX_RANK);
         LibCore::ImGuiHelper::OnDrawInputField("goalText_", goalText_);
         LibCore::ImGuiHelper::OnDrawInputField("descriptionLines_", descriptionLines_, [this]
         {
@@ -34,7 +30,7 @@ namespace NanamiEngine::Module::Asset
         });
         LibCore::ImGuiHelper::OnDrawInputField("stage_", stage_);
         LibCore::ImGuiHelper::OnDrawInputField("event_", event_);
-        GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockConditionList::DrawListGui("unlockConditions_", unlockConditions_);
+        GameCore::Condition::ConditionList::DrawListGui("unlockConditions_", unlockConditions_);
         LibCore::ImGuiHelper::OnDrawInputField("lockedText_", lockedText_);
 
         if (!ImGui::CollapsingHeader("quest_", ImGuiTreeNodeFlags_DefaultOpen))

@@ -31,9 +31,7 @@ namespace NanamiEngine::Module::Component
         int modelDxLibHandle_ = -1;
 
         void SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File);
-        /** @brief 描画位置だけをワールド空間でずらす(Transform・物理・同期には影響しない) */
         void SetRenderOffset(const glm::vec3& offset) { renderOffset_ = offset; }
-        /** @brief 実際に描画しているワールド座標。useFixedInterpolation_なら物理ステップ間を補間した値(renderOffset_は含まない) */
         [[nodiscard]] glm::vec3 RenderWorldPos() const;
 
     private:
@@ -61,7 +59,6 @@ namespace NanamiEngine::Module::Component
         std::vector<bool> rigidTriangleList_;
         bool              allRigid_ = true;
 
-        // モデル差し替え時にだけ組み直す静的な対応表
         std::vector<std::string>         materialNames_;
         std::vector<std::pair<int, int>> originalMaterialBlend_;
         std::vector<int>                 triangleListMaterialIndex_;

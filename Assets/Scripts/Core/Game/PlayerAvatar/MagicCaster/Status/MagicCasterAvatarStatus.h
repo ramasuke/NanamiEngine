@@ -83,6 +83,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         [[nodiscard]] bool  CanAvoidRolling() const { return stamina_.Value() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
         [[nodiscard]] float AvoidRollingStateDuration_secs() const { return avoidRollingStateDuration_secs_; }
+        /** 回避の出だしからこの秒数までに受け流した被弾をジャスト回避として扱う */
+        [[nodiscard]] float JustAvoidWindow_secs() const { return justAvoidWindow_secs_; }
         void ConsumeAvoidRollingStamina() { ConsumeStamina(avoidRollingStaminaCost_); }
 
         [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
@@ -149,6 +151,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         float jumpCooldownRemaining_secs_ = 0.0f;
         [[serialize(5)]] float avoidRollingStateDuration_secs_;
         [[serialize(5)]] float avoidRollingStaminaCost_;
+        [[serialize(7)]] float justAvoidWindow_secs_ = 0.15f;
 
         [[serialize(0)]] float damageStateDuration_secs_;
         [[serialize(0)]] float deathStateDuration_secs_;
@@ -209,6 +212,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             archive(CEREAL_NVP(avoidRollingStaminaCost_));
             archive(CEREAL_NVP(injuredHealthRatio_));
+            archive(CEREAL_NVP(justAvoidWindow_secs_));
         }
 
         template <class Archive>
@@ -251,11 +255,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
             if (version >= 5) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             if (version >= 5) archive(CEREAL_NVP(avoidRollingStaminaCost_));
             if (version >= 6) archive(CEREAL_NVP(injuredHealthRatio_));
+            if (version >= 7) archive(CEREAL_NVP(justAvoidWindow_secs_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 6);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 7);
 #pragma endregion

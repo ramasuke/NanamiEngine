@@ -14,9 +14,7 @@ namespace GameCore::PlayerAvatar
 namespace GameCore::PlayerAvatar::Quest
 {
     struct QuestContext;
-
-    /// 職業を問わないクエストの口。剣士専用の ITakeableSwordManQuest と同じ形。
-    /// メインストーリー(MainStoryQuestBase)も汎用の依頼(RequestQuestBase)もこれを通して受注・保存する
+    
     class ITakeableQuest
     {
     public:
@@ -27,7 +25,6 @@ namespace GameCore::PlayerAvatar::Quest
         /** @brief true なら達成のたびに報酬を出し、達成済みとして残さない(何度でも受けられる) */
         [[nodiscard]] virtual bool IsRepeatable() const { return false; }
 
-        /** @brief 受注のたびに別の実体を渡すための複製。中身の型ごと写す */
         [[nodiscard]] std::shared_ptr<ITakeableQuest> Clone() const;
 
         /** @brief 達成時にプレイヤーへ入る額 */

@@ -35,6 +35,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarJumpAttackAirState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
         visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
-        visitor.Automatic(SwordManAvatarStateType::JumpAttackLand, Conditions().IsGround());
+        // NOTE: GroundCheckRadius だと踏み切り直後も接地扱いになり、振りかぶらずに着地攻撃へ移るため
+        visitor.Automatic(SwordManAvatarStateType::JumpAttackLand,
+                          isPlunging_ && Conditions().IsGround(Resources().JumpAttackGroundCheckRadius()));
     }
 }

@@ -66,6 +66,7 @@ namespace GameCore::Network
 
         /** 敵固有 */
         EnemyHealth,
+        ShowBossHealthGauge,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -121,4 +122,7 @@ namespace GameCore::Network
     // NOTE: 敵の HP 同期(SyncParam)が届かないので、ホストが減った HP を敵の NetworkObjectId 宛てに全ピアへ送る
     /** ホストでの現在 HP */
     using EnemyHealthRpc = Module::Network::RpcDef<ERpcType::EnemyHealth, int>;
+
+    /** ボスHPゲージの表示開始。ボスの NetworkObjectId 宛て */
+    using ShowBossHealthGaugeRpc = Module::Network::RpcDef<ERpcType::ShowBossHealthGauge>;
 }

@@ -15,9 +15,9 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCube3DFromVertices(const std::a
 {
     // 立方体の辺を構成するインデックスペア
     static const int EDGES[12][2] = {
-        {0,1}, {1,2}, {2,3}, {3,0}, // 下の面
-        {4,5}, {5,6}, {6,7}, {7,4}, // 上の面
-        {0,4}, {1,5}, {2,6}, {3,7}  // 側面
+        {0,1}, {1,2}, {2,3}, {3,0}, 
+        {4,5}, {5,6}, {6,7}, {7,4}, 
+        {0,4}, {1,5}, {2,6}, {3,7}  
     };
 
     for (auto& e : EDGES)
@@ -165,7 +165,7 @@ void NanamiEngine::Module::Render3D::Shapes::DrawSphere3D(
 {
     constexpr int segment = 16;
 
-    // 3つの直交する円(XY, XZ, YZ平面)でワイヤーフレーム球を表現する
+    // 3つの直交する円ワイヤーフレーム球
     for (int i = 0; i < segment; i++)
     {
         const float t0 = static_cast<float>(i)     / segment * glm::two_pi<float>();

@@ -25,9 +25,9 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] int AnimationModelHandle() const { return modelDxLibHandle_; }
         [[nodiscard]] AnimationTree::AnimationTree* GetAnimationTree() const { return animationTree_.get(); }
 
-        /** @brief 指定名クリップの再生進捗（秒・正規化）。再生中でなければ std::nullopt */
+        /** @brief 指定名クリップの再生進捗 */
         [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetClipProgress(const std::string& clipName) const;
-        /** @brief 現在再生中（primary）のクリップの再生進捗。再生中のクリップが無ければ std::nullopt */
+        /** @brief 現在再生中クリップの再生進捗 */
         [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetCurrentClipProgress() const;
 
         [[nodiscard]] float GetTimeScale() const { return timeScale_; }

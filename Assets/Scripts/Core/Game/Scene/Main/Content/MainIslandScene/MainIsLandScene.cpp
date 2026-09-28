@@ -206,14 +206,14 @@ namespace GameCore::Scene::Main
         
     }
 
-    void MainIslandScene::DoDispose()
+    void MainIslandScene::DoExit()
     {
         // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
             avatar->SaveStatus();
-            SaveGameProgression(GameProgresion::GrassLandStage);
+            SaveGameProgression(GameProgresion::MainIsland);
         }
         playerAvatar_.reset();
         attachments_ = {};

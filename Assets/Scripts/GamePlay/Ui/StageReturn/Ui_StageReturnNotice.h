@@ -16,21 +16,16 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ステージから島へ帰るか尋ねる「掲示板の貼り紙」の見た目。
-     * 画面を幕で沈め、板に釘で留めた貼り紙に「帰 還」と2つの行を出す。板・紙・釘・罫は絵に焼いてあり、
-     * ホストが帰ると仲間の旅も終わるので、その断り書きを載せる縦長の絵と差し替える。
-     * 選んでいる行は墨を濃くして下線を引き、朱の判子を押す。
-     */
     class StageReturnNoticeUi final : public Component::ComponentBase,
                                       public LifeCycleCallback::IStartable,
                                       public LifeCycleCallback::IUpdatable
     {
     public:
-        static constexpr int RETURN_INDEX = 0;
-        static constexpr int STAY_INDEX   = 1;
+        static constexpr int RETURN_INDEX   = 0;
+        static constexpr int STAY_INDEX     = 1;
+        static constexpr int SETTINGS_INDEX = 2;
+        static constexpr int ROW_COUNT      = 3;
 
-        /** @param isHostLeaving ホストが仲間を残して帰るときだけ断り書きを出す */
         void Open(bool isHostLeaving, int selection);
         void Hide();
         void SetSelection(int index);
@@ -71,6 +66,9 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) stayLabel_;
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) stayUnderline_;
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) stayStamp_;
+        [[serialize(1)]] FIELD(NanamiUi::TextRenderer) settingsLabel_;
+        [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) settingsUnderline_;
+        [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) settingsStamp_;
 
         [[serialize(0)]] FIELD(NanamiUi::Button) confirmButton_;
         [[serialize(0)]] FIELD(NanamiUi::Button) cancelButton_;
@@ -125,6 +123,9 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(enterDuration_secs_));
             archive(CEREAL_NVP(stampDuration_secs_));
             archive(CEREAL_NVP(stampStartScale_));
+            archive(CEREAL_NVP(settingsLabel_));
+            archive(CEREAL_NVP(settingsUnderline_));
+            archive(CEREAL_NVP(settingsStamp_));
         }
 
         template<typename Archive>
@@ -154,9 +155,12 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(enterDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(stampDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(stampStartScale_));
+            if (version >= 1) archive(CEREAL_NVP(settingsLabel_));
+            if (version >= 1) archive(CEREAL_NVP(settingsUnderline_));
+            if (version >= 1) archive(CEREAL_NVP(settingsStamp_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::StageReturnNoticeUi, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageReturnNoticeUi, 1);

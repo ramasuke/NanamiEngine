@@ -25,6 +25,8 @@ _KIND_ALIASES = {
     "once-exec": model.OnceExecute,
     "once-execute": model.OnceExecute,
     "once-success": model.OnceSuccess,
+    "gate": model.BlackBoardGate,
+    "bb-gate": model.BlackBoardGate,
     "action": model.Action,
 }
 
@@ -153,6 +155,8 @@ def _make_node(kind: str, *, name: Optional[str], action_type: Optional[str],
         return cls(guid=node_guid, pos=pos)
     if cls is model.OnceExecute:
         return model.OnceExecute(guid=node_guid, pos=pos)
+    if cls is model.BlackBoardGate:
+        return model.BlackBoardGate(guid=node_guid, pos=pos)
     return model.OnceSuccess(guid=node_guid, pos=pos)
 
 
@@ -168,7 +172,7 @@ def _attach(parent, node, index: Optional[int], weight: int) -> None:
         i = len(parent.children) if index is None else index
         parent.children.insert(i, node)
         parent.weights.insert(i, int(weight))
-    elif isinstance(parent, (model.OnceExecute, model.OnceSuccess)):
+    elif isinstance(parent, model.SINGLE_CHILD):
         if parent.child is not None:
             raise EditError(f"{type(parent).__name__} already has a child")
         parent.child = node
@@ -209,6 +213,13 @@ def _clone_node(node, mint):
     if isinstance(node, model.OnceSuccess):
         return model.OnceSuccess(guid=mint(), pos=node.pos,
                                  child=_clone_node(node.child, mint) if node.child else None)
+    if isinstance(node, model.BlackBoardGate):
+        return model.BlackBoardGate(guid=mint(), pos=node.pos,
+                                    child=_clone_node(node.child, mint) if node.child else None,
+                                    conditions=list(node.conditions),
+                                    writes_on_start=list(node.writes_on_start),
+                                    writes_on_success=list(node.writes_on_success),
+                                    once=node.once)
     raise EditError(f"cannot copy a node of type {type(node).__name__}")
 
 
@@ -242,7 +253,7 @@ def _detach(tree: model.Tree, guid: str):
     kids.pop(idx)
     if isinstance(parent, model.RandomSelector) and idx < len(parent.weights):
         parent.weights.pop(idx)
-    if isinstance(parent, (model.OnceExecute, model.OnceSuccess)):
+    if isinstance(parent, model.SINGLE_CHILD):
         parent.child = None
     return node
 

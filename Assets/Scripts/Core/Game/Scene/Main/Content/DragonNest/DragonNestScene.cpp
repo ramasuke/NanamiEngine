@@ -56,7 +56,7 @@ namespace GameCore::Scene::Main
 
     std::vector<Sub::SceneType> DragonNestScene::SubScenes() const
     {
-        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus };
+        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus, Sub::SceneType::StageReturn };
     }
 
     Coroutine::Task<EnterResult> DragonNestScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
@@ -282,7 +282,7 @@ namespace GameCore::Scene::Main
         Coroutine::StartCoroutine(PlayHeartScatterAsync(Context(), playerAvatar_));
     }
 
-    void DragonNestScene::DoDispose()
+    void DragonNestScene::DoExit()
     {
         stageClearWatcher_.Dispose();
 

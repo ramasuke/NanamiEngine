@@ -79,6 +79,7 @@ namespace GameCore
         
         std::shared_ptr<GameProgresion> mainScenarioProgression_;
         std::weak_ptr<NanamiEngine::Scene::Scene> stageLoadingScene_;
+        std::weak_ptr<NanamiEngine::Scene::Scene> gameOverScene_;
         std::shared_ptr<GamePlay::Ui::LoadingScreenUi> loadingScreen_;
         GamePlay::Network::StageMatchmaker matchmaker_;
         static Game* instance_;

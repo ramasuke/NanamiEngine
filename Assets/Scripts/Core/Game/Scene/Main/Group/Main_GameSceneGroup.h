@@ -15,7 +15,7 @@ namespace GameCore::Scene::Main
     /**
      * @brief メインシーンの切り替えを受け持つ。
      *
-     * 切り替えは必ずロード画面を挟む: 覆い切るのを待つ → 旧シーンを Dispose・新シーンを Init
+     * 切り替えは必ずロード画面を挟む: 覆い切るのを待つ → 旧シーンを Exit・新シーンを Init
      * → 新シーンが IsEntered になるまで待つ → ロード画面を明ける。
      * 途中で来た要求は最後の 1 件だけ残し、覆い切っていればそのまま切り替え直す
      */
@@ -30,6 +30,8 @@ namespace GameCore::Scene::Main
         void Update();
         void OnDrawGui();
         void RequestChangeScene(SceneType type, SceneTransitionOptions options = {});
+        /** @brief Game の破棄時用。読み込み中の入場を捨て、今のシーンをセーブせずに外す */
+        void Dispose();
         /** @brief 最後に切り替えたシーン。まだ一度も切り替えていなければ空 */
         [[nodiscard]] std::optional<SceneType> CurrentSceneType() const { return currentSceneType_; }
         /** @brief 切り替えの要求が残っているか、切り替えの途中(ロード画面が覆っている間)か */

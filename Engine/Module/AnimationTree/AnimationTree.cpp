@@ -18,8 +18,6 @@
 AnimationTree::AnimationTree::AnimationTree(std::string filePath)
     : filePath_(std::move(filePath))
 {
-    // 未作成のファイルは空のツリーとして扱う（新規作成 → Save のフローで使う）。
-    // 破損している場合は DeserializeException が投げられ、ツリーは生成されない
     const bool loaded = NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
     {
         archive(cereal::make_nvp("additionParameters_", additionConditionParameters_));

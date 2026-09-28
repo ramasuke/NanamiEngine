@@ -43,16 +43,45 @@ a friendly NPC through `FriendlyNpc::friendlyNpcBehaviourFile_` (a
 `Assets/Prefab/Npc/Enemy/Hyena.prefab` ↔ `HyenaBehaviour.enemyBehaviourData.meta`).
 `OnAwake` loads the tree; `OnUpdate` ticks it - on both components.
 
+### In-engine graph editor (Behaviour Tree window)
+
+Drawn with ImGuizmo's `GraphEditor` through the same engine pieces as the AnimationTree editor
+(`Engine/Module/Gui/Graph/Editor/`: `GraphEditorHost` = toolbar / pan / zoom / fit / minimap,
+`GraphDelegateBase` = selection, context menus, `Delete` key). The BT side is one adapter shared by both
+flavors, `Assets/Scripts/Editor/BehaviourTree/Window/Graph/BehaviourTreeGraphDelegate`; nodes plug in through
+`NodeBase`'s graph hooks (`GraphHeaderColor`, `GraphNodeTitle`/`Detail`, `MaxChildren`,
+`RemoveChild`/`InsertChild`, `DrawGraphContextMenuItems`). Nodes keep their saved `position_`.
+
+| action | how |
+|---|---|
+| pan / zoom / fit | middle-drag / wheel / `F` or toolbar *Fit All* (*Fit Selected* for the selection) |
+| select | click a node (shows it in the Inspector), left-drag on empty space for a box, Shift to add |
+| move | drag selected nodes - their whole subtrees follow |
+| connect / re-parent | drag from a parent's output slot (right) to a child's input slot (left); a child has one parent, so this moves it. A single-child node (Entry, OnceExecute, OnceSuccess) drops its old child to *detached* |
+| disconnect | drag the link off the child's input slot, right-click the link → *Disconnect*, or the node menu's *Disconnect from Parent*. Re-connecting to the same parent puts it back at its old position (and weight) |
+| add | right-click empty space → *Create Node* / *Paste* (detached, at the cursor), or a node → *Create Child* / *Paste as Child* |
+| delete | select + `Delete`, or the node menu: *Delete Node* (children become detached) / *Delete Subtree*. Entry can't be deleted |
+| action type | right-click an ActionNode → *Action* |
+| child order | the Inspector's ↑↓ (the graph shows `#n` on each child of a multi-child node) |
+
+Subtrees not reachable from Entry are **detached**: shaded, labelled, never ticked, and saved in the file's
+`detachedNodes_` so they can be wired back later. The *Running BehaviourTree Viewer* shows the same graph
+read-only, with each node outlined by its last tick result (green Success, yellow Running, red Failure,
+purple Abort).
+
 ---
 
 ## 2. `.enemyBehaviourData` / `.friendBehaviourData` format
 
 Output of `cereal::JSONOutputArchive` (`BehaviourTree::OnSave`). Two top-level keys,
-in this order:
+in this order, plus an optional third:
 
 * `entryNode_` — `shared_ptr<Editor::Npc::Behaviour::EntryNode>`, the graph root.
   Its `nextNode_` holds the actual tree (or `{"polymorphic_id": 0}` when empty).
 * `parameters_` — `unique_ptr<ParameterGroup>`, the blackboard.
+* `detachedNodes_` — `vector<shared_ptr<NodeBase>>`, the graph editor's detached subtree roots (never
+  ticked). Written only when non-empty and optional on load, so older files are unchanged;
+  `tools/bt` reads and writes it as `Tree.detached` (`show` lists it, `validate` notes it).
 
 On disk: UTF-8, **no BOM**, **CRLF**, no trailing newline, 4-space indent.
 
@@ -82,6 +111,7 @@ position_: {value0: x, value1: y} }` (`position_` is editor-canvas coords).
 | `Editor::Npc::Behaviour::RandomSelectorNode` | 1 | `children_[]`, `weights_[]` (one int per child) — picks **one** weighted child per tick and returns exactly what it returns, with **no fallback**: unlike `SelectorNode`, a child that fails makes the whole node fail that tick, it does not try another child. A branch can't be made conditional in isolation inside a `RandomSelector` — if that branch's guard fails, the pick is wasted, not retried — so a variant that's sometimes unavailable needs its own separate weighted pool (see `Editor::Npc::Behaviour::SelectorNode` above, gated by e.g. a blackboard condition, with each pool as one branch), not a guard clause on one child. Since the file is a "pure tree" (below), that second pool can't share nodes with the first — `copy-node` (below) clones one pool's whole subtree so only the diff (a swapped-in branch, a changed weight) needs hand-editing afterwards. |
 | `Editor::Npc::Behaviour::OnceExecute` | 0 | `child_`, `state_` |
 | `Editor::Npc::Behaviour::OnceSuccessNode` | 0 | `child_` |
+| `Editor::Npc::Behaviour::BlackBoardGate` | 0 | `child_` (may be null), `conditions_[]`, `writesOnStart_[]`, `writesOnSuccess_[]` (each `{keyName_, value_}`, int blackboard), `once_` — replaces `Seq[ReadBlackBoard..., X, WriteBlackBoard...]`: fails unless every condition matches (checked every tick, like a Sequence), writes `writesOnStart_` when it enters the child, `writesOnSuccess_` when the child succeeds. No child = a pure condition/write node. `once_` latches the result like `OnceExecute`. Shared by both flavors. |
 | `Editor::Npc::Enemy::Behaviour::ActionNode` | 1 | `name_` (label), `action_` (`unique_ptr<GameCore::Npc::Enemy::Behaviour::ActionBase>`) |
 | `Editor::Npc::Friendly::Behaviour::ActionNode` | 1 | `name_` (label), `action_` (`unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase>`) |
 
@@ -99,6 +129,27 @@ value exceeds `flinchResistance_`, and sets the Animator's `State` to `animatorS
 root Selector's damage branch, after `OnDamage` and the death sequence. The animation needs an
 any-state transition with `--no-exit-time` (see `docs/AnimationTree.md`) so that it cuts the current
 clip. Set `isStopHorizontalMove_` to false when `OnDamage` applies knockback. Hyena is the reference setup.
+
+**Bundling nodes (enemies):** prefer these over long chains of small nodes.
+
+* `Timeline::ActionTimeline` - `cues_[]` of `{at_secs_, waitDone_, keepTicking_, action_}` (`action_` is any
+  enemy action, serialised like an ActionNode's), `duration_secs_`, `failOnChildFailure_`, `once_`. Starts each
+  cue when its time comes and returns Running until `duration_secs_` has passed and every `waitDone_` cue has
+  finished. Replaces `Seq[PlayAnimation, Wait, ShakeCamera, Wait, PlaySE, ...]` and `OnceExecute` around one-shot
+  effects: a cue runs **once** unless `keepTicking_` (then it is re-ticked every frame until the timeline ends,
+  the way a Sequence re-ticks earlier children - `PlayAnimation`'s delayed sound and a held `SetLinearVelocity`
+  need it). Like `WaitSeconds`, a finished timeline ticked again on the next tree tick stays finished, so it can
+  sit in the middle of a Sequence. `show` prints the cues indented under the node.
+* `EnemyStatus::PlayAnimation.holdSeconds_` (v3) - Running for that long instead of a following `WaitSeconds`.
+* `Other::RandomWriteBlackBoard<Int>` - `keyName_`, `choices_[] {value_, weight_}`; replaces
+  `RandomSelector[WriteBlackBoard...]`.
+* `Basic::PlayerAngleDispatch` - `keyName_`, `ranges_[] {minDegree_, maxDegree_, useAbsolute_, value_}`,
+  `useFallback_`, `fallbackValue_`; writes the first range that contains the angle to the nearest player
+  (same angle as `ToPlayerAngle`). Replaces `Selector[Seq[ToPlayerAngle, WriteBlackBoard]..., WriteBlackBoard]`.
+
+`python -m tools.bt.migrations.compact_enemy_trees [--dry-run] [--out-dir DIR] [FILE...]` rewrites the enemy
+trees into these (2026-09-28 dry run: 1052 -> 465 nodes); its docstring lists the patterns. `tools/bt/compose.py`
+builds the same nodes from Python.
 
 A file mixes only one ActionNode flavor - which one it is fixes the whole
 tree's `--npc-kind` (`tools/bt` detects this on read and records it as `Tree.kind`;

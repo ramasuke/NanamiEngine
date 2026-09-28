@@ -12,6 +12,16 @@ namespace Editor::Npc::Behaviour
         guid_ = Guid();
     }
 
+    void NodeBase::ResetGuidRecursive()
+    {
+        ResetGuid();
+        for (const auto& child : Children())
+        {
+            if (child)
+                child->ResetGuidRecursive();
+        }
+    }
+
     void NodeBase::ResetRuntimeState()
     {
         DoResetRuntimeState();

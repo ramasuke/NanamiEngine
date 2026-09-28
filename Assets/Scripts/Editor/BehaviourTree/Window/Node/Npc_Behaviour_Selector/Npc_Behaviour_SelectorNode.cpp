@@ -1,9 +1,8 @@
 ﻿#include "Npc_Behaviour_SelectorNode.h"
 
+#include <algorithm>
 #include <format>
 
-#include "../../DrawNodeHelper.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../Npc_Behaviour_NodeHeaders.h"
 #include <../cereal/include/cereal/types/vector.hpp>
 
@@ -14,29 +13,10 @@
 
 namespace Editor::Npc::Behaviour
 {
-    void SelectorNode::OnDrawGraphEditorGui(
-        const ImVec2& offset,
-        ImDrawList* drawList,
-        const std::weak_ptr<NodeBase>& ownPtr)
+    const std::string& SelectorNode::NodeName() const
     {
-        const Gui::Graph::NodeOption nodeOption
-        {
-            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
-            "Selector",
-            true,
-            false,
-            NODE_SIZE
-        };
-
-        DrawGraphEditorGuiHelper::DrawNode(ownPtr, offset, PositionRef(), drawList, nodeOption, true);
-
-        for (const auto& child : children_)
-        {
-            DrawGraphEditorGuiHelper::DrawNodePath(
-                offset, *ownPtr.lock(), *child, drawList);
-
-            child->OnDrawGraphEditorGui(offset, drawList, child);
-        }
+        static const std::string NAME = "SelectorNode";
+        return NAME;
     }
 
     GameCore::Npc::Enemy::Behaviour::TickStatus SelectorNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
@@ -93,6 +73,23 @@ namespace Editor::Npc::Behaviour
     void SelectorNode::SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode)
     {
         children_.push_back(std::move(nextNode));
+    }
+
+    std::optional<ChildSlot> SelectorNode::RemoveChild(const NodeBase* child)
+    {
+        const auto it = std::ranges::find_if(children_, [child](const auto& c) { return c.get() == child; });
+        if (it == children_.end())
+            return std::nullopt;
+
+        const auto index = static_cast<std::size_t>(it - children_.begin());
+        children_.erase(it);
+        return ChildSlot{ index };
+    }
+
+    void SelectorNode::InsertChild(std::shared_ptr<NodeBase> child, const ChildSlot& slot)
+    {
+        const std::size_t index = std::min(slot.index, children_.size());
+        children_.insert(children_.begin() + static_cast<std::ptrdiff_t>(index), std::move(child));
     }
 
     void SelectorNode::DoOnDrawGui()

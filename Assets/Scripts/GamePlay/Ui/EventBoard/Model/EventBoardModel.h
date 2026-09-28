@@ -7,6 +7,7 @@
 #include "BoardListCursor.h"
 #include "Engine/Module/Namespace/EngineNamespace.h"
 #include "../../../../../Data/EventNotice/Data_EventNotice.h"
+#include "../../../../Core/Game/Condition/Condition_ConditionContext.h"
 
 namespace GamePlay::Ui
 {
@@ -20,7 +21,7 @@ namespace GamePlay::Ui
     };
 
     /**
-     * 催しの一覧のModel。開いた時刻で終わった告知と書式の崩れた告知を落とし、開催中→開催予定の順に並べる。
+     * 催しの一覧のModel。開いた時刻で終わった告知・書式の崩れた告知・解放条件を満たさない告知を落とし、開催中→開催予定の順に並べる。
      */
     class EventBoardModel final
     {
@@ -28,6 +29,7 @@ namespace GamePlay::Ui
         EventBoardModel(
             const std::vector<std::shared_ptr<Asset::EventNotice>>& notices,
             std::chrono::sys_seconds now,
+            const GameCore::Condition::ConditionContext& unlockContext,
             size_t visibleRowCount);
 
         [[nodiscard]] const std::vector<EventBoardEntry>& Entries() const { return entries_; }

@@ -98,19 +98,38 @@ namespace GamePlay::Ui
             text->SetText(label);
     }
 
+    void TitleScreenUi::SetCovered(const bool isCovered)
+    {
+        isCovered_ = isCovered;
+    }
+
     std::shared_ptr<NanamiUi::Button> TitleScreenUi::MenuButton(const int index) const
     {
-        return index == START_INDEX ? startButton_.get() : exitButton_.get();
+        switch (index)
+        {
+        case START_INDEX:    return startButton_.get();
+        case SETTINGS_INDEX: return settingsButton_.get();
+        case EXIT_INDEX:     return exitButton_.get();
+        default:             return nullptr;
+        }
     }
 
     std::shared_ptr<NanamiUi::TextRenderer> TitleScreenUi::MenuText(const int index) const
     {
-        return index == START_INDEX ? startText_.get() : exitText_.get();
+        switch (index)
+        {
+        case START_INDEX:    return startText_.get();
+        case SETTINGS_INDEX: return settingsText_.get();
+        case EXIT_INDEX:     return exitText_.get();
+        default:             return nullptr;
+        }
     }
 
     void TitleScreenUi::OnUpdate()
     {
         const float deltaSecs = TickWallClockSeconds();
+        const float coverStep = deltaSecs / std::max(coverFade_secs_, 0.01f);
+        coverRate_ = std::clamp(coverRate_ + (isCovered_ ? coverStep : -coverStep), 0.0f, 1.0f);
 
         if (phase_ == Phase::Intro)
         {
@@ -158,10 +177,11 @@ namespace GamePlay::Ui
         // 出し切った明るさから始めて、ゆっくり息をするように明滅させる
         const float wave = 0.5f + 0.5f * std::cos(2.0f * TITLE_PI * pressElapsed_secs_ / period);
         const float pulse = pressPulseMinRate_ + (1.0f - pressPulseMinRate_) * wave;
-        const float visible = 1.0f - menuRate_;
+        const float uncovered = 1.0f - coverRate_;
+        const float visible = (1.0f - menuRate_) * uncovered;
         TitleSetBlend(pressText_.get(), pulse * visible);
         TitleSetBlend(pressDeco_.get(), visible);
-        TitleSetBlend(logo_.get(), 1.0f);
+        TitleSetBlend(logo_.get(), uncovered);
         TitleSetBlend(veil_.get(), 0.0f);
     }
 
@@ -186,7 +206,7 @@ namespace GamePlay::Ui
             // 右から少し滑り込ませる
             text->Transform().SetLocalPos(menuBasePos_[static_cast<size_t>(i)] + glm::vec3(menuSlide_px_ * (1.0f - eased), 0.0f, 0.0f));
             const float emphasis = i == selection_ ? 1.0f : unselectedTextRate_;
-            TitleSetBlend(text, eased * emphasis);
+            TitleSetBlend(text, eased * emphasis * (1.0f - coverRate_));
         }
 
         // 帯は選んだ行へ指数的に追いかける
@@ -195,13 +215,14 @@ namespace GamePlay::Ui
         if (const auto band = selectBand_.get())
         {
             band->Transform().SetLocalPos(glm::vec3(bandBasePos_.x, bandY_ + bandOffsetY_, bandBasePos_.z));
-            band->SetBlendRate(TitleBlend(menuRate_));
+            band->SetBlendRate(TitleBlend(menuRate_ * (1.0f - coverRate_)));
         }
 
-        TitleSetBlend(moveHintTag_.get(), menuRate_);
-        TitleSetBlend(moveHintText_.get(), menuRate_);
-        TitleSetBlend(confirmHintTag_.get(), menuRate_);
-        TitleSetBlend(confirmHintText_.get(), menuRate_);
+        const float hintRate = menuRate_ * (1.0f - coverRate_);
+        TitleSetBlend(moveHintTag_.get(), hintRate);
+        TitleSetBlend(moveHintText_.get(), hintRate);
+        TitleSetBlend(confirmHintTag_.get(), hintRate);
+        TitleSetBlend(confirmHintText_.get(), hintRate);
     }
 
     void TitleScreenUi::OnDrawGui()
@@ -232,6 +253,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("menuInputGuard_secs_", menuInputGuard_secs_);
         ImGuiHelper::OnDrawInputField("bandFollowRate_", bandFollowRate_);
         ImGuiHelper::OnDrawInputField("unselectedTextRate_", unselectedTextRate_);
+        ImGuiHelper::OnDrawInputField("settingsText_", settingsText_);
+        ImGuiHelper::OnDrawInputField("settingsButton_", settingsButton_);
+        ImGuiHelper::OnDrawInputField("coverFade_secs_", coverFade_secs_);
         ImGui::Text("phase: %d  menu: %.2f  selection: %d", static_cast<int>(phase_), menuRate_, selection_);
     }
 }

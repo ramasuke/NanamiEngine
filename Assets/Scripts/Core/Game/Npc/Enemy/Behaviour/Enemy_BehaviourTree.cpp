@@ -3,11 +3,13 @@
 #include <fstream>
 
 #include "Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Gui/Graph/Editor/GraphEditorHost.h"
 #include "Engine/Module/Serialization/Engine_Module_Serialization.h"
 #include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../Editor/BehaviourTree/Window/Node/Entry/Npc_BehaviourEntryNode.h"
+#include "../../../../../Editor/BehaviourTree/Window/Graph/BehaviourTreeGraphDelegate.h"
 #include "../cereal/include/cereal/archives/json.hpp"
+#include "../cereal/include/cereal/types/vector.hpp"
 
 namespace GameCore::Npc::Enemy
 {
@@ -16,12 +18,18 @@ namespace GameCore::Npc::Enemy
         , entryNode_ (std::make_unique<Editor::Npc::Behaviour::EntryNode>())
         , parameters_(std::make_unique<BlackBoard::ParameterGroup>())
     {
-        // 未作成のファイルは空のツリーとして扱う（新規作成 → Save のフローで使う）。
-        // 破損している場合は DeserializeException が投げられ、ツリーは生成されない
         NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
         {
             archive(cereal::make_nvp("entryNode_", entryNode_));
             archive(cereal::make_nvp("parameters_", parameters_));
+            try
+            {
+                archive(cereal::make_nvp("detachedNodes_", detachedNodes_));
+            }
+            catch (const cereal::Exception&)
+            {
+                detachedNodes_.clear();
+            }
         });
     }
     BehaviourTree::~BehaviourTree() = default;
@@ -51,18 +59,22 @@ namespace GameCore::Npc::Enemy
 
         archive(cereal::make_nvp("entryNode_", entryNode_));
         archive(cereal::make_nvp("parameters_", parameters_));
+        if (!detachedNodes_.empty())
+            archive(cereal::make_nvp("detachedNodes_", detachedNodes_));
     }
 
-    void BehaviourTree::OnDrawGraphEditorGui()
+    void BehaviourTree::OnDrawGraphEditorGui(const bool readOnly)
     {
         Editor::Npc::Behaviour::NodeFactory::Instance().ChangeBehaviourTreeType(BehaviourTreeType::EnemyNpc);
-        ImGui::Begin(("BehaviourTree##" + guid_.Value()).c_str(), nullptr);
-        ImDrawList*  drawList   = ImGui::GetWindowDrawList();
-        const ImVec2 offset     = ImGui::GetCursorScreenPos();
-        const ImVec2 windowSize = ImGui::GetWindowSize();
-        Gui::Graph::DrawGrid(drawList, offset, windowSize, K_GRID_STEP,K_GRID_COLOR);
 
-        entryNode_->OnDrawGraphEditorGui(offset, drawList, entryNode_);
+        if (!graphHost_)     graphHost_     = std::make_shared<NanamiEngine::Module::Gui::Graph::GraphEditorHost>();
+        if (!graphDelegate_) graphDelegate_ = std::make_shared<Editor::Npc::Behaviour::BehaviourTreeGraphDelegate>();
+
+        const auto        separator = filePath_.find_last_of("/\\");
+        const std::string fileName  = separator == std::string::npos ? filePath_ : filePath_.substr(separator + 1);
+        const std::string title = std::string(readOnly ? "BehaviourTree [Running] " : "BehaviourTree ") + fileName + "##" + guid_.Value();
+        if (ImGui::Begin(title.c_str(), nullptr))
+            graphDelegate_->Draw(entryNode_, detachedNodes_, *graphHost_, readOnly);
         ImGui::End();
     }
 

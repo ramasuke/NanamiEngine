@@ -1,8 +1,8 @@
 ﻿#include "DrawNodeHelper.h"
 
-#include "imgui_internal.h"
+#include <sstream>
+
 #include "Engine/Module/Exception/Engine_Module_Exception.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/portable_binary.hpp"
@@ -16,116 +16,10 @@ namespace
     std::stringstream s_copiedNodeBinary;
     bool s_hasCopiedNode = false;
 
-    // 親ノードをドラッグ移動したとき、ぶら下がっている子孫ノードを同じ量だけ平行移動させる。
-    // これにより Sequence 等のノードを動かすと、その配下のノード群が相対位置を保ったまま追従する。
-    void TranslateSubtree(const std::shared_ptr<Editor::Npc::Behaviour::NodeBase>& node, const glm::vec2& delta)
-    {
-        if (!node)
-            return;
-
-        for (const auto& child : node->Children())
-        {
-            if (!child)
-                continue;
-
-            child->PositionRef() += delta;
-            TranslateSubtree(child, delta);
-        }
-    }
-}
-
-void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
-    const std::weak_ptr<NodeBase>& drawNodeObj,
-    const ImVec2& offset,
-    glm::vec2& positionRef,
-    ImDrawList* drawList,
-    const Gui::Graph::NodeOption& option,
-    const bool addNodeContextMenu)
-{
-    const auto node = drawNodeObj.lock();
-    if (!node)
-        return;
-
-    const glm::vec2 beforePosition = positionRef;
-
-    Gui::Graph::DrawNode(offset, positionRef, drawList, drawNodeObj, option, node->GetGuid());
-
-    // このノードがドラッグ移動されたら、その分だけ子孫ノードも追従させる。
-    if (const glm::vec2 dragDelta = positionRef - beforePosition;
-        dragDelta.x != 0.0f || dragDelta.y != 0.0f)
-    {
-        TranslateSubtree(node, dragDelta);
-    }
-
-    if (!addNodeContextMenu)
-        return;
-    
-    //nodeの判定位置
-    const ImVec2 nodeSize = option.Size();
-    const auto position = ImVec2(positionRef.x, positionRef.y);
-    const ImRect nodeRect(offset + position, offset + position + nodeSize);
-
-    // マウスがノード上にあるか
-    const bool hovered = ImGui::IsMouseHoveringRect(nodeRect.Min, nodeRect.Max);
-    // 右クリックでポップアップを開く
-    if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-    {
-        ImGui::OpenPopup(("NodeContextMenu##" + node->GetGuid().Value()).c_str());
-    }
-
-    // --- ポップアップ ---
-    if (ImGui::BeginPopup(("NodeContextMenu##" + node->GetGuid().Value()).c_str()))
-    {
-        // Copy
-        if (ImGui::MenuItem("Copy"))
-        {
-            CopyNode(drawNodeObj);
-            ImGui::CloseCurrentPopup();
-        }
-
-        // Paste（コピーがある場合のみ有効）
-        if (HasCopiedNode())
-        {
-            if (ImGui::MenuItem("Paste"))
-            {
-                if (const auto pastedNode = PasteNode())
-                {
-                    node->SetConnectToNextNode(pastedNode);
-                    pastedNode->PositionRef() = node->PositionRef() + glm::vec2(0.0f, 100.0f);
-                }
-                ImGui::CloseCurrentPopup();
-            }
-        }
-
-        ImGui::Separator();
-        ImGui::TextUnformatted("Create Node");
-        ImGui::Separator();
-
-        const auto& creatableNodes = NodeFactory::Instance().CreatableNodes();
-        for (const auto& [typeName, createFunc] : creatableNodes)
-        {
-            if (ImGui::MenuItem(typeName.c_str()))
-            {
-                const auto nextNode = createFunc();
-                nextNode->PositionRef() = node->PositionRef() + glm::vec2(0.0f, 100.0f);
-                node->SetConnectToNextNode(nextNode);
-                ImGui::CloseCurrentPopup();
-            }
-        }
-
-        ImGui::EndPopup();
-    }
-}
-
-void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNodePath(
-    const ImVec2& offset,
-    NodeBase& fromNode,
-    NodeBase& toNode,
-    ImDrawList* drawList)
-{
-    const auto fromNodePosition = ImVec2(fromNode.PositionRef().x, fromNode.PositionRef().y);
-    const auto toNodePosition   = ImVec2(toNode  .PositionRef().x, toNode  .PositionRef().y); 
-    drawList->AddLine(offset + fromNodePosition, offset + toNodePosition, IM_COL32(255, 255, 100, 255), 3.0f);
+    constexpr ImU32 K_SUCCESS_COLOR = IM_COL32(80 , 220, 80 , 255);
+    constexpr ImU32 K_RUNNING_COLOR = IM_COL32(255, 210, 60 , 255);
+    constexpr ImU32 K_FAILURE_COLOR = IM_COL32(220, 80 , 80 , 255);
+    constexpr ImU32 K_ABORT_COLOR   = IM_COL32(160, 140, 220, 255);
 }
 
 void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::CopyNode(const std::weak_ptr<NodeBase>& copyNode)
@@ -149,7 +43,6 @@ std::shared_ptr<Editor::Npc::Behaviour::NodeBase> Editor::Npc::Behaviour::DrawGr
     if (!s_hasCopiedNode)
         return nullptr;
 
-    // 2 回目以降の貼り付けでも先頭から読めるよう、読み取り位置を戻す
     s_copiedNodeBinary.clear();
     s_copiedNodeBinary.seekg(0);
 
@@ -167,7 +60,9 @@ std::shared_ptr<Editor::Npc::Behaviour::NodeBase> Editor::Npc::Behaviour::DrawGr
         return nullptr;
     }
 
-    if(newNode) newNode->ResetGuid();
+    if (newNode) 
+        newNode->ResetGuidRecursive();
+    
     return newNode;
 }
 
@@ -176,42 +71,31 @@ bool Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::HasCopiedNode()
     return s_hasCopiedNode;
 }
 
-NanamiEngine::Module::Gui::Graph::NodeVisualStyle Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(
-    const NodeBase& node,
-    const NanamiEngine::Module::Gui::Graph::NodeVisualStyle& baseStyle)
+std::optional<ImU32> Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::RuntimeStatusColor(const NodeBase& node)
 {
-    ImU32 borderColor;
-
     if (node.HasBeenTickedAsEnemy())
     {
         switch (node.LastEnemyTickStatus())
         {
-        case GameCore::Npc::Enemy::Behaviour::TickStatus::Success: borderColor = IM_COL32(80 , 220, 80 , 255); break;
-        case GameCore::Npc::Enemy::Behaviour::TickStatus::Running: borderColor = IM_COL32(255, 210, 60 , 255); break;
-        case GameCore::Npc::Enemy::Behaviour::TickStatus::Failure: borderColor = IM_COL32(220, 80 , 80 , 255); break;
-        case GameCore::Npc::Enemy::Behaviour::TickStatus::Abort:   borderColor = IM_COL32(160, 140, 220, 255); break;
-        default: return baseStyle;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Success: return K_SUCCESS_COLOR;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Running: return K_RUNNING_COLOR;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Failure: return K_FAILURE_COLOR;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Abort:   return K_ABORT_COLOR;
+        default: return std::nullopt;
         }
     }
-    else if (node.HasBeenTickedAsFriendly())
+
+    if (node.HasBeenTickedAsFriendly())
     {
         switch (node.LastFriendlyTickStatus())
         {
-        case GameCore::Npc::Friendly::Behaviour::TickStatus::Success: borderColor = IM_COL32(80 , 220, 80 , 255); break;
-        case GameCore::Npc::Friendly::Behaviour::TickStatus::Running: borderColor = IM_COL32(255, 210, 60 , 255); break;
-        case GameCore::Npc::Friendly::Behaviour::TickStatus::Failure: borderColor = IM_COL32(220, 80 , 80 , 255); break;
-        case GameCore::Npc::Friendly::Behaviour::TickStatus::Abort:   borderColor = IM_COL32(160, 140, 220, 255); break;
-        default: return baseStyle;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Success: return K_SUCCESS_COLOR;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Running: return K_RUNNING_COLOR;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Failure: return K_FAILURE_COLOR;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Abort:   return K_ABORT_COLOR;
+        default: return std::nullopt;
         }
     }
-    else
-    {
-        return baseStyle;
-    }
 
-    return NanamiEngine::Module::Gui::Graph::NodeVisualStyle(
-        baseStyle.BackgroundColor(),
-        borderColor,
-        baseStyle.PortColor(),
-        baseStyle.TextColor());
+    return std::nullopt;
 }

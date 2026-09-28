@@ -22,7 +22,6 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 荷札の「荷の数・重さ・送り状」に書く値 */
     struct AssetUpdateParcel final
     {
         std::uint64_t fileCount = 0;
@@ -30,34 +29,21 @@ namespace GamePlay::Ui
         std::string   version;
     };
 
-    /** @brief 1024 未満は B、1 MB 未満は KB、それ以上は小数1桁の MB */
     [[nodiscard]] std::string FormatAssetUpdateBytes(std::uint64_t bytes);
 
-    /**
-     * @brief タイトル画面のアセット更新「早馬の荷札」の見た目。
-     * 画面を Backdrop で沈め、釘から麻紐で吊るした荷札に、状態ごとの文字と蹄の跡・朱の判子を出す。
-     * 荷札・影・麻紐・「早馬便 荷札」の見出し・早馬の丸印は絵に焼いてあり、ここでは変わる所だけを書く。
-     * 出るときは上から降りてきて、引っ込むときは上へ戻る。判子は押した大きさから縮んで残る。
-     */
     class AssetUpdateTagUi final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,
                                    public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief 更新がある: 荷の中身を書き、受け取るか尋ねる */
+        /** @brief 更新がある、UIで受け取るか尋ねる */
         void ShowOffer(const AssetUpdateParcel& parcel);
-        /** @brief 受け取り中。進み具合は SetProgress で毎フレーム渡す */
         void ShowReceiving();
-        /** @brief 受け取り終えて Assets/ へ入れている間 */
         void ShowUnpacking();
         void SetProgress(float rate01, const std::string& amountText);
-        /** @brief 落とせなかった / 入れられなかった。「不着」を押す */
         void ShowUndelivered(const std::string& error);
-        /** @brief 入れ終えた。「受領」を押し、再起動を促す。canRelaunch が false なら起動し直してもらう */
-        void ShowReceived(const AssetUpdateParcel& parcel, bool canRelaunch);
-        /** @brief ゲーム本体が古くて受け取れない。「版違い」を押す */
+        void ShowReceived(const AssetUpdateParcel& parcel);
         void ShowWrongVersion(const std::string& error);
-        /** @brief 上へ引っ込める */
         void Hide();
 
         [[nodiscard]] bool IsShown() const { return phase_ == Phase::Entering || phase_ == Phase::Shown; }
@@ -84,7 +70,7 @@ namespace GamePlay::Ui
         void OnStart () override;
         void OnUpdate() override;
 
-        /** @brief 呼び出し側の OnStart が先に走って Show* されても、元の位置を取り損ねないように */
+        /** @brief 呼び出し側の OnStart が先に走って元の位置を取り損ねないように */
         void EnsureStarted();
         void Open(const std::string& headline, Body body);
         void SetHints(const std::string& confirmLabel, const std::string& cancelLabel);
@@ -148,6 +134,12 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
         // 降りるときに行き過ぎてから戻る量 (OutBack)
         [[serialize(2)]] float dropOvershoot_ = 1.4f;
+        [[serialize(3)]] std::string offerNoteText_     = "受け取ったあと、ゲームを起動し直します";
+        [[serialize(3)]] std::string receivedNoteText_  = "ゲームを起動し直してください";
+        [[serialize(3)]] std::string receivingWaitText_ = "このまま少しお待ちください";
+        [[serialize(3)]] std::string unpackingWaitText_ = "もうすぐ終わります";
+        [[serialize(3)]] std::string failedWarningText_ = "このままでは冒険に出られません";
+        [[serialize(3)]] std::string tooOldWarningText_ = "新しい版のゲームが要ります";
 
         bool  isStarted_ = false;
         Phase phase_ = Phase::Hidden;
@@ -165,6 +157,7 @@ namespace GamePlay::Ui
 
         std::weak_ptr<NanamiUi::BlendImageRenderer> pressingStamp_;
         glm::vec3 stampBaseScale_ = glm::vec3(1.0f);
+        
         /** 押している途中だけ再生中 */
         LibCore::Tween::TweenPlayer<float> stampScaleTween_;
         LibCore::Tween::TweenPlayer<float> stampAlphaTween_;
@@ -219,6 +212,12 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(errorMaxLines_));
             archive(CEREAL_NVP(uiSounds_));
             archive(CEREAL_NVP(dropOvershoot_));
+            archive(CEREAL_NVP(offerNoteText_));
+            archive(CEREAL_NVP(receivedNoteText_));
+            archive(CEREAL_NVP(receivingWaitText_));
+            archive(CEREAL_NVP(unpackingWaitText_));
+            archive(CEREAL_NVP(failedWarningText_));
+            archive(CEREAL_NVP(tooOldWarningText_));
         }
 
         template<typename Archive>
@@ -267,9 +266,15 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(errorMaxLines_));
             if (version >= 1) archive(CEREAL_NVP(uiSounds_));
             if (version >= 2) archive(CEREAL_NVP(dropOvershoot_));
+            if (version >= 3) archive(CEREAL_NVP(offerNoteText_));
+            if (version >= 3) archive(CEREAL_NVP(receivedNoteText_));
+            if (version >= 3) archive(CEREAL_NVP(receivingWaitText_));
+            if (version >= 3) archive(CEREAL_NVP(unpackingWaitText_));
+            if (version >= 3) archive(CEREAL_NVP(failedWarningText_));
+            if (version >= 3) archive(CEREAL_NVP(tooOldWarningText_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 3);

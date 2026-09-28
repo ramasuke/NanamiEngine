@@ -66,7 +66,6 @@ namespace NanamiEngine::Module::Component
         if (modelDxLibHandle_ == -1)
             return;
 
-        // WARNING: DxLib は無効なハンドルに -1 を返す。そのまま reserve すると size_t に化けて "vector too long" になる
         const int listNum = (std::max)(MV1GetTriangleListNum(modelDxLibHandle_), 0);
         rigidTriangleList_.reserve(listNum);
         for (int i = 0; i < listNum; ++i)
@@ -87,7 +86,7 @@ namespace NanamiEngine::Module::Component
                 MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
         }
 
-        // トライアングルリストから材質を直接引く API が無いので、メッシュ経由で対応表を作る
+        // メッシュ経由で対応表を作る
         triangleListMaterialIndex_.assign(listNum, -1);
         const int meshNum = (std::max)(MV1GetMeshNum(modelDxLibHandle_), 0);
         meshMaterialIndex_  .reserve(meshNum);
@@ -210,8 +209,7 @@ namespace NanamiEngine::Module::Component
 
             materialPasses_[i]     = resolved;
             materialPassActive_[i] = matched;
-
-            // SetDrawBlendMode / SetWriteZBuffer3D はモデル描画には反映されないため、MV1 専用の API を使う
+            
             if (matched)
             {
                 anyDisableZWrite = anyDisableZWrite || resolved.disableZWrite;
@@ -227,7 +225,7 @@ namespace NanamiEngine::Module::Component
 
         MV1SetWriteZBuffer(modelDxLibHandle_, anyDisableZWrite ? FALSE : TRUE);
 
-        // 両面描画はメッシュ単位の API しか無いので、対象材質を使うメッシュへ適用する
+        // 対象材質を使うメッシュへ適用する
         const int meshNum = static_cast<int>(meshMaterialIndex_.size());
         for (int mesh = 0; mesh < meshNum; ++mesh)
         {
@@ -376,7 +374,7 @@ namespace NanamiEngine::Module::Component
         }
         ImGui::Text("triangleLists: %d  allRigid: %s",
                     static_cast<int>(rigidTriangleList_.size()), allRigid_ ? "true" : "false");
-        // 材質名は IModelMaterialShaderPolicy 側の指定に使うので見えるようにしておく
+
         for (int i = 0; i < static_cast<int>(materialNames_.size()); ++i)
         {
             const bool active = i < static_cast<int>(materialPassActive_.size()) && materialPassActive_[i];

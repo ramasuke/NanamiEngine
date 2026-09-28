@@ -9,6 +9,7 @@ Field<EnemyAttackWarning> はファイル内で初めて出る型なので、最
 
 予兆の見た目・音・何秒前に出すかは Assets/Data/Enemy/AttackWarning/*.enemyAttackWarning (EnemyAttackWarning) にまとめてある。
 色: 金 = 通常攻撃、赤 = 突進 (ChargeRush) と FirstEventDragon の尻尾振り。
+ボスではない敵は金の 1/3 サイズ (AttackWarningGoldSmall) を使う。
 ボーンは .mv1 のフレーム名から攻撃する部位を選んだもの。AnimationView で測り直したらここを直して流し直す。
 """
 from __future__ import annotations
@@ -39,12 +40,13 @@ def guid_of(rel):
 
 GOLD = guid_of('Assets/Data/Enemy/AttackWarning/AttackWarningGold.enemyAttackWarning')
 RED = guid_of('Assets/Data/Enemy/AttackWarning/AttackWarningRed.enemyAttackWarning')
+GOLD_SMALL = guid_of('Assets/Data/Enemy/AttackWarning/AttackWarningGoldSmall.enemyAttackWarning')
 
 # ファイル -> [(ノード名の条件, ボーン名, 予兆)]。上から最初に当てはまったもの
 RULES = {
-    'HyenaBehaviour': [(lambda n: True, 'bip01_head', GOLD)],
-    'DesertScorpion': [(lambda n: True, 'tailSeg5_013', GOLD)],
-    'SandWorm': [(lambda n: True, 'Bone.019_020', GOLD)],
+    'HyenaBehaviour': [(lambda n: True, 'bip01_head', GOLD_SMALL)],
+    'DesertScorpion': [(lambda n: True, 'tailSeg5_013', GOLD_SMALL)],
+    'SandWorm': [(lambda n: True, 'Bone.019_020', GOLD_SMALL)],
     'SkeletonDragon': [(lambda n: True, 'Bip001 Head_032', GOLD)],
     'FirstEventDragon': [
         (lambda n: n == 'WeggingTail', 'Bone008', RED),
@@ -126,7 +128,7 @@ def process(path: Path, dry_run: bool):
         data.append('warningBoneName_', bone)
         data.append('warningBoneOffset_', OrderedObj([(f'value{i}', Num.of_float(0.0)) for i in range(3)]))
         first_field = False
-        print(f'{path.stem:18s} {node_name:20s} {type_name:14s} {bone:16s} {"red" if warning_guid == RED else "gold"}')
+        print(f'{path.stem:18s} {node_name:20s} {type_name:14s} {bone:16s} {"red" if warning_guid == RED else "gold-small" if warning_guid == GOLD_SMALL else "gold"}')
 
     missing = set(t for _, t, _ in nodes) - bumped
     if missing:

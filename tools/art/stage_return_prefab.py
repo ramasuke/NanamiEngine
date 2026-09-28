@@ -5,6 +5,7 @@
     python tools/art/stage_return_prefab.py --into Assets/Scene/GrassLandScene.scene   # 加えてステージに置く
 
 ルートに StageReturnNoticeUi (見た目) と StageReturnPresenter (ESC と入力) を付ける。ステージのシーンに置けば働く。
+3行目の「設定」は settings_prefab.py の SettingsScreen.prefab を開く (先に組んでおく)。
 座標はすべて画面の px (ルートは原点)。貼り紙の中身は Notice の子にして、降りてくる動きは Notice を動かすだけで済ませる。
 操作ヒントは Notice の外に置き、札と一緒には動かさない。
 .meta(asset guid)は既存があれば保つので、組み直してもシーンからの参照は切れない。
@@ -27,6 +28,7 @@ from game_over_prefab import BLACK_MASK, Builder, asset_guid, guid_of, new_prefa
 UI_PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'StageReturn'
 BACKDROP = asset_guid(str(art.BACKDROP_SPRITE) + '.meta')
 UI_SOUNDS = asset_guid(REPO / 'Assets/Data/UiSound/UiSoundBank.uiSoundBank.meta')
+SETTINGS_PREFAB = asset_guid(REPO / 'Assets/Prefab/UI/Settings/SettingsScreen.prefab.meta')
 ALIGN_LEFT = 0
 
 # ほかの画面 (7000 台前半) とゲームオーバー (8000 台) の間の空いている帯
@@ -100,6 +102,7 @@ def build_tree(b, root):
                          enabled=False)
     return_label, return_underline, return_stamp = build_row(b, notice, 'Return', 0, L)
     stay_label, stay_underline, stay_stamp = build_row(b, notice, 'Stay', 1, L)
+    settings_label, settings_underline, settings_stamp = build_row(b, notice, 'Settings', 2, L)
 
     hints = b.node(visual, 'Hints')
     buttons = {h['key']: build_hint(b, hints, h) for h in L['hints']}
@@ -123,11 +126,15 @@ def build_tree(b, root):
     b.field(ui, 'stayLabel_', guid_of(stay_label))
     b.field(ui, 'stayUnderline_', guid_of(stay_underline))
     b.field(ui, 'stayStamp_', guid_of(stay_stamp))
+    b.field(ui, 'settingsLabel_', guid_of(settings_label))
+    b.field(ui, 'settingsUnderline_', guid_of(settings_underline))
+    b.field(ui, 'settingsStamp_', guid_of(settings_stamp))
     b.field(ui, 'confirmButton_', guid_of(buttons['Enter']))
     b.field(ui, 'cancelButton_', guid_of(buttons['Esc']))
 
     presenter = b.component(root, 'StageReturnPresenter')
     b.field(presenter, 'uiSounds_', UI_SOUNDS)
+    b.field(presenter, 'settingsPrefab_', SETTINGS_PREFAB)
 
 
 def build_ui():

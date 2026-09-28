@@ -59,7 +59,7 @@ namespace GameCore::Scene::Main
 
     }
 
-    void FirstTouchDownMainIsLandScene::DoDispose()
+    void FirstTouchDownMainIsLandScene::DoExit()
     {
         // ムービーのコルーチンは止められないので、次の区切りで抜けさせる
         if (aboardAirShipMovie_)

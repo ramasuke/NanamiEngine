@@ -7,16 +7,20 @@ namespace NanamiEngine::Module::BlackBoard
     class ParameterGroup;
 }
 
+namespace NanamiEngine::Module::Gui::Graph
+{
+    class GraphEditorHost;
+}
+
 namespace Editor::Npc::Behaviour
 {
     class EntryNode;
+    class NodeBase;
+    class BehaviourTreeGraphDelegate;
 }
 
 namespace GameCore::Npc::Friendly
 {
-    static constexpr float K_GRID_STEP = 64.0f;
-    static constexpr ImU32 K_GRID_COLOR = IM_COL32(60, 60, 60, 255);
-    
     class BehaviourTree final : public Object::IObject
     {
     public:
@@ -28,7 +32,7 @@ namespace GameCore::Npc::Friendly
                   const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon>& ownChatIcon,
                   bool& isChatting) const;
         void OnSave();
-        void OnDrawGraphEditorGui();
+        void OnDrawGraphEditorGui(bool readOnly = false);
         void OnDrawGui() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
@@ -38,6 +42,10 @@ namespace GameCore::Npc::Friendly
         Guid guid_;
 
         std::shared_ptr<Editor::Npc::Behaviour::EntryNode> entryNode_;
+        std::vector<std::shared_ptr<Editor::Npc::Behaviour::NodeBase>> detachedNodes_;
         std::unique_ptr<BlackBoard::ParameterGroup> parameters_;
+
+        std::shared_ptr<NanamiEngine::Module::Gui::Graph::GraphEditorHost> graphHost_;
+        std::shared_ptr<Editor::Npc::Behaviour::BehaviourTreeGraphDelegate> graphDelegate_;
     };
 }

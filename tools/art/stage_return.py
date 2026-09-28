@@ -34,7 +34,7 @@ from tools.art.character_select import (  # noqa: E402
 TITLE_FONT = REPO_ROOT / 'Assets' / 'Art' / 'Font' / 'KaiseiDecol-Bold.ttf'
 HINT_COLOR = (240, 226, 202, 255)
 HOST_NOTE = '仲間との旅も、ここで終わる'
-CHOICES = ['島へ帰る', 'まだ残る']
+CHOICES = ['島へ帰る', 'まだ残る', '設　定']   # 設定は設定画面を開く
 SELECTED = 1  # 誤って押しても帰らないよう、開いたときは「まだ残る」
 
 
@@ -182,7 +182,7 @@ BLACK_MASK_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'BlackMask.png'
 NOTICE_CX = 960
 PAPER_TOP = 360          # 貼り紙の上端。ホスト版は下へ伸びるだけで、上の文字の位置は変えない
 PAPER_W = 600
-PAPER_H = {'solo': 320, 'host': 370}
+PAPER_H = {'solo': 378, 'host': 428}
 BOARD_PAD = (50, 50)     # 板は紙より左右上下にこれだけ大きい
 BOARD_ANGLE = 0.8
 PAPER_ANGLE = -1.6
@@ -197,17 +197,17 @@ LAYOUT = {
     'veil': ((SCREEN_W / 2, SCREEN_H / 2), 2.0, 200),         # Backdrop の中心・倍率・濃さ
     'title': ((NOTICE_CX, PAPER_TOP + 58), 46),               # 文字はどれも (中心, px)
     'body': ((NOTICE_CX, PAPER_TOP + 138), 26),
-    'rows': [PAPER_TOP + 200, PAPER_TOP + 200 + ROW_GAP],     # 行の中心の y。[帰る, 残る]
+    'rows': [PAPER_TOP + 200 + ROW_GAP * i for i in range(3)],  # 行の中心の y。[帰る, 残る, 設定]
     'row_px': 34,
     'row_button': (300, 50),                                  # 行ごとのクリック範囲 (幅, 高さ)
     'underline_dy': 24,
     'stamp_dx': 170,                                          # 行の中心から判子の中心まで
-    'host_note': ((NOTICE_CX, PAPER_TOP + 200 + ROW_GAP * 2 + 16), 24),
+    'host_note': ((NOTICE_CX, PAPER_TOP + 200 + ROW_GAP * 3 + 16), 24),
     'drop_px': 40,
 }
 BODY_TEXT = '浮遊石に乗って、島へ引き返しますか。'
 TITLE_TEXT = spaced('帰還')
-STAMP_LABELS = ['帰', '残']
+STAMP_LABELS = ['帰', '残', '設']
 
 
 def text_top(center_y, px):
@@ -274,7 +274,7 @@ def write_sprite(out_dir, name, image):
 
 
 def stamp_name(index):
-    return f'StageReturn_Stamp_{"Return" if index == 0 else "Stay"}'
+    return f'StageReturn_Stamp_{("Return", "Stay", "Settings")[index]}'
 
 
 def sprites():
@@ -373,7 +373,7 @@ def main():
     if args.preview:
         shots, labels = [], []
         for host in (False, True):
-            for selected in (1, 0):
+            for selected in (1, 0, 2):
                 m = preview(base, host, selected)
                 m.convert('RGB').save(out / f'stage_return_preview{"_host" if host else ""}_{selected}.png')
                 shots.append(m)

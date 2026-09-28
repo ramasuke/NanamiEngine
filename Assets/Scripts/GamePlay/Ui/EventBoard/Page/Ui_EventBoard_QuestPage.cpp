@@ -65,7 +65,6 @@ namespace GamePlay::Ui
         detailTitleText_ ->SetText(entry->titleText);
         detailClientText_->SetText(quest.ClientName());
         detailPlaceText_ ->SetText(entry->placeText);
-        ShowQuestBoardRankPips(detailRankPips_, quest.Rank(), filledPipSprite_.get(), emptyPipSprite_.get());
         detailStateText_ ->SetText(entry->stateText);
         detailStateText_ ->SetTextColor(entry->state == QuestBoardState::Taking ? takingStateColor_ : defaultStateColor_);
         detailGoalText_  ->SetText(entry->goalText);
@@ -106,13 +105,6 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("detailTitleText_", detailTitleText_);
         ImGuiHelper::OnDrawInputField("detailClientText_", detailClientText_);
         ImGuiHelper::OnDrawInputField("detailPlaceText_", detailPlaceText_);
-        ImGuiHelper::OnDrawInputField("detailRankPips_", detailRankPips_, [this]
-        {
-            if (ImGui::Button("Add Pip"))
-            {
-                detailRankPips_.emplace_back();
-            }
-        });
         ImGuiHelper::OnDrawInputField("detailStateText_", detailStateText_);
         ImGuiHelper::OnDrawInputField("detailGoalText_", detailGoalText_);
         ImGuiHelper::OnDrawInputField("detailRewardText_", detailRewardText_);
@@ -126,8 +118,6 @@ namespace GamePlay::Ui
         });
         ImGuiHelper::OnDrawInputField("detailSeal_", detailSeal_);
         ImGuiHelper::OnDrawInputField("emptyText_", emptyText_);
-        ImGuiHelper::OnDrawInputField("filledPipSprite_", filledPipSprite_);
-        ImGuiHelper::OnDrawInputField("emptyPipSprite_", emptyPipSprite_);
         ImGuiHelper::OnDrawInputField("openSealSprite_", openSealSprite_);
         ImGuiHelper::OnDrawInputField("takingSealSprite_", takingSealSprite_);
         ImGuiHelper::OnDrawInputField("clearedSealSprite_", clearedSealSprite_);

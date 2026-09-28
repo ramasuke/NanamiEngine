@@ -12,6 +12,7 @@
 namespace GamePlay::Ui
 {
     class AssetUpdatePresenter;
+    class SettingsScreenPresenter;
     class TitleScreenUi;
 
     class TitleScreenPresenter final : public Component::ComponentBase,
@@ -23,6 +24,8 @@ namespace GamePlay::Ui
         {
             Press,
             Menu,
+            /** 設定画面を重ねている。閉じたら Menu へ戻る */
+            Settings,
             Leaving,
         };
 
@@ -43,13 +46,16 @@ namespace GamePlay::Ui
         void Select(int index);
         void Decide(int index);
         void StartGame();
+        void OpenSettings();
         void ExitGame();
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) assetUpdatePrefab_;
         [[serialize(0)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) settingsPrefab_;
 
         std::shared_ptr<TitleScreenUi> view_;
         std::weak_ptr<AssetUpdatePresenter> assetUpdate_;
+        std::weak_ptr<SettingsScreenPresenter> settings_;
         Phase phase_ = Phase::Press;
         int selection_ = 0;
         Keys previousKeys_;
@@ -64,6 +70,7 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             archive(CEREAL_NVP(assetUpdatePrefab_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(settingsPrefab_));
         }
 
         template<class Archive>
@@ -72,9 +79,10 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(assetUpdatePrefab_));
             if (version >= 0) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 1) archive(CEREAL_NVP(settingsPrefab_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::TitleScreenPresenter, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::TitleScreenPresenter, 1);

@@ -13,7 +13,6 @@ namespace NanamiEngine::Module
 {
     namespace
     {
-        // ConsoleWindow等に表示するログ履歴の上限件数
         constexpr size_t kMaxLogHistory = 2000;
 
         std::mutex& LogMutex()
@@ -56,8 +55,7 @@ namespace NanamiEngine::Module
             return 0;
         }
 
-        // UTF-8のリテラルと、OS由来でACPのままの文字列(exception.what()やpath.string())が
-        // 1本に連結されて届くため、正しいUTF-8列は残し、それ以外のバイトだけACPとして変換する
+
         std::string LogNormalizeToUtf8(const std::string& text)
         {
             std::string utf8;
@@ -150,9 +148,7 @@ namespace NanamiEngine::Module
         Record(LogLevel::Error, "[Error] ", text, std::cerr, location);
 
         if (BreakOnLogErrorEnabledFlag().load(std::memory_order_relaxed) && IsDebuggerPresent())
-        {
             __debugbreak();
-        }
     }
 
     bool IsBreakOnLogErrorEnabled()

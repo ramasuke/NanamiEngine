@@ -22,6 +22,10 @@ namespace GamePlay::Weather
 
     void SceneFog::Apply() const
     {
+        // NOTE: 嵐のフォグと取り合わないよう、WeatherService に参照されていればそちらに任せる
+        if (drivenExternally_)
+            return;
+
         Platform::Render::Environment::SetFogEnabled(true);
         Platform::Render::Environment::SetFogColor(fogColor_);
         Platform::Render::Environment::SetFogStartEnd(fogStart_, fogEnd_);

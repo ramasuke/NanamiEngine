@@ -78,6 +78,10 @@ namespace GamePlay::Ui
         eventModel_ = std::make_unique<EventBoardModel>(
             board ? board->Notices() : std::vector<std::shared_ptr<Asset::EventNotice>>{},
             now,
+            GameCore::Condition::ConditionContext{
+                &GameCore::Story::StoryProgress::Instance(),
+                owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
+                now },
             eventPage ? eventPage->MaxVisibleRows() : 0);
         noticeModel_ = std::make_unique<NoticeBoardModel>(
             board ? board->Announcements() : std::vector<std::shared_ptr<Asset::Announcement>>{},

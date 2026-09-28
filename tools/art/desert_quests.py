@@ -32,13 +32,13 @@ KIND_SCORPION, KIND_SKELETON_DRAGON = 4, 6
 FLAG_GRASSLAND_CLEARED, FLAG_GREEN_STONE_RETURNED, FLAG_DESERT_CLEARED = 2, 3, 5
 
 QUESTS = [
-    dict(name='DesertSkeletonDragon', title='砂漠の骸竜', client='教官', rank=4,
+    dict(name='DesertSkeletonDragon', title='砂漠の骸竜', client='教官',
          goal='城塞の広場に居着く骸竜を倒す',
          lines=['光の心臓は、砂に沈んだ城塞に落ちている。', '傍に居着く骸竜を倒し、心臓を島へ取り戻せ。'],
          quest=dict(kind='main', reward=5000, questType=QUEST_DESERT_DRAGON, enemyKind=KIND_SKELETON_DRAGON,
                     clearedFlag=FLAG_DESERT_CLEARED),
          unlock=FLAG_GREEN_STONE_RETURNED, locked='緑の心臓を島へ戻してから'),
-    dict(name='DesertScorpionCull', title='水場のサソリ退治', client='隊商頭', rank=3,
+    dict(name='DesertScorpionCull', title='水場のサソリ退治', client='隊商頭',
          goal='オアシスに出る大サソリを6匹倒す',
          lines=['泉の水場まで、大サソリが出るようになった。', '隊商が水を汲めるよう、群れを減らしてくれ。'],
          quest=dict(kind='defeat', reward=600, questType=QUEST_SCORPION_CULL, enemyKind=KIND_SCORPION, count=6),
@@ -55,7 +55,6 @@ def build(q):
     data['value0']['guid_']['value_'] = guid
     data['title_'] = q['title']
     data['clientName_'] = q['client']
-    data['rank_'] = q['rank']
     data['goalText_'] = q['goal']
     data['descriptionLines_'] = q['lines']
     data['stage_']['value0']['ptr_wrapper']['data']['value0']['value_'] = DESERT_STAGE

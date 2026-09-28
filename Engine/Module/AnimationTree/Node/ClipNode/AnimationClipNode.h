@@ -50,7 +50,6 @@ namespace NanamiEngine::Module::AnimationTree
         /** @brief 0 以下ならクリップ末尾 */
         float                 clipEndTime_            = 0.0f;
         bool                  isLoop_                 = true;
-        /** @brief MV1AttachAnim の NameCheck。OFF はフレーム番号で対応付けるので、フレーム構成が違うクリップ(スキン無しの書き出し等)は ON にする */
         bool                  nameCheck_              = false;
 
         float                 blendRate_              = 1.0f;

@@ -1,7 +1,5 @@
 ﻿#include "Npc_Behaviour_OnceExecute.h"
 
-#include "../../DrawNodeHelper.h"
-#include "Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -35,40 +33,13 @@ namespace Editor::Npc::Behaviour
         child_ = std::move(nextNode);
     }
 
-    void OnceExecute::OnDrawGraphEditorGui(
-        const ImVec2& offset,
-        ImDrawList* drawList,
-        const std::weak_ptr<NodeBase>& ownPtr)
+    std::optional<ChildSlot> OnceExecute::RemoveChild(const NodeBase* child)
     {
-        const Gui::Graph::NodeOption nodeOption
-        {
-            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
-            "OnceExecute",
-            true,
-            false,
-            NODE_SIZE
-        };
+        if (!child_ || child_.get() != child)
+            return std::nullopt;
 
-        DrawGraphEditorGuiHelper::DrawNode(
-            ownPtr,
-            offset,
-            PositionRef(),
-            drawList,
-            nodeOption,
-            true
-        );
-
-        if (child_)
-        {
-            DrawGraphEditorGuiHelper::DrawNodePath(
-                offset,
-                *ownPtr.lock(),
-                *child_,
-                drawList
-            );
-
-            child_->OnDrawGraphEditorGui(offset, drawList, child_);
-        }
+        child_.reset();
+        return ChildSlot{};
     }
 
     void OnceExecute::DoOnDrawGui()

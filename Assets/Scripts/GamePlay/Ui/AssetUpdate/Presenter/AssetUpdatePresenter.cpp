@@ -12,7 +12,6 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Packages/AssetUpdater/Http/HttpAssetUpdater.h"
 #include "Packages/AssetUpdater/Null/NullAssetUpdater.h"
-#include "Packages/AssetUpdater/System/Relaunch.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -182,7 +181,6 @@ namespace GamePlay::Ui
             return;
         case AssetUpdateState::ReadyToRestart:
             Module::Log("[AssetUpdater] 更新が終わりました");
-            canRelaunch_ = AssetUpdater::Relauncher::ScheduleOnExit();
             ShowPromptFor(state);
             return;
         case AssetUpdateState::Idle:
@@ -209,7 +207,7 @@ namespace GamePlay::Ui
             PlaySound(stampSound_);
             return;
         case AssetUpdateState::ReadyToRestart:
-            view_->ShowReceived(Parcel(), canRelaunch_);
+            view_->ShowReceived(Parcel());
             PlaySound(stampSound_);
             return;
         default:
@@ -241,7 +239,7 @@ namespace GamePlay::Ui
             view_->ShowReceiving();
             return;
         case Preview::Received:
-            // エディタで再起動はしない。札を引っ込めるだけ
+            // エディタでは終了しない。札を引っ込めるだけ
             preview_ = Preview::None;
             view_->Hide();
             return;
@@ -260,7 +258,7 @@ namespace GamePlay::Ui
             task_->BeginInstall();
             return;
         case AssetUpdateState::ReadyToRestart:
-            Relaunch();
+            Quit();
             return;
         default:
             return;
@@ -277,10 +275,9 @@ namespace GamePlay::Ui
         view_->Hide();
     }
 
-    void AssetUpdatePresenter::Relaunch() const
+    void AssetUpdatePresenter::Quit() const
     {
-        // 再起動の予約は ReadyToRestart に入ったときに済ませてある (できなかったら札で起動し直しを頼んでいる)。
-        // 読み込み済みのアセットは古いままなので、このまま遊ばせずに終了する
+        // 読み込み済みのアセットは古いままなので、このまま遊ばせずに終了し、起動し直してもらう
         Core::Application::ApplicationBase::RequestClose();
     }
 
@@ -312,7 +309,7 @@ namespace GamePlay::Ui
         if (isFinished)
         {
             preview_ = Preview::Received;
-            view_->ShowReceived(Parcel(), true);
+            view_->ShowReceived(Parcel());
             PlaySound(stampSound_);
         }
     }
@@ -347,7 +344,7 @@ namespace GamePlay::Ui
         if (ImGui::Button("Undelivered"))
             preview(Preview::Undelivered, [this] { view_->ShowUndelivered("通信が途切れました (タイムアウト)"); PlaySound(stampSound_); });
         if (ImGui::Button("Received"))
-            preview(Preview::Received, [this] { view_->ShowReceived(Parcel(), true); PlaySound(stampSound_); });
+            preview(Preview::Received, [this] { view_->ShowReceived(Parcel()); PlaySound(stampSound_); });
         ImGui::SameLine();
         if (ImGui::Button("WrongVersion"))
             preview(Preview::WrongVersion, [this]

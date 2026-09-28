@@ -27,7 +27,7 @@ namespace GameCore::Scene::Main
         
     }
     
-    void TitleScene::DoDispose()
+    void TitleScene::DoExit()
     {
         GamePlay::Sound::SoundPlayer::StopAllBgm();
     }

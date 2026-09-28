@@ -1,9 +1,8 @@
 ﻿#include "Enemy_Behaviour_ActionNode.h"
 
 #include "Enemy_Behaviour_ActionFactory.h"
-#include "imgui_internal.h"
-#include "../../../../BehaviourTree/Window/DrawNodeHelper.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
+#include <typeinfo>
+
 #include "../../../../BehaviourTree/Window/Node/Npc_Behaviour_NodeHeaders.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "Enemy_Behaviour_ActionHeaders.h"
@@ -20,48 +19,26 @@ namespace Editor::Npc::Enemy::Behaviour
         
     }
 
-    void ActionNode::OnDrawGraphEditorGui(
-        const ImVec2& offset,
-        ImDrawList* drawList,
-        const std::weak_ptr<NodeBase>& ownPtr)
+    std::string ActionNode::GraphNodeDetail() const
     {
-        const Gui::Graph::NodeOption nodeOption
-        {
-            Npc::Behaviour::DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
-            name_,
-            false,
-            false,
-            Npc::Behaviour::NODE_SIZE
-        };
+        if (!action_)
+            return "(no action)";
 
-        Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(ownPtr, offset, PositionRef(), drawList, nodeOption, false);
-        
-        const ImVec2 nodeSize = nodeOption.Size();
-        const auto position = ImVec2(PositionRef().x, PositionRef().y);
-        const ImRect nodeRect(offset + position, offset + position + nodeSize);
+        // NOTE: typeid の名前は "class A::B::Name" なので、最後の型名だけを出す
+        const std::string typeName = typeid(*action_).name();
+        const auto separator = typeName.find_last_of(": ");
+        return separator == std::string::npos ? typeName : typeName.substr(separator + 1);
+    }
 
-        // マウスがノード上にあるか
-        const bool hovered = ImGui::IsMouseHoveringRect(nodeRect.Min, nodeRect.Max);
-        // 右クリックでポップアップを開く
-        if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-        {
-            ImGui::OpenPopup(("ActionContextMenu##" + GetGuid().Value()).c_str());
-        }
-        
-        if (ImGui::BeginPopup(("ActionContextMenu##" + GetGuid().Value()).c_str()))
-        {
-            ImGui::TextUnformatted("Action");
-            ImGui::Separator();
+    void ActionNode::DrawGraphContextMenuItems()
+    {
+        if (!ImGui::BeginMenu("Action"))
+            return;
 
-            const auto& actions = ActionFactory::Instance().CreatableActions();
-
-            // ツリー構築
-            auto tree = StaticReflection::BuildTree<GameCore::Npc::Enemy::Behaviour::ActionBase>(actions);
-
-            // 描画
-            DrawTreeGui(tree, action_);
-            ImGui::EndPopup();
-        }
+        const auto& actions = ActionFactory::Instance().CreatableActions();
+        auto tree = StaticReflection::BuildTree<GameCore::Npc::Enemy::Behaviour::ActionBase>(actions);
+        DrawTreeGui(tree, action_);
+        ImGui::EndMenu();
     }
     
     GameCore::Npc::Enemy::Behaviour::TickStatus ActionNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)

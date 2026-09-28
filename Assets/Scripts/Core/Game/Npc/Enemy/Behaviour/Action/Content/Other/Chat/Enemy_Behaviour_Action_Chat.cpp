@@ -15,7 +15,6 @@ namespace GameCore::Npc::Enemy::Behaviour
             isChatting_ = true;
             Coroutine::StartCoroutine(ChatAsync(context));
 
-            // 権威側限定Tickなら、他ピアにも同じ会話UIを出させる(閉じるのは各ピア任せ。BTの進行は権威側の会話終了で決まる)
             if (chatData_ && context.IsNetworkAuthority())
             {
                 GameCore::Network::ChatRpc::Send(

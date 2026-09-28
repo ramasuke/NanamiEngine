@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_ShowBossHealthGauge.h"
 
 #include "../../../../../ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -12,6 +13,9 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Failure;
 
         provider->ShowBossHealthGauge();
+
+        if (context.IsNetworkAuthority())
+            GameCore::Network::ShowBossHealthGaugeRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
         return TickStatus::Success;
     }
 }

@@ -18,10 +18,9 @@ namespace GameCore::Npc
         [[nodiscard]] Enemy::EnemyStatus& Status() { return NetworkStatus()->Get(); }
         // ゲージUIとPresenterは EnemyFactory が生成するので、生成後にここへ差し込まれる
         void SetHealthGaugePresenter(const std::weak_ptr<GamePlay::Ui::BossHealthGaugePresenter>& presenter);
-
-    protected:
         void ShowBossHealthGauge() override;
 
+    protected:
         template <class Archive>
         void LoadLegacyBossFields(Archive& archive, const std::uint32_t derivedVersion)
         {

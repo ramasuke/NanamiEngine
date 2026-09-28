@@ -4,12 +4,14 @@
 
 #include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "../Ui_StageReturnNotice.h"
+#include "../../Settings/Presenter/SettingsScreenPresenter.h"
 #include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -73,6 +75,15 @@ namespace GamePlay::Ui
                 UpdateOpened(keys);
             break;
 
+        case Phase::Settings:
+            // NOTE: 設定を閉じた ESC / B でこちらまで閉じないよう、戻ったフレームは入力を見ない
+            if (!SettingsScreenPresenter::IsOpen() || settings_.expired())
+            {
+                phase_ = Phase::Opened;
+                view_->Open(IsHostLeavingOthers(), selection_);
+            }
+            break;
+
         case Phase::Leaving:
             break;
         }
@@ -83,9 +94,9 @@ namespace GamePlay::Ui
     void StageReturnPresenter::UpdateOpened(const Keys& keys)
     {
         if (keys.prev && !previousKeys_.prev)
-            Select(StageReturnNoticeUi::RETURN_INDEX);
+            Select(std::max(selection_ - 1, 0));
         if (keys.next && !previousKeys_.next)
-            Select(StageReturnNoticeUi::STAY_INDEX);
+            Select(std::min(selection_ + 1, StageReturnNoticeUi::ROW_COUNT - 1));
 
         if (keys.cancel && !previousKeys_.cancel)
             Close();
@@ -124,6 +135,11 @@ namespace GamePlay::Ui
 
     void StageReturnPresenter::Decide()
     {
+        if (selection_ == StageReturnNoticeUi::SETTINGS_INDEX)
+        {
+            OpenSettings();
+            return;
+        }
         if (selection_ != StageReturnNoticeUi::RETURN_INDEX)
         {
             Close();
@@ -134,6 +150,24 @@ namespace GamePlay::Ui
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Confirm);
         phase_ = Phase::Leaving;
         GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::MainIsland);
+    }
+
+    void StageReturnPresenter::OpenSettings()
+    {
+        const auto prefab = settingsPrefab_.get();
+        if (!prefab)
+        {
+            Module::LogWarning("[StageReturn] settingsPrefab_ が未設定なので、設定画面を開けません");
+            return;
+        }
+
+        settings_ = SettingsScreenPresenter::Open(*prefab);
+        if (settings_.expired())
+            return;
+
+        // プレイヤーの State は止めたまま、貼り紙だけを隠す
+        phase_ = Phase::Settings;
+        view_->Hide();
     }
 
     StageReturnPresenter::Keys StageReturnPresenter::ReadKeys()
@@ -177,6 +211,7 @@ namespace GamePlay::Ui
     void StageReturnPresenter::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("settingsPrefab_", settingsPrefab_);
         ImGui::Text("phase: %d  selection: %d", static_cast<int>(phase_), selection_);
     }
 }

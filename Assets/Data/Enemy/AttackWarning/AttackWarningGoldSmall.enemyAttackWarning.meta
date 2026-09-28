@@ -1,0 +1,54 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EnemyAttackWarning",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Enemy\\AttackWarning/AttackWarningGoldSmall.enemyAttackWarning",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D910A3EA-BD42-47B3-AB5F-4A6872331055"
+                    }
+                },
+                "effectPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "E1AF08E4-8EF1-4305-95CF-83329A528162"
+                                }
+                            }
+                        }
+                    }
+                },
+                "sound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "2018C927-FA31-4D78-8B14-246DCE995239"
+                                }
+                            }
+                        }
+                    }
+                },
+                "lead_secs_": 0.6499999761581421
+            }
+        }
+    }
+}

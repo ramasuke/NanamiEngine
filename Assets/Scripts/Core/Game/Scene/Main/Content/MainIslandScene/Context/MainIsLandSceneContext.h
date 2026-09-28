@@ -14,7 +14,7 @@ namespace GameCore::Scene
     public:
         void Init() override;
 
-        [[nodiscard]] const std::weak_ptr<Asset::SoundFile>& BGM() const { return bgm_.get(); }
+        [[nodiscard]] std::shared_ptr<Asset::SoundFile> BGM() const { return bgm_.get(); }
 
         /** 島の底に戻った緑の浮遊石。シーン上の位置がはまった位置 */
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> GreenStone() const { return greenStone_.get(); }

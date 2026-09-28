@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 19,
+                "cereal_class_version": 20,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -127,7 +127,7 @@
                 "jumpCooldown_secs_": 0.0,
                 "jumpStaminaCost_": 15.0,
                 "damageStateDuration_secs_": 0.6363636255264282,
-                "avoidRollingStateDuration_secs_": 0.4923076927661896,
+                "avoidRollingStateDuration_secs_": 0.4000000059604645,
                 "avoidRollingStaminaCost_": 20.0,
                 "deathStateDuration_secs_": 1.8181818723678589,
                 "injuredHealthRatio_": 0.30000001192092898,
@@ -144,7 +144,8 @@
                 "initialMoney_": {
                     "cereal_class_version": 0,
                     "value_": 0
-                }
+                },
+                "justAvoidWindow_secs_": 0.15000000596046449
             }
         }
     }

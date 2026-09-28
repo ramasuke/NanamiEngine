@@ -53,7 +53,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailTitleText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailClientText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailPlaceText_;
-        [[serialize(0)]] std::vector<FIELD(Component::ImageRenderer)> detailRankPips_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailStateText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailGoalText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailRewardText_;
@@ -62,8 +61,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Component::ImageRenderer) detailSeal_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) emptyText_;
 
-        [[serialize(0)]] FIELD(Asset::SpriteFile) filledPipSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) emptyPipSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) openSealSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) takingSealSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) clearedSealSprite_;
@@ -98,7 +95,6 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(detailTitleText_));
             archive(CEREAL_NVP(detailClientText_));
             archive(CEREAL_NVP(detailPlaceText_));
-            archive(CEREAL_NVP(detailRankPips_));
             archive(CEREAL_NVP(detailStateText_));
             archive(CEREAL_NVP(detailGoalText_));
             archive(CEREAL_NVP(detailRewardText_));
@@ -106,8 +102,6 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(detailDescriptionLines_));
             archive(CEREAL_NVP(detailSeal_));
             archive(CEREAL_NVP(emptyText_));
-            archive(CEREAL_NVP(filledPipSprite_));
-            archive(CEREAL_NVP(emptyPipSprite_));
             archive(CEREAL_NVP(openSealSprite_));
             archive(CEREAL_NVP(takingSealSprite_));
             archive(CEREAL_NVP(clearedSealSprite_));
@@ -136,7 +130,11 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(detailTitleText_));
             if (version >= 0) archive(CEREAL_NVP(detailClientText_));
             if (version >= 0) archive(CEREAL_NVP(detailPlaceText_));
-            if (version >= 0) archive(CEREAL_NVP(detailRankPips_));
+            if (version < 3)
+            {
+                std::vector<FIELD(Component::ImageRenderer)> legacyDetailRankPips;
+                archive(cereal::make_nvp("detailRankPips_", legacyDetailRankPips));
+            }
             if (version >= 0) archive(CEREAL_NVP(detailStateText_));
             if (version >= 0) archive(CEREAL_NVP(detailGoalText_));
             if (version >= 0) archive(CEREAL_NVP(detailRewardText_));
@@ -144,8 +142,13 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(detailDescriptionLines_));
             if (version >= 0) archive(CEREAL_NVP(detailSeal_));
             if (version >= 0) archive(CEREAL_NVP(emptyText_));
-            if (version >= 0) archive(CEREAL_NVP(filledPipSprite_));
-            if (version >= 0) archive(CEREAL_NVP(emptyPipSprite_));
+            if (version < 3)
+            {
+                FIELD(Asset::SpriteFile) legacyFilledPipSprite;
+                FIELD(Asset::SpriteFile) legacyEmptyPipSprite;
+                archive(cereal::make_nvp("filledPipSprite_", legacyFilledPipSprite));
+                archive(cereal::make_nvp("emptyPipSprite_", legacyEmptyPipSprite));
+            }
             if (version >= 0) archive(CEREAL_NVP(openSealSprite_));
             if (version >= 0) archive(CEREAL_NVP(takingSealSprite_));
             if (version >= 0) archive(CEREAL_NVP(clearedSealSprite_));
@@ -159,4 +162,4 @@ namespace GamePlay::Ui
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 3);

@@ -28,7 +28,7 @@ namespace GameCore::Scene::Main
         Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void OnEntered() override {}
         void Enter    () override;
-        void DoDispose  () override;
+        void DoExit  () override;
         void OnDrawGui() override;
         /** @brief 拠点が読めなければタイトルへ戻す */
         [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }

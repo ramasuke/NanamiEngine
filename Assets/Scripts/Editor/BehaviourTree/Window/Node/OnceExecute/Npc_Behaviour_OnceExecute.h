@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/TickStatus/TickStatus.h"
 
@@ -13,6 +12,9 @@ namespace Editor::Npc::Behaviour
     {
     public:
         [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(160, 150, 40, 255); }
+        [[nodiscard]] std::size_t MaxChildren() const override { return 1; }
+        std::optional<ChildSlot> RemoveChild(const NodeBase* child) override;
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override
         {
             if (child_) return { child_ };
@@ -31,14 +33,6 @@ namespace Editor::Npc::Behaviour
         std::shared_ptr<NodeBase> child_;
         State state_ = State::NotExecuted;
 
-        inline static const auto NODE_VISUAL_STYLE =
-            Gui::Graph::NodeVisualStyle(
-                IM_COL32(70 , 70 , 0 , 255),    // 背景（落ち着いた黄色系）
-                IM_COL32(200, 200, 200, 255),   // 枠
-                IM_COL32(180, 180, 100, 255),   // ヘッダー
-                IM_COL32_WHITE                  // テキスト
-            );
-        
     private:
         template<class Context, class TickStatus>
         TickStatus TickImpl(const Context& context)
@@ -84,8 +78,6 @@ namespace Editor::Npc::Behaviour
     public:
         template<class Archive> void save(Archive& archive, const std::uint32_t version) const;
         template<class Archive> void load(Archive& archive, const std::uint32_t version);
-        void OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList,
-            const std::weak_ptr<NodeBase>& ownPtr) override;
 
     private:
         void DoOnDrawGui() override;

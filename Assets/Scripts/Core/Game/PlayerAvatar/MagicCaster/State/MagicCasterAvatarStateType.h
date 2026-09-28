@@ -19,5 +19,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
         UseItemDrink = 11,
         UseItemEat = 12,
         UseItemPlace = 13,
+        WarpIn = 14,
     };
 }

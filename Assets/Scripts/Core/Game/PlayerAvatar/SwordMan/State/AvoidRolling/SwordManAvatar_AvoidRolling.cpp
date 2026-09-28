@@ -20,15 +20,16 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         MoveAvoidRolling();
 
+        // NOTE: 転がっている間の被ダメージはずっと受け流す。演出は出だしの窓で受け流した時だけ
         if (Status().IsDamaged())
         {
-            if (!isAvoided_)
+            if (!isAvoided_ && During_secs() <= Status().JustAvoidWindow_secs())
             {
                 SuccessAvoidRollingParticle().Play();
                 GamePlay::Sound::SoundPlayer::PlaySe(Resources().JustAvoidRollingSound(), Transform().GetWorldPos());
+                isAvoided_ = true;
             }
             Status().DiscardDamage();
-            isAvoided_ = true;
         }
 
         if (Status().AvoidRollingStateDuration_secs() <= During_secs())

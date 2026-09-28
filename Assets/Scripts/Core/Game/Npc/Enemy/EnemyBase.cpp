@@ -8,6 +8,7 @@
 #include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
 #include "../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
+#include "../../../../GamePlay/Pickup/GamePlay_LootDrop.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
 #include "../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "../../../Network/Rpc/Custom_RpcType.h"
@@ -61,6 +62,10 @@ namespace GameCore::Npc
         isDefeatRecorded_ = true;
         if (const auto kind = RecordKind())
             PlayerAvatar::Record::RecordBook::Instance().RecordDefeat(*kind);
+
+        // NOTE: 全ピアで呼ばれ、拾い物はその PC のプレイヤーへ飛ぶので、協力プレイでは各自が全額を受け取る
+        if (dropTable_)
+            GamePlay::Pickup::DropLoot(*dropTable_.get(), LockOnPosition());
     }
 
     void EnemyBase::OnUpdate()
@@ -121,6 +126,7 @@ namespace GameCore::Npc
         }
         ImGuiHelper::OnDrawInputField("isNetworkSyncStatus_", isNetworkSyncStatus_);
         ImGuiHelper::OnDrawInputField("lockOnPoint_", lockOnPoint_);
+        ImGuiHelper::OnDrawInputField("dropTable_", dropTable_);
 
         if (behaviour_ && ImGui::Button("Show Running BehaviourTree"))
         {

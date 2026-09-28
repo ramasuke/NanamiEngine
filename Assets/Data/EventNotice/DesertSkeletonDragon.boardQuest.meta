@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -19,7 +19,6 @@
                 },
                 "title_": "砂漠の骸竜",
                 "clientName_": "教官",
-                "rank_": 4,
                 "goalText_": "城塞の広場に居着く骸竜を倒す",
                 "descriptionLines_": [
                     "光の心臓は、砂に沈んだ城塞に落ちている。",
@@ -81,7 +80,7 @@
                 "unlockConditions_": [
                     {
                         "polymorphic_id": 2147483651,
-                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "polymorphic_name": "GameCore::Condition::StoryFlagCondition",
                         "ptr_wrapper": {
                             "id": 2147483653,
                             "data": {

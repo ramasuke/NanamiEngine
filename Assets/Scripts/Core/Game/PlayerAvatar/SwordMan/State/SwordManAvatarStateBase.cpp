@@ -37,9 +37,13 @@ namespace
     /** 火花を衝突面からどれだけ手前に置くか */
     constexpr float WALL_BLOCK_PARTICLE_SURFACE_OFFSET = 5.0f;
 
-    /** @brief Unity の SmoothDampAngle と同形式。臨界減衰バネで current を target へ近づけた角度 [rad] を返す */
-    float SmoothDampAngle(const float current, const float target, float& velocity,
-                          const float smoothTime_secs, const float maxSpeed, const float deltaTime)
+    float SmoothDampAngle(
+        const float current,
+        const float target,
+        float& velocity,
+        const float smoothTime_secs, 
+        const float maxSpeed,
+        const float deltaTime)
     {
         const float wrappedTarget = current + std::remainder(target - current, 2.0f * std::numbers::pi_v<float>);
 
@@ -64,8 +68,7 @@ namespace
         return result;
     }
 
-    /** 移動系とみなす AnimationTree のクリップ名(SwordManAnimation.animTree のノード名) */
-    constexpr std::string_view LOCOMOTION_CLIP_NAMES[] = { "Idle", "Walk", "Run", "InjuredWalk", "InjuredRun" };
+    constexpr std::string_view LOCOMOTION_CLIP_NAMES[] = { "Idle", "Walk", "Run", "InjuredWalk", "InjuredRun", "Jump", "Fall" };
 }
 
 namespace GameCore::PlayerAvatar::SwordMan
@@ -191,7 +194,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         }
         else if (ramp.current > targetSpeed)
         {
-            // 減速レートを開始時の超過分から決め、Run→Walk のように目標が低くても decelerationTime_secs で落としきる
             ramp.current = decelerationTime_secs <= 0.0f
                 ? targetSpeed
                 : (std::max)(ramp.current - (ramp.decelerationStart - targetSpeed) / decelerationTime_secs * fixedDeltaTime, targetSpeed);
@@ -394,7 +396,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         if (toTarget.x * toTarget.x + toTarget.z * toTarget.z < 0.0001f)
             return;
 
-        // 前方は -Z
         const glm::quat currentRot = Transform().GetWorldRot();
         const glm::vec3 forward = currentRot * glm::vec3(0.0f, 0.0f, -1.0f);
         const float currentYaw = std::atan2(-forward.x, -forward.z);

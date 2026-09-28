@@ -47,7 +47,7 @@ namespace GamePlay::Sound
 
         instance_->audioSource_ = instance_->RequireComponent<Component::AudioSource>();
 
-        instance_->bgmSounds_.push_back(sound);
+        instance_->bgmSounds_.push_back(soundFile);
         instance_->audioSource_->SetLoop(true);
         instance_->audioSource_->Play(*soundFile, instance_->Transform().GetWorldPos());
         instance_->audioSource_->SetLoop(false);
@@ -110,7 +110,10 @@ namespace GamePlay::Sound
     void SoundPlayer::OnDestroy()
     {
         if (instance_ == this)
+        {
+            StopAllBgm();
             instance_ = nullptr;
+        }
     }
 
     void SoundPlayer::OnDrawGui()

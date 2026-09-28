@@ -4,18 +4,19 @@
 #include <random>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 
 namespace Editor::Npc::Behaviour
 {
     class RandomSelectorNode final : public NodeBase
     {
     public:
-        void OnDrawGraphEditorGui(
-            const ImVec2& offset,
-            ImDrawList* drawList,
-            const std::weak_ptr<NodeBase>& ownPtr) override;
         [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] std::string GraphNodeTitle() const override { return "RandomSelector"; }
+        [[nodiscard]] std::string GraphNodeDetail() const override;
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(120, 150, 60, 255); }
+        [[nodiscard]] std::size_t MaxChildren() const override { return UNLIMITED_CHILDREN; }
+        std::optional<ChildSlot> RemoveChild(const NodeBase* child) override;
+        void InsertChild(std::shared_ptr<NodeBase> child, const ChildSlot& slot) override;
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override { return children_; }
 
     private:
@@ -36,14 +37,6 @@ namespace Editor::Npc::Behaviour
         std::vector<int> weights_;
         std::mt19937 rng_{ std::random_device{}() };
         int currentRunningNodeIndex_ = -1;
-
-        inline static const auto NODE_VISUAL_STYLE =
-            Gui::Graph::NodeVisualStyle(
-                IM_COL32(50 , 70 , 50 , 255),
-                IM_COL32(200, 200, 200, 255),
-                IM_COL32(180, 220, 120, 255),
-                IM_COL32_WHITE
-            );
 
 #pragma region Serialization
     public:

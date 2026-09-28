@@ -13,19 +13,10 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        constexpr const char* ASSET_UPDATE_NOTE_OFFER        = "受け取ると自動で再起動します";
-        constexpr const char* ASSET_UPDATE_NOTE_RELAUNCH     = "ゲームを再起動して荷を開けます";
-        constexpr const char* ASSET_UPDATE_NOTE_MANUAL       = "ゲームを起動し直してください";
-        constexpr const char* ASSET_UPDATE_WAIT_RECEIVING    = "このまま少しお待ちください";
-        constexpr const char* ASSET_UPDATE_WAIT_UNPACKING    = "もうすぐ終わります";
-        constexpr const char* ASSET_UPDATE_WARNING_FAILED    = "このままでは冒険に出られません";
-        constexpr const char* ASSET_UPDATE_WARNING_TOO_OLD   = "新しい版のゲームが要ります";
-
         using LibCore::EaseType;
         using LibCore::Tween::Ease;
         using LibCore::Tween::Ms;
 
-        /** @brief UTF-8 の1文字の長さ。壊れた先頭バイトは1バイトとして進める */
         size_t AssetUpdateCharLength(const unsigned char lead)
         {
             if (lead < 0x80) return 1;
@@ -34,11 +25,7 @@ namespace GamePlay::Ui
             if ((lead & 0xF8) == 0xF0) return 4;
             return 1;
         }
-
-        /**
-         * @brief 半角を1、それ以外を2と数えて lineUnits ごとに改行する。maxLines に収まらなければ最後の行の末尾を … にする。
-         * 荷札の幅に収めるため。tools/art/asset_update.py の wrap_units と同じ規則
-         */
+        
         std::string AssetUpdateWrap(const std::string& text, const int lineUnits, const int maxLines)
         {
             std::vector<std::string> lines(1);
@@ -66,11 +53,16 @@ namespace GamePlay::Ui
             {
                 lines.resize(static_cast<size_t>(maxLines));
                 std::string& last = lines.back();
-                // 最後の1文字を落として … を足す (UTF-8 の継続バイトは残さない)
                 while (!last.empty() && (static_cast<unsigned char>(last.back()) & 0xC0) == 0x80)
+                {
                     last.pop_back();
+                }
+                
                 if (!last.empty())
+                {
                     last.pop_back();
+                }
+                
                 last += "…";
             }
 
@@ -126,7 +118,8 @@ namespace GamePlay::Ui
         Open("新しい荷が届きました", Body::Details);
         WriteParcel(parcel);
         if (const auto note = noteText_.get())
-            note->SetText(ASSET_UPDATE_NOTE_OFFER);
+            note->SetText(offerNoteText_);
+        
         SetHints("受け取る", "あとで");
     }
 
@@ -141,7 +134,8 @@ namespace GamePlay::Ui
         if (const auto amount = amountText_.get())
             amount->SetText("");
         if (const auto wait = waitText_.get())
-            wait->SetText(ASSET_UPDATE_WAIT_RECEIVING);
+            wait->SetText(receivingWaitText_);
+        
         SetHints("", "");
     }
 
@@ -150,7 +144,8 @@ namespace GamePlay::Ui
         Open("荷を解いています", Body::Progress);
         targetProgress_ = 1.0f;
         if (const auto wait = waitText_.get())
-            wait->SetText(ASSET_UPDATE_WAIT_UNPACKING);
+            wait->SetText(unpackingWaitText_);
+        
         SetHints("", "");
     }
 
@@ -164,25 +159,25 @@ namespace GamePlay::Ui
     void AssetUpdateTagUi::ShowUndelivered(const std::string& error)
     {
         Open("荷が届きませんでした", Body::Failure);
-        WriteFailure(ASSET_UPDATE_WARNING_FAILED, error);
+        WriteFailure(failedWarningText_, error);
         PressStamp(undeliveredStamp_);
         SetHints("もう一度", "あとで");
     }
 
-    void AssetUpdateTagUi::ShowReceived(const AssetUpdateParcel& parcel, const bool canRelaunch)
+    void AssetUpdateTagUi::ShowReceived(const AssetUpdateParcel& parcel)
     {
         Open("荷を受け取りました", Body::Details);
         WriteParcel(parcel);
         if (const auto note = noteText_.get())
-            note->SetText(canRelaunch ? ASSET_UPDATE_NOTE_RELAUNCH : ASSET_UPDATE_NOTE_MANUAL);
+            note->SetText(receivedNoteText_);
         PressStamp(receivedStamp_);
-        SetHints(canRelaunch ? "再起動する" : "閉じる", "");
+        SetHints("閉じる", "");
     }
 
     void AssetUpdateTagUi::ShowWrongVersion(const std::string& error)
     {
         Open("荷を受け取れません", Body::Failure);
-        WriteFailure(ASSET_UPDATE_WARNING_TOO_OLD, error);
+        WriteFailure(tooOldWarningText_, error);
         PressStamp(wrongVersionStamp_);
         SetHints("", "閉じる");
     }
@@ -193,7 +188,8 @@ namespace GamePlay::Ui
             return;
 
         phase_ = Phase::Leaving;
-        // 引っ込むのは降りるより速く、加速しながら上へ抜ける
+        
+        // 上へ抜ける
         const float leaveSecs = dropDuration_secs_ * 0.7f;
         dropTween_.Play(tweeny::from(0.0f).to(-dropDistance_px_).during(Ms(leaveSecs)).via(Ease(EaseType::InQuad)));
         veilTween_.Play(tweeny::from(1.0f).to(0.0f).during(Ms(leaveSecs)));
@@ -291,16 +287,16 @@ namespace GamePlay::Ui
         stampBaseScale_ = renderer->Transform().GetLocalScale();
         stampScaleTween_.Play(tweeny::from(stampStartScale_).to(1.0f)
             .during(Ms(stampDuration_secs_)).via(Ease(EaseType::OutCubic)));
-        // 朱は押す時間の前半で乗り切る
+        
         stampAlphaTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(stampDuration_secs_ * 0.5f)));
         UpdateStamp(0.0f);
     }
 
     void AssetUpdateTagUi::HideStamps()
     {
-        // 押している途中の判子は大きさを戻してから隠す
         if (const auto pressing = pressingStamp_.lock(); pressing && stampScaleTween_.IsPlaying())
             pressing->Transform().SetLocalScale(stampBaseScale_);
+        
         pressingStamp_.reset();
         stampScaleTween_.Stop();
 
@@ -343,7 +339,8 @@ namespace GamePlay::Ui
         UpdateHoofPops(deltaSecs);
     }
 
-    void AssetUpdateTagUi::UpdateMotion(const float deltaSecs)
+    void AssetUpdateTagUi::UpdateMotion(
+        const float deltaSecs)
     {
         if (phase_ != Phase::Entering && phase_ != Phase::Leaving)
             return;
@@ -353,6 +350,7 @@ namespace GamePlay::Ui
         const auto tag = tagRoot_.get();
         if (tag)
             tag->Transform().SetLocalPos(tagBasePos_ + glm::vec3(0.0f, dropTween_.Value(), 0.0f));
+        
         ApplyVeil(veilTween_.Value());
         if (!isFinished)
             return;
@@ -500,6 +498,12 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("errorMaxLines_", errorMaxLines_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
         ImGuiHelper::OnDrawInputField("dropOvershoot_", dropOvershoot_);
+        ImGuiHelper::OnDrawInputField("offerNoteText_", offerNoteText_);
+        ImGuiHelper::OnDrawInputField("receivedNoteText_", receivedNoteText_);
+        ImGuiHelper::OnDrawInputField("receivingWaitText_", receivingWaitText_);
+        ImGuiHelper::OnDrawInputField("unpackingWaitText_", unpackingWaitText_);
+        ImGuiHelper::OnDrawInputField("failedWarningText_", failedWarningText_);
+        ImGuiHelper::OnDrawInputField("tooOldWarningText_", tooOldWarningText_);
     }
 }
 

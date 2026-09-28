@@ -35,6 +35,7 @@ _KIND_BY_FQN = {
     model.FQN_RANDOM: model.RandomSelector,
     model.FQN_ONCE_EXEC: model.OnceExecute,
     model.FQN_ONCE_SUCCESS: model.OnceSuccess,
+    model.FQN_BB_GATE: model.BlackBoardGate,
     model.FQN_ACTION_NODE_ENEMY: model.Action,
     model.FQN_ACTION_NODE_FRIENDLY: model.Action,
 }
@@ -169,6 +170,14 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
 
 def _tag_pointee(ctx: _Ctx, data: Any, fqn: Optional[str]) -> Any:
     """ポインタのデータにタグを付ける。動的型が既知の構造体ならカタログを使う。"""
+    action_entry = ctx.cat.action_by_fqn(fqn) if fqn else None
+    if action_entry is not None and isinstance(data, OrderedObj):
+        # ActionTimeline の cues_ などに入った入れ子の action。ActionNode 直下の action と
+        # 同じバージョンキー（("type", リーフ名)）にして、cereal と同じく型ごとに 1 回だけ書く
+        action_v, members = _tag_action_data(ctx, data, action_entry)
+        if action_v < 0:
+            action_v = int(action_entry.get("version", 0))
+        return Ver(("type", fqn.rsplit("::", 1)[-1]), action_v, members)
     found = ctx.cat.struct_by_fqn(fqn) if fqn else None
     if not (found and isinstance(data, OrderedObj) and data.keys()
             and data.keys()[0] == "cereal_class_version"):
@@ -271,6 +280,15 @@ def _read_node(ctx: _Ctx, slot: OrderedObj):
                                  state=int(_num(data.get("state_", Num.of_int(0)))))
     if kind is model.OnceSuccess:
         return model.OnceSuccess(guid=guid, pos=pos, child=_read_node(ctx, data["child_"]))
+    if kind is model.BlackBoardGate:
+        def entries(key: str) -> list[tuple[str, int]]:
+            return [(e["keyName_"], int(_num(e["value_"]))) for e in data.get(key, [])]
+        return model.BlackBoardGate(guid=guid, pos=pos,
+                                    child=_read_node(ctx, data["child_"]),
+                                    conditions=entries("conditions_"),
+                                    writes_on_start=entries("writesOnStart_"),
+                                    writes_on_success=entries("writesOnSuccess_"),
+                                    once=bool(data.get("once_", False)))
 
     # ActionNode
     tk = _TREE_KIND_BY_ACTION_NODE_FQN.get(fqn)
@@ -334,11 +352,17 @@ def read_tree(text: str, cat: catalog_mod.Catalog | None = None,
     if "parameters_" in root:
         params = _read_params(ctx, root["parameters_"])
 
+    # 浮きノードはエディタが空でないときだけ書く（cereal の読み込み順 = entry → params → detached）
+    detached: list = []
+    if "detachedNodes_" in root:
+        detached = [n for n in (_read_node(ctx, s) for s in root["detachedNodes_"]) if n is not None]
+
     if ctx.tree_kind is not None and kind is not None and ctx.tree_kind != kind:
         raise ValueError(
             f"file kind mismatch: expected {kind!r} action nodes but found {ctx.tree_kind!r}"
         )
-    return model.Tree(entry=entry, params=params, kind=ctx.tree_kind or kind or "enemy")
+    return model.Tree(entry=entry, params=params, kind=ctx.tree_kind or kind or "enemy",
+                      detached=detached)
 
 
 def read_tree_file(path) -> model.Tree:

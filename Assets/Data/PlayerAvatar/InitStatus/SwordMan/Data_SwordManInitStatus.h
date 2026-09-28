@@ -59,6 +59,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float                                DamageStateDuration_secs       () const { return damageStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStateDuration_secs () const { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStaminaCost        () const { return avoidRollingStaminaCost_; }
+        /** 回避の出だしからこの秒数までに受け流した被弾をジャスト回避として扱う */
+        [[nodiscard]] float                                JustAvoidWindow_secs           () const { return justAvoidWindow_secs_; }
         [[nodiscard]] float                                DeathStateDuration_secs        () const { return deathStateDuration_secs_; }
         [[nodiscard]] float                                GetInjuredHealthRatio          () const { return injuredHealthRatio_; }
         [[nodiscard]] const GameCore::StatusParameter::Money& InitialMoney                 () const { return initialMoney_; }
@@ -104,6 +106,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] float                                damageStateDuration_secs_;
         [[serialize(0)]] float                                avoidRollingStateDuration_secs_;
         [[serialize(7)]] float                                avoidRollingStaminaCost_;
+        [[serialize(20)]] float                               justAvoidWindow_secs_ = 0.15f;
         [[serialize(0)]] float                                deathStateDuration_secs_;
         [[serialize(5)]] float                                injuredHealthRatio_ = 0.3f;
         [[serialize(19)]] GameCore::StatusParameter::Money     initialMoney_;
@@ -154,6 +157,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(injuredHealthRatio_));
             archive(CEREAL_NVP(quests_));
             archive(CEREAL_NVP(initialMoney_));
+            archive(CEREAL_NVP(justAvoidWindow_secs_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -204,11 +208,12 @@ namespace NanamiEngine::Module::Asset
             if (version >= 5) archive(CEREAL_NVP(injuredHealthRatio_));
             if (version >= 0) archive(CEREAL_NVP(quests_));
             if (version >= 19) archive(CEREAL_NVP(initialMoney_));
+            if (version >= 20) archive(CEREAL_NVP(justAvoidWindow_secs_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 19);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 20);
 #pragma endregion

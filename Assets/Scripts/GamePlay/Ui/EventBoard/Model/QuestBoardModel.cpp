@@ -7,7 +7,7 @@
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_MainStoryQuestBase.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
-#include "../../../../Core/Game/PlayerAvatar/Quest/Unlock/PlayerAvatar_QuestUnlockContext.h"
+#include "../../../../Core/Game/Condition/Condition_ConditionContext.h"
 
 namespace GamePlay::Ui
 {
@@ -23,7 +23,7 @@ namespace GamePlay::Ui
             const Asset::BoardQuest& quest,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
             const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
-            const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& unlockContext)
+            const GameCore::Condition::ConditionContext& unlockContext)
         {
             const auto& content = quest.Quest();
             if (content && completedQuests && completedQuests->CheckCompleted(content->QuestType()))
@@ -44,13 +44,13 @@ namespace GamePlay::Ui
             const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
             const GameCore::Story::StoryProgress* story)
         {
-            const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext unlockContext{ story, completedQuests };
+            const GameCore::Condition::ConditionContext unlockContext{ story, completedQuests, now };
 
             std::vector<QuestBoardEntry> entries;
             for (const auto& quest : quests)
             {
                 const auto event = quest->Event();
-                if (event && !event->IsOngoing(now))
+                if (event && (!event->IsOngoing(now) || !event->IsUnlocked(unlockContext)))
                     continue;
 
                 QuestBoardEntry entry;

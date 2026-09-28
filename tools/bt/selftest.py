@@ -16,6 +16,7 @@
   6. 編集してから逆操作 == 元。
   8. copy-node が独立したディープコピーを作り、ドット区切りキーの set-params が
      shape='nested' パラメータの内側に届く。どちらもきれいに元に戻せる。
+  9. 浮きノード（detachedNodes_）の書き出し -> 読み込み -> 書き出しが一致する。
 """
 
 from __future__ import annotations
@@ -444,6 +445,96 @@ def stage_copy_and_nested(r: Reporter) -> None:
             r.fail(p.name, traceback.format_exc())
 
 
+def stage_detached(r: Reporter) -> None:
+    from tools.bt import catalog as catalog_mod, reader, writer
+
+    r.section("stage 9: detached subtrees (detachedNodes_)")
+    for dir_, name, ext, kind in [(BT_DIR, "TrainingDummy", ".enemyBehaviourData", "enemy"),
+                                  (FRIENDLY_DIR, "Adventure", ".friendBehaviourData", "friendly")]:
+        p = dir_ / f"{name}{ext}"
+        try:
+            cat = catalog_mod.load(kind=kind)
+            tree = reader.read_tree(cereal_json.read_text(p), cat=cat, kind=kind)
+            if tree.detached:
+                raise AssertionError("fixture unexpectedly has detachedNodes_")
+            root = tree.entry.child
+            if root is None:
+                raise AssertionError("fixture has no root node")
+            tree.entry.child = None
+            tree.detached = [root]
+
+            text = writer.write_tree(tree)
+            if '"detachedNodes_"' not in text:
+                raise AssertionError("detachedNodes_ was not written")
+            back = reader.read_tree(text, cat=cat, kind=kind)
+            if [n.guid for n in back.detached] != [root.guid] or back.entry.child is not None:
+                raise AssertionError("detached subtree did not survive the round trip")
+            if writer.write_tree(back) != text:
+                raise AssertionError("detached tree is not byte-stable on a second write")
+
+            back.entry.child, back.detached = back.detached[0], []
+            if writer.write_tree(back) != cereal_json.read_text(p):
+                raise AssertionError("re-attaching the subtree did not restore the original bytes")
+            r.ok(f"{p.name} detach entry child, round-trip, re-attach")
+        except Exception:  # noqa: BLE001
+            r.fail(p.name, traceback.format_exc())
+
+
+def stage_compose(r: Reporter) -> None:
+    """BlackBoardGate / ActionTimeline（入れ子の action）/ RandomWrite / AngleDispatch の往復。"""
+    from tools.bt import catalog as catalog_mod, compose, reader, validate, writer
+
+    r.section("stage 10: BlackBoardGate + ActionTimeline round-trip")
+    p = BT_DIR / "TrainingDummy.enemyBehaviourData"
+    try:
+        cat = catalog_mod.load(kind="enemy")
+        tree = reader.read_tree(cereal_json.read_text(p), cat=cat, kind="enemy")
+        root = tree.entry.child
+        if root is None or not hasattr(root, "children"):
+            raise AssertionError("fixture has no composite root")
+
+        # 既存の action を Timeline の Cue に移し（同じ型が ActionNode 直下と Cue の両方に出る）、
+        # 入れ子の Timeline も 1 つ入れる
+        existing = next(n for n in root.children if hasattr(n, "type_fqn"))
+        inner = compose.timeline(cat, [compose.cue(0.5, compose.new_action(cat, "Wait::Seconds::WaitSeconds"))],
+                                 duration_secs=1.0)
+        tl = compose.timeline(cat, [compose.cue(0.0, existing, keep_ticking=True),
+                                    compose.cue(1.6, compose.new_action(cat, "Camera::ShakeCamera")),
+                                    compose.cue(1.9, inner, wait_done=True)],
+                              duration_secs=4.7, once=True)
+        g = compose.gate(tl, conditions=[("State", 0)], writes_on_start=[("Alert", 1)],
+                         writes_on_success=[("State", 1)], once=True)
+        cond_only = compose.gate(conditions=[("State", 3)])
+        rw = compose.random_write(cat, "State", [(1, 50), (4, 50)])
+        ad = compose.angle_dispatch(cat, "Act", [(-35, 35, False, 1), (35, 135, True, 2)], fallback=3)
+        root.children.extend([g, cond_only, rw, ad])
+        if hasattr(root, "weights"):
+            root.weights.extend([100] * 4)
+
+        problems = [x for x in validate.validate(tree, cat) if not x.startswith("note:")]
+        if problems:
+            raise AssertionError(f"validate: {problems}")
+
+        text = writer.write_tree(tree)
+        back = reader.read_tree(text, cat=cat, kind="enemy")
+        if writer.write_tree(back) != text:
+            raise AssertionError("composed tree is not byte-stable on a second write")
+
+        g2 = back.find(g.guid)
+        if (g2.conditions, g2.writes_on_start, g2.writes_on_success, g2.once) != \
+                ([("State", 0)], [("Alert", 1)], [("State", 1)], True):
+            raise AssertionError(f"gate fields changed: {g2}")
+        cues = g2.child.params["cues_"]
+        if [c["action_"].fqn.rsplit("::", 1)[-1] for c in cues] != \
+                [existing.type_fqn.rsplit("::", 1)[-1], "ShakeCamera", "ActionTimeline"]:
+            raise AssertionError("cue actions changed")
+        if text.count('"polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds"') != 1:
+            raise AssertionError("nested action type named more than once")
+        r.ok(f"{p.name} + gate/timeline/random-write/angle-dispatch round-trip")
+    except Exception:  # noqa: BLE001
+        r.fail(p.name, traceback.format_exc())
+
+
 def main() -> int:
     r = Reporter()
     stage_ordered_obj_dup_keys(r)
@@ -455,6 +546,8 @@ def main() -> int:
     stage_edits(r)
     stage_scaffold(r)
     stage_copy_and_nested(r)
+    stage_detached(r)
+    stage_compose(r)
     return r.finish()
 
 

@@ -6,19 +6,6 @@
 
 namespace GamePlay::Ui
 {
-    void ShowQuestBoardRankPips(
-        const std::vector<FIELD(Component::ImageRenderer)>& pips,
-        const int rank,
-        const std::shared_ptr<Asset::SpriteFile>& filledSprite,
-        const std::shared_ptr<Asset::SpriteFile>& emptySprite)
-    {
-        for (size_t i = 0; i < pips.size(); ++i)
-        {
-            if (const auto pip = pips[i].get())
-                pip->SetSprite(static_cast<int>(i) < rank ? filledSprite : emptySprite);
-        }
-    }
-
     std::shared_ptr<Asset::SpriteFile> QuestBoardStampSprites::For(const QuestBoardState state) const
     {
         switch (state)
@@ -66,7 +53,6 @@ namespace GamePlay::Ui
         titleText_ ->SetText(entry.titleText);
         placeText_ ->SetText(entry.placeText);
         rewardText_->SetText(entry.rewardText);
-        ShowQuestBoardRankPips(rankPips_, entry.quest->Rank(), filledPipSprite_.get(), emptyPipSprite_.get());
         eventChip_->SetEnable(entry.isEventQuest);
 
         const QuestBoardStampSprites stamps{ takingStampSprite_.get(), clearedStampSprite_.get(), preparingStampSprite_.get(), lockedStampSprite_.get() };
@@ -103,18 +89,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("titleText_", titleText_);
         ImGuiHelper::OnDrawInputField("placeText_", placeText_);
         ImGuiHelper::OnDrawInputField("rewardText_", rewardText_);
-        ImGuiHelper::OnDrawInputField("rankPips_", rankPips_, [this]
-        {
-            if (ImGui::Button("Add Pip"))
-            {
-                rankPips_.emplace_back();
-            }
-        });
         ImGuiHelper::OnDrawInputField("eventChip_", eventChip_);
         ImGuiHelper::OnDrawInputField("stateStamp_", stateStamp_);
         ImGuiHelper::OnDrawInputField("waxSeal_", waxSeal_);
-        ImGuiHelper::OnDrawInputField("filledPipSprite_", filledPipSprite_);
-        ImGuiHelper::OnDrawInputField("emptyPipSprite_", emptyPipSprite_);
         ImGuiHelper::OnDrawInputField("takingStampSprite_", takingStampSprite_);
         ImGuiHelper::OnDrawInputField("clearedStampSprite_", clearedStampSprite_);
         ImGuiHelper::OnDrawInputField("preparingStampSprite_", preparingStampSprite_);

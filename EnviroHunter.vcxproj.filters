@@ -124,6 +124,9 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyLeave\Rpc_EnemyLeave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ShowBossHealthGauge\Rpc_ShowBossHealthGauge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -335,6 +338,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Graph\BehaviourTreeGraphDelegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionFactory.cpp">
@@ -745,16 +751,22 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_DefeatRequestQuest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_IQuestUnlockCondition.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_StoryUnlockConditions.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_QuestCompletedUnlockCondition.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_CompositeUnlockConditions.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.cpp">
@@ -1099,6 +1111,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\WarpIn\MagicCasterAvatarWarpInState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1310,6 +1325,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageReturn\Presenter\StageReturnPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Settings\Model\SettingsCatalog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Settings\Row\Ui_SettingsRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Settings\Tab\Ui_SettingsTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Settings\Ui_SettingsScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Settings\Presenter\SettingsScreenPresenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.cpp">
@@ -1768,6 +1798,9 @@
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Graph\BehaviourTreeGraphDelegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2185,22 +2218,28 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_DefeatRequestQuest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_QuestUnlockContext.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_IQuestUnlockCondition.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_QuestUnlockConditionFactory.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_StoryUnlockConditions.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_QuestCompletedUnlockCondition.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Unlock\PlayerAvatar_CompositeUnlockConditions.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.h">
@@ -2605,6 +2644,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\WarpIn\MagicCasterAvatarWarpInState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2825,6 +2867,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageReturn\Presenter\StageReturnPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Settings\Model\SettingsCatalog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Settings\Row\Ui_SettingsRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Settings\Tab\Ui_SettingsTab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Settings\Ui_SettingsScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Settings\Presenter\SettingsScreenPresenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Type\EnemyKind.h">

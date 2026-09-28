@@ -17,13 +17,6 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 難度の点を rank 個だけ塗る。一覧の札と依頼書で同じものを使う */
-    void ShowQuestBoardRankPips(
-        const std::vector<FIELD(Component::ImageRenderer)>& pips,
-        int rank,
-        const std::shared_ptr<Asset::SpriteFile>& filledSprite,
-        const std::shared_ptr<Asset::SpriteFile>& emptySprite);
-
     /** @brief 受注中・達成・準備中・未解放の判の絵。受付中は nullptr(判を押さない) */
     struct QuestBoardStampSprites
     {
@@ -60,9 +53,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Component::ImageRenderer) eventChip_;
         [[serialize(0)]] FIELD(Component::ImageRenderer) stateStamp_;
         [[serialize(0)]] FIELD(Component::ImageRenderer) waxSeal_;
-        [[serialize(0)]] std::vector<FIELD(Component::ImageRenderer)> rankPips_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) filledPipSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) emptyPipSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) takingStampSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) clearedStampSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) preparingStampSprite_;
@@ -91,9 +81,6 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(eventChip_));
             archive(CEREAL_NVP(stateStamp_));
             archive(CEREAL_NVP(waxSeal_));
-            archive(CEREAL_NVP(rankPips_));
-            archive(CEREAL_NVP(filledPipSprite_));
-            archive(CEREAL_NVP(emptyPipSprite_));
             archive(CEREAL_NVP(takingStampSprite_));
             archive(CEREAL_NVP(clearedStampSprite_));
             archive(CEREAL_NVP(preparingStampSprite_));
@@ -115,9 +102,15 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(eventChip_));
             if (version >= 0) archive(CEREAL_NVP(stateStamp_));
             if (version >= 0) archive(CEREAL_NVP(waxSeal_));
-            if (version >= 0) archive(CEREAL_NVP(rankPips_));
-            if (version >= 0) archive(CEREAL_NVP(filledPipSprite_));
-            if (version >= 0) archive(CEREAL_NVP(emptyPipSprite_));
+            if (version < 3)
+            {
+                std::vector<FIELD(Component::ImageRenderer)> legacyRankPips;
+                FIELD(Asset::SpriteFile) legacyFilledPipSprite;
+                FIELD(Asset::SpriteFile) legacyEmptyPipSprite;
+                archive(cereal::make_nvp("rankPips_", legacyRankPips));
+                archive(cereal::make_nvp("filledPipSprite_", legacyFilledPipSprite));
+                archive(cereal::make_nvp("emptyPipSprite_", legacyEmptyPipSprite));
+            }
             if (version >= 0) archive(CEREAL_NVP(takingStampSprite_));
             if (version >= 0) archive(CEREAL_NVP(clearedStampSprite_));
             if (version >= 0) archive(CEREAL_NVP(preparingStampSprite_));
@@ -132,4 +125,4 @@ namespace GamePlay::Ui
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestRow, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestRow, 3);

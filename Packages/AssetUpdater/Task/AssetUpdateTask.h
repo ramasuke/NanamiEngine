@@ -28,7 +28,7 @@ namespace NanamiEngine::AssetUpdater
         Applying,
         /** 更新があるのに落とせなかった / 適用できなかった。遊ばせずに再試行させる */
         Failed,
-        /** 適用済み。読み込み済みのアセットは古いので再起動する */
+        /** 適用済み。読み込み済みのアセットは古いので、終了して起動し直してもらう */
         ReadyToRestart,
     };
 

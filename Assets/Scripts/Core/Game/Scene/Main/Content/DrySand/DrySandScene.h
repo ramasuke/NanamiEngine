@@ -28,7 +28,7 @@ namespace GameCore::Scene::Main
         Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void OnEntered() override;
         void Enter    () override;
-        void DoDispose() override;
+        void DoExit() override;
         void OnDrawGui() override;
         /** @brief 骸竜を倒したら、神殿前の広場の光の浮遊石が空へ飛び去る */
         void OnStageClear(Story::StoryFlag flag);

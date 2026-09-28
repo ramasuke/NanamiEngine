@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 
 namespace Editor::Npc::Behaviour
 {
@@ -11,6 +10,9 @@ namespace Editor::Npc::Behaviour
     {
     public:
         [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(40, 140, 150, 255); }
+        [[nodiscard]] std::size_t MaxChildren() const override { return 1; }
+        std::optional<ChildSlot> RemoveChild(const NodeBase* child) override;
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override
         {
             if (child_) return { child_ };
@@ -22,23 +24,11 @@ namespace Editor::Npc::Behaviour
         [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
 
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
-        void OnDrawGraphEditorGui(
-            const ImVec2& offset,
-            ImDrawList* drawList,
-            const std::weak_ptr<NodeBase>& ownPtr) override;
         void DoOnDrawGui() override;
 
     private:
         std::shared_ptr<NodeBase> child_;
         bool hasSucceeded_ = false;
-        
-        inline static const auto NODE_VISUAL_STYLE =
-            Gui::Graph::NodeVisualStyle(
-                IM_COL32(0 , 70 , 70 , 255),
-                IM_COL32(200, 200, 200, 255),
-                IM_COL32(180, 180, 100, 255),
-                IM_COL32_WHITE
-            );
 
 #pragma region Serialization Function
     public:

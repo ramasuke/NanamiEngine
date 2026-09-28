@@ -27,7 +27,7 @@ namespace Editor::Npc::Friendly
 
         if (tree)
         {
-            tree->OnDrawGraphEditorGui();
+            tree->OnDrawGraphEditorGui(true);
             tree->OnDrawGui();
         }
 

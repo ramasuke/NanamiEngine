@@ -14,10 +14,6 @@ namespace NanamiEngine::Module::AnimationTree
 {
     namespace
     {
-        constexpr auto K_BACKGROUND_MENU = "##AnimationTreeBackgroundMenu";
-        constexpr auto K_NODE_MENU       = "##AnimationTreeNodeMenu";
-        constexpr auto K_LINK_MENU       = "##AnimationTreeLinkMenu";
-
         constexpr ImU32 K_ENTRY_HEADER_COLOR     = IM_COL32(56 , 150, 90 , 255);
         constexpr ImU32 K_ANY_STATE_HEADER_COLOR = IM_COL32(52 , 120, 200, 255);
         constexpr ImU32 K_CLIP_HEADER_COLOR      = IM_COL32(120, 90 , 170, 255);
@@ -34,29 +30,22 @@ namespace NanamiEngine::Module::AnimationTree
 
     void AnimationTreeGraphDelegate::Draw(AnimationTree& tree, Gui::Graph::GraphEditorHost& host, const bool readOnly)
     {
-        tree_     = &tree;
-        host_     = &host;
-        readOnly_ = readOnly;
-
-        Rebuild();
-        host.Draw(*this, readOnly);
-        DrawContextMenus();
-
-        if (!readOnly_ && host.IsFocused() && !ImGui::GetIO().WantTextInput && ImGui::IsKeyPressed(ImGuiKey_Delete, false))
-            DeleteSelection();
+        tree_ = &tree;
+        DrawFrame(host, readOnly);
     }
 
     void AnimationTreeGraphDelegate::Rebuild()
     {
-        nodes_.clear();
-        names_.clear();
+        nodes_  .clear();
+        names_  .clear();
         indexOf_.clear();
-        links_.clear();
+        links_  .clear();
 
         auto addNode = [this](const std::shared_ptr<IAnimationNode>& node)
         {
             if (!node)
                 return;
+            
             indexOf_[node.get()] = nodes_.size();
             nodes_.push_back(node);
             names_.push_back(node->GraphNodeName());
@@ -70,12 +59,6 @@ namespace NanamiEngine::Module::AnimationTree
             TryAddLinkEntry(path, false);
         for (const auto& path : tree_->fromAnyStateNodeNodePaths_)
             TryAddLinkEntry(path, true);
-
-        // 削除済みノードの選択を掃除する
-        std::erase_if(selectedNodes_, [this](const Guid& guid)
-        {
-            return std::ranges::none_of(nodes_, [&](const auto& node) { return node->GetGuid() == guid; });
-        });
     }
 
     void AnimationTreeGraphDelegate::TryAddLinkEntry(const std::shared_ptr<AnimationNodePath>& path, const bool isFromAnyState)
@@ -107,21 +90,19 @@ namespace NanamiEngine::Module::AnimationTree
         return std::ranges::none_of(links_, [&](const LinkEntry& link) { return link.from == source && link.to == target; });
     }
 
-    void AnimationTreeGraphDelegate::SelectNode(const GraphEditor::NodeIndex nodeIndex, const bool selected)
+    Guid AnimationTreeGraphDelegate::NodeGuid(const GraphEditor::NodeIndex nodeIndex) const
     {
-        if (nodeIndex >= nodes_.size())
-            return;
+        return nodes_[nodeIndex]->GetGuid();
+    }
 
-        const auto& node = nodes_[nodeIndex];
-        if (!selected)
-        {
-            selectedNodes_.erase(node->GetGuid());
-            return;
-        }
+    std::weak_ptr<Object::IObject> AnimationTreeGraphDelegate::InspectTarget(const GraphEditor::NodeIndex nodeIndex) const
+    {
+        return nodes_[nodeIndex];
+    }
 
-        selectedNodes_.insert(node->GetGuid());
+    void AnimationTreeGraphDelegate::OnNodeSelected(GraphEditor::NodeIndex)
+    {
         selectedPath_.reset();
-        Gui::Graph::ShowInInspector(node);
     }
 
     void AnimationTreeGraphDelegate::MoveSelectedNodes(const ImVec2 delta)
@@ -136,9 +117,11 @@ namespace NanamiEngine::Module::AnimationTree
         }
     }
 
-    // GraphEditor の Link は input = 遷移元（出力スロット側）, output = 遷移先（入力スロット側）
-    void AnimationTreeGraphDelegate::AddLink(const GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex,
-                                             const GraphEditor::NodeIndex outputNodeIndex, GraphEditor::SlotIndex)
+    void AnimationTreeGraphDelegate::AddLink(
+        const GraphEditor::NodeIndex inputNodeIndex,
+        GraphEditor::SlotIndex,
+        const GraphEditor::NodeIndex outputNodeIndex,
+        GraphEditor::SlotIndex)
     {
         if (readOnly_ || inputNodeIndex >= nodes_.size() || outputNodeIndex >= nodes_.size())
             return;
@@ -171,14 +154,13 @@ namespace NanamiEngine::Module::AnimationTree
         if (nodeIndex >= nodes_.size())
             return;
 
-        const auto& node       = nodes_[nodeIndex];
-        const auto& options    = host_->Options();
-        // CustomDraw には拡大率が渡らないので、本文の幅から逆算する
-        // （本文 = ノード矩形 * 拡大率 から、拡大されない角丸ぶんを上下左右に削ったもの）
-        const float zoom       = (rectangle.GetWidth() + options.mRounding * 2.0f) / NODE_SIZE.x;
-        const float fontSize   = ImGui::GetFontSize() * 0.85f * zoom;
-        const ImVec2 nodeMin   = rectangle.Min - ImVec2(options.mRounding, options.mHeaderHeight * zoom + options.mRounding);
-        const ImVec2 nodeMax   = rectangle.Max + ImVec2(options.mRounding, options.mRounding);
+        const auto&  node     = nodes_[nodeIndex];
+        const auto&  options  = host_->Options();
+        const float  zoom     = ZoomOf(rectangle, NODE_SIZE.x);
+        const float  fontSize = ImGui::GetFontSize() * 0.85f * zoom;
+        const ImRect frame    = NodeFrame(rectangle, zoom);
+        const ImVec2 nodeMin  = frame.Min;
+        const ImVec2 nodeMax  = frame.Max;
 
         if (const std::string detail = node->GraphNodeDetail(); !detail.empty() && fontSize >= 6.0f)
         {
@@ -216,18 +198,9 @@ namespace NanamiEngine::Module::AnimationTree
         }
     }
 
-    void AnimationTreeGraphDelegate::RightClick(const GraphEditor::NodeIndex nodeIndex, GraphEditor::SlotIndex, GraphEditor::SlotIndex)
+    void AnimationTreeGraphDelegate::OnRightClickNode(const GraphEditor::NodeIndex nodeIndex)
     {
-        menuGraphPosition_ = host_->ScreenToGraph(ImGui::GetIO().MousePos);
-        if (nodeIndex < nodes_.size())
-        {
-            menuNode_    = nodes_[nodeIndex];
-            pendingMenu_ = PendingMenu::Node;
-        }
-        else
-        {
-            pendingMenu_ = PendingMenu::Background;
-        }
+        menuNode_ = nodes_[nodeIndex];
     }
 
     const size_t AnimationTreeGraphDelegate::GetTemplateCount()
@@ -284,16 +257,14 @@ namespace NanamiEngine::Module::AnimationTree
         Gui::Graph::ShowInInspector(links_[linkIndex].path);
     }
 
-    void AnimationTreeGraphDelegate::RightClickLink(const GraphEditor::LinkIndex linkIndex)
+    void AnimationTreeGraphDelegate::OnRightClickLink(const GraphEditor::LinkIndex linkIndex)
     {
-        if (linkIndex >= links_.size())
-            return;
-
-        menuPath_    = links_[linkIndex].path;
-        pendingMenu_ = PendingMenu::Link;
+        menuPath_ = links_[linkIndex].path;
     }
 
-    ImU32 AnimationTreeGraphDelegate::LinkColor(const GraphEditor::LinkIndex linkIndex, const ImU32 defaultColor)
+    ImU32 AnimationTreeGraphDelegate::LinkColor(
+        const GraphEditor::LinkIndex linkIndex, 
+        const ImU32 defaultColor)
     {
         if (linkIndex >= links_.size())
             return defaultColor;
@@ -302,68 +273,52 @@ namespace NanamiEngine::Module::AnimationTree
         if (path == selectedPath_.lock())
             return K_SELECTED_LINK_COLOR;
 
-        // ブレンド中（再生中ノードが 2 つ）のみ、遷移中の NodePath を強調表示する
         if (tree_->currentNodes_.size() >= 2 && path.get() == tree_->currentNodePath_)
             return K_BLENDING_LINK_COLOR;
 
         return defaultColor;
     }
 
-    void AnimationTreeGraphDelegate::DrawContextMenus()
+    void AnimationTreeGraphDelegate::DrawBackgroundMenu()
     {
-        switch (pendingMenu_)
+        if (readOnly_)
         {
-        case PendingMenu::Background: ImGui::OpenPopup(K_BACKGROUND_MENU); break;
-        case PendingMenu::Node:       ImGui::OpenPopup(K_NODE_MENU);       break;
-        case PendingMenu::Link:       ImGui::OpenPopup(K_LINK_MENU);       break;
-        case PendingMenu::None:       break;
+            ImGui::TextDisabled("実行中のツリーは編集できません");
         }
-        pendingMenu_ = PendingMenu::None;
-
-        if (ImGui::BeginPopup(K_BACKGROUND_MENU))
+        else if (ImGui::MenuItem("Add AnimationClipNode"))
         {
-            if (readOnly_)
-            {
-                ImGui::TextDisabled("実行中のツリーは編集できません");
-            }
-            else if (ImGui::MenuItem("Add AnimationClipNode"))
-            {
-                const auto newNode = std::make_shared<AnimationClipNode>(glm::vec2(menuGraphPosition_.x, menuGraphPosition_.y));
-                tree_->nodes_[newNode->GetGuid()] = newNode;
-            }
-            if (ImGui::MenuItem("Fit All", "F"))
-                host_->RequestFit();
-            ImGui::EndPopup();
+            const auto newNode = std::make_shared<AnimationClipNode>(glm::vec2(menuGraphPosition_.x, menuGraphPosition_.y));
+            tree_->nodes_[newNode->GetGuid()] = newNode;
         }
+        DrawFitAllMenuItem();
+    }
 
-        if (ImGui::BeginPopup(K_NODE_MENU))
+    void AnimationTreeGraphDelegate::DrawNodeMenu()
+    {
+        const auto node = menuNode_.lock();
+        if (node && ImGui::MenuItem("Show in Inspector"))
+            Gui::Graph::ShowInInspector(node);
+
+        // Entry / AnyState はツリーに必ず 1つ必要
+        const bool isClip = node && dynamic_cast<AnimationClipNode*>(node.get()) != nullptr;
+        if (ImGui::MenuItem("Delete Node", "Del", false, !readOnly_ && isClip))
+            DeleteNode(node);
+        
+        if (ImGui::MenuItem("Delete Selected Nodes", nullptr, false, !readOnly_ && !selectedNodes_.empty()))
+            DeleteSelection();
+    }
+
+    void AnimationTreeGraphDelegate::DrawLinkMenu()
+    {
+        const auto path = menuPath_.lock();
+        if (path && ImGui::MenuItem("Show in Inspector"))
         {
-            const auto node = menuNode_.lock();
-            if (node && ImGui::MenuItem("Show in Inspector"))
-                Gui::Graph::ShowInInspector(node);
-
-            // Entry / AnyState はツリーに必ず 1 つずつ必要なので消せない
-            const bool isClip = node && dynamic_cast<AnimationClipNode*>(node.get()) != nullptr;
-            if (ImGui::MenuItem("Delete Node", "Del", false, !readOnly_ && isClip))
-                DeleteNode(node);
-            if (ImGui::MenuItem("Delete Selected Nodes", nullptr, false, !readOnly_ && !selectedNodes_.empty()))
-                DeleteSelection();
-            ImGui::EndPopup();
+            ClearNodeSelection();
+            selectedPath_ = path;
+            Gui::Graph::ShowInInspector(path);
         }
-
-        if (ImGui::BeginPopup(K_LINK_MENU))
-        {
-            const auto path = menuPath_.lock();
-            if (path && ImGui::MenuItem("Show in Inspector"))
-            {
-                ClearNodeSelection();
-                selectedPath_ = path;
-                Gui::Graph::ShowInInspector(path);
-            }
-            if (ImGui::MenuItem("Delete Transition", nullptr, false, !readOnly_ && path != nullptr))
-                DeletePath(path);
-            ImGui::EndPopup();
-        }
+        if (ImGui::MenuItem("Delete Transition", nullptr, false, !readOnly_ && path != nullptr))
+            DeletePath(path);
     }
 
     void AnimationTreeGraphDelegate::DeleteSelection()
@@ -393,11 +348,12 @@ namespace NanamiEngine::Module::AnimationTree
         tree_->nodes_.erase(guid);
         selectedNodes_.erase(guid);
 
-        // このノードに出入りする遷移も消す（参照先が消えた遷移はロード時に復元できないため）
+        // このノードに出入りする遷移を削除
         auto referencesNode = [&](const std::shared_ptr<AnimationNodePath>& path)
         {
             if (!path)
                 return true;
+            
             const auto from   = path->GetFromNode();
             const auto visual = path->GetVisualFromNode();
             const auto target = path->GetTargetNode();
@@ -418,15 +374,10 @@ namespace NanamiEngine::Module::AnimationTree
             selectedPath_.reset();
     }
 
-    void AnimationTreeGraphDelegate::ClearNodeSelection()
-    {
-        selectedNodes_.clear();
-    }
-
     GraphEditor::NodeIndex AnimationTreeGraphDelegate::IndexOf(const std::shared_ptr<IAnimationNode>& node) const
     {
         const auto it = indexOf_.find(node.get());
-        return (node && it != indexOf_.end()) ? it->second : static_cast<GraphEditor::NodeIndex>(-1);
+        return node && it != indexOf_.end() ? it->second : static_cast<GraphEditor::NodeIndex>(-1);
     }
 
     AnimationTreeGraphDelegate::TemplateKind AnimationTreeGraphDelegate::KindOf(const GraphEditor::NodeIndex nodeIndex) const
@@ -434,13 +385,10 @@ namespace NanamiEngine::Module::AnimationTree
         const auto* node = nodes_[nodeIndex].get();
         if (node == tree_->entryNode_.get())
             return TEMPLATE_ENTRY;
+        
         if (node == tree_->visualAnyStateNode_.get())
             return TEMPLATE_ANY_STATE;
+        
         return TEMPLATE_CLIP;
-    }
-
-    bool AnimationTreeGraphDelegate::IsSelected(const GraphEditor::NodeIndex nodeIndex) const
-    {
-        return selectedNodes_.contains(nodes_[nodeIndex]->GetGuid());
     }
 }

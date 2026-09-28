@@ -8,6 +8,7 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../Ui_TitleScreen.h"
 #include "../../AssetUpdate/Presenter/AssetUpdatePresenter.h"
+#include "../../Settings/Presenter/SettingsScreenPresenter.h"
 #include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/MainProgression/MainProgression.h"
@@ -29,7 +30,7 @@ namespace GamePlay::Ui
             ? "はじめから" : "つづきから");
         view_->SetSelection(selection_);
 
-        for (const int index : {TitleScreenUi::START_INDEX, TitleScreenUi::EXIT_INDEX})
+        for (const int index : {TitleScreenUi::START_INDEX, TitleScreenUi::SETTINGS_INDEX, TitleScreenUi::EXIT_INDEX})
         {
             const auto button = view_->MenuButton(index);
             if (!button)
@@ -115,6 +116,15 @@ namespace GamePlay::Ui
             }
             break;
 
+        case Phase::Settings:
+            // NOTE: 設定を閉じた ESC / B でメニューまで畳まないよう、戻ったフレームは入力を見ない
+            if (!SettingsScreenPresenter::IsOpen() || settings_.expired())
+            {
+                view_->SetCovered(false);
+                phase_ = Phase::Menu;
+            }
+            break;
+
         case Phase::Leaving:
             break;
         }
@@ -154,14 +164,35 @@ namespace GamePlay::Ui
     void TitleScreenPresenter::Decide(const int index)
     {
         Select(index);
-        if (selection_ == TitleScreenUi::START_INDEX)
+        switch (selection_)
         {
+        case TitleScreenUi::START_INDEX:
             StartGame();
-        }
-        else
-        {
+            break;
+        case TitleScreenUi::SETTINGS_INDEX:
+            OpenSettings();
+            break;
+        default:
             ExitGame();
+            break;
         }
+    }
+
+    void TitleScreenPresenter::OpenSettings()
+    {
+        const auto prefab = settingsPrefab_.get();
+        if (!prefab)
+        {
+            Module::LogWarning("[Title] settingsPrefab_ が未設定なので、設定画面を開けません");
+            return;
+        }
+
+        settings_ = SettingsScreenPresenter::Open(*prefab);
+        if (settings_.expired())
+            return;
+
+        phase_ = Phase::Settings;
+        view_->SetCovered(true);
     }
 
     void TitleScreenPresenter::StartGame()
@@ -179,9 +210,6 @@ namespace GamePlay::Ui
             break;
         case GameCore::GameProgresion::MainIsland:
             GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::MainIsland);
-            break;
-        case GameCore::GameProgresion::GrassLandStage:
-            GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::GrassLand);
             break;
         default:
             Module::LogError("Gameの進行状況に応じたScene遷移が定義されていません。");
@@ -201,6 +229,7 @@ namespace GamePlay::Ui
     {
         ImGuiHelper::OnDrawInputField("assetUpdatePrefab_", assetUpdatePrefab_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("settingsPrefab_", settingsPrefab_);
         ImGui::Text("phase: %d  selection: %d", static_cast<int>(phase_), selection_);
     }
 }

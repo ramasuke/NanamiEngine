@@ -85,6 +85,7 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStateDuration_secs_", avoidRollingStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
+        LibCore::ImGuiHelper::OnDrawInputField("justAvoidWindow_secs_", justAvoidWindow_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("initialMoney_", initialMoney_);
     }
 }

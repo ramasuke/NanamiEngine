@@ -59,6 +59,10 @@ def cmd_show(args: argparse.Namespace) -> int:
     cat = catalog_mod.load(kind=kind_obj.name)
     tree = read_tree(read_text(path), cat=cat, kind=kind_obj.name)
     _print_node(tree.entry, 0, cat, is_entry=True)
+    if tree.detached:
+        print("\ndetached (not connected, never runs):")
+        for root in tree.detached:
+            _print_node(root, 1, cat)
     if tree.params:
         print("\nblackboard:")
         for p in tree.params:
@@ -81,13 +85,56 @@ def _print_node(node, depth: int, cat, is_entry: bool = False) -> None:
     kind = type(node).__name__
     if isinstance(node, model.Action):
         extra = f'  "{node.name}"  -> {node.type_name}'
+        if node.params is not None and "cues_" in node.params.keys():
+            extra += f"  duration={float(node.params['duration_secs_'].value):g}s"
+            if node.params.get("once_"):
+                extra += " once"
     elif isinstance(node, model.RandomSelector):
         extra = f"  weights={node.weights}"
+    elif isinstance(node, model.BlackBoardGate):
+        extra = "  " + _gate_summary(node)
     else:
         extra = ""
     print(f"{pad}{kind}  {node.guid}  pos={_p(node.pos)}{extra}")
+    if isinstance(node, model.Action):
+        _print_cues(node.params, depth + 1)
     for c in model.children_of(node):
         _print_node(c, depth + 1, cat)
+
+
+def _gate_summary(node: model.BlackBoardGate) -> str:
+    def fmt(pairs, op):
+        return ", ".join(f"{k}{op}{v}" for k, v in pairs)
+    parts = [f"if [{fmt(node.conditions, '==')}]"]
+    if node.writes_on_start:
+        parts.append(f"start [{fmt(node.writes_on_start, '=')}]")
+    if node.writes_on_success:
+        parts.append(f"ok [{fmt(node.writes_on_success, '=')}]")
+    if node.once:
+        parts.append("once")
+    return " ".join(parts)
+
+
+def _print_cues(params, depth: int) -> None:
+    """ActionTimeline の cues_ を字下げして出す（入れ子の Timeline も辿る）。"""
+    from .blob import Ptr, Ver
+    from .cereal_json import Num
+    if params is None or "cues_" not in params.keys():
+        return
+    pad = "  " * depth
+    for cue in params["cues_"]:
+        at = cue["at_secs_"]
+        at = at.value if isinstance(at, Num) else at
+        flags = [f for f in ("waitDone_", "keepTicking_") if cue.get(f)]
+        ptr = cue["action_"]
+        if not isinstance(ptr, Ptr) or ptr.null:
+            print(f"{pad}@{float(at):g}s  (no action)")
+            continue
+        leaf = (ptr.fqn or "?").rsplit("::", 1)[-1]
+        flag_text = ("  " + " ".join(f.rstrip("_") for f in flags)) if flags else ""
+        print(f"{pad}@{float(at):g}s  {leaf}{flag_text}")
+        body = ptr.data.body if isinstance(ptr.data, Ver) else None
+        _print_cues(body, depth + 1)
 
 
 def _p(pos) -> str:

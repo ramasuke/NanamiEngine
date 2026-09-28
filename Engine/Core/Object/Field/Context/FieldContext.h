@@ -92,11 +92,18 @@ namespace NanamiEngine::Core::Object
                 }
                 else if constexpr (std::is_base_of_v<GameObject::IGameObject, T>)
                 {
-                    ImGui::Text("GameObject: %s", content->Name());
+                    ImGui::Text("GameObject: %s", content->Name().c_str());
                 }
                 else if constexpr (std::is_base_of_v<Component::ComponentBase, T>)
                 {
-                    ImGui::Text("%s Component: %s", typeid(T).name(), content->Entity().lock()->Name());
+                    if (const auto entity = content->Entity().lock())
+                    {
+                        ImGui::Text("%s Component: %s", typeid(T).name(), entity->Name().c_str());
+                    }
+                    else
+                    {
+                        ImGui::Text("%s Component", typeid(T).name());
+                    }
                 }
                 else
                 {

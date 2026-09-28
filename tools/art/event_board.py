@@ -659,8 +659,6 @@ V2_KIND_COLOR = {
 V2_KIND_LABEL = {'Important': '重要', 'Update': '更新', 'Bug': '不具合', 'Event': '催し', 'Guide': '案内'}
 V2_KINDS = ['Important', 'Update', 'Bug', 'Event', 'Guide']   # AnnouncementKind の順
 V2_EVENT_COLOR = V2_KIND_COLOR['Event']
-PIP_FILLED_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'Pip_Filled.png'
-PIP_EMPTY_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'Pip_Empty.png'
 HINT_CONFIRM_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Confirm.png'
 
 POSTER_ORIGIN = (740, 120)   # 1060x880 のポスターの左上。頁の中の右側はこれからの相対で決める
@@ -712,7 +710,6 @@ V2 = {
     'qrow_coin': (112, -22),
     'qrow_reward': ((128, -38), 26),
     'qrow_place': ((-218, 16), 19),
-    'qrow_pips': ((-120, 26), 17, 0.5),      # 1つ目の中心, 間隔, 倍率(24px の点を縮める)
     'qrow_event_chip': (-16, 26),
     'qrow_stamp': (166, 26),
     # 依頼書 (ポスターの左上からの相対)
@@ -723,8 +720,7 @@ V2 = {
     'q_title': (on_poster(530, 124), 46),
     'q_client': (on_poster(626, 223), 25),
     'q_place': (on_poster(626, 267), 25),
-    'q_pips': (on_poster(638, 324), 24, 0.67),
-    'q_state': (on_poster(626, 355), 25),
+    'q_state': (on_poster(626, 311), 25),
     'q_goal': (on_poster(156, 449), 30),
     'q_reward': (on_poster(200, 505), 36),
     'q_limit': (on_poster(156, 567), 25),
@@ -849,7 +845,7 @@ def v2_quest_poster():
     cs.text(p, (w / 2, 60), '依 頼 書', 36, (*INK, 255), BRUSH_FONT, anchor='mm')
     d.line([(64, 60), (w / 2 - 100, 60)], fill=INK_FADE, width=2)
     d.line([(w / 2 + 100, 60), (w - 64, 60)], fill=INK_FADE, width=2)
-    for i, label in enumerate(['依頼主', '場　所', '難　度', '状　況']):
+    for i, label in enumerate(['依頼主', '場　所', '状　況']):
         cs.text(p, (530, 236 + i * 44), label, 21, (*INK_FADE, 255), BODY_FONT, anchor='lm')
     d.line([(56, 420), (w - 56, 420)], fill=INK_FADE, width=2)
     for y, label in [(464, '目 的'), (524, '報 酬'), (580, '期 限')]:
@@ -949,16 +945,16 @@ V2_HINTS_WITH_RESTORE = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown'
 
 # 仮データ (モック用。本番は .boardQuest / .announcement)
 V2_QUESTS = [
-    dict(title='草原のハイエナ退治', place='草原地帯', rank=2, client='酒場の仲介人', goal='ハイエナを 8 頭 討伐する',
+    dict(title='草原のハイエナ退治', place='草原地帯', client='酒場の仲介人', goal='ハイエナを 8 頭 討伐する',
          reward='1,200 G', limit='なし', state='open', thumb=REPO_ROOT / 'Assets/Art/UI/StageSelect/thumb_area_grass_wide.png',
          lines=['群れからはぐれたハイエナが街道まで下りてくる。', '荷馬車が襲われる前に数を減らしてほしい。']),
-    dict(title='群狼討伐週間 其の一', place='草原地帯', rank=3, client='酒場の仲介人', goal='ハイエナを 20 頭 討伐する',
+    dict(title='群狼討伐週間 其の一', place='草原地帯', client='酒場の仲介人', goal='ハイエナを 20 頭 討伐する',
          reward='2,000 G', limit='9/25(金) 4:59 まで', state='taking', event='草原の群狼 討伐週間',
          thumb=BANNER_DIR / 'HyenaHuntWeek.png', lines=['討伐週間のあいだだけ貼り出される依頼。']),
-    dict(title='岩場の暴君', place='岩石地帯', rank=4, client='岩石地帯の見張り', goal='ティラノサウルスを 1 頭 討伐する',
+    dict(title='岩場の暴君', place='岩石地帯', client='岩石地帯の見張り', goal='ティラノサウルスを 1 頭 討伐する',
          reward='―', limit='なし', state='preparing', thumb=REPO_ROOT / 'Assets/Art/UI/StageSelect/thumb_area_rocky.png',
          lines=['見張り小屋が二度も踏み潰された。']),
-    dict(title='訓練場の案山子', place='拠点', rank=1, client='教官', goal='案山子に 10 回 攻撃を当てる',
+    dict(title='訓練場の案山子', place='拠点', client='教官', goal='案山子に 10 回 攻撃を当てる',
          reward='100 G', limit='なし', state='cleared', thumb=None, lines=['まずは体を慣らしておけ。']),
 ]
 V2_NOTICES = [
@@ -990,18 +986,8 @@ V2_SEAL = {'open': 'QuestSeal_Open', 'taking': 'QuestSeal_Taking', 'cleared': 'Q
            'preparing': 'QuestSeal_Preparing'}
 
 
-def _pip_sprites():
-    return (Image.open(PIP_FILLED_SPRITE).convert('RGBA'), Image.open(PIP_EMPTY_SPRITE).convert('RGBA'))
-
-
 def _scaled(im, k):
     return im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS)
-
-
-def _draw_pips(im, center0, gap, k, rank):
-    filled, empty = _pip_sprites()
-    for i in range(5):
-        place(im, _scaled(filled if i < rank else empty, k), center0[0] + i * gap, center0[1])
 
 
 def restoration_state(e):
@@ -1068,8 +1054,6 @@ def mock_v2(base, art_fn, tab=0, selected=0):
             place(im, _scaled(sp['Coin_Small'], k), *at(V['qrow_coin']))
             draw_text(im, at(V['qrow_reward'][0]), round(V['qrow_reward'][1] * k), e['reward'], INK, BRUSH_FONT)
             draw_text(im, at(V['qrow_place'][0]), round(V['qrow_place'][1] * k), e['place'], INK_FADE)
-            (px0, py0), gap, pk = V['qrow_pips']
-            _draw_pips(im, at((px0, py0)), gap * k, pk * k, e['rank'])
             if e.get('event'):
                 place(im, _scaled(sp['EventChip_Small'], k), *at(V['qrow_event_chip']))
             if e['state'] in V2_ROW_STAMP:
@@ -1114,8 +1098,6 @@ def mock_v2(base, art_fn, tab=0, selected=0):
         draw_text(im, V['q_title'][0], V['q_title'][1], e['title'], INK, BRUSH_FONT)
         draw_text(im, V['q_client'][0], V['q_client'][1], e['client'], INK)
         draw_text(im, V['q_place'][0], V['q_place'][1], e['place'], INK)
-        (qx, qy), gap, pk = V['q_pips']
-        _draw_pips(im, (qx, qy), gap, pk, e['rank'])
         draw_text(im, V['q_state'][0], V['q_state'][1], V2_STATE_TEXT[e['state']],
                   STAMP_RED if e['state'] == 'taking' else INK)
         draw_text(im, V['q_goal'][0], V['q_goal'][1], e['goal'], INK)

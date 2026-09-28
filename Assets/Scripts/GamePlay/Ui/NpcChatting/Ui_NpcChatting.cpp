@@ -56,7 +56,8 @@ namespace GamePlay::Ui
 
     Coroutine::Task<void> NpcChatting::OnDisplayChatAsync(
         const std::string& npcName,
-        const Asset::NpcChat& npcChat) const
+        const Asset::NpcChat& npcChat,
+        const bool followsAdvanceSetting) const
     {
         if (!npcNameTextBox_)
             co_return;
@@ -69,6 +70,8 @@ namespace GamePlay::Ui
         
         const float chatCharInterval_secs         = GameCore::GameSettings::GetInstance().GetChatTextCharInterval_secs();
         const float chatTextSentenceInterval_secs = GameCore::GameSettings::GetInstance().GetChatTextSentenceInterval_secs();
+        const bool  isManualAdvance = followsAdvanceSetting
+            && GameCore::GameSettings::GetInstance().GetChatAdvanceMode() == GameCore::ChatAdvanceMode::Manual;
 
         AdvanceInput advance;
 
@@ -109,8 +112,9 @@ namespace GamePlay::Ui
             if (!textRenderer_)
                 break;
 
+            // NOTE: 手動送りでは、最後のページも押すまで閉じない
             elapsed_secs = 0.0f;
-            while (elapsed_secs < chatTextSentenceInterval_secs)
+            while (isManualAdvance || elapsed_secs < chatTextSentenceInterval_secs)
             {
                 co_await Coroutine::WaitYield();
                 if (advance.IsPressed())

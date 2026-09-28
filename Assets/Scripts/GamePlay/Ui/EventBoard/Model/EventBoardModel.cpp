@@ -26,7 +26,8 @@ namespace GamePlay::Ui
 
         std::vector<EventBoardEntry> BuildEventBoardEntries(
             const std::vector<std::shared_ptr<Asset::EventNotice>>& notices,
-            const std::chrono::sys_seconds now)
+            const std::chrono::sys_seconds now,
+            const GameCore::Condition::ConditionContext& unlockContext)
         {
             struct Sortable
             {
@@ -40,6 +41,8 @@ namespace GamePlay::Ui
                 const auto start = notice->StartTime();
                 const auto end   = notice->EndTime();
                 if (!start || !end || *end <= *start || *end <= now)
+                    continue;
+                if (!notice->IsUnlocked(unlockContext))
                     continue;
 
                 const bool isOngoing = *start <= now;
@@ -69,8 +72,9 @@ namespace GamePlay::Ui
     EventBoardModel::EventBoardModel(
         const std::vector<std::shared_ptr<Asset::EventNotice>>& notices,
         const std::chrono::sys_seconds now,
+        const GameCore::Condition::ConditionContext& unlockContext,
         const size_t visibleRowCount)
-        : entries_(BuildEventBoardEntries(notices, now))
+        : entries_(BuildEventBoardEntries(notices, now, unlockContext))
         , cursor_(entries_.size(), visibleRowCount)
     {
     }

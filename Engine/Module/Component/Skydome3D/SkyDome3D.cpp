@@ -81,15 +81,14 @@ void Component::SkyDome3D::ApplyTint()
 
 void Component::SkyDome3D::OnUpdate()
 {
-    if (mainCamera_)
-    {
-        MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
-            LibCore::Dxlib::ToDxVector(mainCamera_->Transform().GetWorldPos()), Transform().GetWorldRot(), Transform().GetWorldScale()));
-    }
 }
 
 void Component::SkyDome3D::OnRender()
 {
+    //NOTE: Brain の LateUpdate 後に確定した描画カメラ位置に置く。Update で置くと1フレーム遅れ、参照切れでも止まる
+    MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
+        GetCameraPosition(), Transform().GetWorldRot(), Transform().GetWorldScale()));
+
     //NOTE: フォグを掛けたまま描くとドームが遠景色一色に潰れるので、空だけ外して描く
     const int useFog = GetFogEnable();
     SetFogEnable(FALSE);
@@ -99,11 +98,6 @@ void Component::SkyDome3D::OnRender()
 
 void Component::SkyDome3D::OnDebugRender()
 {
-    if (!Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
-    {
-        MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
-            LibCore::Dxlib::ToDxVector(Core::Application::ApplicationBase::GameWindow()->GetCameraPosition()), Transform().GetWorldRot(), Transform().GetWorldScale()));
-    }
 }
 
 void Component::SkyDome3D::OnDestroy()
@@ -115,7 +109,6 @@ void Component::SkyDome3D::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("skyDomeModel_", skyDomeModel_);
     ImGuiHelper::OnDrawInputField("skyDomeModelDxLibHandle_", skyDomeModelDxLibHandle_);
-    ImGuiHelper::OnDrawInputField("mainCamera_", mainCamera_);
 }
 
 #pragma region SerializationMacro

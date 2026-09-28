@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "../../../../BehaviourTree/Window/Node/Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
@@ -16,8 +15,10 @@ namespace Editor::Npc::Friendly::Behaviour
     public:
         explicit ActionNode(std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase> action = nullptr);
         ~ActionNode() override = default;
-        void OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, const std::weak_ptr<NodeBase>& ownPtr) override;
         [[nodiscard]] const std::string& NodeName() const override { return name_; }
+        [[nodiscard]] std::string GraphNodeDetail() const override;
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(80, 90, 170, 255); }
+        void DrawGraphContextMenuItems() override;
         
     private:
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
@@ -28,14 +29,6 @@ namespace Editor::Npc::Friendly::Behaviour
         std::string name_;
         std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase> action_;
         
-        inline static const auto NODE_VISUAL_STYLE = Gui::Graph::NodeVisualStyle
-        (
-            IM_COL32(50 , 50 , 70 , 255),
-            IM_COL32(200, 200, 200, 255),
-            IM_COL32(180, 180, 100, 255),
-            IM_COL32_WHITE
-        );
-
 #pragma region Serialization Function
     public:
         template<class Archive> void save(Archive& archive, std::uint32_t version) const;

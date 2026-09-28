@@ -2577,7 +2577,7 @@
       "class": "AssetUpdateTagUi",
       "fqn": "GamePlay::Ui::AssetUpdateTagUi",
       "leaf": "AssetUpdateTagUi",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2870,6 +2870,42 @@
           "member": "dropOvershoot_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "offerNoteText_",
+          "member": "offerNoteText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "receivedNoteText_",
+          "member": "receivedNoteText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "receivingWaitText_",
+          "member": "receivingWaitText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "unpackingWaitText_",
+          "member": "unpackingWaitText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "failedWarningText_",
+          "member": "failedWarningText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "tooOldWarningText_",
+          "member": "tooOldWarningText_",
+          "named": true,
+          "shape": "string"
         }
       ]
     },
@@ -4351,7 +4387,7 @@
       "class": "EventBoardQuestPage",
       "fqn": "GamePlay::Ui::EventBoardQuestPage",
       "leaf": "EventBoardQuestPage",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4460,13 +4496,6 @@
           "type": "TextRenderer"
         },
         {
-          "key": "detailRankPips_",
-          "member": "detailRankPips_",
-          "named": true,
-          "shape": "field",
-          "type": "ImageRenderer"
-        },
-        {
           "key": "detailStateText_",
           "member": "detailStateText_",
           "named": true,
@@ -4514,20 +4543,6 @@
           "named": true,
           "shape": "field",
           "type": "TextRenderer"
-        },
-        {
-          "key": "filledPipSprite_",
-          "member": "filledPipSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "emptyPipSprite_",
-          "member": "emptyPipSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
         },
         {
           "key": "openSealSprite_",
@@ -4588,7 +4603,7 @@
       "class": "EventBoardQuestRow",
       "fqn": "GamePlay::Ui::EventBoardQuestRow",
       "leaf": "EventBoardQuestRow",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4641,27 +4656,6 @@
           "named": true,
           "shape": "field",
           "type": "ImageRenderer"
-        },
-        {
-          "key": "rankPips_",
-          "member": "rankPips_",
-          "named": true,
-          "shape": "field",
-          "type": "ImageRenderer"
-        },
-        {
-          "key": "filledPipSprite_",
-          "member": "filledPipSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "emptyPipSprite_",
-          "member": "emptyPipSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
         },
         {
           "key": "takingStampSprite_",
@@ -8334,7 +8328,7 @@
       "class": "StageReturnNoticeUi",
       "fqn": "GamePlay::Ui::StageReturnNoticeUi",
       "leaf": "StageReturnNoticeUi",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -8498,6 +8492,27 @@
           "member": "stampStartScale_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "settingsLabel_",
+          "member": "settingsLabel_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "settingsUnderline_",
+          "member": "settingsUnderline_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "settingsStamp_",
+          "member": "settingsStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
         }
       ]
     },
@@ -8505,7 +8520,7 @@
       "class": "StageReturnPresenter",
       "fqn": "GamePlay::Ui::StageReturnPresenter",
       "leaf": "StageReturnPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -8523,6 +8538,13 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "settingsPrefab_",
+          "member": "settingsPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
         }
       ]
     },
@@ -9512,7 +9534,7 @@
       "class": "WeatherService",
       "fqn": "GamePlay::Weather::WeatherService",
       "leaf": "WeatherService",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -9773,6 +9795,13 @@
           "member": "stormWallRotateSpeedDeg_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "clearFog_",
+          "member": "clearFog_",
+          "named": true,
+          "shape": "field",
+          "type": "SceneFog"
         }
       ]
     },
@@ -11889,7 +11918,7 @@
       "class": "TitleScreenUi",
       "fqn": "GamePlay::Ui::TitleScreenUi",
       "leaf": "TitleScreenUi",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -12069,6 +12098,27 @@
           "member": "unselectedTextRate_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "settingsText_",
+          "member": "settingsText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "settingsButton_",
+          "member": "settingsButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "coverFade_secs_",
+          "member": "coverFade_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.2
         }
       ]
     },
@@ -12076,7 +12126,7 @@
       "class": "TitleScreenPresenter",
       "fqn": "GamePlay::Ui::TitleScreenPresenter",
       "leaf": "TitleScreenPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -12101,6 +12151,13 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "settingsPrefab_",
+          "member": "settingsPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
         }
       ]
     },
@@ -12321,6 +12378,270 @@
           "named": true,
           "shape": "field",
           "type": "EnemyFactory"
+        }
+      ]
+    },
+    "GamePlay::Ui::SettingsRowUi": {
+      "class": "SettingsRowUi",
+      "fqn": "GamePlay::Ui::SettingsRowUi",
+      "leaf": "SettingsRowUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Settings/Row/Ui_SettingsRow.h",
+      "params": [
+        {
+          "key": "labelText_",
+          "member": "labelText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "valueText_",
+          "member": "valueText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "band_",
+          "member": "band_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "leftArrow_",
+          "member": "leftArrow_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "rightArrow_",
+          "member": "rightArrow_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "selectedColor_",
+          "member": "selectedColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "unselectedColor_",
+          "member": "unselectedColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::SettingsTabUi": {
+      "class": "SettingsTabUi",
+      "fqn": "GamePlay::Ui::SettingsTabUi",
+      "leaf": "SettingsTabUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Settings/Tab/Ui_SettingsTab.h",
+      "params": [
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "plate_",
+          "member": "plate_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "selectedPlate_",
+          "member": "selectedPlate_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "selectedColor_",
+          "member": "selectedColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "unselectedColor_",
+          "member": "unselectedColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::SettingsScreenUi": {
+      "class": "SettingsScreenUi",
+      "fqn": "GamePlay::Ui::SettingsScreenUi",
+      "leaf": "SettingsScreenUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Settings/Ui_SettingsScreen.h",
+      "params": [
+        {
+          "key": "visualRoot_",
+          "member": "visualRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "tabPrefab_",
+          "member": "tabPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "tabsRoot_",
+          "member": "tabsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "categoryText_",
+          "member": "categoryText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "descriptionText_",
+          "member": "descriptionText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "scrollTrack_",
+          "member": "scrollTrack_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "scrollThumb_",
+          "member": "scrollThumb_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "tabPitch_px_",
+          "member": "tabPitch_px_",
+          "named": true,
+          "shape": "float",
+          "default": 74.0
+        },
+        {
+          "key": "rowPitch_px_",
+          "member": "rowPitch_px_",
+          "named": true,
+          "shape": "float",
+          "default": 60.0
+        },
+        {
+          "key": "maxVisibleRows_",
+          "member": "maxVisibleRows_",
+          "named": true,
+          "shape": "int",
+          "default": 6
+        },
+        {
+          "key": "scrollTravel_px_",
+          "member": "scrollTravel_px_",
+          "named": true,
+          "shape": "float",
+          "default": 300.0
+        },
+        {
+          "key": "enterSlide_px_",
+          "member": "enterSlide_px_",
+          "named": true,
+          "shape": "float",
+          "default": 24.0
+        },
+        {
+          "key": "enterDuration_secs_",
+          "member": "enterDuration_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.18
+        }
+      ]
+    },
+    "GamePlay::Ui::SettingsScreenPresenter": {
+      "class": "SettingsScreenPresenter",
+      "fqn": "GamePlay::Ui::SettingsScreenPresenter",
+      "leaf": "SettingsScreenPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Settings/Presenter/SettingsScreenPresenter.h",
+      "params": [
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     }
@@ -12837,6 +13158,18 @@
     ],
     "CustomNetworkRunner": [
       "GamePlay::Network::CustomNetworkRunner"
+    ],
+    "SettingsRowUi": [
+      "GamePlay::Ui::SettingsRowUi"
+    ],
+    "SettingsTabUi": [
+      "GamePlay::Ui::SettingsTabUi"
+    ],
+    "SettingsScreenUi": [
+      "GamePlay::Ui::SettingsScreenUi"
+    ],
+    "SettingsScreenPresenter": [
+      "GamePlay::Ui::SettingsScreenPresenter"
     ]
   },
   "bases": {

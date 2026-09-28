@@ -26,6 +26,7 @@ _FQN_BY_KIND = {
     model.RandomSelector: model.FQN_RANDOM,
     model.OnceExecute: model.FQN_ONCE_EXEC,
     model.OnceSuccess: model.FQN_ONCE_SUCCESS,
+    model.BlackBoardGate: model.FQN_BB_GATE,
 }
 _ACTION_NODE_FQN_BY_KIND = {
     "enemy": model.FQN_ACTION_NODE_ENEMY,
@@ -37,6 +38,7 @@ _LEAF = {
     model.FQN_RANDOM: "RandomSelectorNode",
     model.FQN_ONCE_EXEC: "OnceExecute",
     model.FQN_ONCE_SUCCESS: "OnceSuccessNode",
+    model.FQN_BB_GATE: "BlackBoardGate",
     # どちらの ActionNode 種別も C++ では文字どおり "ActionNode" という名前で、
     # このキーは純粋にこちら側の管理用ラベル（FQN とは比較しない）なので、
     # 共通のリーフ名1つでどちらにも正しい。
@@ -117,6 +119,14 @@ class _W:
             data["state_"] = Num.of_int(int(node.state))
         elif isinstance(node, model.OnceSuccess):
             data["child_"] = self.node_slot(node.child)
+        elif isinstance(node, model.BlackBoardGate):
+            def entries(pairs) -> list:
+                return [OrderedObj([("keyName_", k), ("value_", Num.of_int(int(v)))]) for k, v in pairs]
+            data["child_"] = self.node_slot(node.child)
+            data["conditions_"] = entries(node.conditions)
+            data["writesOnStart_"] = entries(node.writes_on_start)
+            data["writesOnSuccess_"] = entries(node.writes_on_success)
+            data["once_"] = bool(node.once)
         elif isinstance(node, model.Action):
             data["name_"] = node.name
             data["action_"] = self.action_slot(node)
@@ -201,6 +211,9 @@ def write_tree(tree: model.Tree) -> str:
     root = OrderedObj()
     root["entryNode_"] = w.entry_slot(tree.entry)
     root["parameters_"] = w.params_block(tree.params)
+    # エンジンと同じく、浮きノードが無ければキー自体を書かない（既存ファイルのバイト列を保つ）
+    if tree.detached:
+        root["detachedNodes_"] = [w.node_slot(n) for n in tree.detached]
     return dumps(root)
 
 

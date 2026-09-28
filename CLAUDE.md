@@ -409,7 +409,7 @@ copies next to them). Fix the reference; don't loosen the check. References that
 `manifest.json` unless `requiredClientVersion` is raised above the live one: the client applies updates on the title
 screen while the game runs, and `TtfFontFile` keeps fonts registered via `AddFontResourceEx` until exit, so every
 player's apply would fail. Ship font changes in a new zip. `requiredClientVersion` defaults to Build Settings' *Client Version* (the game's own version, compared as dot-separated numbers). The client side (`Packages/AssetUpdater`: check ->
-confirm -> download to `.update/` -> transactional apply into `Assets/` -> relaunch) only ever runs when
+confirm -> download to `.update/` -> transactional apply into `Assets/` -> quit, the player restarts) only ever runs when
 `APPLICATION_MODE == Game` **and** `installed.json` exists (`GameBuilder` writes it next to the exported exe - a
 hash list of the exported `Assets/` - unless Build Settings > *Asset Updates* is off); never let it run from the editor, where it would
 overwrite the working `Assets/` with the published set and delete files that were never uploaded.

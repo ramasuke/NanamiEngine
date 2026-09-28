@@ -59,7 +59,7 @@ SAMPLE = {
               ('データ', 42, 4.7)],
 }
 STATES = ['confirm', 'download', 'failed', 'done']
-STATE_LABELS = {'confirm': '更新の確認', 'download': '受け取り中', 'failed': '失敗', 'done': '完了 → 再起動'}
+STATE_LABELS = {'confirm': '更新の確認', 'download': '受け取り中', 'failed': '失敗', 'done': '完了 → 終了'}
 
 
 # ---------------------------------------------------------------- 背景
@@ -278,7 +278,7 @@ def hints_for(state):
         'confirm': [('A', '受け取る'), ('B', 'あとで')],
         'download': [],
         'failed': [('A', 'もう一度'), ('B', 'あとで')],
-        'done': [('A', '再起動する')],
+        'done': [('A', '閉じる')],
     }[state]
 
 
@@ -331,7 +331,7 @@ LAYOUT = {
     'label_on_tag': (300, 150), 'rule_on_tag': (60, 540, 178),
 }
 DETAIL_LABELS = ['荷 の 数', '重 さ', '送 り 状']
-NOTE_OFFER = '受け取ると自動で再起動します'
+NOTE_OFFER = '受け取ったあと、ゲームを起動し直します'
 
 
 def tag_sprite():
@@ -398,7 +398,7 @@ PREVIEW_TEXT = {
     'confirm': {'headline': '新しい荷が届きました', 'note': NOTE_OFFER, 'hints': ('受け取る', 'あとで')},
     'download': {'headline': '荷を受け取っています', 'hints': None},
     'failed': {'headline': '荷が届きませんでした', 'hints': ('もう一度', 'あとで')},
-    'done': {'headline': '荷を受け取りました', 'note': 'ゲームを再起動して荷を開けます', 'hints': ('再起動する', None)},
+    'done': {'headline': '荷を受け取りました', 'note': 'ゲームを起動し直してください', 'hints': ('閉じる', None)},
     'wrong': {'headline': '荷を受け取れません', 'hints': (None, '閉じる')},
 }
 
@@ -554,7 +554,7 @@ def mock_b(base, state):
     elif state == 'done':
         text(im, (left + 10, top + 250), f"{SAMPLE['files']} 件  {SAMPLE['bytes_mb']:.1f} MB を受け取りました", 30,
              (*INK, 255), BODY_FONT, anchor='lm')
-        text(im, (left + 10, top + 310), 'ゲームを再起動して荷を開けます', 28, (*INK_FADE, 255), BODY_FONT, anchor='lm')
+        text(im, (left + 10, top + 310), 'ゲームを起動し直してください', 28, (*INK_FADE, 255), BODY_FONT, anchor='lm')
         paste_center(im, hanko('受領', px=100, angle=-10), right - 110, top + 380)
 
     # 板の左上に荷札を括り付ける
@@ -609,7 +609,7 @@ def mock_c(base, state):
         kv_row(im, x0, x1, top + 272, '荷', f"{SAMPLE['files']} 件", 26, 34)
         kv_row(im, x0, x1, top + 332, '重 さ', f"{SAMPLE['bytes_mb']:.1f} MB", 26, 34)
         rule(im, x0, x1, top + 368, alpha=90, width=1)
-        text(im, (cx, top + 430), '受け取ると自動で再起動します', 22, (*INK_FADE, 255), BODY_FONT, anchor='mm')
+        text(im, (cx, top + 430), NOTE_OFFER, 22, (*INK_FADE, 255), BODY_FONT, anchor='mm')
     elif state == 'download':
         hoof_trail(im, x0, x1, top + 275, 6, SAMPLE['percent'] / 100, size=40)
         text(im, (cx, top + 365), f"{SAMPLE['percent']}%", 64, (*INK, 255), BRUSH_FONT, anchor='mm')
@@ -620,7 +620,7 @@ def mock_c(base, state):
         text(im, (cx, top + 306), 'このままでは遊べません', 24, (*STAMP_RED, 255), BODY_FONT, anchor='mm')
         paste_center(im, hanko('不着', px=74, angle=-10), cx, top + 420)
     elif state == 'done':
-        text(im, (cx, top + 262), 'ゲームを再起動します', 24, (*INK_FADE, 255), BODY_FONT, anchor='mm')
+        text(im, (cx, top + 262), 'ゲームを起動し直してください', 24, (*INK_FADE, 255), BODY_FONT, anchor='mm')
         paste_center(im, hanko('受領', px=74, angle=-10), cx, top + 395)
 
     hint_strip(im, 1856, 1010, hints_for(state))

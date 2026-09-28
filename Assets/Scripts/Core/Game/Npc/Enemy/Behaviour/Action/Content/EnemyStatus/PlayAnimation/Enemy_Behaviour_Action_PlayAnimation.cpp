@@ -1,5 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_PlayAnimation.h"
 
+#include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -22,18 +23,31 @@ namespace GameCore::Npc::Enemy::Behaviour
             animationSound_.Tick(context);
             isSoundPending_ = false;
         }
-        return TickStatus::Success;
+
+        if (holdSeconds_ <= 0.0f)
+            return TickStatus::Success;
+
+        // NOTE: WaitSeconds と同じく、前回の Tick で呼ばれなかった = 入り直したので待ち直す
+        if (lastTickIndex_ + 1 != context.TickIndex())
+            hold_secs_ = 0.0f;
+        lastTickIndex_ = context.TickIndex();
+
+        const bool done = holdSeconds_ <= hold_secs_;
+        hold_secs_ += Time::DeltaTime();
+        return done ? TickStatus::Success : TickStatus::Running;
     }
 
     void Action::PlayAnimation::DoReset()
     {
         waitAnimationSound_secs_.Reset();
         isSoundPending_ = true;
+        hold_secs_ = 0.0f;
     }
 
     void Action::PlayAnimation::DoDrawGui()
     {
         ImGuiHelper::OnDrawInputField("animatorSetParamNumber", animatorSetParamNumber_);
+        ImGuiHelper::OnDrawInputField("holdSeconds_", holdSeconds_);
         ImGuiHelper::OnDrawInputField("waitAnimationSound_secs_", waitAnimationSound_secs_);
         ImGuiHelper::OnDrawInputField("animationSound_", animationSound_);
     }

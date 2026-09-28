@@ -9,7 +9,7 @@
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
-#include "../../Scripts/Core/Game/PlayerAvatar/Quest/Unlock/PlayerAvatar_IQuestUnlockCondition.h"
+#include "../../Scripts/Core/Game/Condition/Condition_ICondition.h"
 #include "../../Scripts/Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "Libs/LibCore/cereal/glm/GlmHelper.h"
 
@@ -36,7 +36,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::string&               TagText          () const { return tagText_;          }
         [[nodiscard]] const std::vector<std::string>&  DescriptionLines () const { return descriptionLines_; }
         [[nodiscard]] const std::vector<std::string>&  LockedDescriptionLines() const { return lockedDescriptionLines_; }
-        [[nodiscard]] bool IsUnlocked(const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& context) const;
+        [[nodiscard]] bool IsUnlocked(const GameCore::Condition::ConditionContext& context) const;
 
     private:
         [[serialize(0)]] std::string                              displayName_;
@@ -48,7 +48,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(2)]] int                                      difficulty_ = 1;
         [[serialize(2)]] std::string                              tagText_;
         [[serialize(2)]] std::vector<std::string>                 descriptionLines_;
-        [[serialize(3)]] GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockConditions unlockConditions_;
+        [[serialize(3)]] GameCore::Condition::Conditions unlockConditions_;
         [[serialize(3)]] std::vector<std::string>                 lockedDescriptionLines_;
 
 #pragma region Serialization Function

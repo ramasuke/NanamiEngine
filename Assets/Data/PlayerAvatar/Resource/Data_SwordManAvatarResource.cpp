@@ -35,6 +35,7 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("chargeHoldParticlePrefab_", chargeHoldParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeImpactParticlePrefab_", chargeImpactParticlePrefab_);
         ImGuiHelper::OnDrawInputField("attackBlockedParticlePrefab_", attackBlockedParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("attackBlockedParticleSurfaceOffset_", attackBlockedParticleSurfaceOffset_);
         ImGuiHelper::OnDrawInputField("chargingShakeIntensityMin_", chargingShakeIntensityMin_);
         ImGuiHelper::OnDrawInputField("chargingShakeIntensityMax_", chargingShakeIntensityMax_);
         ImGuiHelper::OnDrawInputField("chargedHoldShakeIntensity_", chargedHoldShakeIntensity_);
@@ -57,6 +58,11 @@ namespace NanamiEngine::Module::Asset
         {
             if (ImGui::Button("Add Footstep Bone"))
                 footstepBoneNames_.emplace_back();
+        });
+        ImGuiHelper::OnDrawInputField("locomotionClipNames_", locomotionClipNames_, [this]
+        {
+            if (ImGui::Button("Add Locomotion Clip Name"))
+                locomotionClipNames_.emplace_back();
         });
         ImGuiHelper::OnDrawInputField("walkFootstepSounds_", walkFootstepSounds_, [this]
         {

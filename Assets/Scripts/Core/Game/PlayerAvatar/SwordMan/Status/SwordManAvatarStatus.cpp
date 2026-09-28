@@ -60,7 +60,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , jumpCooldown_secs_             (0.58f )
         , jumpStaminaCost_               (15.0f)
         , damageStateDuration_secs_      (1.4545454545f)
-        , avoidRollingStateDuration_secs_(0.4923076923f)
+        , avoidRollingStateDuration_secs_(0.4f)
         , avoidRollingStaminaCost_       (20.0f)
         , deathStateDuration_secs_       (1.8181818182f)
         , downStateDuration_secs_        (13.6363636364f)
@@ -116,6 +116,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , damageStateDuration_secs_           (initStatus.DamageStateDuration_secs())
         , avoidRollingStateDuration_secs_     (initStatus.AvoidRollingStateDuration_secs())
         , avoidRollingStaminaCost_            (initStatus.AvoidRollingStaminaCost())
+        , justAvoidWindow_secs_               (initStatus.JustAvoidWindow_secs())
         , deathStateDuration_secs_            (initStatus.DeathStateDuration_secs())
         , downStateDuration_secs_             (13.6363636364f)
         , fallDownStateDuration_secs_         (1.3333333333f)
@@ -341,6 +342,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("staminaRegenPerSecond_", staminaRegenPerSecond_);
         LibCore::ImGuiHelper::OnDrawInputField("minStaminaRatioToResumeRun_", minStaminaRatioToResumeRun_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
+        LibCore::ImGuiHelper::OnDrawInputField("justAvoidWindow_secs_", justAvoidWindow_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);

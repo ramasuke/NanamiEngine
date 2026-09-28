@@ -259,6 +259,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         LibCore::ImGuiHelper::OnDrawInputField("jumpStaminaCost_", jumpStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStateDuration_secs_", avoidRollingStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
+        LibCore::ImGuiHelper::OnDrawInputField("justAvoidWindow_secs_", justAvoidWindow_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);

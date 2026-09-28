@@ -20,9 +20,11 @@ namespace GamePlay::Ui
     class NpcChatting final : public Component::ComponentBase
     {
     public:
+        // NOTE: followsAdvanceSetting が false なら、設定の送り方によらず自動で送る (戦闘中の台詞・他のピアへの表示)
         Coroutine::Task<void> OnDisplayChatAsync(
             const std::string & npcName,
-            const Asset::NpcChat& npcChat) const;
+            const Asset::NpcChat& npcChat,
+            bool followsAdvanceSetting = false) const;
 
         [[nodiscard]] bool IsDisplaying() const { return isDisplaying_; }
 

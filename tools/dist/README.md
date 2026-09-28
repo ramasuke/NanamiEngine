@@ -148,7 +148,7 @@ rclone copyto r2:nanami-assets/manifest-1.0.0.json r2:nanami-assets/manifest.jso
 
 ## フォントはパッチで差し替えない（`upload` が止まる条件）
 
-クライアント（`Packages/AssetUpdater`）は、**タイトル画面でダウンロードしてすぐ `Assets/` に適用し、再起動する**。
+クライアント（`Packages/AssetUpdater`）は、**タイトル画面でダウンロードしてすぐ `Assets/` に適用し、ゲームを終了して起動し直してもらう**。
 ところがフォント（`.ttf` / `.otf` / `.ttc`）は、エンジンの `TtfFontFile` が起動時に `AddFontResourceEx` で
 Windows に登録し、終了まで外さないので、実行中は置き換えられない。適用は「全部成功するか、何も変わらないか」
 なので、フォントを変えたリリースは**全員の適用が失敗し続ける**。

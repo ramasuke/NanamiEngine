@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 #include "../Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 #include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace Editor::Npc::Behaviour
@@ -12,13 +11,16 @@ namespace Editor::Npc::Behaviour
     public:
         explicit EntryNode();
 
-        [[nodiscard]] const std::string& NodeName() const override { return "EntryNode"; }
+        [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] std::string GraphNodeTitle() const override { return "Entry"; }
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(56, 150, 90, 255); }
+        [[nodiscard]] std::size_t MaxChildren() const override { return 1; }
+        std::optional<ChildSlot> RemoveChild(const NodeBase* child) override;
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override
         {
             if (nextNode_) return { nextNode_ };
             return {};
         }
-        void OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, const std::weak_ptr<NodeBase>& ownPtr) override;
 
     private:
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
@@ -27,15 +29,6 @@ namespace Editor::Npc::Behaviour
         void DoOnDrawGui() override;
 
         std::shared_ptr<NodeBase> nextNode_;
-
-        inline static const auto NODE_VISUAL_STYLE = Gui::Graph::NodeVisualStyle
-        (
-            IM_COL32(50 , 50 , 70 , 255),
-            IM_COL32(200, 200, 200, 255),
-            IM_COL32(180, 180, 100, 255),
-            IM_COL32_WHITE
-        );
-        inline static const auto ENTRY_NODE_NAME = "Entry";
 
 #pragma region Serialization Function
     public:

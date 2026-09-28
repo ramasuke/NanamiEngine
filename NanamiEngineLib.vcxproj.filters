@@ -1162,9 +1162,6 @@
     <ClCompile Include="Packages\AssetUpdater\Install\PathGuard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Packages\AssetUpdater\System\Relaunch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Packages\AssetUpdater\Task\AssetUpdateTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -4872,9 +4869,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Install\PathGuard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Packages\AssetUpdater\System\Relaunch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Task\AssetUpdateTask.h">

@@ -4,21 +4,23 @@
 #include <string>
 #include <vector>
 
+#include "cereal/types/memory.hpp"
+#include "cereal/types/polymorphic.hpp"
 #include "cereal/types/vector.hpp"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "../../Scripts/Core/Game/Condition/Condition_BoardTime.h"
+#include "../../Scripts/Core/Game/Condition/Condition_ICondition.h"
 
 namespace NanamiEngine::Module::Asset
 {
     constexpr auto EVENT_NOTICE_EXTENSION_LABEL = ".eventNotice";
     /** 告知の時刻は日本時間で書き、日本時間で表示する */
-    constexpr std::chrono::hours EVENT_NOTICE_UTC_OFFSET{ 9 };
+    constexpr std::chrono::hours EVENT_NOTICE_UTC_OFFSET = GameCore::Condition::BOARD_TIME_UTC_OFFSET;
 
-    /** @brief 掲示板のデータに書く "YYYY-MM-DD HH:MM"(日本時間) を読む。書式が崩れていれば nullopt */
-    [[nodiscard]] std::optional<std::chrono::sys_seconds> ParseBoardTime(const std::string& text);
-    /** @brief 書式が崩れていればインスペクタに赤字で出す */
-    void DrawBoardTimeWarning(const std::string& text);
+    using GameCore::Condition::ParseBoardTime;
+    using GameCore::Condition::DrawBoardTimeWarning;
 
     /**
      * @brief 掲示板に貼るイベント告知1件。開始・終了は "YYYY-MM-DD HH:MM"(日本時間)
@@ -38,6 +40,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::optional<std::chrono::sys_seconds> EndTime  () const;
         /** @brief 書式が崩れていれば false */
         [[nodiscard]] bool IsOngoing(std::chrono::sys_seconds now) const;
+        /** @brief unlockConditions_ を全部満たしていれば true。満たさない催しは掲示板に出さない */
+        [[nodiscard]] bool IsUnlocked(const GameCore::Condition::ConditionContext& context) const;
 
     private:
         [[serialize(0)]] std::string              title_;
@@ -46,6 +50,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] std::string              endAt_;
         [[serialize(0)]] std::vector<std::string> descriptionLines_;
         [[serialize(0)]] FIELD(SpriteFile)        bannerSprite_;
+        [[serialize(1)]] GameCore::Condition::Conditions unlockConditions_;
 
 #pragma region Serialization Function
     public:
@@ -61,6 +66,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(endAt_));
             archive(CEREAL_NVP(descriptionLines_));
             archive(CEREAL_NVP(bannerSprite_));
+            archive(CEREAL_NVP(unlockConditions_));
         }
 
         template<class Archive>
@@ -73,11 +79,12 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(endAt_));
             if (version >= 0) archive(CEREAL_NVP(descriptionLines_));
             if (version >= 0) archive(CEREAL_NVP(bannerSprite_));
+            if (version >= 1) archive(CEREAL_NVP(unlockConditions_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EventNotice, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EventNotice, 1);
 #pragma endregion

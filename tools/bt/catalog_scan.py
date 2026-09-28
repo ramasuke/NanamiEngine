@@ -246,6 +246,7 @@ _BASE_NODES = {
     "Editor::Npc::Behaviour::RandomSelectorNode": {"leaf": "RandomSelectorNode", "version": 1},
     "Editor::Npc::Behaviour::OnceExecute": {"leaf": "OnceExecute", "version": 0},
     "Editor::Npc::Behaviour::OnceSuccessNode": {"leaf": "OnceSuccessNode", "version": 0},
+    "Editor::Npc::Behaviour::BlackBoardGate": {"leaf": "BlackBoardGate", "version": 0},
 }
 
 

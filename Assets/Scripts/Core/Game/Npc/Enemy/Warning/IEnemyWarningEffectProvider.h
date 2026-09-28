@@ -13,10 +13,6 @@ namespace NanamiEngine::Module::GameObject
 
 namespace GameCore::Npc::Enemy
 {
-    /**
-     * @brief 敵の攻撃予兆の見た目と音。どのボーンに出すかは攻撃ごとに呼ぶ側が決める
-     * @note 他のピアは WarningGuid() で同じ provider を ObjectRegistry から引いて PlayWarning する
-     */
     class IEnemyWarningEffectProvider
     {
     public:
@@ -27,7 +23,7 @@ namespace GameCore::Npc::Enemy
 
         [[nodiscard]] virtual const Guid& WarningGuid() const = 0;
 
-        /** enemyのボーン boneNameに予兆を出す。*/
+        /** enemyのboneNameに予兆を出す。*/
         virtual void PlayWarning(
             const std::shared_ptr<GameObject::IGameObject>& enemy,
             const std::string& boneName,

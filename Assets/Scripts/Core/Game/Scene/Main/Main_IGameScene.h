@@ -12,7 +12,6 @@ namespace GameCore::Scene::Main
 
         /**
          * @brief Sceneが変更される直前の事前処理
-         * @warning Sceneインスタンスが生成されたときの初期化関数ではなく、Sceneが変更される直前に呼ばれる。
          */
         virtual void Init()      = 0;
         
@@ -23,15 +22,19 @@ namespace GameCore::Scene::Main
          * @brief Sceneが変更されたされた時の後処理
          * @warning Sceneインスタンスが破棄されたときの関数ではなく、Sceneが変更された後に呼ばれるだけの処理。
          */
+        virtual void Exit()      = 0;
+
+        /**
+         * @brief Game の破棄に合わせて、セーブせずに読み込んだシーンを外す
+         * @note Exit と違いはDoExitを呼ばない
+         */
         virtual void Dispose()   = 0;
 
         /**
          * @brief Init で始めた読み込みと入場の準備が済んだか。
-         *        GameSceneGroup はこれが true になるまでロード画面を明けない
          */
         [[nodiscard]] virtual bool IsEntered() const = 0;
         
-        /** @brief Scene状態のDebug描画 */
         virtual void OnDrawGui() = 0;
     };
 }

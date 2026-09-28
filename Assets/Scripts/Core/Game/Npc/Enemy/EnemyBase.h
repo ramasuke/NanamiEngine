@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "../../../../../Data/Drop/Data_DropTable.h"
 #include "../../../../../Data/EnemyBehaviour/Data_EnemyBehaviourFile.h"
 #include "../../Damage/Flinch/Game_Damage_FlinchPower.h"
 #include "../../PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
@@ -55,6 +56,7 @@ namespace GameCore::Npc
         std::optional<int> lastSentHealth_;
         Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;
         [[serialize(5)]] FIELD(PlayerAvatar::LockOnPoint) lockOnPoint_;
+        [[serialize(6)]] FIELD(Asset::DropTable) dropTable_;
 
 #pragma region Serialization Function
     public:
@@ -68,6 +70,7 @@ namespace GameCore::Npc
             archive(CEREAL_NVP(currentStatus_));
             archive(CEREAL_NVP(isNetworkSyncStatus_));
             archive(CEREAL_NVP(lockOnPoint_));
+            archive(CEREAL_NVP(dropTable_));
         }
 
         template <class Archive>
@@ -80,8 +83,9 @@ namespace GameCore::Npc
             if (version >= 4) archive(CEREAL_NVP(currentStatus_));
             if (version >= 4) archive(CEREAL_NVP(isNetworkSyncStatus_));
             if (version >= 5) archive(CEREAL_NVP(lockOnPoint_));
+            if (version >= 6) archive(CEREAL_NVP(dropTable_));
         }
 #pragma endregion
     };
 };
-CEREAL_CLASS_VERSION(GameCore::Npc::EnemyBase, 5);
+CEREAL_CLASS_VERSION(GameCore::Npc::EnemyBase, 6);

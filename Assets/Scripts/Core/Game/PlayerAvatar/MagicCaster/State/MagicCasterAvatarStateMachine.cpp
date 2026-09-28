@@ -12,6 +12,7 @@
 #include "Run/MagicCasterAvatarRunState.h"
 #include "UseItem/MagicCasterAvatarUseItemState.h"
 #include "Walk/MagicCasterAvatarWalkState.h"
+#include "WarpIn/MagicCasterAvatarWarpInState.h"
 
 #include "../../../../../GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 
@@ -19,15 +20,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
 {
     namespace
     {
-        // ArmStretch/WarpIn/GetUp に相当するStateが無いので、演出は棒立ちで通す
+        // ArmStretch/GetUp に相当するStateが無いので、演出は棒立ちで通す
         MagicCasterAvatarStateType ToMagicCasterEventSceneState(const EventSceneStateType type)
         {
             switch (type)
             {
-            case EventSceneStateType::Walk: return MagicCasterAvatarStateType::Walk;
+            case EventSceneStateType::Walk:   return MagicCasterAvatarStateType::Walk;
+            case EventSceneStateType::WarpIn: return MagicCasterAvatarStateType::WarpIn;
             case EventSceneStateType::Idle:
             case EventSceneStateType::ArmStretch:
-            case EventSceneStateType::WarpIn:
             case EventSceneStateType::GetUp: return MagicCasterAvatarStateType::Idle;
             }
             return MagicCasterAvatarStateType::Idle;
@@ -103,6 +104,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
                     {MagicCasterAvatarStateType::UseItemDrink, std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemDrink)},
                     {MagicCasterAvatarStateType::UseItemEat,   std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemEat  )},
                     {MagicCasterAvatarStateType::UseItemPlace, std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemPlace)},
+                    {MagicCasterAvatarStateType::WarpIn,       std::make_shared<WarpInState> (args)},
                 };
             },
             MagicCasterAvatarStateType::Idle,

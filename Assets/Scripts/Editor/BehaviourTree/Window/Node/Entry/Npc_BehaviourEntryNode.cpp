@@ -1,7 +1,5 @@
 ﻿#include "Npc_BehaviourEntryNode.h"
 
-#include "../../DrawNodeHelper.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "../Npc_Behaviour_NodeHeaders.h"
 #include "../cereal/include/cereal/archives/portable_binary.hpp"
@@ -15,44 +13,41 @@ namespace Editor::Npc::Behaviour
         
     }
 
+    const std::string& EntryNode::NodeName() const
+    {
+        static const std::string NAME = "EntryNode";
+        return NAME;
+    }
+
     GameCore::Npc::Enemy::Behaviour::TickStatus EntryNode::DoTick(
         const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
+        // NOTE: グラフエディタで先頭の子を切り離したまま保存されたツリーでも落ちないようにする
+        if (!nextNode_)
+            return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
         return nextNode_->Tick(context);
     }
 
     GameCore::Npc::Friendly::Behaviour::TickStatus EntryNode::DoTick(
         const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
+        if (!nextNode_)
+            return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;
         return nextNode_->Tick(context);
-    }
-
-    void EntryNode::OnDrawGraphEditorGui(
-        const ImVec2& offset,
-        ImDrawList* drawList,
-        const std::weak_ptr<NodeBase>& ownPtr)
-    {
-        const Gui::Graph::NodeOption nodeOption
-        {
-            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
-            ENTRY_NODE_NAME,
-            false,
-            false,
-            NODE_SIZE
-        };
-
-        DrawGraphEditorGuiHelper::DrawNode(ownPtr, offset, PositionRef(), drawList, nodeOption, true);
-        
-        if (nextNode_)
-        {
-            DrawGraphEditorGuiHelper::DrawNodePath(offset, *ownPtr.lock(), *nextNode_, drawList);
-            nextNode_->OnDrawGraphEditorGui(offset, drawList, nextNode_);
-        }
     }
 
     void EntryNode::SetConnectToNextNode(const std::shared_ptr<NodeBase> nextNode)
     {
         nextNode_ = nextNode;
+    }
+
+    std::optional<ChildSlot> EntryNode::RemoveChild(const NodeBase* child)
+    {
+        if (!nextNode_ || nextNode_.get() != child)
+            return std::nullopt;
+
+        nextNode_.reset();
+        return ChildSlot{};
     }
 
     void EntryNode::DoOnDrawGui()

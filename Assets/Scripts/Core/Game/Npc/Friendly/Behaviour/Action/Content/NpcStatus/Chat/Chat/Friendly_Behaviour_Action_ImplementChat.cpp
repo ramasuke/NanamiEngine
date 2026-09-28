@@ -36,7 +36,7 @@ namespace GameCore::Npc::Friendly::Behaviour
 
     Coroutine::Task<void> Action::ImplementChat::ChatAsync(const TickContext context)
     {
-        co_await context.ChatUi().OnDisplayChatAsync(context.NpcName(), *chatData_.get());
+        co_await context.ChatUi().OnDisplayChatAsync(context.NpcName(), *chatData_.get(), true);
         isFinishedChat_ = true;
     }
 

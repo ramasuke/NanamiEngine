@@ -79,21 +79,30 @@ namespace GamePlay::Ui
 
     void StageReturnNoticeUi::SetSelection(const int index)
     {
-        const bool isReturn = index == RETURN_INDEX;
-        if (const auto label = returnLabel_.get())
-            label->SetTextColor(isReturn ? selectedColor_ : unselectedColor_);
-        if (const auto label = stayLabel_.get())
-            label->SetTextColor(isReturn ? unselectedColor_ : selectedColor_);
-        if (const auto underline = returnUnderline_.get())
-            underline->SetEnable(isReturn);
-        if (const auto underline = stayUnderline_.get())
-            underline->SetEnable(!isReturn);
-        if (const auto stamp = returnStamp_.get())
-            stamp->SetEnable(false);
-        if (const auto stamp = stayStamp_.get())
-            stamp->SetEnable(false);
+        struct Row
+        {
+            std::shared_ptr<NanamiUi::TextRenderer> label;
+            std::shared_ptr<NanamiUi::BlendImageRenderer> underline;
+            std::shared_ptr<NanamiUi::BlendImageRenderer> stamp;
+        };
+        const Row rows[ROW_COUNT] = {
+            {returnLabel_.get(), returnUnderline_.get(), returnStamp_.get()},
+            {stayLabel_.get(), stayUnderline_.get(), stayStamp_.get()},
+            {settingsLabel_.get(), settingsUnderline_.get(), settingsStamp_.get()},
+        };
 
-        PressStamp(isReturn ? returnStamp_.get() : stayStamp_.get());
+        for (int i = 0; i < ROW_COUNT; ++i)
+        {
+            const bool isSelected = i == index;
+            if (rows[i].label)
+                rows[i].label->SetTextColor(isSelected ? selectedColor_ : unselectedColor_);
+            if (rows[i].underline)
+                rows[i].underline->SetEnable(isSelected);
+            if (rows[i].stamp)
+                rows[i].stamp->SetEnable(false);
+        }
+
+        PressStamp(index >= 0 && index < ROW_COUNT ? rows[index].stamp : nullptr);
     }
 
     void StageReturnNoticeUi::PressStamp(const std::shared_ptr<NanamiUi::BlendImageRenderer>& stamp)
@@ -182,6 +191,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("stayLabel_", stayLabel_);
         ImGuiHelper::OnDrawInputField("stayUnderline_", stayUnderline_);
         ImGuiHelper::OnDrawInputField("stayStamp_", stayStamp_);
+        ImGuiHelper::OnDrawInputField("settingsLabel_", settingsLabel_);
+        ImGuiHelper::OnDrawInputField("settingsUnderline_", settingsUnderline_);
+        ImGuiHelper::OnDrawInputField("settingsStamp_", settingsStamp_);
         ImGuiHelper::OnDrawInputField("confirmButton_", confirmButton_);
         ImGuiHelper::OnDrawInputField("cancelButton_", cancelButton_);
         ImGuiHelper::OnDrawInputField("selectedColor_", selectedColor_);

@@ -2,6 +2,7 @@
 #include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
+#include <chrono>
 
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "../UI_StageSelect.h"
@@ -30,9 +31,10 @@ namespace GamePlay::Ui
         model_ = std::make_unique<StageSelectModel>(view_->Stages());
 
         const auto owner = GameCore::PlayerAvatar::Owner();
-        const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext unlockContext{
+        const GameCore::Condition::ConditionContext unlockContext{
             &GameCore::Story::StoryProgress::Instance(),
-            owner ? &owner->PlayerStatus().CompletedQuest() : nullptr };
+            owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
+            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()) };
 
         const auto& stages = model_->Stages();
         for (size_t i = 0; i < stages.size(); ++i)

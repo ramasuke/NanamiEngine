@@ -50,7 +50,7 @@ namespace GameCore::Scene::Main
 
     std::vector<Sub::SceneType> DrySandScene::SubScenes() const
     {
-        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus };
+        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus, Sub::SceneType::StageReturn };
     }
 
     Coroutine::Task<EnterResult> DrySandScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
@@ -125,7 +125,7 @@ namespace GameCore::Scene::Main
             Coroutine::StartCoroutine(stone->PlayDepartAsync(playerAvatar_));
     }
 
-    void DrySandScene::DoDispose()
+    void DrySandScene::DoExit()
     {
         stageClearWatcher_.Dispose();
 

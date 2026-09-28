@@ -37,8 +37,6 @@ FONT_BRUSH_INK = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold_Ink.ttf.met
 BOARD_DATA = asset_guid(REPO / 'Assets/Data/EventNotice/MainIslandEventBoard.eventBoard.meta')
 HINT_CANCEL = asset_guid(str(art.HINT_CANCEL_SPRITE) + '.meta')
 HINT_CONFIRM = asset_guid(str(art.HINT_CONFIRM_SPRITE) + '.meta')
-PIP_FILLED = asset_guid(str(art.PIP_FILLED_SPRITE) + '.meta')
-PIP_EMPTY = asset_guid(str(art.PIP_EMPTY_SPRITE) + '.meta')
 # 受注印を押す音。ゲームオーバーの石版が落ちる音と同じ鈍い打撃
 ACCEPT_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/打撃2.mp3.meta')
 # 普請の代金を払う音と、足りないときの断りの音は店と同じ
@@ -98,12 +96,6 @@ def text(b, parent, name, pos, px, s, color, order, font=FONT_BODY, align=ALIGN_
     return comp
 
 
-def pips(b, parent, name, first, gap, scale, order):
-    """難度の点5つ。中身の塗り分けは C++ 側 (ShowQuestBoardRankPips) が毎回決める"""
-    return [image(b, parent, f'{name}{i}', (first[0] + gap * i, first[1]), PIP_EMPTY, order, scale=scale)
-            for i in range(5)]
-
-
 def ticket_root(b, root):
     """札の土台。root に紙の絵と当たり判定、子に釘と選択中の蝋を付ける"""
     L = art.LAYOUT
@@ -159,8 +151,6 @@ def build_quest_row():
     reward = text(b, root, 'RewardText', V['qrow_reward'][0], V['qrow_reward'][1], '', art.INK,
                   ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     place = text(b, root, 'PlaceText', V['qrow_place'][0], V['qrow_place'][1], '', art.INK_FADE, ORDER_TICKET_TEXT)
-    first, gap, scale = V['qrow_pips']
-    rank = pips(b, root, 'Pip', first, gap, scale, ORDER_TICKET_TEXT)
     chip = image(b, root, 'EventChip', V['qrow_event_chip'], sprite_guid('EventChip_Small'), ORDER_TICKET_STAMP,
                  enabled=False)
     stamp = image(b, root, 'StateStamp', V['qrow_stamp'], sprite_guid('QuestStamp_Taking'), ORDER_TICKET_STAMP,
@@ -170,11 +160,8 @@ def build_quest_row():
     b.field(row, 'titleText_', guid_of(title))
     b.field(row, 'placeText_', guid_of(place))
     b.field(row, 'rewardText_', guid_of(reward))
-    row.data['rankPips_'] = [edits.field_blob('ImageRenderer', guid_of(p)) for p in rank]
     b.field(row, 'eventChip_', guid_of(chip))
     b.field(row, 'stateStamp_', guid_of(stamp))
-    b.field(row, 'filledPipSprite_', PIP_FILLED)
-    b.field(row, 'emptyPipSprite_', PIP_EMPTY)
     b.field(row, 'takingStampSprite_', sprite_guid('QuestStamp_Taking'))
     b.field(row, 'clearedStampSprite_', sprite_guid('QuestStamp_Cleared'))
     b.field(row, 'preparingStampSprite_', sprite_guid('QuestStamp_Preparing'))
@@ -353,8 +340,6 @@ def build_quest_page(row_prefab_guid):
                  font=FONT_BRUSH_INK)
     client = text(b, detail, 'ClientText', V['q_client'][0], V['q_client'][1], '', art.INK, ORDER_POSTER_TEXT)
     place = text(b, detail, 'PlaceText', V['q_place'][0], V['q_place'][1], '', art.INK, ORDER_POSTER_TEXT)
-    first, gap, scale = V['q_pips']
-    rank = pips(b, detail, 'Pip', first, gap, scale, ORDER_POSTER_TEXT)
     state = text(b, detail, 'StateText', V['q_state'][0], V['q_state'][1], '', art.INK, ORDER_POSTER_TEXT)
     goal = text(b, detail, 'GoalText', V['q_goal'][0], V['q_goal'][1], '', art.INK, ORDER_POSTER_TEXT)
     reward = text(b, detail, 'RewardText', V['q_reward'][0], V['q_reward'][1], '', art.INK, ORDER_POSTER_TEXT,
@@ -373,7 +358,6 @@ def build_quest_page(row_prefab_guid):
     b.field(page, 'detailTitleText_', guid_of(title))
     b.field(page, 'detailClientText_', guid_of(client))
     b.field(page, 'detailPlaceText_', guid_of(place))
-    page.data['detailRankPips_'] = [edits.field_blob('ImageRenderer', guid_of(p)) for p in rank]
     b.field(page, 'detailStateText_', guid_of(state))
     b.field(page, 'detailGoalText_', guid_of(goal))
     b.field(page, 'detailRewardText_', guid_of(reward))
@@ -381,8 +365,6 @@ def build_quest_page(row_prefab_guid):
     page.data['detailDescriptionLines_'] = [edits.field_blob('TextRenderer', guid_of(line)) for line in lines]
     b.field(page, 'detailSeal_', guid_of(seal))
     b.field(page, 'emptyText_', guid_of(empty))
-    b.field(page, 'filledPipSprite_', PIP_FILLED)
-    b.field(page, 'emptyPipSprite_', PIP_EMPTY)
     b.field(page, 'openSealSprite_', sprite_guid('QuestSeal_Open'))
     b.field(page, 'takingSealSprite_', sprite_guid('QuestSeal_Taking'))
     b.field(page, 'clearedSealSprite_', sprite_guid('QuestSeal_Cleared'))

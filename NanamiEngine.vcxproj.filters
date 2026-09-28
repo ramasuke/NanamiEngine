@@ -850,19 +850,10 @@
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Module\Gui\Graph\GraphGui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Module\Gui\Graph\NodeDrawResult\NodeDrawResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Module\Gui\Graph\NodeOption\NodeOption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Module\Gui\Graph\NodeOption\VisualStyle\NodeVisualStyle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Module\Gui\Graph\Editor\GraphEditorHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Gui\Graph\Editor\GraphDelegateBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\LifeCycleCallback\BeginPhysics\IBeginPhysics.cpp">
@@ -977,6 +968,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Sound\SoundFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Audio\AudioVolume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Sprite\AnimationFile\SpriteAnimationFile.cpp">
@@ -1190,9 +1184,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Packages\AssetUpdater\Install\PathGuard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Packages\AssetUpdater\System\Relaunch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Packages\AssetUpdater\Task\AssetUpdateTask.cpp">
@@ -4517,19 +4508,10 @@
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Module\Gui\Graph\GraphGui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Module\Gui\Graph\NodeDrawResult\NodeDrawResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Module\Gui\Graph\NodeOption\NodeOption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Module\Gui\Graph\NodeOption\VisualStyle\NodeVisualStyle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Module\Gui\Graph\Editor\GraphEditorHost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Gui\Graph\Editor\GraphDelegateBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\LifeCycleCallback\BeginPhysics\IBeginPhysics.h">
@@ -4677,6 +4659,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Asset\Sound\SoundFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Audio\AudioVolume.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Asset\Sprite\AnimationFile\SpriteAnimationFile.h">
@@ -5007,9 +4992,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Install\PathGuard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Packages\AssetUpdater\System\Relaunch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Task\AssetUpdateTask.h">

@@ -92,6 +92,22 @@ namespace GameCore::Scene::Main
         pendingRequest_ = ChangeRequest{ type, options };
     }
 
+    void GameSceneGroup::Dispose()
+    {
+        const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
+        if (gameWindow->IsSceneLoading())
+            gameWindow->CancelSceneLoad();
+
+        if (const auto current = currentScene_.lock())
+            current->Dispose();
+
+        currentScene_.reset();
+        currentSceneType_.reset();
+        pendingRequest_.reset();
+        coveringRequest_.reset();
+        phase_ = Phase::Idle;
+    }
+
     void GameSceneGroup::BeginCovering()
     {
         coveringRequest_ = std::exchange(pendingRequest_, std::nullopt);
@@ -113,7 +129,7 @@ namespace GameCore::Scene::Main
 
         if (const auto current = currentScene_.lock())
         {
-            current->Dispose();
+            current->Exit();
         }
 
         const auto& next = scenes_.at(request.type);

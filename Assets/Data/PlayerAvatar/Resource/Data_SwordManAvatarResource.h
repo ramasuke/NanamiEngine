@@ -86,6 +86,8 @@ namespace NanamiEngine::Module::Asset
         /** 攻撃が壁に阻まれたときに、Raycastの衝突点へ1回生成する火花 */
         [[nodiscard]] PrefabGameObjectFile& AttackBlockedParticlePrefab() const { return *attackBlockedParticlePrefab_.get(); }
         [[nodiscard]] bool HasAttackBlockedParticlePrefab() const { return static_cast<bool>(attackBlockedParticlePrefab_); }
+        /** 壁に阻まれたときの火花を衝突面からどれだけ手前に置くか */
+        [[nodiscard]] float AttackBlockedParticleSurfaceOffset() const { return attackBlockedParticleSurfaceOffset_; }
         /** 攻撃が壁に阻まれたときの金属音の候補。鳴らすときに配列からランダムで1つ選択する */
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& AttackBlockedSounds() const { return attackBlockedSounds_; }
         /** 溜め中の持続カメラ揺れ。溜め開始時が Min、最大溜め直前が Max */
@@ -116,6 +118,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float RunAccelerationTime_secs () const { return runAccelerationTime_secs_;  }
         [[nodiscard]] float WalkDecelerationTime_secs() const { return walkDecelerationTime_secs_; }
         [[nodiscard]] float RunDecelerationTime_secs () const { return runDecelerationTime_secs_;  }
+        /** 移動系とみなす AnimationTree のクリップ名(SwordManAnimation.animTree のノード名)。これらの重みの分しか加速しない */
+        [[nodiscard]] const std::vector<std::string>& LocomotionClipNames() const { return locomotionClipNames_; }
 
     private:
         [[serialize(0)]] FIELD(PrefabGameObjectFile) normalAttackParticlePrefab_;
@@ -168,6 +172,8 @@ namespace NanamiEngine::Module::Asset
         [[serialize(23)]] float                         jumpAttackGroundCheckRadius_ = 3.5f;
         [[serialize(24)]] float                         avoidRollingStartSpeed_      = 120.0f;
         [[serialize(24)]] float                         avoidRollingEndSpeed_        = 20.0f;
+        [[serialize(25)]] float                         attackBlockedParticleSurfaceOffset_ = 5.0f;
+        [[serialize(25)]] std::vector<std::string>      locomotionClipNames_ = { "Idle", "Walk", "Run", "InjuredWalk", "InjuredRun", "Jump", "Fall" };
 
         
 #pragma region Serialization Function
@@ -250,6 +256,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
             archive(CEREAL_NVP(avoidRollingStartSpeed_));
             archive(CEREAL_NVP(avoidRollingEndSpeed_));
+            archive(CEREAL_NVP(attackBlockedParticleSurfaceOffset_));
+            archive(CEREAL_NVP(locomotionClipNames_));
         }
 
         template<class Archive>
@@ -398,11 +406,13 @@ namespace NanamiEngine::Module::Asset
             if (version >= 23) archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
             if (version >= 24) archive(CEREAL_NVP(avoidRollingStartSpeed_));
             if (version >= 24) archive(CEREAL_NVP(avoidRollingEndSpeed_));
+            if (version >= 25) archive(CEREAL_NVP(attackBlockedParticleSurfaceOffset_));
+            if (version >= 25) archive(CEREAL_NVP(locomotionClipNames_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 24);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 25);
 #pragma endregion

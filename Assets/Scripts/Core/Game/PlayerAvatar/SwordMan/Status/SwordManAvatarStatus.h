@@ -111,6 +111,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             DamageStateDuration_secs             () const   { return damageStateDuration_secs_; }
         [[nodiscard]] float                             AvoidRollingStateDuration_secs       () const   { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                             AvoidRollingStaminaCost              () const   { return avoidRollingStaminaCost_; }
+        [[nodiscard]] float                             JustAvoidWindow_secs                 () const   { return justAvoidWindow_secs_; }
         [[nodiscard]] float                             DeathStateDuration_secs              () const   { return deathStateDuration_secs_; }
         [[nodiscard]] float                             DownStateDuration_secs               () const   { return downStateDuration_secs_; }
         [[nodiscard]] float                             FallDownStateDuration_secs           () const   { return fallDownStateDuration_secs_; }
@@ -189,6 +190,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serailize(0)]] float                      damageStateDuration_secs_;
         [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
         [[serialize(0)]] float                      avoidRollingStaminaCost_;
+        float                                       justAvoidWindow_secs_ = 0.15f;
         [[serialize(0)]] float                      deathStateDuration_secs_;
         [[serialize(0)]] float                      downStateDuration_secs_ = 13.6363636364f;
         [[serialize(16)]] float                     fallDownStateDuration_secs_ = 1.3333333333f;

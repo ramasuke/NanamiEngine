@@ -4,6 +4,7 @@
 #include "../Factory/AssetFactory.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp"
 #include "vec3.hpp"
+#include "Engine/Module/Audio/AudioVolume.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -28,6 +29,8 @@ namespace NanamiEngine::Module::Asset
         /** @brief 次の再生 1 回だけの音量 0..255 */
         void SetNextPlayVolume(int volume) const;
         void Set3DPosition(const glm::vec3& position) const;
+        /** @brief 最後に指定された音量に、今の音量設定 (Audio::SetMasterVolume など) を掛け直す */
+        void ReapplyVolume() const;
 
     private:
         void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
@@ -37,6 +40,9 @@ namespace NanamiEngine::Module::Asset
         int dxLibHandle_ = -1;
 
         int volume_ = 0;
+        /** 最後に指定された素の音量 (倍率を掛ける前)。実行時のみ */
+        mutable int currentVolume_ = 0;
+        Audio::AudioCategory category_ = Audio::AudioCategory::Se;
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;

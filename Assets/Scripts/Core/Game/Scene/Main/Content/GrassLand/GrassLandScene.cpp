@@ -126,7 +126,7 @@ namespace GameCore::Scene::Main
             Coroutine::StartCoroutine(stone->PlayDepartAsync(playerAvatar_));
     }
 
-    void GrassLandScene::DoDispose()
+    void GrassLandScene::DoExit()
     {
         stageClearWatcher_.Dispose();
 

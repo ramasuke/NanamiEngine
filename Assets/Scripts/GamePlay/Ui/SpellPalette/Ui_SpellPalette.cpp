@@ -289,6 +289,7 @@ namespace GamePlay::Ui
         const auto state = avatar->GetStateMachine().GetCurrentStateType();
         const bool isShown = state != MagicCasterAvatarStateType::Disable
                           && state != MagicCasterAvatarStateType::Chatting
+                          && state != MagicCasterAvatarStateType::WarpIn
                           && state != MagicCasterAvatarStateType::Death;
         const bool isPad = device_ == PlayerAvatarInputDevice::Gamepad;
         // キーボードは 1〜4 を直接押すので、右クリック（2ページ目）を押している間だけ開いた見た目にする

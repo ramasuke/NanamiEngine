@@ -115,14 +115,16 @@ ORDER_VEIL = 3900
 LAYOUT = {
     'logo': (1370, 280), 'logo_scale': 0.9,
     'press': (1370, 612), 'press_px': 34, 'press_color': (246, 236, 214),
-    'menu_right': 1830, 'menu_rows': (596, 656), 'menu_px': 40, 'menu_color': (250, 242, 224),
+    'menu_right': 1830, 'menu_rows': (566, 626, 686), 'menu_px': 40, 'menu_color': (250, 242, 224),
     'band_right': 1866,
     'button_half': (150, 26),
     'hint_y': 1030, 'hint_right': 1880, 'hint_px': 26, 'hint_color': (240, 226, 202),
 }
 # OpenTracks「オープニングオーケストラ「夜明け」」今川彰人オーケストラ (docs/ThirdPartyAssets.md)
 TITLE_BGM = asset_guid(REPO / 'Assets/Audio/BGM/Title_Dawn.mp3.meta')
-MENU_LABELS = ('はじめから', '終 わ る')
+MENU_LABELS = ('はじめから', '設　定', '終 わ る')
+MENU_NAMES = ('Start', 'Settings', 'Exit')
+SETTINGS_PREFAB = asset_guid(REPO / 'Assets/Prefab/UI/Settings/SettingsScreen.prefab.meta')
 
 
 # ---------------------------------------------------------------- 計算
@@ -292,8 +294,7 @@ def build_ui(b, old_canvas):
 
     texts, buttons = [], []
     mpx = L['menu_px']
-    for label, y in zip(MENU_LABELS, L['menu_rows']):
-        name = 'Start' if not texts else 'Exit'
+    for name, label, y in zip(MENU_NAMES, MENU_LABELS, L['menu_rows']):
         _, text = b.text(root, f'{name}Text', (L['menu_right'], y - mpx * 0.62), mpx, label, L['menu_color'],
                          ORDER_TEXT, ALIGN_RIGHT)
         b.field(text, 'fontFile_', FONT_HEAD)
@@ -324,10 +325,12 @@ def build_ui(b, old_canvas):
     ui = b.component(root, 'TitleScreenUi', veilOpen_secs_='2.2', logoDelay_secs_='1.4', logoFade_secs_='1.8',
                      pressDelay_secs_='3.2', pressFade_secs_='0.8', pressPulsePeriod_secs_='2.6',
                      pressPulseMinRate_='0.35', menuFade_secs_='0.3', menuStagger_secs_='0.07', menuSlide_px_='24',
-                     menuInputGuard_secs_='0.2', bandFollowRate_='18', unselectedTextRate_='0.62')
+                     menuInputGuard_secs_='0.2', bandFollowRate_='18', unselectedTextRate_='0.62',
+                     coverFade_secs_='0.2')
     for key, comp in (('veil_', veil), ('logo_', logo), ('pressText_', press), ('pressDeco_', deco),
-                      ('startText_', texts[0]), ('exitText_', texts[1]), ('startButton_', buttons[0]),
-                      ('exitButton_', buttons[1]), ('selectBand_', band),
+                      ('startText_', texts[0]), ('settingsText_', texts[1]), ('exitText_', texts[2]),
+                      ('startButton_', buttons[0]), ('settingsButton_', buttons[1]), ('exitButton_', buttons[2]),
+                      ('selectBand_', band),
                       ('moveHintTag_', hint_parts['move'][0]), ('moveHintText_', hint_parts['move'][1]),
                       ('confirmHintTag_', hint_parts['confirm'][0]), ('confirmHintText_', hint_parts['confirm'][1])):
         b.field(ui, key, guid_of(comp))
@@ -336,6 +339,7 @@ def build_ui(b, old_canvas):
     presenter = b.component(root, 'TitleScreenPresenter')
     presenter.data['assetUpdatePrefab_'] = copy.deepcopy(old_title.data['assetUpdatePrefab_'])
     presenter.data['uiSounds_'] = copy.deepcopy(old_title.data['uiSounds_'])
+    b.field(presenter, 'settingsPrefab_', SETTINGS_PREFAB)
 
     # BGM は前のタイトルの Canvas から引き継ぐ
     for comp in old_canvas.components:
@@ -377,6 +381,22 @@ class VersionFixer(validate._ClassVersionAudit):
             self.removed += 1
         super()._check(type_key, node, where)
 
+    def _check_component(self, fqn, data, where):
+        is_first = fqn not in self._first
+        super()._check_component(fqn, data, where)
+        # NOTE: 版がカタログと違うコンポーネント (Brain v3, ModelRenderer v4) は基底を監査しないので、
+        #       写した木で初出がずれると基底の版キーが抜ける。初出の基底スロットには版 0 を付けておく
+        #       (基底は ComponentBase と空のインターフェースだけで、2回目以降の余分な版キーは害が無い)
+        if not is_first or fqn not in self.version_skew:
+            return
+        for key in list(data.keys()):
+            slot = data[key]
+            if not key.startswith('value') or not isinstance(slot, OrderedObj) or validate._VER in slot:
+                continue
+            if len(slot) == 0 or 'guid_' in slot:
+                slot.insert(0, validate._VER, Num.of_int(0))
+                self.added += 1
+
 
 def known_versions(texts):
     class Probe(validate._ClassVersionAudit):
@@ -408,6 +428,8 @@ def main():
     copied = copy_roots(source, ['CameraBrain', 'SkyDome', 'SkyIslands', 'AirShip'])
     trim_camera_brain(copied['CameraBrain'])
     drop_components(copied['SkyDome'], '::WeatherService')
+    # NOTE: 序章の空にも SceneFog が付いているので、タイトルの霞の値で付け直す
+    drop_components(copied['SkyDome'], '::SceneFog')
     trim_airship(copied['AirShip'])
 
     scene = model.Scene(name='TitleScene', roots=list(copied.values()))

@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
+#include <algorithm>
+
 NanamiEngine::Module::Asset::SoundFile::SoundFile(std::string contentPath)
     : contentPath_(std::move(contentPath))
 {
@@ -9,6 +11,7 @@ NanamiEngine::Module::Asset::SoundFile::SoundFile(std::string contentPath)
 
 NanamiEngine::Module::Asset::SoundFile::~SoundFile()
 {
+    NanamiEngine::Module::Audio::UnregisterSound(this);
     if (dxLibHandle_ == -1)
         return;
 
@@ -18,7 +21,17 @@ NanamiEngine::Module::Asset::SoundFile::~SoundFile()
 void NanamiEngine::Module::Asset::SoundFile::OnEnableAsset()
 {
     dxLibHandle_ = LoadSoundMem(contentPath_.c_str());
-    ChangeVolumeSoundMem(volume_, dxLibHandle_);
+
+    // NOTE: Assets/Audio/BGM 配下を音楽、それ以外を効果音として音量設定を掛ける
+    auto path = contentPath_;
+    std::ranges::replace(path, '/', '\\');
+    category_ = path.find("Audio\\BGM\\") != std::string::npos
+        ? NanamiEngine::Module::Audio::AudioCategory::Bgm
+        : NanamiEngine::Module::Audio::AudioCategory::Se;
+
+    currentVolume_ = volume_;
+    NanamiEngine::Module::Audio::RegisterSound(this);
+    ReapplyVolume();
 }
 
 std::string NanamiEngine::Module::Asset::SoundFile::GetContentPath() const
@@ -46,20 +59,26 @@ bool NanamiEngine::Module::Asset::SoundFile::IsPlaying() const
 
 void NanamiEngine::Module::Asset::SoundFile::SetVolume(const int volume) const
 {
-    if (dxLibHandle_ != -1)
-        ChangeVolumeSoundMem(volume, dxLibHandle_);
+    currentVolume_ = volume;
+    ReapplyVolume();
 }
 
 void NanamiEngine::Module::Asset::SoundFile::SetNextPlayVolume(const int volume) const
 {
     if (dxLibHandle_ != -1)
-        ChangeNextPlayVolumeSoundMem(volume, dxLibHandle_);
+        ChangeNextPlayVolumeSoundMem(NanamiEngine::Module::Audio::ScaleVolume(category_, volume), dxLibHandle_);
 }
 
 void NanamiEngine::Module::Asset::SoundFile::Set3DPosition(const glm::vec3& position) const
 {
     if (dxLibHandle_ != -1)
         Set3DPositionSoundMem({ position.x, position.y, position.z }, dxLibHandle_);
+}
+
+void NanamiEngine::Module::Asset::SoundFile::ReapplyVolume() const
+{
+    if (dxLibHandle_ != -1)
+        ChangeVolumeSoundMem(NanamiEngine::Module::Audio::ScaleVolume(category_, currentVolume_), dxLibHandle_);
 }
 
 void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
@@ -69,7 +88,8 @@ void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
 
     if (ImGui::SliderInt("volume_", &volume_, 0, 255))
     {
-        ChangeVolumeSoundMem(volume_, dxLibHandle_);
+        currentVolume_ = volume_;
+        ReapplyVolume();
     }
 
     ImGui::Text("dxLibId: %d", dxLibHandle_);

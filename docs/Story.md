@@ -482,7 +482,7 @@ python tools/art/story_npcs.py --only camp     # prologue / dragon / island / ne
 - `Chat` はプレイヤーが話しかけたときにしか始まらない。続けて話させるときは、2つ目から `ImplementChat` にする。
 - ステージのクリア条件は、そのシーンのコンテキストが持つ（`GrassLandSceneContext::clearEnemyKind_` / `clearStoryFlag_`、
   GameManage.scene。草原は大顎 = `Tyrannosaurus` → `GrassLandCleared`）。`GrassLandScene` が `Init` で
-  `Story::StageClearWatcher`（`Story_StageClear.h`、GameObject に依らないクラス）で記録帳の `OnDefeat` を見張り、`DoDispose` で外す。
+  `Story::StageClearWatcher`（`Story_StageClear.h`、GameObject に依らないクラス）で記録帳の `OnDefeat` を見張り、`DoExit` で外す。
   記録帳と同じく、協力プレイでも各ピアで立つ。**ロジックで済むものはコンポーネントにしない。**
 - `EnemySpawnPoint::skipIfStoryFlag_`（-1 = 常に湧く）にフラグを入れると、そのフラグが立った後は湧かない。
   大顎のスポーン地点は `GrassLandCleared`（2）。敵を湧かせるのはホストなので、判断もホストの進み具合。

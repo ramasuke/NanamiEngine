@@ -10,13 +10,24 @@ namespace GamePlay::Weather
      * @brief シーンにいる間ずっと線形フォグを掛ける (遠景の霞)。
      *
      * 空のドームは SkyDome3D がフォグを切って描くので、霞むのは島や船だけ。
-     * 抜けるときにフォグを切り、次のシーンへ持ち越さない。嵐のフォグは WeatherService / Sandstorm が受け持つ
+     * 抜けるときにフォグを切り、次のシーンへ持ち越さない。嵐のフォグは WeatherService / Sandstorm が受け持つ。
+     * WeatherService から参照されているときは自分では掛けず、WeatherService が晴れのフォグとしてこの値から嵐へ補間する
      */
     class SceneFog final : public Component::ComponentBase,
                            public LifeCycleCallback::IStartable,
                            public LifeCycleCallback::IUpdatable
     {
+    public:
+        /** @brief true の間は自分でフォグを掛けない (WeatherService が掛ける) */
+        void SetDrivenExternally(const bool driven) { drivenExternally_ = driven; }
+
+        [[nodiscard]] NanamiEngine::Color32 FogColor() const { return fogColor_; }
+        [[nodiscard]] float FogStart() const { return fogStart_; }
+        [[nodiscard]] float FogEnd  () const { return fogEnd_; }
+
     private:
+        bool drivenExternally_ = false;
+
         void OnStart  () override;
         // NOTE: インスペクタで変えた値がすぐ見えるよう毎フレーム掛け直す
         void OnUpdate () override;

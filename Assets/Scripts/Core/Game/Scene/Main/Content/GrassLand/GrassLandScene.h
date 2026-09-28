@@ -27,7 +27,7 @@ namespace GameCore::Scene::Main
         Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void OnEntered() override;
         void Enter    () override;
-        void DoDispose() override;
+        void DoExit() override;
         void OnDrawGui() override;
         /** @brief 大顎を倒したら、村の跡の浮遊石が空へ飛び去る */
         void OnStageClear(Story::StoryFlag flag);

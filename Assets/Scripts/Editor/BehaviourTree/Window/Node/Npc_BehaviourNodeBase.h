@@ -1,6 +1,11 @@
 ﻿#pragma once
+#include <limits>
 #include <memory>
+#include <optional>
+#include <string>
 #include <vector>
+
+#include "ImGuiHelper.h"
 
 #include "Npc_Behaviour_NodeFactory.h"
 #include "vec2.hpp"
@@ -15,25 +20,51 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 }
 
 struct ImVec2;
-struct ImDrawList;
 
 namespace Editor::Npc::Behaviour
 {
     extern const ImVec2 NODE_SIZE;
-    
+
+    /** @brief 子ノードの繋がっていた位置。付け替えで同じ親に戻すときに順番と重みを保つ */
+    struct ChildSlot
+    {
+        std::size_t index  = 0;
+        int         weight = 100;
+    };
+
     class NodeBase : public virtual Object::IObject
     {
     public:
+        /** @brief MaxChildren の「制限なし」 */
+        static constexpr std::size_t UNLIMITED_CHILDREN = std::numeric_limits<std::size_t>::max();
+
         virtual ~NodeBase() override = default;
 
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context);
         [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context);
-        virtual void OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, const std::weak_ptr<NodeBase>& ownPtr) = 0;
+        /** @brief 子を末尾に繋ぐ。子を 1 つしか持てないノードは置き換える */
         virtual void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) = 0;
         [[nodiscard]] virtual const std::string& NodeName() const = 0;
+
+        // グラフエディタ（BehaviourTreeGraphDelegate）用
+        /** @brief ノードの見出し。既定は NodeName() */
+        [[nodiscard]] virtual std::string GraphNodeTitle() const { return NodeName(); }
+        /** @brief ノード本文に出す補足（アクションの型など）。空なら何も出さない */
+        [[nodiscard]] virtual std::string GraphNodeDetail() const { return {}; }
+        [[nodiscard]] virtual ImU32 GraphHeaderColor() const = 0;
+        [[nodiscard]] virtual std::size_t MaxChildren() const { return 0; }
+        /** @brief 直接の子 child を外し、繋がっていた位置を返す。child が子でなければ nullopt */
+        virtual std::optional<ChildSlot> RemoveChild(const NodeBase* child) { return std::nullopt; }
+        /** @brief RemoveChild で外した子を元の位置に戻す（範囲外なら末尾）。既定は SetConnectToNextNode */
+        virtual void InsertChild(std::shared_ptr<NodeBase> child, const ChildSlot&) { SetConnectToNextNode(std::move(child)); }
+        /** @brief ノードの右クリックメニューに項目を足す（ActionNode のアクション型選択など） */
+        virtual void DrawGraphContextMenuItems() {}
+
         [[nodiscard]] glm::vec2&  PositionRef() { return position_; }
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         void ResetGuid();
+        /** @brief 自身と子孫すべての guid を振り直す（貼り付けたノードが元のノードと同じ guid にならないように） */
+        void ResetGuidRecursive();
 
         // このノードがGraphEditor上で直接ぶら下げている子ノード。
         // 親ノードをドラッグ移動したときに子孫を追従させるために使用する。

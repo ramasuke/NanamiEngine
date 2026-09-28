@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -19,7 +19,6 @@
                 },
                 "title_": "水場のサソリ退治",
                 "clientName_": "隊商頭",
-                "rank_": 3,
                 "goalText_": "オアシスに出る大サソリを6匹倒す",
                 "descriptionLines_": [
                     "泉の水場まで、大サソリが出るようになった。",
@@ -84,7 +83,7 @@
                 "unlockConditions_": [
                     {
                         "polymorphic_id": 2147483651,
-                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "polymorphic_name": "GameCore::Condition::StoryFlagCondition",
                         "ptr_wrapper": {
                             "id": 2147483653,
                             "data": {

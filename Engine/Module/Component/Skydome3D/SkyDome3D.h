@@ -29,6 +29,7 @@ namespace NanamiEngine::Module::Component
 
         FIELD(Asset::Mv1File) skyDomeModel_;
         int skyDomeModelDxLibHandle_ = -1;
+        //NOTE: 未使用。描画カメラ位置に追従するようになった。保存済みシーンとの互換のため残している
         FIELD(CineMachine::CinemachineCameraBrain) mainCamera_;
 
         glm::vec3 tint_ = glm::vec3(1.0f);

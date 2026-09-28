@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -19,7 +19,6 @@
                 },
                 "title_": "草原の大顎",
                 "clientName_": "教官",
-                "rank_": 3,
                 "goalText_": "草原の村の跡に居座る大顎を倒す",
                 "descriptionLines_": [
                     "緑の心臓は、大顎が村の跡で抱え込んでいる。",
@@ -81,7 +80,7 @@
                 "unlockConditions_": [
                     {
                         "polymorphic_id": 2147483651,
-                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "polymorphic_name": "GameCore::Condition::StoryFlagCondition",
                         "ptr_wrapper": {
                             "id": 2147483653,
                             "data": {

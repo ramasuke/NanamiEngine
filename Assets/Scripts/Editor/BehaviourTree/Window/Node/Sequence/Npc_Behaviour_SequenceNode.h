@@ -3,19 +3,18 @@
 #include <memory>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 
 namespace Editor::Npc::Behaviour
 {
     class SequenceNode final : public NodeBase
     {
     public:
-        void OnDrawGraphEditorGui(
-            const ImVec2& offset,
-            ImDrawList* drawList,
-            const std::weak_ptr<NodeBase>& ownPtr) override;
-
-        [[nodiscard]] const std::string& NodeName() const override { return "SequenceNode"; }
+        [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] std::string GraphNodeTitle() const override { return "Sequence"; }
+        [[nodiscard]] ImU32 GraphHeaderColor() const override { return IM_COL32(70, 140, 80, 255); }
+        [[nodiscard]] std::size_t MaxChildren() const override { return UNLIMITED_CHILDREN; }
+        std::optional<ChildSlot> RemoveChild(const NodeBase* child) override;
+        void InsertChild(std::shared_ptr<NodeBase> child, const ChildSlot& slot) override;
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override { return children_; }
 
     private:
@@ -25,14 +24,6 @@ namespace Editor::Npc::Behaviour
         void DoOnDrawGui() override;
 
         std::vector<std::shared_ptr<NodeBase>> children_;
-
-        inline static const auto NODE_VISUAL_STYLE =
-            Gui::Graph::NodeVisualStyle(
-                IM_COL32(50 , 70 , 50 , 255),
-                IM_COL32(200, 200, 200, 255),
-                IM_COL32(180, 180, 100, 255),
-                IM_COL32_WHITE
-            );
 
 #pragma region Serialization Function
     public:

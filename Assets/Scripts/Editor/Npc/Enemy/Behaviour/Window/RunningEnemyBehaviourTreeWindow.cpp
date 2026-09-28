@@ -27,7 +27,7 @@ namespace Editor::Npc::Enemy
 
         if (tree)
         {
-            tree->OnDrawGraphEditorGui();
+            tree->OnDrawGraphEditorGui(true);
             tree->OnDrawGui();
         }
 

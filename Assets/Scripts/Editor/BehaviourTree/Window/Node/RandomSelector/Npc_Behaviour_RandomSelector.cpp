@@ -1,7 +1,5 @@
 ﻿#include "Npc_Behaviour_RandomSelector.h"
 
-#include "../../DrawNodeHelper.h"
-#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../Npc_Behaviour_NodeHeaders.h"
 
 #include <algorithm>
@@ -15,32 +13,6 @@
 
 namespace Editor::Npc::Behaviour
 {
-    void RandomSelectorNode::OnDrawGraphEditorGui(
-        const ImVec2& offset,
-        ImDrawList* drawList,
-        const std::weak_ptr<NodeBase>& ownPtr)
-    {
-        const Gui::Graph::NodeOption nodeOption
-        {
-            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
-            "RandomSelector",
-            true,
-            false,
-            NODE_SIZE
-        };
-
-        DrawGraphEditorGuiHelper::DrawNode(
-            ownPtr, offset, PositionRef(), drawList, nodeOption, true);
-
-        for (const auto& child : children_)
-        {
-            DrawGraphEditorGuiHelper::DrawNodePath(
-                offset, *ownPtr.lock(), *child, drawList);
-
-            child->OnDrawGraphEditorGui(offset, drawList, child);
-        }
-    }
-
     const std::string& RandomSelectorNode::NodeName() const
     {
         static const std::string NAME = "RandomSelectorNode";
@@ -127,6 +99,40 @@ namespace Editor::Npc::Behaviour
     {
         children_.push_back(std::move(nextNode));
         weights_.push_back(100);
+    }
+
+    std::string RandomSelectorNode::GraphNodeDetail() const
+    {
+        if (weights_.empty())
+            return {};
+
+        std::string detail = "weights";
+        for (const int weight : weights_)
+            detail += " " + std::to_string(weight);
+        return detail;
+    }
+
+    std::optional<ChildSlot> RandomSelectorNode::RemoveChild(const NodeBase* child)
+    {
+        const auto it = std::ranges::find_if(children_, [child](const auto& c) { return c.get() == child; });
+        if (it == children_.end())
+            return std::nullopt;
+
+        const auto index = static_cast<std::size_t>(it - children_.begin());
+        const int  weight = index < weights_.size() ? weights_[index] : 100;
+        children_.erase(it);
+        if (index < weights_.size())
+            weights_.erase(weights_.begin() + static_cast<std::ptrdiff_t>(index));
+        currentRunningNodeIndex_ = -1;
+        return ChildSlot{ index, weight };
+    }
+
+    void RandomSelectorNode::InsertChild(std::shared_ptr<NodeBase> child, const ChildSlot& slot)
+    {
+        const std::size_t index = std::min(slot.index, children_.size());
+        children_.insert(children_.begin() + static_cast<std::ptrdiff_t>(index), std::move(child));
+        weights_.insert(weights_.begin() + static_cast<std::ptrdiff_t>(std::min(index, weights_.size())), slot.weight);
+        currentRunningNodeIndex_ = -1;
     }
 
     void RandomSelectorNode::DoOnDrawGui()

@@ -26,9 +26,10 @@ namespace GamePlay::Ui
                                 public LifeCycleCallback::IUpdatable
     {
     public:
-        static constexpr int START_INDEX = 0;
-        static constexpr int EXIT_INDEX  = 1;
-        static constexpr int MENU_COUNT  = 2;
+        static constexpr int START_INDEX    = 0;
+        static constexpr int SETTINGS_INDEX = 1;
+        static constexpr int EXIT_INDEX     = 2;
+        static constexpr int MENU_COUNT     = 3;
 
         /** @brief 出だしの演出を飛ばして、題字と「ボタンを押してください」まで出し切る */
         void SkipIntro();
@@ -37,6 +38,8 @@ namespace GamePlay::Ui
         void HideMenu();
         void SetSelection(int index);
         void SetStartLabel(const std::string& label) const;
+        /** @brief 設定画面を重ねている間は、題字とメニューを薄く消しておく */
+        void SetCovered(bool isCovered);
 
         [[nodiscard]] bool IsIntroFinished() const { return phase_ != Phase::Intro; }
         [[nodiscard]] bool IsMenuReady() const { return phase_ == Phase::Menu && menuElapsed_secs_ >= menuInputGuard_secs_; }
@@ -72,6 +75,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) moveHintText_;
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) confirmHintTag_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) confirmHintText_;
+        [[serialize(1)]] FIELD(NanamiUi::TextRenderer) settingsText_;
+        [[serialize(1)]] FIELD(NanamiUi::Button) settingsButton_;
 
         [[serialize(0)]] float veilOpen_secs_ = 2.2f;
         [[serialize(0)]] float logoDelay_secs_ = 1.4f;
@@ -87,6 +92,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float menuInputGuard_secs_ = 0.2f;
         [[serialize(0)]] float bandFollowRate_ = 18.0f;
         [[serialize(0)]] float unselectedTextRate_ = 0.62f;
+        [[serialize(1)]] float coverFade_secs_ = 0.2f;
 
         Phase phase_ = Phase::Intro;
         float introElapsed_secs_ = 0.0f;
@@ -102,6 +108,9 @@ namespace GamePlay::Ui
         /** 帯が今いる行の文字の y (上端) */
         float bandY_ = 0.0f;
         int lastTickMs_ = 0;
+        bool isCovered_ = false;
+        /** 1 で設定画面の下に消え切り */
+        float coverRate_ = 0.0f;
 
 #pragma region Serialization Function
     public:
@@ -137,6 +146,9 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(menuInputGuard_secs_));
             archive(CEREAL_NVP(bandFollowRate_));
             archive(CEREAL_NVP(unselectedTextRate_));
+            archive(CEREAL_NVP(settingsText_));
+            archive(CEREAL_NVP(settingsButton_));
+            archive(CEREAL_NVP(coverFade_secs_));
         }
 
         template<class Archive>
@@ -169,9 +181,12 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(menuInputGuard_secs_));
             if (version >= 0) archive(CEREAL_NVP(bandFollowRate_));
             if (version >= 0) archive(CEREAL_NVP(unselectedTextRate_));
+            if (version >= 1) archive(CEREAL_NVP(settingsText_));
+            if (version >= 1) archive(CEREAL_NVP(settingsButton_));
+            if (version >= 1) archive(CEREAL_NVP(coverFade_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::TitleScreenUi, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::TitleScreenUi, 1);
