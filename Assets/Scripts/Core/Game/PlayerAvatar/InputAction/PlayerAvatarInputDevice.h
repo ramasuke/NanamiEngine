@@ -1,11 +1,7 @@
 ﻿#pragma once
-#include <cstdint>
+#include "Packages/UiFlow/Device/UiFlow_InputDevice.h"
 
 namespace GameCore::PlayerAvatar
 {
-    enum class PlayerAvatarInputDevice : std::uint8_t
-    {
-        KeyboardMouse,
-        Gamepad,
-    };
+    using PlayerAvatarInputDevice = NanamiEngine::UiFlow::InputDeviceKind;
 }

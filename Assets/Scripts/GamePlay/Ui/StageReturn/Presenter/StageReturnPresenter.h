@@ -8,6 +8,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "Packages/UiFlow/UiFlow.h"
 
 namespace GameCore
 {
@@ -16,7 +17,6 @@ namespace GameCore
 
 namespace GamePlay::Ui
 {
-    class SettingsScreenPresenter;
     class StageReturnNoticeUi;
 }
 
@@ -34,36 +34,15 @@ namespace GamePlay::Ui
                                        public LifeCycleCallback::IUpdatable
     {
     private:
-        enum class Phase : std::uint8_t
-        {
-            Closed,
-            Opened,
-            /** 設定画面を開いている。閉じたら Opened へ戻る */
-            Settings,
-            /** 帰ると決めた。シーンが切り替わるまで何も受け付けない */
-            Leaving,
-        };
-
-        struct Keys
-        {
-            bool toggle  = false;
-            bool prev    = false;
-            bool next    = false;
-            bool confirm = false;
-            bool cancel  = false;
-        };
-
         void OnStart () override;
         void OnUpdate() override;
 
-        void UpdateOpened(const Keys& keys);
-        void Open(GameCore::IPlayerAvatar& avatar);
+        void Open();
         void Close(bool withSound = true);
         void Select(int index);
         void Decide();
         void OpenSettings();
 
-        [[nodiscard]] static Keys ReadKeys();
         [[nodiscard]] static bool CanOpen(const GameCore::IPlayerAvatar& avatar);
         /** @brief ホストで、ほかのプレイヤーが部屋にいる */
         [[nodiscard]] static bool IsHostLeavingOthers();
@@ -71,12 +50,13 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::UiSoundBankData) uiSounds_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) settingsPrefab_;
 
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<StageReturnNoticeUi> view_;
-        std::weak_ptr<SettingsScreenPresenter> settings_;
-        Phase phase_ = Phase::Closed;
+        // 閉じている間に開くキーを読む。開いている間の入力は screen_ から読む
+        UiFlow::UiInputReader toggleInput_;
         int   selection_ = 0;
-        Keys  previousKeys_{};
-        bool  isResumePending_ = false;
+        // 帰ると決めた。シーンが切り替わるまで何も受け付けない
+        bool  isLeaving_ = false;
 
 #pragma region Serialization Function
     public:

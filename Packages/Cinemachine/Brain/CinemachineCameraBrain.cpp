@@ -16,9 +16,10 @@ CineMachine::CinemachineCameraBrain* CineMachine::CinemachineCameraBrain::camera
 
 CineMachine::CinemachineCameraBrain::~CinemachineCameraBrain()
 {
-    // NOTE: RemoveComponent は OnDestroy を呼ばないので、デストラクタでも解除する
     if (cameraBrain_ == this)
+    {
         cameraBrain_ = nullptr;
+    }
 }
 
 void CineMachine::CinemachineCameraBrain::OnAwake()
@@ -347,14 +348,18 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
 
     if (cameraBrain_->virtualCameras_.empty())
         return;
-    
+
     cameraBrain_->currentVirtualCamera_ =
         *std::ranges::max_element(
             cameraBrain_->virtualCameras_,
             [](auto& a, auto& b)
             {
-                return a->Priority().CurrentValue()
-                     < b->Priority().CurrentValue();
+                const auto cameraA = a.get();
+                const auto cameraB = b.get();
+                if (!cameraB) return false;
+                if (!cameraA) return true;
+                return cameraA->Priority().CurrentValue()
+                     < cameraB->Priority().CurrentValue();
             });
 }
 

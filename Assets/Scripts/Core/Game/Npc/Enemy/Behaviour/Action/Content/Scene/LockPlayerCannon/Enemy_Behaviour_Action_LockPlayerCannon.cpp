@@ -11,7 +11,10 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         // NOTE: 乗っている Player は UseCanon ステートが IsLocked を見て降りる
         if (const auto sceneContext = Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>())
+        {
             sceneContext->PlayerControllabeCanon().Lock();
+            sceneContext->SetNavigationObjective("PlayerCannon", false);
+        }
 
         return TickStatus::Success;
     }

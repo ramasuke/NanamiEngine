@@ -9,20 +9,22 @@ namespace GamePlay::Ui
         const bool chattingIcon,
         const bool surpriseIcon)
     {
-        isShow_ = true;
-
-        SetIconEnable(chattableIcon_.get().get(), savedChattable_, chattableIcon);
-        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , chattingIcon);
-        SetIconEnable(surpriseIcon_ .get().get(), savedSurprise_ , surpriseIcon);
+        isShow_             = true;
+        hasRequested_       = true;
+        requestedChattable_ = chattableIcon;
+        requestedChatting_  = chattingIcon;
+        requestedSurprise_  = surpriseIcon;
+        Apply();
     }
 
     void BillBoardNpcChatIcon::Hide()
     {
-        isShow_ = false;
-
-        SetIconEnable(chattableIcon_.get().get(), savedChattable_, false);
-        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , false);
-        SetIconEnable(surpriseIcon_ .get().get(), savedSurprise_ , false);
+        isShow_             = false;
+        hasRequested_       = true;
+        requestedChattable_ = false;
+        requestedChatting_  = false;
+        requestedSurprise_  = false;
+        Apply();
     }
 
     void BillBoardNpcChatIcon::OnChattable()
@@ -30,8 +32,10 @@ namespace GamePlay::Ui
         if (!isShow_)
             return;
 
-        SetIconEnable(chattableIcon_.get().get(), savedChattable_, false);
-        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , true);
+        CaptureRequestedIfNeeded();
+        requestedChattable_ = false;
+        requestedChatting_  = true;
+        Apply();
     }
 
     void BillBoardNpcChatIcon::OnExitChattable()
@@ -39,8 +43,10 @@ namespace GamePlay::Ui
         if (!isShow_)
             return;
 
-        SetIconEnable(chattableIcon_.get().get(), savedChattable_, true);
-        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , false);
+        CaptureRequestedIfNeeded();
+        requestedChattable_ = true;
+        requestedChatting_  = false;
+        Apply();
     }
 
     void BillBoardNpcChatIcon::BeginReactionSurprise()
@@ -48,9 +54,7 @@ namespace GamePlay::Ui
         if (isReactionSurprise_)
             return;
 
-        savedChattable_ = chattableIcon_ && chattableIcon_->IsEnable();
-        savedChatting_  = chattingIcon_  && chattingIcon_ ->IsEnable();
-        savedSurprise_  = surpriseIcon_  && surpriseIcon_ ->IsEnable();
+        CaptureRequestedIfNeeded();
         isReactionSurprise_ = true;
 
         if (chattableIcon_) chattableIcon_->SetEnable(false);
@@ -64,20 +68,41 @@ namespace GamePlay::Ui
             return;
 
         isReactionSurprise_ = false;
-        if (chattableIcon_) chattableIcon_->SetEnable(savedChattable_);
-        if (chattingIcon_)  chattingIcon_ ->SetEnable(savedChatting_);
-        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(savedSurprise_);
+        Apply();
     }
 
-    void BillBoardNpcChatIcon::SetIconEnable(GameObject::IGameObject* icon, bool& reactionSaved, const bool enable) const
+    void BillBoardNpcChatIcon::SetObjectiveSurprise(const bool enable)
     {
-        if (!icon)
+        if (isObjectiveSurprise_ == enable)
             return;
 
+        CaptureRequestedIfNeeded();
+        isObjectiveSurprise_ = enable;
+        Apply();
+    }
+
+    void BillBoardNpcChatIcon::CaptureRequestedIfNeeded()
+    {
+        if (hasRequested_ || isReactionSurprise_)
+            return;
+
+        hasRequested_       = true;
+        requestedChattable_ = chattableIcon_ && chattableIcon_->IsEnable();
+        requestedChatting_  = chattingIcon_  && chattingIcon_ ->IsEnable();
+        requestedSurprise_  = surpriseIcon_  && surpriseIcon_ ->IsEnable();
+    }
+
+    void BillBoardNpcChatIcon::Apply()
+    {
+        // NOTE: リアクションの間はリアクションが見た目を持つ。終わったら頼まれた状態に戻す
         if (isReactionSurprise_)
-            reactionSaved = enable;
-        else
-            icon->SetEnable(enable);
+            return;
+
+        // 目的の相手は「話せる」の代わりに驚きアイコンを出す。話しかけられる距離の表示(chatting)はそのまま
+        const bool objective = isObjectiveSurprise_ && isShow_;
+        if (chattableIcon_) chattableIcon_->SetEnable(requestedChattable_ && !objective);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(requestedChatting_);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(requestedSurprise_ || objective);
     }
 
     void BillBoardNpcChatIcon::OnDrawGui()

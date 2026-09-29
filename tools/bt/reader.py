@@ -58,6 +58,8 @@ class _Ctx:
         #: Tree.kind。ActionNode ラッパーを最初に見たときに設定する（1ファイルに
         #: 混在する種別は1つだけ - _read_node 参照）。
         self.tree_kind: Optional[str] = None
+        #: action fqn -> そのファイルでの CEREAL_CLASS_VERSION（最初のインスタンスにしか書かれない）。
+        self.action_versions: dict[str, int] = {}
 
     # -- ポインタスロット ---------------------------------------------------
     def ptr_slot(self, slot: OrderedObj):
@@ -307,7 +309,9 @@ def _read_node(ctx: _Ctx, slot: OrderedObj):
     cat_entry = ctx.cat.action_by_fqn(a["fqn"])
     action_v, blob = _tag_action_data(ctx, a["data"], cat_entry)
     if action_v < 0:
-        action_v = int(cat_entry.get("version", 0)) if cat_entry else 0
+        action_v = ctx.action_versions.get(
+            a["fqn"], int(cat_entry.get("version", 0)) if cat_entry else 0)
+    ctx.action_versions.setdefault(a["fqn"], action_v)
     return model.Action(guid=guid, pos=pos, name=name, type_fqn=a["fqn"],
                         action_version=action_v, params=blob)
 

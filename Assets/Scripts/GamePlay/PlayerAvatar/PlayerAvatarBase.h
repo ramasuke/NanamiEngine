@@ -24,6 +24,7 @@
 #include "../../Core/Game/PlayerAvatar/Wakeable/IPlayerWakeable.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/IVirtualCameraTarget.h"
+#include "Packages/ControlLock/ControlLock.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -57,21 +58,13 @@ namespace GamePlay::PlayerAvatar
         [[nodiscard]] IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const override { return *stateMachine_; }
         [[nodiscard]] const StateMachine& GetStateMachine() const { return *stateMachine_; }
         [[nodiscard]] const InputAction& GetInputAction() const { return *inputAction_; }
-        /** @brief PlayerAvatar<T>のCameraを取得 */
         [[nodiscard]] Component::RigidBody& RigidBody() const override { return *rigidBody_.lock(); }
         [[nodiscard]] GameObject::Transform& PlayerTransform() const override { return Transform(); }
         [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
         void SaveStatus() override;
-        /**
-         * @brief 職業を問わないクエスト(QuestJournal)をこのアバターのものにする。手元で操作するアバターだけが呼ぶ。
-         * 保存済みの状態から読み直すので、ステータスを読み込んだ直後に呼ぶ
-         */
-        void BindQuestJournal();
-        void EnableStateMachiine() override;
-        void DisableStateMachine() override;
-        [[nodiscard]] bool IsAcceptingControl() const override;
 
-    protected:
+        void BindQuestJournal();
+        [[nodiscard]] bool IsAcceptingControl() const override;
         [[nodiscard]] std::weak_ptr<CameraGroup> AvatarCameraGroup() const { return cameraGroup_; }
 
     private:
@@ -82,6 +75,7 @@ namespace GamePlay::PlayerAvatar
         void OnDestroy               () override;
         void BasedOnDrawgui          () override;
         void SubscribeStateToAnimator();
+        void ApplyControlLock(bool canRelease);
         void OnTakeDamage(std::unique_ptr<GameCore::IDamage> context) override
         {
             status_->AddOnDamageStack(std::move(context));
@@ -189,8 +183,18 @@ namespace GamePlay::PlayerAvatar
     void PlayerAvatarBase<TraitsT>::OnUpdate()
     {
         inputAction_ ->OnUpdate();
+        ApplyControlLock(true);
         stateMachine_->OnUpdate();
         status_      ->OnUpdate();
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::ApplyControlLock(const bool canRelease)
+    {
+        if (!isOwner_)
+            return;
+
+        stateMachine_->ApplyControlLock(NanamiEngine::ControlLock::Service::Instance().IsLocked(), canRelease);
     }
 
     template <RequireType::Traits TraitsT>
@@ -202,6 +206,7 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::OnFixedUpdate()
     {
+        ApplyControlLock(false);
         stateMachine_->OnFixedUpdate();
     }
 
@@ -266,22 +271,10 @@ namespace GamePlay::PlayerAvatar
         journal.Reload();
         journal.Adopt(status_->Quest().ReleaseLegacyQuests());
         journal.OnRewarded()
-            .Subscribe([this](const GameCore::StatusParameter::Money& reward)
+            .Subscribe([this](const GameCore::Reward::Rewards& rewards)
             {
-                status_->Wallet().Earn(reward);
+                GameCore::Reward::RewardList::GrantToLocalPlayer(rewards, status_->Wallet());
             }).AddTo(this);
-    }
-
-    template <RequireType::Traits TraitsT>
-    void PlayerAvatarBase<TraitsT>::EnableStateMachiine()
-    {
-        stateMachine_->OnEnable();
-    }
-
-    template <RequireType::Traits TraitsT>
-    void PlayerAvatarBase<TraitsT>::DisableStateMachine()
-    {
-        stateMachine_->OnDisable();
     }
 
     template <RequireType::Traits TraitsT>
@@ -347,8 +340,8 @@ namespace GamePlay::PlayerAvatar
         return featStep_->Transform().GetWorldPos();
     }
 
-    // PlayerAvatarBase<Traits>をcerealに登録するマクロ
-    // NOTE: PLAYER_AVATAR_BASE_CLASS_VERSION はヘッダ、REGISTER_PLAYER_AVATAR_BASE は .cpp に書く
+// PlayerAvatarBase<Traits>をcerealに登録するマクロ
+// NOTE: PLAYER_AVATAR_BASE_CLASS_VERSION はヘッダ、REGISTER_PLAYER_AVATAR_BASE は .cpp に書く
 #define PLAYER_AVATAR_BASE_CLASS_VERSION(TraitsType)                             \
 CEREAL_CLASS_VERSION(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 4)

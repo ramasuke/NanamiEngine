@@ -73,8 +73,8 @@ void GameObject::ComponentGroup::OnDrawGui()
             {
                 if (const auto it = std::ranges::find(components_, component); it != components_.end())
                 {
-                    Core::Application::ApplicationBase::ObjectRegistry().Unregister(component->GetGuid(), *component);
-                    components_.erase(it);
+                    DestroyComponent(component);
+                    std::erase(components_, component);
                 }
                 ImGui::EndPopup();
                 break;
@@ -102,12 +102,17 @@ void GameObject::ComponentGroup::OnDestroy()
 {
     for (const auto& component : components_)
     {
-        component->OnDestroy();
-        // OnDestroy の中ではまだトークンを使えるよう、切るのはその後
-        component->ImplementCancelOnDestroy();
-        // InitComponentGroup で行った登録を外す
-        Core::Application::ApplicationBase::ObjectRegistry().Unregister(component->GetGuid(), *component);
+        DestroyComponent(component);
     }
+}
+
+void GameObject::ComponentGroup::DestroyComponent(const std::shared_ptr<Component::ComponentBase>& component)
+{
+    component->OnDestroy();
+    // OnDestroy の中ではまだトークンを使えるよう、切るのはその後
+    component->ImplementCancelOnDestroy();
+    // InitComponentGroup で行った登録を外す
+    Core::Application::ApplicationBase::ObjectRegistry().Unregister(component->GetGuid(), *component);
 }
 
 void GameObject::ComponentGroup::MoveAdd(const std::shared_ptr<Component::ComponentBase>& move)

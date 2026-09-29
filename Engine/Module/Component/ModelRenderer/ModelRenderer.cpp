@@ -361,7 +361,10 @@ namespace NanamiEngine::Module::Component
     void ModelRenderer::OnDestroy()
     {
         if (modelDxLibHandle_ != -1)
+        {
             MV1DeleteModel(modelDxLibHandle_);
+            modelDxLibHandle_ = -1;
+        }
     }
 
     void ModelRenderer::OnDrawGui()

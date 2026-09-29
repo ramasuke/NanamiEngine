@@ -15,12 +15,6 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief タイトル画面の見た目。黒から明ける → 題字が浮かぶ →「ボタンを押してください」が息をする → メニュー。
-     *
-     * メニューは右寄せの文字列で、選んでいる行の後ろに墨を掃いた帯 (selectBand_) を滑らせる。
-     * 入力は TitleScreenPresenter が読む。時間は壁時計で進める (シーン切り替え中の DeltaTime 0 に引きずられない)
-     */
     class TitleScreenUi final : public Component::ComponentBase,
                                 public LifeCycleCallback::IStartable,
                                 public LifeCycleCallback::IUpdatable
@@ -31,14 +25,11 @@ namespace GamePlay::Ui
         static constexpr int EXIT_INDEX     = 2;
         static constexpr int MENU_COUNT     = 3;
 
-        /** @brief 出だしの演出を飛ばして、題字と「ボタンを押してください」まで出し切る */
         void SkipIntro();
         void ShowMenu();
-        /** @brief メニューを畳んで「ボタンを押してください」に戻る */
         void HideMenu();
         void SetSelection(int index);
         void SetStartLabel(const std::string& label) const;
-        /** @brief 設定画面を重ねている間は、題字とメニューを薄く消しておく */
         void SetCovered(bool isCovered);
 
         [[nodiscard]] bool IsIntroFinished() const { return phase_ != Phase::Intro; }
@@ -83,7 +74,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float logoFade_secs_ = 1.8f;
         [[serialize(0)]] float pressDelay_secs_ = 3.2f;
         [[serialize(0)]] float pressFade_secs_ = 0.8f;
-        // 「ボタンを押してください」がゆっくり明滅する周期
+        
         [[serialize(0)]] float pressPulsePeriod_secs_ = 2.6f;
         [[serialize(0)]] float pressPulseMinRate_ = 0.35f;
         [[serialize(0)]] float menuFade_secs_ = 0.3f;
@@ -98,18 +89,18 @@ namespace GamePlay::Ui
         float introElapsed_secs_ = 0.0f;
         float pressElapsed_secs_ = 0.0f;
         float menuElapsed_secs_ = 0.0f;
-        /** 1 でメニューが出切り、0 で畳み切り */
+        
         float menuRate_ = 0.0f;
         bool isMenuShown_ = false;
         int selection_ = START_INDEX;
         std::array<glm::vec3, MENU_COUNT> menuBasePos_{};
         glm::vec3 bandBasePos_ = glm::vec3(0.0f);
         float bandOffsetY_ = 0.0f;
-        /** 帯が今いる行の文字の y (上端) */
+        
         float bandY_ = 0.0f;
         int lastTickMs_ = 0;
         bool isCovered_ = false;
-        /** 1 で設定画面の下に消え切り */
+        
         float coverRate_ = 0.0f;
 
 #pragma region Serialization Function

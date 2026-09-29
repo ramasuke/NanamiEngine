@@ -30,6 +30,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] std::shared_ptr<const MagicCasterAvatarStateBase> CurrentStateValue() const;
 
     private:
+        [[nodiscard]] bool YieldsToControlLock() const override;
+
         NanamiEngine::R4::ReactiveProperty<std::shared_ptr<MagicCasterAvatarStateBase>> magicCasterCurrentState_;
         NanamiEngine::R4::SerialDisposable baseStateSubscription_;
     };

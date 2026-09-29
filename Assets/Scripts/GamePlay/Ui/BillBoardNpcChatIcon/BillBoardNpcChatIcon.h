@@ -18,15 +18,22 @@ namespace GamePlay::Ui
         void OnExitChattable();
         void BeginReactionSurprise();
         void EndReactionSurprise();
+        /** @brief 今の目的の相手なら驚きアイコンを出す(ナビ用)。BT の Show/Hide やリアクションとは別に持ち、隠れている間は出さない */
+        void SetObjectiveSurprise(bool enable);
 
     private:
-        void SetIconEnable(GameObject::IGameObject* icon, bool& reactionSaved, bool enable) const;
+        /** @brief BT などが頼んだ状態・リアクション・目的を合わせてアイコンに反映する */
+        void Apply();
+        /** @brief まだ誰も Show/Hide を呼んでいなければ、今の見た目を頼まれた状態とみなす */
+        void CaptureRequestedIfNeeded();
 
         bool isShow_ = true;
-        bool isReactionSurprise_ = false;
-        bool savedChattable_     = false;
-        bool savedChatting_      = false;
-        bool savedSurprise_      = false;
+        bool isReactionSurprise_  = false;
+        bool isObjectiveSurprise_ = false;
+        bool hasRequested_        = false;
+        bool requestedChattable_  = false;
+        bool requestedChatting_   = false;
+        bool requestedSurprise_   = false;
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;

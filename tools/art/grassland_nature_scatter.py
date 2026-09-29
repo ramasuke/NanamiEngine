@@ -629,7 +629,11 @@ def world_matrix_from_trs(trs):
 
 
 def bake_world_matrices(node, parent=mathutil.IDENTITY):
-    world = parent.then(edits._node_local_trs(node))
+    local = edits._node_local_trs(node)
+    # NOTE: エンジンの glm::toMat4 はゼロのクォータニオンを単位行列にする。クォータニオンのまま掛けると子の回転まで消える
+    if not any(local.rot):
+        local = mathutil.Trs(local.pos, (0.0, 0.0, 0.0, 1.0), local.scale)
+    world = parent.then(local)
     node.transform.world_matrix = world_matrix_from_trs(world)
     for child in node.transform.children:
         bake_world_matrices(child, world)

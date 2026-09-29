@@ -11,6 +11,8 @@ namespace
     constexpr int ACTIVE_HOLD_MS = 100;
 
     int lastActiveMs = -ACTIVE_HOLD_MS * 100;
+
+    NanamiEngine::Module::NanamiUi::Button::InputGate buttonInputGate = nullptr;
 }
 
 namespace NanamiEngine::Module
@@ -25,8 +27,31 @@ namespace NanamiEngine::Module
         renderer_ = Components().Catch<IInteractivableRenderer>();  
     }
 
+    void NanamiUi::Button::SetInputGate(const InputGate gate)
+    {
+        buttonInputGate = gate;
+    }
+
+    void NanamiUi::Button::ReleaseInput()
+    {
+        isPressing_ = false;
+        if (!isHovering_)
+            return;
+
+        isHovering_ = false;
+        onHoverExit.OnNext(R4::Unit{});
+        if (const auto renderer = renderer_.lock(); renderer && onIdleSprite_)
+            renderer->SetSprite(onIdleSprite_.get());
+    }
+
     void NanamiUi::Button::OnUpdate()
     {
+        if (buttonInputGate && !buttonInputGate(*this))
+        {
+            ReleaseInput();
+            return;
+        }
+
         lastActiveMs = GetNowCount();
 
         TryHover();

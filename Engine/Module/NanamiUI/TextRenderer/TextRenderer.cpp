@@ -13,6 +13,16 @@ namespace NanamiEngine::Module::NanamiUi
 
     TextRenderer::~TextRenderer()
     {
+        ReleaseTextScreen();
+    }
+
+    void TextRenderer::OnDestroy()
+    {
+        ReleaseTextScreen();
+    }
+
+    void TextRenderer::ReleaseTextScreen()
+    {
         if (textScreen_ != -1)
         {
             DeleteGraph(textScreen_);

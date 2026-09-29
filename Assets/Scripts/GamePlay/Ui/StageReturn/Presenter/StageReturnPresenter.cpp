@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "../Ui_StageReturnNotice.h"
 #include "../../Settings/Presenter/SettingsScreenPresenter.h"
 #include "../../../Sound/UiSoundBank.h"
@@ -14,24 +13,29 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "Packages/ControlLock/ControlLock.h"
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short STAGE_RETURN_STICK_DEADZONE = 12000;
-    }
-
     void StageReturnPresenter::OnStart()
     {
-        view_ = RequireComponent<StageReturnNoticeUi>();
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        view_   = RequireComponent<StageReturnNoticeUi>();
+
+        screen_->OnCovered().Subscribe([this](R4::Unit)
+        {
+            view_->Hide();
+        }).AddTo(this);
+        screen_->OnRevealed().Subscribe([this](R4::Unit)
+        {
+            view_->Open(IsHostLeavingOthers(), selection_);
+        }).AddTo(this);
 
         if (const auto button = view_->ConfirmButton())
         {
             button->OnClick().Subscribe([this](NanamiUi::MouseState)
             {
-                if (phase_ == Phase::Opened)
+                if (screen_->IsFocused() && !isLeaving_)
                     Decide();
             }).AddTo(this);
         }
@@ -39,7 +43,7 @@ namespace GamePlay::Ui
         {
             button->OnClick().Subscribe([this](NanamiUi::MouseState)
             {
-                if (phase_ == Phase::Opened)
+                if (screen_->IsFocused() && !isLeaving_)
                     Close();
             }).AddTo(this);
         }
@@ -50,66 +54,43 @@ namespace GamePlay::Ui
         if (!view_)
             return;
 
-        const Keys keys = ReadKeys();
+        using UiFlow::UiAction;
         const auto avatar = GameCore::PlayerAvatar::Owner();
 
-        // 閉じた ESC / B をジャンプなどに拾わせないよう、State は次のフレームで戻す
-        if (isResumePending_)
+        if (!screen_->IsOpen())
         {
-            isResumePending_ = false;
-            if (avatar)
-                avatar->EnableStateMachiine();
+            if (toggleInput_.IsPressed(UiAction::Menu) && avatar && CanOpen(*avatar))
+                Open();
+            return;
+        }
+        if (isLeaving_ || !screen_->IsFocused())
+            return;
+
+        if (!avatar)
+        {
+            Close(false);
+            return;
         }
 
-        switch (phase_)
-        {
-        case Phase::Closed:
-            if (keys.toggle && !previousKeys_.toggle && avatar && CanOpen(*avatar))
-                Open(*avatar);
-            break;
-
-        case Phase::Opened:
-            if (!avatar)
-                Close(false);
-            else
-                UpdateOpened(keys);
-            break;
-
-        case Phase::Settings:
-            // NOTE: 設定を閉じた ESC / B でこちらまで閉じないよう、戻ったフレームは入力を見ない
-            if (!SettingsScreenPresenter::IsOpen() || settings_.expired())
-            {
-                phase_ = Phase::Opened;
-                view_->Open(IsHostLeavingOthers(), selection_);
-            }
-            break;
-
-        case Phase::Leaving:
-            break;
-        }
-
-        previousKeys_ = keys;
-    }
-
-    void StageReturnPresenter::UpdateOpened(const Keys& keys)
-    {
-        if (keys.prev && !previousKeys_.prev)
+        auto& input = screen_->Input();
+        if (input.IsPressed(UiAction::Up))
             Select(std::max(selection_ - 1, 0));
-        if (keys.next && !previousKeys_.next)
+        if (input.IsPressed(UiAction::Down))
             Select(std::min(selection_ + 1, StageReturnNoticeUi::ROW_COUNT - 1));
 
-        if (keys.cancel && !previousKeys_.cancel)
+        if (input.IsPressed(UiAction::Cancel) || input.IsPressed(UiAction::Menu))
             Close();
-        else if (keys.confirm && !previousKeys_.confirm)
+        else if (input.IsPressed(UiAction::Submit))
             Decide();
     }
 
-    void StageReturnPresenter::Open(GameCore::IPlayerAvatar& avatar)
+    void StageReturnPresenter::Open()
     {
-        phase_ = Phase::Opened;
+        if (!screen_->Open())
+            return;
+
         // 誤って決めても帰らないよう、開いたときは「まだ残る」
         selection_ = StageReturnNoticeUi::STAY_INDEX;
-        avatar.DisableStateMachine();
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
         view_->Open(IsHostLeavingOthers(), selection_);
     }
@@ -118,9 +99,8 @@ namespace GamePlay::Ui
     {
         if (withSound)
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
-        phase_ = Phase::Closed;
-        isResumePending_ = true;
         view_->Hide();
+        screen_->Close();
     }
 
     void StageReturnPresenter::Select(const int index)
@@ -146,9 +126,8 @@ namespace GamePlay::Ui
             return;
         }
 
-        // 貼り紙はロード画面の下に隠れるまで出したままにし、シーンごと片付けられる
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Confirm);
-        phase_ = Phase::Leaving;
+        isLeaving_ = true;
         GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::MainIsland);
     }
 
@@ -161,35 +140,14 @@ namespace GamePlay::Ui
             return;
         }
 
-        settings_ = SettingsScreenPresenter::Open(*prefab);
-        if (settings_.expired())
-            return;
-
-        // プレイヤーの State は止めたまま、貼り紙だけを隠す
-        phase_ = Phase::Settings;
-        view_->Hide();
-    }
-
-    StageReturnPresenter::Keys StageReturnPresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-
-        return Keys{
-            .toggle  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::Start),
-            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > STAGE_RETURN_STICK_DEADZONE,
-            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -STAGE_RETURN_STICK_DEADZONE,
-            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
-            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B)
-                       || xInput.IsDown(GamepadButton::Start),
-        };
+        (void)SettingsScreenPresenter::Open(*prefab);
     }
 
     bool StageReturnPresenter::CanOpen(const GameCore::IPlayerAvatar& avatar)
     {
-        // 会話・店・掲示板などで State を止めている間と、倒れている間は出さない
-        return avatar.IsAcceptingControl()
+        return UiFlow::ScreenStack::Instance().IsEmpty()
+            && !ControlLock::Service::Instance().IsLocked()
+            && avatar.IsAcceptingControl()
             && !avatar.PlayerStatus().IsDeath()
             && !GameCore::Game::Instance().Scenes().HasPendingChange();
     }
@@ -212,7 +170,7 @@ namespace GamePlay::Ui
     {
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
         ImGuiHelper::OnDrawInputField("settingsPrefab_", settingsPrefab_);
-        ImGui::Text("phase: %d  selection: %d", static_cast<int>(phase_), selection_);
+        ImGui::Text("selection: %d  leaving: %d", selection_, isLeaving_ ? 1 : 0);
     }
 }
 

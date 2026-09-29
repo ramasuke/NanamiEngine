@@ -12,12 +12,8 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /**
-     * @brief Animator がアニメーションを適用した後に首・頭のボーンを回し、ターゲットの方を見させる
-     * @note  bones_ は親から子の順に並べる。回転量は weight の比で各ボーンに配分する
-     */
     class NANAMI_API LookAtBone final : public ComponentBase,
-                             public IAnimationPoseModifier
+                                        public IAnimationPoseModifier
     {
     public:
         struct NANAMI_API BoneWeight
@@ -33,9 +29,7 @@ namespace NanamiEngine::Module::Component
             }
         };
 
-        /** @brief 見るワールド座標。nullopt で正面に戻る */
         void SetTarget(const std::optional<glm::vec3>& worldPos) { target_ = worldPos; }
-        /** @brief 足元から最後のボーン(頭)までの高さ。一度も姿勢を計算していなければ nullopt */
         [[nodiscard]] std::optional<float> HeadHeight() const { return headHeight_; }
 
     private:
@@ -47,6 +41,7 @@ namespace NanamiEngine::Module::Component
         [[serialize(0)]] std::vector<BoneWeight> bones_ = { { "mixamorig:Neck", 0.4f }, { "mixamorig:Head", 0.6f } };
         [[serialize(0)]] float maxYawDeg_       = 70.0f;
         [[serialize(0)]] float maxPitchDeg_     = 25.0f;
+        
         // これより後ろにいる相手は見ようとせず正面に戻る
         [[serialize(0)]] float giveUpYawDeg_    = 110.0f;
         [[serialize(0)]] float followSharpness_ = 6.0f;

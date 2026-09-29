@@ -1,26 +1,12 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
-#include <cstdint>
 #include "ByteBuffer/Packet_ByteBuffer.h"
+#include "NetworkSystem_PacketType.h"
+#include "NetworkSystem_DeliveryMode.h"
+#include "NetworkSystem_DefaultPacketType.h"
 
 namespace NanamiEngine::Core::Network
 {
-    typedef std::uint8_t PacketType;
-
-    enum class DeliveryMode : uint8_t { Reliable = 0, Unreliable = 1 };
-
-    enum class DefaultPacketType : PacketType
-    {
-        AssignPlayerId     = 0,
-        SpawnNetworkObject = 1,
-        SyncTransform      = 2,
-        SyncAnimation      = 3,
-        SyncParameter      = 4,
-        Rpc                = 5,
-        PlayerLeft         = 6,
-        OwnershipSnapshot  = 7,
-    };
-
     struct NANAMI_API Packet final
     {
         template<typename EPacketType>

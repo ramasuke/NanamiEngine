@@ -18,6 +18,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
         
 
+        static constexpr float MIN_ROLL_BEFORE_COUNTER_SECS = 0.08f;
+
         bool isAvoided_ = false;
     };
 }

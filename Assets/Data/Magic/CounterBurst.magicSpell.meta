@@ -1,0 +1,108 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/CounterBurst.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "A5E96D56-123E-4AC0-B7C0-086E591D7E1C"
+                    }
+                },
+                "displayName_": "反撃衝",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "B48DA026-F819-4337-9980-FB73381A02AB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "6AE446AC-9F0A-4D25-BA5E-FE83BC87ADF0"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 0.0,
+                "cooldown_secs_": 0.0,
+                "castFireTime_secs_": 0.2,
+                "castTotalDuration_secs_": 0.6,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::AreaSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 1,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "blastPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "137E6A45-B340-4935-9D34-C6F7C7F62000"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 1,
+                                "value_": 35,
+                                "flinchPower_": 60
+                            },
+                            "delay_secs_": 0.0,
+                            "range_": 120.0,
+                            "centerOnCaster_": true
+                        }
+                    }
+                },
+                "castMotion_": 12,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "A66AAB2A-4CA5-4B87-B2FE-61914381DA7B"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

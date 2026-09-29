@@ -150,11 +150,14 @@ namespace GamePlay::Ui
         const int step = to > from ? 1 : -1;
         for (int rate = from; rate != to; rate += step)
         {
-            const auto locked = renderer.lock();
-            if (!locked)
-                co_return;
+            // NOTE: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
+            {
+                const auto locked = renderer.lock();
+                if (!locked)
+                    co_return;
 
-            locked->SetBlendRate(rate);
+                locked->SetBlendRate(rate);
+            }
             co_await Coroutine::WaitYield();
         }
 
@@ -168,11 +171,14 @@ namespace GamePlay::Ui
         const int step = to > from ? 1 : -1;
         for (int rate = from; rate != to; rate += step)
         {
-            const auto locked = renderer.lock();
-            if (!locked)
-                co_return;
+            // NOTE: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
+            {
+                const auto locked = renderer.lock();
+                if (!locked)
+                    co_return;
 
-            locked->SetBlendRate(rate);
+                locked->SetBlendRate(rate);
+            }
             co_await Coroutine::WaitYield();
         }
 

@@ -49,7 +49,9 @@ ROW_LEFT, ROW_RIGHT = 636, 1788
 LABEL_X, VALUE_CX, ARROW_DX = 660, 1560, 150
 SCROLL_X, SCROLL_THUMB_H = 1812, 60
 DESC = (40, 918, 960, 1004)
-HINTS = [('UpDown', '▲▼', '選ぶ'), ('LeftRight', '←→', '切り替える'), ('Cancel', 'B', 'もどる')]
+# キーボードの札。パッドの札は device_hint.py (Tab = LB RB、Cancel = B)
+HINTS = [('Tab', 'Q E', '切り替え'), ('UpDown', '▲▼', '選ぶ'), ('LeftRight', '←→', '切り替える'),
+         ('Cancel', 'Esc', 'もどる')]
 HINT_RIGHT, HINT_Y, HINT_TAG_H, HINT_PX = 1856, 1000, 42, 26
 
 
@@ -92,6 +94,8 @@ def layout():
 
 
 def hint_width(glyph):
+    if glyph == 'Q E':
+        return 84
     return 68 if len(glyph) > 1 else 46
 
 

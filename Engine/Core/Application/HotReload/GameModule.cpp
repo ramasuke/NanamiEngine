@@ -23,6 +23,8 @@
 #include "../../../Module/Serialization/Engine_Module_SharedStaticObject.h"
 #include "../../../../Packages/DebugSheet/DebugSheetConfig.h"
 #include "../../../../Packages/DebugSheet/Core/DebugSheet.h"
+#include "../../../../Packages/ControlLock/ControlLock.h"
+#include "../../../../Packages/UiFlow/Screen/UiFlow_ScreenStack.h"
 
 namespace NanamiEngine::Core::Application::HotReload
 {
@@ -170,6 +172,8 @@ namespace NanamiEngine::Core::Application::HotReload
 
         // 1-3. Game.dll のコードを指すものを全部捨てる
         gameWindow->UnloadAllScenes();
+        UiFlow::ScreenStack::Instance().Clear();
+        ControlLock::Service::Instance().Clear();
         ApplicationBase::ReleaseAssetsDirectory();
         const std::size_t removedMainWindows  = ApplicationBase::MainWindows ().RemoveWindowsOfModule(oldModule);
         const std::size_t removedPopupWindows = ApplicationBase::PopupWindows().RemoveWindowsOfModule(oldModule);

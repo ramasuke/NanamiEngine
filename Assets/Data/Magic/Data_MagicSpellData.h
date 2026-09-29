@@ -17,7 +17,6 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto MAGIC_SPELL_DATA_EXTENSION_LABEL = ".magicSpell";
 
-    // 魔法1つ分の定義。共通の数値だけを持ち、何が起きるかは effect_ の実装に任せる
     class MagicSpellData final : public ScriptableObject,
                                  public GameCore::Magic::IMagicSpell
     {

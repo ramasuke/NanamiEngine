@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.scene import model  # noqa: E402
 
+import device_hint  # noqa: E402
 import settings_screen as art  # noqa: E402
 from event_board_prefab import ALIGN_CENTER, FONT_BODY, FONT_BRUSH, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
@@ -38,6 +39,9 @@ ORDER_HINT_TEXT = 7731
 
 # BlackMask を画面いっぱいに敷く中心と倍率 (stage_return.py の veil_black と同じ)
 BACKDROP = ((960, 540), 0.47)
+
+# パッドで絵を差し替える札 (device_hint.ROLES)
+HINT_ROLES = {'Tab': 'tab', 'Cancel': 'cancel'}
 
 
 def sprite_guid(name):
@@ -60,6 +64,18 @@ def put_text(b, parent, name, spec, s, color, order=ORDER_TEXT, font=FONT_BODY, 
     """spec は (x, 中心 y, px)。TextRenderer は上辺に置くので art.text_top で直す"""
     x, cy, px = spec
     return text(b, parent, name, (x, art.text_top(cy, px)), px, s, color, order, font=font, align=align)
+
+
+def build_hints(b, parent, L):
+    hints = b.node(parent, 'Hints')
+    for h in L['hints']:
+        node = b.node(hints, h['key'])
+        sprite = f'Settings_Hint_{h["key"]}'
+        image(b, node, 'Tag', h['tag'], sprite, ORDER_HINT)
+        if h['key'] in HINT_ROLES:
+            device_hint.attach(b, node.transform.children[-1], HINT_ROLES[h['key']], sprite_guid(sprite))
+        put_text(b, node, 'Label', h['text'], h['label'], (240, 226, 202), order=ORDER_HINT_TEXT)
+    return hints
 
 
 def build_tab():
@@ -122,11 +138,7 @@ def build_screen(tab_guid, row_guid):
     image(b, visual, 'Desc', L['desc'], 'Settings_Desc', ORDER_PLATE)
     desc = put_text(b, visual, 'DescText', L['desc_text'], '', art.CREAM)
 
-    hints = b.node(visual, 'Hints')
-    for h in L['hints']:
-        node = b.node(hints, h['key'])
-        image(b, node, 'Tag', h['tag'], f'Settings_Hint_{h["key"]}', ORDER_HINT)
-        put_text(b, node, 'Label', h['text'], h['label'], (240, 226, 202), order=ORDER_HINT_TEXT)
+    build_hints(b, visual, L)
 
     ui = b.component(root, 'SettingsScreenUi',
                      tabPitch_px_=float(art.TAB_PITCH), rowPitch_px_=float(art.ROW_H),
@@ -144,6 +156,8 @@ def build_screen(tab_guid, row_guid):
 
     presenter = b.component(root, 'SettingsScreenPresenter')
     b.field(presenter, 'uiSounds_', UI_SOUNDS)
+    b.component(root, 'UiScreen', screenId_='Settings', locksPlayerControl_='true', destroysOnClose_='true',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
     return save_prefab(prefab, PREFAB_DIR, 'SettingsScreen')[0]
 
 

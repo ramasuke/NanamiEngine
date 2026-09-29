@@ -67,6 +67,9 @@ namespace GameCore::Network
         /** 敵固有 */
         EnemyHealth,
         ShowBossHealthGauge,
+
+        /** 汎用演出RPC */
+        FadeBgm,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -125,4 +128,7 @@ namespace GameCore::Network
 
     /** ボスHPゲージの表示開始。ボスの NetworkObjectId 宛て */
     using ShowBossHealthGaugeRpc = Module::Network::RpcDef<ERpcType::ShowBossHealthGauge>;
+
+    /** 次に流す BGM (無ければ無音にするだけ)、今の BGM を下げる秒数、次の BGM を上げる秒数 */
+    using FadeBgmRpc = Module::Network::RpcDef<ERpcType::FadeBgm, std::optional<Guid>, float, float>;
 }

@@ -10,9 +10,12 @@ namespace NanamiEngine
     int   Time::isSkipNextFrame_ = 0;
     float Time::fixedAlpha_      = 0.0f;
     float Time::fixedDeltaTime_  = 1.0f / 60.0f;
+    std::uint64_t Time::frameCount_ = 0;
 
     void Time::Update()
     {
+        ++frameCount_;
+
         if (isSkipNextFrame_ > 0)
         {
             isSkipNextFrame_--;
@@ -52,6 +55,11 @@ namespace NanamiEngine
     int Time::NowMilliseconds()
     {
         return GetNowCount();
+    }
+
+    std::uint64_t Time::FrameCount()
+    {
+        return frameCount_;
     }
 
     void Time::SetTimeScale(const float scale)

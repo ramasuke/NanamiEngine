@@ -102,7 +102,11 @@ void Component::SkyDome3D::OnDebugRender()
 
 void Component::SkyDome3D::OnDestroy()
 {
-    MV1DeleteModel(skyDomeModelDxLibHandle_);
+    if (skyDomeModelDxLibHandle_ != -1)
+    {
+        MV1DeleteModel(skyDomeModelDxLibHandle_);
+        skyDomeModelDxLibHandle_ = -1;
+    }
 }
 
 void Component::SkyDome3D::OnDrawGui()

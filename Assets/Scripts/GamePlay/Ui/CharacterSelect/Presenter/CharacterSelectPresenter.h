@@ -4,6 +4,7 @@
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/CharacterSelectModel.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "Packages/UiFlow/UiFlow.h"
 
 namespace GamePlay::Ui
 {
@@ -36,29 +37,22 @@ namespace GamePlay::Ui
     private:
         void OnStart  () override;
         void OnUpdate () override;
-        void OnDestroy() override;
 
         void Open();
-        [[nodiscard]] bool IsAnotherOpen() const;
         /** @brief 開く前に捨てる。アバターや展示台のカメラには触らない */
         void Discard();
         void Confirm();
         /** @param didSwitch 差し替えた後は新しいアバターが操作可能な状態で出来ているので、元のアバターは触らない */
         void Close(bool didSwitch);
 
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<CharacterSelectUi> view_;
         std::unique_ptr<CharacterSelectModel> model_;
         std::weak_ptr<GameCore::IPlayerAvatar> suspendedAvatar_;
         std::weak_ptr<Prop::CharacterPodium> podium_;
 
-        bool wasPrevPressed_    = false;
-        bool wasNextPressed_    = false;
-        bool wasConfirmPressed_ = false;
-        bool wasCancelPressed_  = false;
         bool isClosed_ = false;
         bool hasStarted_ = false;
-        // 会話のたびに二重に生えるのを防ぐ
-        bool isOpen_ = false;
 
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 

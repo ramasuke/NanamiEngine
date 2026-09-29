@@ -39,6 +39,15 @@ namespace NanamiEngine::Module::Asset
         /** ジャンプ攻撃の振りかぶりを終えて急降下を始めた瞬間に1回鳴らす */
         [[nodiscard]] SoundFile& JumpAttackPlungeSound() const { return *jumpAttackPlungeSound_.get(); }
         [[nodiscard]] bool HasJumpAttackPlungeSound() const { return static_cast<bool>(jumpAttackPlungeSound_); }
+        /** カウンター攻撃の空振り/ヒット音。未設定なら attackWhiffSound_ / attackHitSound_ を鳴らす */
+        [[nodiscard]] const FIELD(SoundFile)& CounterAttackWhiffSound() const { return counterAttackWhiffSound_; }
+        [[nodiscard]] const FIELD(SoundFile)& CounterAttackHitSound  () const { return counterAttackHitSound_;   }
+        /** カウンター攻撃の判定の瞬間にアバターの足元・向きで出す縦の一閃 (空振りでも出す) */
+        [[nodiscard]] PrefabGameObjectFile& CounterSlashParticlePrefab() const { return *counterSlashParticlePrefab_.get(); }
+        [[nodiscard]] bool HasCounterSlashParticlePrefab() const { return static_cast<bool>(counterSlashParticlePrefab_); }
+        /** カウンター攻撃が当たったとき攻撃判定の位置に出す衝撃 */
+        [[nodiscard]] PrefabGameObjectFile& CounterImpactParticlePrefab() const { return *counterImpactParticlePrefab_.get(); }
+        [[nodiscard]] bool HasCounterImpactParticlePrefab() const { return static_cast<bool>(counterImpactParticlePrefab_); }
         /** ステージ開始時に持っているアイテム。ポーチはセーブに乗せず毎回ここから作り直す */
         [[nodiscard]] const std::vector<ItemStack>& InitialItems() const { return initialItems_; }
         [[nodiscard]] SoundFile& AvoidRollingSound    () const { return *avoidRollingSound_    .get(); }
@@ -174,6 +183,10 @@ namespace NanamiEngine::Module::Asset
         [[serialize(24)]] float                         avoidRollingEndSpeed_        = 20.0f;
         [[serialize(25)]] float                         attackBlockedParticleSurfaceOffset_ = 5.0f;
         [[serialize(25)]] std::vector<std::string>      locomotionClipNames_ = { "Idle", "Walk", "Run", "InjuredWalk", "InjuredRun", "Jump", "Fall" };
+        [[serialize(26)]] FIELD(SoundFile)              counterAttackWhiffSound_;
+        [[serialize(26)]] FIELD(SoundFile)              counterAttackHitSound_;
+        [[serialize(26)]] FIELD(PrefabGameObjectFile)   counterSlashParticlePrefab_;
+        [[serialize(26)]] FIELD(PrefabGameObjectFile)   counterImpactParticlePrefab_;
 
         
 #pragma region Serialization Function
@@ -258,6 +271,10 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(avoidRollingEndSpeed_));
             archive(CEREAL_NVP(attackBlockedParticleSurfaceOffset_));
             archive(CEREAL_NVP(locomotionClipNames_));
+            archive(CEREAL_NVP(counterAttackWhiffSound_));
+            archive(CEREAL_NVP(counterAttackHitSound_));
+            archive(CEREAL_NVP(counterSlashParticlePrefab_));
+            archive(CEREAL_NVP(counterImpactParticlePrefab_));
         }
 
         template<class Archive>
@@ -408,11 +425,18 @@ namespace NanamiEngine::Module::Asset
             if (version >= 24) archive(CEREAL_NVP(avoidRollingEndSpeed_));
             if (version >= 25) archive(CEREAL_NVP(attackBlockedParticleSurfaceOffset_));
             if (version >= 25) archive(CEREAL_NVP(locomotionClipNames_));
+            if (version >= 26)
+            {
+                archive(CEREAL_NVP(counterAttackWhiffSound_));
+                archive(CEREAL_NVP(counterAttackHitSound_));
+                archive(CEREAL_NVP(counterSlashParticlePrefab_));
+                archive(CEREAL_NVP(counterImpactParticlePrefab_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 25);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 26);
 #pragma endregion

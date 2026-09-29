@@ -26,6 +26,10 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] bool IsPlaying() const;
         /** @brief 音量 0..255。鳴っている最中にも効く (アセット設定の volume_ は変えない) */
         void SetVolume(int volume) const;
+        /** @brief アセットに設定された音量 0..255 */
+        [[nodiscard]] int GetVolume() const { return volume_; }
+        /** @brief SetVolume で最後に指定された音量 0..255 */
+        [[nodiscard]] int GetCurrentVolume() const { return currentVolume_; }
         /** @brief 次の再生 1 回だけの音量 0..255 */
         void SetNextPlayVolume(int volume) const;
         void Set3DPosition(const glm::vec3& position) const;

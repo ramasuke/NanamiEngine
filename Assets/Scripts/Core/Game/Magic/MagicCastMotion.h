@@ -19,6 +19,8 @@ namespace GameCore::Magic
         TwoHandBeam      = 9,
         TwoHandPushHold  = 10,
         TwoHandPray      = 11,
+        /** ジャスト回避後のカウンター魔法。TwoHandBurst の放出直前から速めに再生する */
+        CounterBurst     = 12,
     };
 
     constexpr std::array MAGIC_CAST_MOTIONS
@@ -35,6 +37,7 @@ namespace GameCore::Magic
         MagicCastMotion::TwoHandBeam,
         MagicCastMotion::TwoHandPushHold,
         MagicCastMotion::TwoHandPray,
+        MagicCastMotion::CounterBurst,
     };
 
     constexpr std::string_view ToString(const MagicCastMotion motion)
@@ -53,6 +56,7 @@ namespace GameCore::Magic
         case MagicCastMotion::TwoHandBeam:      return "TwoHandBeam";
         case MagicCastMotion::TwoHandPushHold:  return "TwoHandPushHold";
         case MagicCastMotion::TwoHandPray:      return "TwoHandPray";
+        case MagicCastMotion::CounterBurst:     return "CounterBurst";
         }
         return "Unknown";
     }

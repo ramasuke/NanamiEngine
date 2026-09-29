@@ -3,6 +3,7 @@
 #include "ArmStretch/SwordManAvatarArmStretchState.h"
 #include "Attack/Charge/SwordManAvatarChargeAttackChargingState.h"
 #include "Attack/Charge/SwordManAvatarChargeAttackReleaseState.h"
+#include "Attack/Counter/SwordManAvatarCounterAttackState.h"
 #include "Attack/Dash/SwordManAvatarDashAttackState.h"
 #include "Attack/Jump/SwordManAvatarJumpAttackAirState.h"
 #include "Attack/Jump/SwordManAvatarJumpAttackLandState.h"
@@ -78,6 +79,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         return swordManCurrentState_.Value();
     }
 
+    bool SwordManAvatarStateMachine::YieldsToControlLock() const
+    {
+        const auto state = CurrentStateValue();
+        return state && state->ControlAcceptance() != PlayerAvatarControlAcceptance::None;
+    }
+
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(
           const std::shared_ptr<SwordManAvatarStatus     >& status
         , const std::shared_ptr<SwordManAvatarInputAction>& input
@@ -134,6 +141,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::UseItemDrink,       std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemDrink)},
                     {SwordManAvatarStateType::UseItemEat,         std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemEat  )},
                     {SwordManAvatarStateType::UseItemPlace,       std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemPlace)},
+                    {SwordManAvatarStateType::CounterAttack,      std::make_shared<SwordManAvatarCounterAttackState>     (args)},
                 };
             },
             SwordManAvatarStateType::Idle,

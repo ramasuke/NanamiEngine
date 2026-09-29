@@ -11,6 +11,7 @@
 - 座標は船のローカル (船の scale 0.6 の中)。主甲板の上面は y = -60 (FloorCollider の一番大きい箱)。
   船首は -x、船尾楼 (+x) の手前 -z 側 (x 2..41) は船尾楼への階段なので空ける。
   出航時のプレイヤー (PlayerSpawnPosition -> PlayerFirstMoveTargetPos) の通り道 x -40..5, z -3..16 も空ける。
+  着岸時のタラップは +z 舷の x 9 あたりに掛かるので、そこへ降りる道 x -3..21, z 0..38 も空ける。
 - 序章のシーンは ColliderBase が v5 のままで、写し元もその並びなので版はいじらない。
 - DeckProps の guid は GameManage.scene の FirstTouchDownMainIsLandSceneContext.airShipDeckProps_ が指すので、
   2回目以降は前の guid を使い回す。
@@ -44,11 +45,11 @@ TEMPLATES = {
 }
 # (グループ, 種類, x, z, 向き deg, 積む段 (0 = 甲板), 横倒し)
 PROPS = [
-    # 船尾楼の手前 +z 側: 島へ運ぶ荷。木箱を2段に積み、樽を添える。キャビンの扉 (z 0) の前と船尾楼の手すりの際は空ける
-    ('Cargo', 'Crate', 12.0, 23.0, 10.0, 0, False),
-    ('Cargo', 'Crate', 12.0, 23.0, 35.0, 1, False),
+    # 島へ運ぶ荷。木箱の2段積みは船首寄りの +z 側 (砲弾の山の船首側)、残りは降り口を挟んで両脇に置く
+    ('Cargo', 'Crate', -44.0, 24.0, 10.0, 0, False),
+    ('Cargo', 'Crate', -44.0, 24.0, 35.0, 1, False),
     ('Cargo', 'Crate', 24.0, -13.0, -5.0, 0, False),
-    ('Cargo', 'Barrel', 0.0, 29.0, 0.0, 0, False),
+    ('Cargo', 'Barrel', 28.0, 27.0, 0.0, 0, False),
     ('Cargo', 'Barrel', -11.0, 30.0, 40.0, 0, False),
     # 船首寄りの -z 側: 水や酒の樽。1つは横倒し
     ('Barrels', 'Barrel', -40.0, -26.0, 0.0, 0, False),

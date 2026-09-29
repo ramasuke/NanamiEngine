@@ -26,8 +26,10 @@ namespace NanamiEngine::Module::NanamiUi
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
+        void OnDestroy() override;
         void UpdateTextTexture();
         void DrawScreenText() const;
+        void ReleaseTextScreen();
 
     private:
         [[serialize(0)]] FIELD(Asset::TtfFontFile) fontFile_;

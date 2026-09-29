@@ -151,6 +151,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         if (invincibleRemaining_secs_ > 0.0f)
             invincibleRemaining_secs_ = (std::max)(invincibleRemaining_secs_ - Time::DeltaTime(), 0.0f);
 
+        if (counterWindowRemaining_secs_ > 0.0f)
+            counterWindowRemaining_secs_ = (std::max)(counterWindowRemaining_secs_ - Time::DeltaTime(), 0.0f);
+
         assert(stateMachine_ && "SwordManAvatarStatus: stateMachine_ is not set");
         switch (stateMachine_->GetCurrentStateType())
         {
@@ -321,6 +324,12 @@ namespace GameCore::PlayerAvatar::SwordMan
             isStaminaExhausted_ = false;
     }
 
+    void SwordManAvatarStatus::OnJustAvoided()
+    {
+        RestoreStamina(justAvoidStaminaRestore_);
+        counterWindowRemaining_secs_ = counterWindow_secs_;
+    }
+
     void SwordManAvatarStatus::ApplyAttackBuff(const float rate, const float duration_secs)
     {
         if (rate <= 0.0f || duration_secs <= 0.0f)
@@ -343,6 +352,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("minStaminaRatioToResumeRun_", minStaminaRatioToResumeRun_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("justAvoidWindow_secs_", justAvoidWindow_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("justAvoidStaminaRestore_", justAvoidStaminaRestore_);
+        LibCore::ImGuiHelper::OnDrawInputField("counterWindow_secs_", counterWindow_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("counterAttack_", counterAttack_);
+        LibCore::ImGuiHelper::OnDrawInputField("counterHitFeel_", counterHitFeel_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);

@@ -3,11 +3,12 @@
 #include <algorithm>
 
 #include "EventBoardFormat.h"
-#include "../../Format/Ui_MoneyFormat.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_MainStoryQuestBase.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/Condition/Condition_ConditionContext.h"
+#include "../../../../Core/Game/Decoration/Decoration_DecorationCollection.h"
+#include "../../../../Core/Game/Reward/Reward_IReward.h"
 
 namespace GamePlay::Ui
 {
@@ -42,9 +43,10 @@ namespace GamePlay::Ui
             const std::chrono::sys_seconds now,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
             const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
-            const GameCore::Story::StoryProgress* story)
+            const GameCore::Story::StoryProgress& story)
         {
-            const GameCore::Condition::ConditionContext unlockContext{ story, completedQuests, now };
+            const GameCore::Condition::ConditionContext unlockContext{
+                story, completedQuests, now, GameCore::Decoration::DecorationCollection::Instance() };
 
             std::vector<QuestBoardEntry> entries;
             for (const auto& quest : quests)
@@ -60,7 +62,7 @@ namespace GamePlay::Ui
 
                 const auto stage = quest->Stage();
                 entry.placeText  = stage ? stage->DisplayName() : "―";
-                entry.rewardText = quest->Quest() ? FormatMoney(quest->Quest()->RewardMoney().Value()) : "―";
+                entry.rewardText = quest->Quest() ? GameCore::Reward::RewardList::DisplayText(quest->Quest()->Rewards(), unlockContext) : "―";
 
                 const auto end = event ? event->EndTime() : std::nullopt;
                 entry.limitText = end ? FormatEventBoardDateTime(*end) + " まで" : "なし";
@@ -107,7 +109,7 @@ namespace GamePlay::Ui
         const std::chrono::sys_seconds now,
         const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
         const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
-        const GameCore::Story::StoryProgress* story,
+        const GameCore::Story::StoryProgress& story,
         const size_t visibleRowCount)
         : entries_(BuildQuestBoardEntries(quests, now, takingQuests, completedQuests, story))
         , cursor_(entries_.size(), visibleRowCount)

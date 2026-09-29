@@ -36,6 +36,8 @@ namespace GameCore::Scene::Main
         [[nodiscard]] std::optional<SceneType> CurrentSceneType() const { return currentSceneType_; }
         /** @brief 切り替えの要求が残っているか、切り替えの途中(ロード画面が覆っている間)か */
         [[nodiscard]] bool HasPendingChange() const { return pendingRequest_.has_value() || phase_ != Phase::Idle; }
+        /** @brief 入場を終えた今のシーンのコンテキスト。切り替えの途中や入場前は nullptr */
+        [[nodiscard]] std::shared_ptr<SceneContextBase> CurrentContext() const;
         
         template<typename T>
         requires std::derived_from<T, SceneContextBase>

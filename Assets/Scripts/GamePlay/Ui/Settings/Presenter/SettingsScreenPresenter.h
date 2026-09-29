@@ -8,6 +8,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "Packages/UiFlow/UiFlow.h"
 
 namespace GamePlay::Ui
 {
@@ -20,7 +21,7 @@ namespace GamePlay::Ui
      * @brief 設定画面の入力と開け閉め。タイトルとステージの貼り紙から prefab を生成して開く。
      *
      * 値は切り替えた時点で GameSettings に入れ、閉じるときに保存する。閉じたら自分の GameObject ごと消えるので、
-     * 開いた側は IsOpen() が false になったことで閉じたと分かる。プレイヤーの State は開いた側が止める。
+     * 開いた側は IsOpen() が false になったことで閉じたと分かる。
      */
     class SettingsScreenPresenter final : public Component::ComponentBase,
                                           public LifeCycleCallback::IStartable,
@@ -33,18 +34,6 @@ namespace GamePlay::Ui
         [[nodiscard]] static bool IsOpen() { return isOpen_; }
 
     private:
-        struct Keys
-        {
-            bool up      = false;
-            bool down    = false;
-            bool left    = false;
-            bool right   = false;
-            bool prevTab = false;
-            bool nextTab = false;
-            bool confirm = false;
-            bool cancel  = false;
-        };
-
         void OnStart () override;
         void OnUpdate() override;
         void OnDestroy() override;
@@ -55,17 +44,15 @@ namespace GamePlay::Ui
         void Refresh();
         void Close();
 
-        [[nodiscard]] static Keys ReadKeys();
-
         [[serialize(0)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         static inline bool isOpen_ = false;
 
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<SettingsScreenUi> view_;
         size_t category_     = 0;
         size_t selectedRow_  = 0;
         size_t firstVisible_ = 0;
-        Keys   previousKeys_{};
         bool   isOwner_  = false;
         bool   isClosed_ = false;
 

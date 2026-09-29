@@ -14,8 +14,11 @@
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Libs/glm/gtc/quaternion.hpp"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "../../../../../PlayerAvatar/PlayerAvatar.h"
+#include "../../../../../PlayerAvatar/SwordMan/CameraGroup/SwordManAvatarCameraGroup.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/SwordManAvatarStateMachine.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/ArmStretch/SwordManAvatarArmStretchState.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/Walk/SwordManAvatarWalkState.h"
@@ -25,7 +28,6 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
     namespace
     {
-        // 甲板のカメラ(1)やプレイヤーの FollowFromBehind(0) より上に出す
         constexpr int OPENING_SHOT_PRIORITY = 100;
         constexpr float DEFAULT_OPENING_SHOT_SECS = 4.0f;
     }
@@ -138,31 +140,21 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     {
         using namespace PlayerAvatar::SwordMan::State;
         
-        playerAvatar_.lock()->GetEventSceneStateMachine().OnDisable();
-        
-        // 船と島を外から映すカット
+        const NanamiEngine::ControlLock::ScopedLock controlLock(NanamiEngine::ControlLock::Service::Instance().Acquire());
+
+        playerAvatar_.lock()->PlayerTransform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
+        Context()->SecondVirtualCamera()->OnDisable();
+
+        // 船と島を外から映し、主人公から追従カメラへつなぐカット
         co_await AirShipMovieOpeningShotsAsync();
         if (ShouldStop())
             co_return;
 
-        if (const auto brain = Context()->CameraBrain())
-        {
-            brain->SnapToVirtualCamera(*Context()->SecondVirtualCamera());
-        }
-        Context()->SecondVirtualCamera()->OnDisable();
-
-        const auto player = playerAvatar_.lock();
-        player->PlayerTransform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
-
-        // Playerを操作可能に変更
-        player->GetEventSceneStateMachine().OnEnable();
-        player->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Idle);
         isOpeningFinished_ = true;
     }
     
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieOpeningShotsAsync()
     {
-        // タイトルロゴは最初のカットで出し、次のカットへ移るときに消す
         context_.lock()->TitleLogo().lock()->Entity().lock()->SetEnable(true);
 
         const auto shotsRoot = Context()->OpeningShots();
@@ -171,7 +163,10 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         for (std::size_t i = 0; i < shots.size(); ++i)
         {
             const float duration_secs = i < durations_secs.size() ? durations_secs[i] : DEFAULT_OPENING_SHOT_SECS;
-            co_await AirShipMovieOpeningShotAsync(shots[i], duration_secs);
+            if (i + 1 == shots.size())
+                co_await AirShipMovieJoinPlayerCameraShotAsync(shots[i], duration_secs);
+            else
+                co_await AirShipMovieOpeningShotAsync(shots[i], duration_secs);
             if (ShouldStop())
                 co_return;
 
@@ -197,18 +192,15 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         auto& transform = shot->Transform();
         const glm::vec3 fromPos = transform.GetWorldPos();
         const glm::quat fromRot = transform.GetWorldRot();
-        // NOTE: 行き先は子なので、カメラを動かす前に読んでおく
         const auto children = transform.GetChildren();
         const glm::vec3 toPos = children.empty() ? fromPos : children.front()->Transform().GetWorldPos();
         const glm::quat toRot = children.empty() ? fromRot : children.front()->Transform().GetWorldRot();
 
-        // カットなので補間せずに切り替え、以降も Brain の追従を挟まずに動かす
         camera->SetImmediateApply(true);
         camera->SetPriority(OPENING_SHOT_PRIORITY);
         if (const auto brain = Context()->CameraBrain())
             brain->SnapToVirtualCamera(*camera);
 
-        // NOTE: シーン切り替え直後は DeltaTime が 0 で凍っているので、動き出してから数える
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
 
         float elapsed_secs = 0.0f;
@@ -225,7 +217,62 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         }
         camera->OnDisable();
     }
-    
+
+    Coroutine::Task<void> AboardAirShipMovie::AirShipMovieJoinPlayerCameraShotAsync(
+        const std::shared_ptr<GameObject::IGameObject> shot, const float duration_secs)
+    {
+        const auto swordMan = PlayerAvatar::TryWhetherPlayerT<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>(playerAvatar_.lock());
+        const auto cameraGroup = swordMan ? swordMan->AvatarCameraGroup().lock() : nullptr;
+        const auto followCamera = cameraGroup ? cameraGroup->FollowFromBehind().lock() : nullptr;
+        const auto camera = shot->Components().Catch<CineMachine::CineMachineVirtualCamera>().lock();
+        if (!followCamera || !camera)
+        {
+            co_await AirShipMovieOpeningShotAsync(shot, duration_secs);
+            co_return;
+        }
+
+        auto& transform = shot->Transform();
+        const glm::vec3 fromPos = transform.GetWorldPos();
+        const auto children = transform.GetChildren();
+        const glm::vec3 viaPos = children.empty() ? fromPos : children.front()->Transform().GetWorldPos();
+        const float holdRate = Context()->HeroHoldRate();
+        const float turnStartRate = Context()->HeroTurnStartRate();
+        const float lookHeight = Context()->HeroLookHeight();
+
+        camera->SetImmediateApply(true);
+        camera->SetPriority(OPENING_SHOT_PRIORITY);
+        if (const auto brain = Context()->CameraBrain())
+            brain->SnapToVirtualCamera(*camera);
+
+        co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
+
+        float elapsed_secs = 0.0f;
+        while (elapsed_secs < duration_secs)
+        {
+            co_await Coroutine::WaitYield();
+            if (ShouldStop())
+                co_return;
+
+            elapsed_secs += Time::DeltaTime();
+            const float t = std::clamp(elapsed_secs / duration_secs, 0.0f, 1.0f);
+            
+            const float move = glm::smoothstep(holdRate, 1.0f, t);
+            const glm::vec3 toPos = followCamera->Transform().GetWorldPos();
+            const glm::vec3 pos = glm::mix(glm::mix(fromPos, viaPos, move), glm::mix(viaPos, toPos, move), move);
+
+            const glm::vec3 heroPos = playerAvatar_.lock()->PlayerTransform().GetWorldPos() + glm::vec3(0.0f, lookHeight, 0.0f);
+            const glm::vec3 toHero = heroPos - pos;
+            const glm::quat lookHeroRot = glm::dot(toHero, toHero) > 1e-6f
+                ? glm::quatLookAtLH(glm::normalize(toHero), glm::vec3(0.0f, 1.0f, 0.0f))
+                : followCamera->Transform().GetWorldRot();
+            const float turn = glm::smoothstep(turnStartRate, 1.0f, t);
+
+            transform.SetWorldPos(pos);
+            transform.SetWorldRot(glm::slerp(lookHeroRot, followCamera->Transform().GetWorldRot(), turn));
+        }
+        camera->OnDisable();
+    }
+
     void AboardAirShipMovie::FadeOutTitleLogo() const
     {
         const auto titleLogoBlendRenderer = context_.lock()->TitleLogo().lock()->Components().Catch<NanamiUi::BlendAnimationRenderer>();

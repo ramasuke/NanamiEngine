@@ -1,5 +1,4 @@
 ﻿#include "ShopPresenter.h"
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 
@@ -9,34 +8,10 @@
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
-#include "Engine/Core/Application/Time/Time.h"
-#include "Engine/Core/Application/ApplicationBase.h"
-#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short SHOP_STICK_DEADZONE = 12000;
-    }
-
-    bool ShopPresenter::IsAnotherOpen() const
-    {
-        bool found = false;
-        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
-            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
-            {
-                if (found)
-                    return;
-
-                const auto presenter = gameObject->Components().Catch<ShopPresenter>().lock();
-                found = presenter && presenter.get() != this && presenter->isOpen_;
-            });
-        return found;
-    }
-
     void ShopPresenter::Bind(const std::weak_ptr<Prop::MerchantStall>& stall)
     {
         stall_ = stall;
@@ -44,21 +19,19 @@ namespace GamePlay::Ui
 
     void ShopPresenter::OnStart()
     {
-        if (IsAnotherOpen())
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        if (!screen_->Open())
         {
-            isClosed_ = true;
             Entity().lock()->OnDestroy();
             return;
         }
-        isOpen_ = true;
+        screen_->Input().SetRepeat(quantityRepeatDelay_secs_, quantityRepeatInterval_secs_);
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_ = RequireComponent<ShopUi>();
 
         const auto owner = GameCore::PlayerAvatar::Owner();
         suspendedAvatar_ = owner;
-        if (owner)
-            owner->DisableStateMachine();
         if (const auto stall = stall_.lock())
             stall->FocusCamera();
 
@@ -101,95 +74,36 @@ namespace GamePlay::Ui
             }).AddTo(this);
         }
 
-        // 話しかけたときの押しっぱなしを、開いた直後の入力として拾わない
-        previousKeys_ = ReadKeys();
-
         // Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
         Refresh();
     }
 
     void ShopPresenter::OnUpdate()
     {
-        if (isClosed_)
+        if (!view_ || !model_ || !screen_->IsFocused())
             return;
 
-        // 閉じたフレームに有効へ戻すと、閉じた B をジャンプとして拾ってしまう
-        if (isClosing_)
-        {
-            isClosed_ = true;
-            if (const auto owner = suspendedAvatar_.lock())
-                owner->EnableStateMachiine();
-            Entity().lock()->OnDestroy();
-            return;
-        }
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
 
-        if (!view_ || !model_)
-            return;
-
-        const Keys keys = ReadKeys();
-
-        if (keys.prev && !previousKeys_.prev)
+        if (input.IsPressed(UiAction::Up))
             model_->Cursor().Move(-1);
-        if (keys.next && !previousKeys_.next)
+        if (input.IsPressed(UiAction::Down))
             model_->Cursor().Move(1);
-        UpdateQuantity(keys);
-        if (keys.confirm && !previousKeys_.confirm)
+
+        // 左右を同時に押している間は増減しない
+        if (input.IsHeld(UiAction::Left) != input.IsHeld(UiAction::Right))
+        {
+            if (input.IsRepeated(UiAction::Left))
+                ChangeQuantity(-1);
+            if (input.IsRepeated(UiAction::Right))
+                ChangeQuantity(1);
+        }
+
+        if (input.IsPressed(UiAction::Submit))
             Purchase();
-
-        const bool isCancelPressed = keys.cancel && !previousKeys_.cancel;
-        previousKeys_ = keys;
-        if (isCancelPressed)
+        if (input.IsPressed(UiAction::Cancel))
             Close();
-    }
-
-    ShopPresenter::Keys ShopPresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-
-        return Keys{
-            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > SHOP_STICK_DEADZONE,
-            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -SHOP_STICK_DEADZONE,
-            .less    = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
-                       || xInput.IsDown(GamepadButton::DPadLeft) || xInput.thumbLX < -SHOP_STICK_DEADZONE,
-            .more    = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
-                       || xInput.IsDown(GamepadButton::DPadRight) || xInput.thumbLX > SHOP_STICK_DEADZONE,
-            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
-            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
-        };
-    }
-
-    void ShopPresenter::UpdateQuantity(const Keys& keys)
-    {
-        const int direction = keys.more == keys.less ? 0 : (keys.more ? 1 : -1);
-        if (direction == 0)
-        {
-            quantityHoldDirection_ = 0;
-            return;
-        }
-
-        if (direction != quantityHoldDirection_)
-        {
-            quantityHoldDirection_ = direction;
-            quantityHold_secs_ = 0.0f;
-            quantityRepeat_secs_ = 0.0f;
-            ChangeQuantity(direction);
-            return;
-        }
-
-        // 押し続けたら、少し待ってから一定の間隔で増減を繰り返す
-        const float deltaTime = Time::DeltaTime();
-        quantityHold_secs_ += deltaTime;
-        if (quantityHold_secs_ < quantityRepeatDelay_secs_)
-            return;
-
-        quantityRepeat_secs_ += deltaTime;
-        if (quantityRepeat_secs_ < quantityRepeatInterval_secs_)
-            return;
-
-        quantityRepeat_secs_ = 0.0f;
-        ChangeQuantity(direction);
     }
 
     void ShopPresenter::ChangeQuantity(const int delta)
@@ -229,18 +143,13 @@ namespace GamePlay::Ui
 
     void ShopPresenter::Close()
     {
-        if (isClosing_)
+        if (!screen_->IsOpen())
             return;
-        isClosing_ = true;
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
 
         if (const auto stall = stall_.lock())
             stall->RestoreCamera();
-    }
-
-    void ShopPresenter::OnDestroy()
-    {
-        isOpen_ = false;
+        screen_->Close();
     }
 
     void ShopPresenter::OnDrawGui()

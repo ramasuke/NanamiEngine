@@ -20,6 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         JumpAttackAir   = 13,
         JumpAttackLand  = 14,
         Fall            = 15,
+        CounterAttack   = 16,
         Hurt            = 31,
         Chatting     = 20,
         FallDown     = 40,

@@ -1,4 +1,5 @@
 ﻿#include "Data_EventNotice.h"
+#include "../../Scripts/Core/Game/Condition/Condition_ConditionList.h"
 
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 

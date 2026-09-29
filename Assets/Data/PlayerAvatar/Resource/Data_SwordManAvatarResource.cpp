@@ -19,6 +19,10 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("jumpAttackPlungeSound_", jumpAttackPlungeSound_);
         ImGuiHelper::OnDrawInputField("jumpAttackWhiffSound_", jumpAttackWhiffSound_);
         ImGuiHelper::OnDrawInputField("jumpAttackHitSound_", jumpAttackHitSound_);
+        ImGuiHelper::OnDrawInputField("counterAttackWhiffSound_", counterAttackWhiffSound_);
+        ImGuiHelper::OnDrawInputField("counterAttackHitSound_", counterAttackHitSound_);
+        ImGuiHelper::OnDrawInputField("counterSlashParticlePrefab_", counterSlashParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("counterImpactParticlePrefab_", counterImpactParticlePrefab_);
         ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
         ImGuiHelper::OnDrawInputField("avoidRollingStartSpeed_", avoidRollingStartSpeed_);

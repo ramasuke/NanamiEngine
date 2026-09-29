@@ -24,6 +24,8 @@ namespace GamePlay::Magic
         [[serialize(0)]] float delay_secs_ = 0.5f;
         /** @brief ロックオンしていない時に狙う距離 */
         [[serialize(0)]] float range_ = 150.0f;
+        /** @brief 狙いを使わず術者の足元で起こす（カウンター用の衝撃波） */
+        [[serialize(1)]] bool centerOnCaster_ = false;
 
 #pragma region Serialization Function
     public:
@@ -37,6 +39,7 @@ namespace GamePlay::Magic
             archive(CEREAL_NVP(power_));
             archive(CEREAL_NVP(delay_secs_));
             archive(CEREAL_NVP(range_));
+            archive(CEREAL_NVP(centerOnCaster_));
         }
 
         template<class Archive>
@@ -47,6 +50,7 @@ namespace GamePlay::Magic
             if (version >= 0) archive(CEREAL_NVP(power_));
             if (version >= 0) archive(CEREAL_NVP(delay_secs_));
             if (version >= 0) archive(CEREAL_NVP(range_));
+            if (version >= 1) archive(CEREAL_NVP(centerOnCaster_));
         }
 #pragma endregion
     };
@@ -55,5 +59,5 @@ namespace GamePlay::Magic
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Magic::AreaSpellEffect, 0);
+CEREAL_CLASS_VERSION(GamePlay::Magic::AreaSpellEffect, 1);
 #pragma endregion

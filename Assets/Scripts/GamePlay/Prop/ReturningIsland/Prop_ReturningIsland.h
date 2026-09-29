@@ -7,7 +7,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
-#include "../FloatingStone/Prop_FloatingStoneShot.h"
+#include "../FloatingStone/Prop_IslandReturnShot.h"
 
 namespace GameCore
 {

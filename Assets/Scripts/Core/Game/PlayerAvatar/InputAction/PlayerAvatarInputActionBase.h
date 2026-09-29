@@ -11,8 +11,8 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~PlayerAvatarInputActionBase() = default;
         void OnUpdate();
-        /** @brief 最後に触られた入力機器。操作ガイドのグリフ切り替えに使う */
-        [[nodiscard]] PlayerAvatarInputDevice CurrentDevice() const { return currentDevice_; }
+        /** @brief 最後に触られた入力機器 */
+        [[nodiscard]] PlayerAvatarInputDevice CurrentDevice() const { return NanamiEngine::UiFlow::InputDevice::Current(); }
         void Enable();
         void Disable();
         virtual void OnDrawGui() = 0;
@@ -39,19 +39,15 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] static bool IsKeyDown  (const Key key)            { return NanamiEngine::Platform::Input::Keyboard::IsDown(key); }
         [[nodiscard]] static bool IsMouseDown(const MouseButton button) { return NanamiEngine::Platform::Input::Mouse::IsDown(button); }
         [[nodiscard]] bool        IsPadDown  (const PadButton button) const { return gamepad_.IsDown(button); }
-        /** @brief このフレームのホイール回転量。奥へ回すと正 */
+        
         [[nodiscard]] int MouseWheelDelta() const { return mouseWheelDelta_; }
 
     private:
         void UpdateMouseWheel();
-        void UpdateCurrentDevice();
 
         std::vector<std::shared_ptr<IPlayerAvatarInput>> inputs_;
         NanamiEngine::Platform::Input::GamepadState gamepad_;
-        PlayerAvatarInputDevice currentDevice_ = PlayerAvatarInputDevice::KeyboardMouse;
-        int previousMouseX_ = 0;
-        int previousMouseY_ = 0;
-        // 累積値をリセットせずに読み、前回との差を取る。リセットすると複数のアバターで1回分を取り合う
+        
         int previousMouseWheel_ = NanamiEngine::Platform::Input::Mouse::WheelRotation(false);
         int mouseWheelDelta_ = 0;
     };

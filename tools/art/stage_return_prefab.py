@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.scene import model  # noqa: E402
 
+import device_hint  # noqa: E402
 import stage_return as art  # noqa: E402
 from event_board_prefab import ALIGN_CENTER, FONT_BODY, FONT_BRUSH_INK, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
@@ -40,6 +41,9 @@ ORDER_TEXT = 7612
 ORDER_STAMP = 7613
 ORDER_HINT = 7620
 ORDER_HINT_TEXT = 7621
+
+# パッドで絵を差し替える札 (device_hint.ROLES)
+HINT_ROLES = {'Enter': 'confirm', 'Esc': 'cancel'}
 
 
 def sprite_guid(name):
@@ -74,7 +78,10 @@ def build_row(b, parent, name, index, L):
 
 def build_hint(b, parent, hint):
     node = b.node(parent, hint['key'])
-    blend_image(b, node, 'Tag', hint['tag'], sprite_guid(f'StageReturn_Hint_{hint["key"]}'), ORDER_HINT)
+    sprite = sprite_guid(f'StageReturn_Hint_{hint["key"]}')
+    blend_image(b, node, 'Tag', hint['tag'], sprite, ORDER_HINT)
+    if hint['key'] in HINT_ROLES:
+        device_hint.attach(b, node.transform.children[-1], HINT_ROLES[hint['key']], sprite)
     put_text(b, node, 'Label', hint['label_pos'], hint['label'], art.HINT_COLOR[:3], ORDER_HINT_TEXT, align=ALIGN_LEFT)
     (cx, cy), (w, h) = hint['button']
     click = b.node(node, 'Click', (cx, cy))
@@ -135,6 +142,9 @@ def build_tree(b, root):
     presenter = b.component(root, 'StageReturnPresenter')
     b.field(presenter, 'uiSounds_', UI_SOUNDS)
     b.field(presenter, 'settingsPrefab_', SETTINGS_PREFAB)
+    # 常駐する画面なので、閉じても破棄しない
+    b.component(root, 'UiScreen', screenId_='StageReturn', locksPlayerControl_='true', destroysOnClose_='false',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
 
 
 def build_ui():

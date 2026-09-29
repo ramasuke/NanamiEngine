@@ -1,5 +1,4 @@
 ﻿#include "EventBoardPresenter.h"
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 #include <chrono>
@@ -14,43 +13,22 @@
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
+#include "../../../../Core/Game/Decoration/Decoration_DecorationCollection.h"
 #include "../../../../Core/Game/Story/Story_StoryProgress.h"
-#include "Engine/Core/Application/ApplicationBase.h"
-#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short EVENT_BOARD_STICK_DEADZONE = 12000;
-    }
-
-    bool EventBoardPresenter::IsAnotherOpen() const
-    {
-        bool found = false;
-        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
-            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
-            {
-                if (found)
-                    return;
-
-                const auto presenter = gameObject->Components().Catch<EventBoardPresenter>().lock();
-                found = presenter && presenter.get() != this && presenter->isOpen_;
-            });
-        return found;
-    }
-
     void EventBoardPresenter::OnStart()
     {
-        if (IsAnotherOpen())
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        // 調べるたびに二重に生えるのを防ぐ
+        if (!screen_->Open())
         {
             isClosed_ = true;
             Entity().lock()->OnDestroy();
             return;
         }
-        isOpen_ = true;
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_ = RequireComponent<EventBoardUi>();
@@ -58,8 +36,6 @@ namespace GamePlay::Ui
 
         const auto owner = GameCore::PlayerAvatar::Owner();
         suspendedAvatar_ = owner;
-        if (owner)
-            owner->DisableStateMachine();
 
         const auto board = board_.get();
         const auto now   = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
@@ -73,15 +49,16 @@ namespace GamePlay::Ui
             now,
             owner ? &owner->PlayerStatus().Quest() : nullptr,
             owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
-            &GameCore::Story::StoryProgress::Instance(),
+            GameCore::Story::StoryProgress::Instance(),
             questPage ? questPage->MaxVisibleRows() : 0);
         eventModel_ = std::make_unique<EventBoardModel>(
             board ? board->Notices() : std::vector<std::shared_ptr<Asset::EventNotice>>{},
             now,
             GameCore::Condition::ConditionContext{
-                &GameCore::Story::StoryProgress::Instance(),
+                GameCore::Story::StoryProgress::Instance(),
                 owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
-                now },
+                now,
+                GameCore::Decoration::DecorationCollection::Instance() },
             eventPage ? eventPage->MaxVisibleRows() : 0);
         noticeModel_ = std::make_unique<NoticeBoardModel>(
             board ? board->Announcements() : std::vector<std::shared_ptr<Asset::Announcement>>{},
@@ -148,9 +125,6 @@ namespace GamePlay::Ui
         noticeModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
         restorationModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
 
-        // 調べたときの押しっぱなしを、開いた直後の入力として拾わない
-        previousKeys_ = ReadKeys();
-
         // Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
         view_->ShowTab(currentTab_);
         Refresh();
@@ -161,41 +135,22 @@ namespace GamePlay::Ui
         if (isClosed_ || !view_)
             return;
 
-        const Keys keys = ReadKeys();
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
 
-        if (keys.prev && !previousKeys_.prev)
+        if (input.IsPressed(UiAction::Up))
             CurrentCursor().Move(-1);
-        if (keys.next && !previousKeys_.next)
+        if (input.IsPressed(UiAction::Down))
             CurrentCursor().Move(1);
-        if (keys.tabPrev && !previousKeys_.tabPrev)
+        // 頁は Q / E (LB / RB) のほか、左右でも切り替わる
+        if (input.IsPressed(UiAction::TabPrev) || input.IsPressed(UiAction::Left))
             SwitchTab(-1);
-        if (keys.tabNext && !previousKeys_.tabNext)
+        if (input.IsPressed(UiAction::TabNext) || input.IsPressed(UiAction::Right))
             SwitchTab(1);
-        if (keys.confirm && !previousKeys_.confirm)
+        if (input.IsPressed(UiAction::Submit))
             Confirm();
-
-        const bool isCancelPressed = keys.cancel && !previousKeys_.cancel;
-        previousKeys_ = keys;
-        if (isCancelPressed)
+        if (input.IsPressed(UiAction::Cancel))
             Close();
-    }
-
-    EventBoardPresenter::Keys EventBoardPresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-
-        return Keys{
-            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > EVENT_BOARD_STICK_DEADZONE,
-            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -EVENT_BOARD_STICK_DEADZONE,
-            .tabPrev = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
-                       || xInput.IsDown(GamepadButton::LeftShoulder) || xInput.IsDown(GamepadButton::DPadLeft),
-            .tabNext = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
-                       || xInput.IsDown(GamepadButton::RightShoulder) || xInput.IsDown(GamepadButton::DPadRight),
-            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
-            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
-        };
     }
 
     BoardListCursor& EventBoardPresenter::CurrentCursor() const
@@ -389,16 +344,13 @@ namespace GamePlay::Ui
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
         EndPreview();
 
-        if (const auto owner = suspendedAvatar_.lock())
-            owner->EnableStateMachiine();
-
+        screen_->Close();
         Entity().lock()->OnDestroy();
     }
 
     void EventBoardPresenter::OnDestroy()
     {
         EndPreview();
-        isOpen_ = false;
     }
 
     void EventBoardPresenter::OnDrawGui()

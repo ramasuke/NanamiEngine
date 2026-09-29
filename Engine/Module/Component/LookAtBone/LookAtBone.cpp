@@ -24,13 +24,11 @@ namespace NanamiEngine::Module::Component
             return;
 
         ResolveBoneIndices(modelHandle);
-        // 前フレームの上書きを外し、今フレームのアニメーション姿勢に戻してから回す
         ResetUserMatrices(modelHandle);
 
         if (boneIndices_.empty())
             return;
 
-        // MV1GetFrameLocalWorldMatrix は最後に MV1SetMatrix された描画行列基準（BoneSync と同じ換算）
         const glm::mat4 renderMatrix  = LibCore::Dxlib::FromDxMatrix(MV1GetMatrix(modelHandle));
         const glm::mat4 renderToWorld = Transform().GetWorldMatrix() * glm::inverse(renderMatrix);
         const glm::mat4 headRender    = LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, boneIndices_.back()));
@@ -41,7 +39,6 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable() || (std::abs(yaw_) < ANGLE_EPSILON && std::abs(pitch_) < ANGLE_EPSILON))
             return;
 
-        // 体の向き基準(前方 -Z)の yaw/pitch をワールドの回転にする。描画行列とワールドの回転差は補間分だけなので無視する
         const glm::quat bodyRotation = Transform().GetWorldRot();
         const glm::quat localLook    = glm::angleAxis(yaw_, glm::vec3(0.0f, 1.0f, 0.0f))
                                      * glm::angleAxis(pitch_, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -49,7 +46,10 @@ namespace NanamiEngine::Module::Component
 
         float totalWeight = 0.0f;
         for (const auto& bone : bones_)
+        {
             totalWeight += (std::max)(bone.weight, 0.0f);
+        }
+        
         if (totalWeight <= 0.0f)
             return;
 
@@ -69,7 +69,7 @@ namespace NanamiEngine::Module::Component
                 ? LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, parentIndex))
                 : renderMatrix;
 
-            const glm::vec3 pivot = glm::vec3(boneMatrix[3]);
+            const auto pivot = glm::vec3(boneMatrix[3]);
             const glm::mat4 rotated = glm::translate(glm::mat4(1.0f), pivot)
                                     * glm::mat4_cast(boneRotation)
                                     * glm::translate(glm::mat4(1.0f), -pivot)
@@ -84,7 +84,7 @@ namespace NanamiEngine::Module::Component
         if (!boneIndicesDirty_ && boneIndicesModelHandle_ == modelHandle)
             return;
 
-        // 同じモデルでボーンを差し替えたときは古いボーンの上書きを外す。別モデルに変わったら古いハンドルは触らない
+        // 同じモデルでボーンを差し替えたときは古いボーンの上書きを外す
         if (boneIndicesModelHandle_ == modelHandle)
             ResetUserMatrices(modelHandle);
 
@@ -92,9 +92,10 @@ namespace NanamiEngine::Module::Component
         boneIndicesModelHandle_ = modelHandle;
         boneIndices_.clear();
         for (const auto& bone : bones_)
+        {
             boneIndices_.push_back(MV1SearchFrame(modelHandle, LibCore::Dxlib::Utf8ToShiftJis(bone.boneName).c_str()));
+        }
 
-        // 一つも見つからなければ何もしない
         if (std::ranges::none_of(boneIndices_, [](const int index) { return index >= 0; }))
             boneIndices_.clear();
     }
@@ -144,11 +145,13 @@ namespace NanamiEngine::Module::Component
                 ImGuiHelper::OnDrawInputField("weight"  , bones_[i].weight);
                 if (ImGui::Button("Delete"))
                     deleteIndex = i;
+                
                 ImGui::Separator();
                 ImGui::PopID();
             }
             if (deleteIndex >= 0)
                 bones_.erase(bones_.begin() + deleteIndex);
+            
             if (ImGui::Button("Add"))
                 bones_.push_back({});
 

@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "../Ui_SettingsScreen.h"
 #include "../Model/SettingsCatalog.h"
 #include "../../../Sound/UiSoundBank.h"
@@ -12,27 +11,22 @@
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short SETTINGS_STICK_DEADZONE = 12000;
-    }
-
     std::weak_ptr<SettingsScreenPresenter> SettingsScreenPresenter::Open(Asset::PrefabGameObjectFile& prefab)
     {
         if (isOpen_)
             return {};
 
-        // UIは world 座標がそのままスクリーン座標
         const auto ui = Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f)).lock();
         if (!ui)
             return {};
+        
         return ui->Components().Catch<SettingsScreenPresenter>();
     }
 
     void SettingsScreenPresenter::OnStart()
     {
-        if (isOpen_)
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        if (isOpen_ || !screen_->Open())
         {
             isClosed_ = true;
             Entity().lock()->OnDestroy();
@@ -40,6 +34,14 @@ namespace GamePlay::Ui
         }
         isOpen_  = true;
         isOwner_ = true;
+
+        using Platform::Input::GamepadButton;
+        using Platform::Input::Key;
+        using UiFlow::UiAction;
+        screen_->Input().Map()
+            .AddKey   (UiAction::Submit, Key::Space)
+            .AddKey   (UiAction::Cancel, Key::Back)
+            .AddButton(UiAction::Cancel, GamepadButton::Start);
 
         view_ = RequireComponent<SettingsScreenUi>();
 
@@ -49,9 +51,6 @@ namespace GamePlay::Ui
         view_->BuildTabs(names);
         view_->PlayEnter();
         Refresh();
-
-        // 開いた決定ボタンを押したままでも、値を切り替えない
-        previousKeys_ = ReadKeys();
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
     }
 
@@ -60,32 +59,22 @@ namespace GamePlay::Ui
         if (isClosed_ || !view_)
             return;
 
-        const Keys keys = ReadKeys();
-        const Keys pressed{
-            keys.up      && !previousKeys_.up,
-            keys.down    && !previousKeys_.down,
-            keys.left    && !previousKeys_.left,
-            keys.right   && !previousKeys_.right,
-            keys.prevTab && !previousKeys_.prevTab,
-            keys.nextTab && !previousKeys_.nextTab,
-            keys.confirm && !previousKeys_.confirm,
-            keys.cancel  && !previousKeys_.cancel,
-        };
-        previousKeys_ = keys;
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
 
-        if (pressed.cancel)
+        if (input.IsPressed(UiAction::Cancel))
             Close();
-        else if (pressed.up)
+        else if (input.IsPressed(UiAction::Up))
             MoveRow(-1);
-        else if (pressed.down)
+        else if (input.IsPressed(UiAction::Down))
             MoveRow(1);
-        else if (pressed.left)
+        else if (input.IsPressed(UiAction::Left))
             ChangeValue(-1);
-        else if (pressed.right || pressed.confirm)
+        else if (input.IsPressed(UiAction::Right) || input.IsPressed(UiAction::Submit))
             ChangeValue(1);
-        else if (pressed.prevTab)
+        else if (input.IsPressed(UiAction::TabPrev))
             ChangeCategory(-1);
-        else if (pressed.nextTab)
+        else if (input.IsPressed(UiAction::TabNext))
             ChangeCategory(1);
     }
 
@@ -189,6 +178,7 @@ namespace GamePlay::Ui
         isOwner_ = false;
         GameCore::GameSettings::GetInstance().Save();
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
+        screen_->Close();
         Entity().lock()->OnDestroy();
     }
 
@@ -197,26 +187,6 @@ namespace GamePlay::Ui
         if (isOwner_)
             isOpen_ = false;
         isOwner_ = false;
-    }
-
-    SettingsScreenPresenter::Keys SettingsScreenPresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-        return Keys{
-            .up      = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > SETTINGS_STICK_DEADZONE,
-            .down    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -SETTINGS_STICK_DEADZONE,
-            .left    = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
-                       || xInput.IsDown(GamepadButton::DPadLeft) || xInput.thumbLX < -SETTINGS_STICK_DEADZONE,
-            .right   = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
-                       || xInput.IsDown(GamepadButton::DPadRight) || xInput.thumbLX > SETTINGS_STICK_DEADZONE,
-            .prevTab = Keyboard::IsDown(Key::Q) || xInput.IsDown(GamepadButton::LeftShoulder),
-            .nextTab = Keyboard::IsDown(Key::E) || xInput.IsDown(GamepadButton::RightShoulder),
-            .confirm = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space) || xInput.IsDown(GamepadButton::A),
-            .cancel  = Keyboard::IsDown(Key::Escape) || Keyboard::IsDown(Key::Back)
-                       || xInput.IsDown(GamepadButton::B) || xInput.IsDown(GamepadButton::Start),
-        };
     }
 
     void SettingsScreenPresenter::OnDrawGui()

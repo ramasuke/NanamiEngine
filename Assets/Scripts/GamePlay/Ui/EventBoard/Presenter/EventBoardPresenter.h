@@ -14,6 +14,7 @@
 #include "../Model/RestorationBoardModel.h"
 #include "../UI_EventBoard.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "Packages/UiFlow/UiFlow.h"
 
 namespace GameCore
 {
@@ -33,22 +34,10 @@ namespace GamePlay::Ui
                                       public LifeCycleCallback::IUpdatable
     {
     private:
-        struct Keys
-        {
-            bool prev    = false;
-            bool next    = false;
-            bool tabPrev = false;
-            bool tabNext = false;
-            bool confirm = false;
-            bool cancel  = false;
-        };
-
         void OnStart  () override;
         void OnUpdate () override;
         void OnDestroy() override;
 
-        [[nodiscard]] static Keys ReadKeys();
-        [[nodiscard]] bool IsAnotherOpen() const;
         [[nodiscard]] BoardListCursor& CurrentCursor() const;
         [[nodiscard]] bool CanAcceptSelected() const;
         [[nodiscard]] bool CanRestoreSelected() const;
@@ -72,6 +61,7 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::SoundFile) refuseSound_;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<EventBoardUi> view_;
         std::unique_ptr<QuestBoardModel>  questModel_;
         std::unique_ptr<EventBoardModel>  eventModel_;
@@ -82,10 +72,7 @@ namespace GamePlay::Ui
         std::weak_ptr<GameCore::IPlayerAvatar> suspendedAvatar_;
         std::optional<GameCore::Story::Facility> previewFacility_;
 
-        Keys previousKeys_;
         bool isClosed_ = false;
-        // 調べるたびに二重に生えるのを防ぐ
-        bool isOpen_ = false;
 
 #pragma region Serialization Function
     public:

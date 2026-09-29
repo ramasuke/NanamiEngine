@@ -5,7 +5,7 @@
 #include "PlayerAvatar_QuestList.h"
 #include "Completed/PlayerAvatar_CompletedQuestGroup.h"
 #include "Completed/PlayerAvatar_IComplteQuestGroup.h"
-#include "../../StatusParameter/Money/Money.h"
+#include "../../Reward/Reward_IReward.h"
 #include "Libs/Singleton/LibCore_SingletonBase.h"
 #include "Packages/R4/R4.h"
 
@@ -39,7 +39,9 @@ namespace GameCore::PlayerAvatar::Quest
         bool MarkCompleted(const QuestType& quest);
 
         /** @brief 達成して報酬が出たときに流れる。受け取るのは手元のアバターだけ */
-        [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Money> OnRewarded() const { return onRewarded_.AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<Reward::Rewards> OnRewarded() const { return onRewarded_.AsObservable(); }
+        /** @brief 受注・達成・読み直しで中身が変わったときに流れる */
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnChanged() const { return onChanged_.AsObservable(); }
 
         void OnDrawGui() const;
 
@@ -48,6 +50,7 @@ namespace GameCore::PlayerAvatar::Quest
 
         QuestList           takingQuests_;
         CompletedQuestGroup completedQuests_;
-        NanamiEngine::R4::Subject<StatusParameter::Money> onRewarded_;
+        NanamiEngine::R4::Subject<Reward::Rewards> onRewarded_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit> onChanged_;
     };
 }

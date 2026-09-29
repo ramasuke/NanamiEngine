@@ -168,7 +168,7 @@
                                             "data": {
                                                 "cereal_class_version": 0,
                                                 "value0": {
-                                                    "cereal_class_version": 4,
+                                                    "cereal_class_version": 5,
                                                     "value0": {
                                                         "guid_": {
                                                             "value_": "C32237D5-EF71-4BB6-8A4B-69B1C5A6BD3B"
@@ -215,7 +215,23 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483783,
+                                                                "data": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": []
                                                 },
                                                 "titleSceneFile_": {
                                                     "value0": {
@@ -285,7 +301,57 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483784,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "32C78AA8-961C-406E-9861-7C55564C5B54"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": [
+                                                        {
+                                                            "cereal_class_version": 0,
+                                                            "id_": "Instructor",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483785,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "275F2AB2-1671-4B48-89D8-B8C2A8C7297D"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 30.0
+                                                        },
+                                                        {
+                                                            "id_": "Cannon",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483786,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "D9D2F020-2197-4929-B08A-23247E0B86A8"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 25.0
+                                                        }
+                                                    ]
                                                 },
                                                 "airShip_": {
                                                     "cereal_class_version": 0,
@@ -315,7 +381,7 @@
                                                         }
                                                     }
                                                 },
-                                                "airShipFirstMoveDuring_msecs_": 210000,
+                                                "airShipFirstMoveDuring_msecs_": 40000,
                                                 "airShipSecondMoveFromTargetPos_": {
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
@@ -329,7 +395,7 @@
                                                         }
                                                     }
                                                 },
-                                                "airShipSecondMoveDuring_msecs_": 20000,
+                                                "airShipSecondMoveDuring_msecs_": 12000,
                                                 "summonPlayerAvatarPrefab_": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -502,7 +568,8 @@
                                                 },
                                                 "openingShotDurations_secs_": [
                                                     4.0,
-                                                    2.5
+                                                    3.0,
+                                                    3.5
                                                 ],
                                                 "airShipDeckProps_": {
                                                     "value0": {
@@ -572,7 +639,73 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483787,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "D21C1310-E059-4C54-9159-67A3677D117D"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": [
+                                                        {
+                                                            "id_": "Instructor",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483788,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "69BF974C-B730-4E39-9BC6-F8FA9D36B901"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 30.0
+                                                        },
+                                                        {
+                                                            "id_": "Portal",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483789,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "FEB4046B-BF74-49AC-AA6C-5AAA356D40A7"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 30.0
+                                                        },
+                                                        {
+                                                            "id_": "Board",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483790,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "15FC5A6E-2E4B-4B63-9BD3-0587DB6D0CDB"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 36.0
+                                                        }
+                                                    ]
                                                 },
                                                 "bgm_": {
                                                     "value0": {
@@ -666,7 +799,7 @@
                                         "ptr_wrapper": {
                                             "id": 2147483691,
                                             "data": {
-                                                "cereal_class_version": 15,
+                                                "cereal_class_version": 16,
                                                 "value0": {
                                                     "value0": {
                                                         "guid_": {
@@ -712,7 +845,56 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483791,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "7F8280E5-F8B6-4B9D-9750-3290E536CB9C"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": [
+                                                        {
+                                                            "id_": "GrassLandTyrant",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483792,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "1AE61141-053C-4723-BC5F-4B02CFAB6FF1"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 60.0
+                                                        },
+                                                        {
+                                                            "id_": "GrassLandHyenaWoods",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483793,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "72713C78-53F7-4512-935D-02624334571E"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 25.0
+                                                        }
+                                                    ]
                                                 },
                                                 "bgm_": {
                                                     "value0": {
@@ -829,22 +1011,100 @@
                                                         }
                                                     }
                                                 },
-                                                "arrivalOverview_msecs_": 0,
+                                                "arrivalOverview_msecs_": 6000,
                                                 "arrivalOverviewDescend_msecs_": 3500,
                                                 "arrivalOverviewCameraStart_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 1450.0,
+                                                    "value1": 520.0,
+                                                    "value2": 180.0
                                                 },
                                                 "arrivalOverviewCameraEnd_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 1280.0,
+                                                    "value1": 450.0,
+                                                    "value2": 340.0
                                                 },
                                                 "arrivalOverviewLookAt_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 760.0,
+                                                    "value1": 110.0,
+                                                    "value2": 860.0
+                                                },
+                                                "arrivalIslandTitle_": "草 原 の 島",
+                                                "arrivalIslandSubtitle_": "狩人の一族が住む、野生の大きな島",
+                                                "arrivalTourShots_": [
+                                                    {
+                                                        "cereal_class_version": 0,
+                                                        "title": "村 の 跡",
+                                                        "subtitle": "大顎に潰された盆地の村",
+                                                        "cameraStart": {
+                                                            "value0": 1010.0,
+                                                            "value1": 170.0,
+                                                            "value2": 560.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 965.0,
+                                                            "value1": 140.0,
+                                                            "value2": 585.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 862.0,
+                                                            "value1": 70.0,
+                                                            "value2": 700.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    },
+                                                    {
+                                                        "title": "野 営 地",
+                                                        "subtitle": "村を追われた狩人の一族が、山の棚に身を寄せている",
+                                                        "cameraStart": {
+                                                            "value0": 1120.0,
+                                                            "value1": 290.0,
+                                                            "value2": 1290.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 1085.0,
+                                                            "value1": 265.0,
+                                                            "value2": 1255.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 975.0,
+                                                            "value1": 188.0,
+                                                            "value2": 1130.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    },
+                                                    {
+                                                        "title": "西 の 林",
+                                                        "subtitle": "ハイエナの群れがうろつく",
+                                                        "cameraStart": {
+                                                            "value0": 600.0,
+                                                            "value1": 300.0,
+                                                            "value2": 690.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 570.0,
+                                                            "value1": 280.0,
+                                                            "value2": 720.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 400.0,
+                                                            "value1": 165.0,
+                                                            "value2": 850.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    }
+                                                ],
+                                                "arrivalCaptionPrefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483750,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "E821999D-EA99-4631-AF71-6D69559B27DD"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -855,7 +1115,7 @@
                                         "ptr_wrapper": {
                                             "id": 2147483702,
                                             "data": {
-                                                "cereal_class_version": 3,
+                                                "cereal_class_version": 4,
                                                 "value0": {
                                                     "value0": {
                                                         "guid_": {
@@ -901,7 +1161,56 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483794,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "4BEC7056-F622-4735-91E5-8D4FFEA411A2"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": [
+                                                        {
+                                                            "id_": "DesertSkeletonDragon",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483795,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "7288ED07-F841-4219-B51B-A45F8F2EA3AC"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 60.0
+                                                        },
+                                                        {
+                                                            "id_": "DesertOasis",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483796,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "932D5B4A-509D-49FE-8B8F-D7AE7E3A0E0E"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 25.0
+                                                        }
+                                                    ]
                                                 },
                                                 "bgm_": {
                                                     "value0": {
@@ -1016,22 +1325,99 @@
                                                         }
                                                     }
                                                 },
-                                                "arrivalOverview_msecs_": 0,
+                                                "arrivalOverview_msecs_": 6000,
                                                 "arrivalOverviewDescend_msecs_": 3500,
                                                 "arrivalOverviewCameraStart_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 1450.0,
+                                                    "value1": 500.0,
+                                                    "value2": 150.0
                                                 },
                                                 "arrivalOverviewCameraEnd_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 1300.0,
+                                                    "value1": 430.0,
+                                                    "value2": 300.0
                                                 },
                                                 "arrivalOverviewLookAt_": {
-                                                    "value0": 0.0,
-                                                    "value1": 0.0,
-                                                    "value2": 0.0
+                                                    "value0": 760.0,
+                                                    "value1": 60.0,
+                                                    "value2": 820.0
+                                                },
+                                                "arrivalIslandTitle_": "砂 の 島",
+                                                "arrivalIslandSubtitle_": "泉が日に日に細っていく、砂に覆われた島",
+                                                "arrivalTourShots_": [
+                                                    {
+                                                        "title": "城 塞",
+                                                        "subtitle": "金色に光る石が落ちた、砂に沈んだ城塞",
+                                                        "cameraStart": {
+                                                            "value0": 960.0,
+                                                            "value1": 270.0,
+                                                            "value2": 170.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 935.0,
+                                                            "value1": 245.0,
+                                                            "value2": 215.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 875.0,
+                                                            "value1": 80.0,
+                                                            "value2": 440.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    },
+                                                    {
+                                                        "title": "竜 の 骨",
+                                                        "subtitle": "東の尾根に、両翼だけを残した竜の骨",
+                                                        "cameraStart": {
+                                                            "value0": 1240.0,
+                                                            "value1": 190.0,
+                                                            "value2": 760.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 1215.0,
+                                                            "value1": 180.0,
+                                                            "value2": 790.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 1100.0,
+                                                            "value1": 95.0,
+                                                            "value2": 900.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    },
+                                                    {
+                                                        "title": "オ ア シ ス",
+                                                        "subtitle": "隊商が足止めされている、干上がりかけた泉",
+                                                        "cameraStart": {
+                                                            "value0": 770.0,
+                                                            "value1": 180.0,
+                                                            "value2": 890.0
+                                                        },
+                                                        "cameraEnd": {
+                                                            "value0": 740.0,
+                                                            "value1": 165.0,
+                                                            "value2": 915.0
+                                                        },
+                                                        "lookAt": {
+                                                            "value0": 600.0,
+                                                            "value1": 62.0,
+                                                            "value2": 1040.0
+                                                        },
+                                                        "duration_msecs": 4200
+                                                    }
+                                                ],
+                                                "arrivalCaptionPrefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483751,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "E821999D-EA99-4631-AF71-6D69559B27DD"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -1042,7 +1428,7 @@
                                         "ptr_wrapper": {
                                             "id": 2147483713,
                                             "data": {
-                                                "cereal_class_version": 1,
+                                                "cereal_class_version": 2,
                                                 "value0": {
                                                     "value0": {
                                                         "guid_": {
@@ -1088,7 +1474,39 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "navigationGrid_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483797,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "A6A6100D-8EDC-426F-AC8E-CF3DA1DE4BA5"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "navigationTargets_": [
+                                                        {
+                                                            "id_": "AncientDragon",
+                                                            "object_": {
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483798,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value_": "F389D764-1664-4F54-8D27-BFE7598868A6"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "markerHeight_": 60.0
+                                                        }
+                                                    ]
                                                 },
                                                 "bgm_": {
                                                     "value0": {
@@ -1309,7 +1727,23 @@
                                                 "heartStagger_secs_": 2.4000000953674318,
                                                 "endingHold_secs_": 3.0,
                                                 "heartRiseHeight_": 60.0,
-                                                "heartFlyDistance_": 3000.0
+                                                "heartFlyDistance_": 3000.0,
+                                                "arrivalIslandTitle_": "",
+                                                "arrivalIslandSubtitle_": "",
+                                                "arrivalTourShots_": [],
+                                                "arrivalCaptionPrefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483752,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "E821999D-EA99-4631-AF71-6D69559B27DD"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }

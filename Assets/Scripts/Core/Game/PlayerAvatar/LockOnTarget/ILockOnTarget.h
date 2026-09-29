@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Packages/Cinemachine/VirtualCamera/Behaviour/IVirtualCameraTarget.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/ILockOnCameraTarget.h"
 
 namespace GameCore::PlayerAvatar
 {

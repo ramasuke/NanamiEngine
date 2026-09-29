@@ -1,4 +1,5 @@
 ﻿#include "ApplicationConfiguration.h"
+#include "../Display/WindowDisplayModeController.h"
 
 #include <algorithm>
 
@@ -384,12 +385,12 @@ namespace NanamiEngine::Core::Application::Configuration
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("When ON, LogError() will break into the debugger (__debugbreak) right where\n"
-                               "it is called, if a debugger (Rider/Visual Studio, etc.) is attached, so you\n"
-                               "can inspect the live call stack.\n"
-                               "Does not affect Log()/LogWarning().\n"
-                               "When OFF (default), it just logs and continues as before. Always ignored\n"
-                               "when no debugger is attached.");
+            ImGui::SetTooltip("ONの場合、Rider/Visual Studio等のデバッガがアタッチされていれば、"
+                               "LogError()を呼んだその場でデバッガを停止させます(__debugbreak)。"
+                               "その時点のコールスタックを確認できます。\n"
+                               "Log()/LogWarning()には影響しません。\n"
+                               "OFF(デフォルト)では従来通りログを出して続行します。\n"
+                               "(デバッガがアタッチされていない場合、この設定は常に無視されます)");
         }
 
         ImGui::Spacing();

@@ -36,8 +36,8 @@ ITEM_ICON_DIR = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'Item'
 HINT_SPRITES = {
     'HintTag_UpDown': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'EventBoard' / 'HintTag_UpDown.png',
     'HintTag_Move': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Move.png',
-    'HintTag_Confirm': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Confirm.png',
-    'HintTag_Cancel': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'HintTag_Cancel.png',
+    'HintKey_Enter': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'StageReturn' / 'StageReturn_Hint_Enter.png',
+    'HintKey_Esc': REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'StageReturn' / 'StageReturn_Hint_Esc.png',
 }
 BLACK_MASK = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'BlackMask.png'
 
@@ -123,8 +123,10 @@ LAYOUT = {
     'hints_y': 1032,
     'hint_px': 26,
 }
+# キーボードの札。パッドの札は device_hint.py (HINT_ROLES の札だけ差し替える)
 HINTS = [('HintTag_UpDown', 68, '選ぶ'), ('HintTag_Move', 68, '個数'),
-         ('HintTag_Confirm', 46, '買う'), ('HintTag_Cancel', 46, '閉じる')]
+         ('HintKey_Enter', 68, '買う'), ('HintKey_Esc', 68, '閉じる')]
+HINT_ROLES = {'HintKey_Enter': 'confirm', 'HintKey_Esc': 'cancel'}
 
 
 def hint_layout():

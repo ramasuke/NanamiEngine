@@ -936,12 +936,15 @@ def v2_hint_layout(items):
     return placed
 
 
-V2_HINTS_WITH_ACCEPT = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
-                        ('HintTag_Confirm', 46, '受注する'), ('HintTag_Cancel', 46, '閉じる')]
-V2_HINTS_WITHOUT_ACCEPT = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
-                           ('HintTag_Cancel', 46, '閉じる')]
-V2_HINTS_WITH_RESTORE = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
-                         ('HintTag_Confirm', 46, '直す'), ('HintTag_Cancel', 46, '閉じる')]
+# キーボードの札。HINT_ROLES の札はパッドで差し替える (device_hint.py)
+V2_HINTS_WITH_ACCEPT = [('HintKey_QE', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
+                        ('HintKey_Enter', 68, '受注する'), ('HintKey_Esc', 68, '閉じる')]
+V2_HINTS_WITHOUT_ACCEPT = [('HintKey_QE', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
+                           ('HintKey_Esc', 68, '閉じる')]
+V2_HINTS_WITH_RESTORE = [('HintKey_QE', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
+                         ('HintKey_Enter', 68, '直す'), ('HintKey_Esc', 68, '閉じる')]
+HINT_ROLES = {'HintKey_QE': 'tab', 'HintKey_Enter': 'confirm', 'HintKey_Esc': 'cancel'}
+TAB_HINT_ROLES = {'HintTag_LB': 'tab_prev', 'HintTag_RB': 'tab_next'}
 
 # 仮データ (モック用。本番は .boardQuest / .announcement)
 V2_QUESTS = [
@@ -1005,8 +1008,9 @@ def mock_v2(base, art_fn, tab=0, selected=0):
     """v2 のプレハブと同じ部品・同じ座標で描いた完成イメージ"""
     L, V = LAYOUT, V2
     sp = {**decided_sprites(), **v2_sprites()}
-    sp['HintTag_Cancel'] = Image.open(HINT_CANCEL_SPRITE).convert('RGBA')
-    sp['HintTag_Confirm'] = Image.open(HINT_CONFIRM_SPRITE).convert('RGBA')
+    import device_hint
+    for name, role in {**HINT_ROLES, **TAB_HINT_ROLES}.items():
+        sp[name] = Image.open(device_hint.keyboard_sprite(role)).convert('RGBA')
     veil = 0 if tab == 3 else L['veil_blend']
     arr = np.asarray(base.convert('RGB'), np.float32) * (1 - veil / 255)
     im = Image.fromarray(arr.astype(np.uint8), 'RGB').convert('RGBA')

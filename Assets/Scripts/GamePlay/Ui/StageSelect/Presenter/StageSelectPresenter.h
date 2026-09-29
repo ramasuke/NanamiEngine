@@ -39,6 +39,9 @@ namespace GamePlay::Ui
         void OnStart() override;
         void OnUpdate() override;
         void TryEnterWorld();
+        /** @brief 出発せずに閉じて、プレイヤーの操作に戻す */
+        void Close();
+        [[nodiscard]] static bool IsCancelDown();
 
         void CycleMode(int delta);
         /** @brief 選んでいるステージを上下に動かす。未選択なら先頭を選ぶ */
@@ -58,6 +61,7 @@ namespace GamePlay::Ui
         std::shared_ptr<StageSelectUi> view_;
         std::unique_ptr<StageSelectModel> model_;
         bool wasConfirmPressed_ = false;
+        bool wasCancelPressed_  = false;
         RoomInput previousInput_{};
 
         Network::RelayRoom::Mode roomMode_ = Network::RelayRoom::Mode::Public;

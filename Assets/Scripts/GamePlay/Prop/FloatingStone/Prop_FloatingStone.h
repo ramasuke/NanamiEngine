@@ -7,7 +7,8 @@
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
-#include "Prop_FloatingStoneShot.h"
+#include "Prop_DepartShot.h"
+#include "Prop_ReturnShot.h"
 
 namespace GameCore
 {

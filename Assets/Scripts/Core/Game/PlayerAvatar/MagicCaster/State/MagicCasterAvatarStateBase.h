@@ -55,6 +55,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         bool TryBeginCast() const;
         /** @brief 基本魔法（RT / 左クリック）を今撃てるか */
         [[nodiscard]] bool CanCastBasicSpell() const;
+        [[nodiscard]] bool CanCounterCast() const;
         /**
          * @brief VisitTransitions の宣言どおりに遷移する。最初に成立した遷移で止まる
          * @return 遷移したか

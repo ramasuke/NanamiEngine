@@ -64,6 +64,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
         return magicCasterCurrentState_.Value();
     }
 
+    bool MagicCasterAvatarStateMachine::YieldsToControlLock() const
+    {
+        const auto state = CurrentStateValue();
+        return state && state->ControlAcceptance() != PlayerAvatarControlAcceptance::None;
+    }
+
     std::unique_ptr<MagicCasterAvatarStateMachine> CreateStateMachine(
           const std::shared_ptr<MagicCasterAvatarStatus     >& status
         , const std::shared_ptr<MagicCasterAvatarInputAction>& input

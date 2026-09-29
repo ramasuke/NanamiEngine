@@ -7,7 +7,7 @@
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
 #include "enet/enet.h"
-#include "../Mode/NetworkSystem_Mode.h"
+#include "../Mode/NetworkSystem_HostEndpoint.h"
 
 namespace NanamiEngine::Core::Network
 {

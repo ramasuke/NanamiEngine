@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tools.common.cereal_json import Num, OrderedObj  # noqa: E402
 from tools.scene import edits, model  # noqa: E402
 
+import device_hint  # noqa: E402
 import shop as art  # noqa: E402
 from event_board_prefab import ALIGN_CENTER, ALIGN_RIGHT, FONT_BRUSH, FONT_BRUSH_INK, image, rgb, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, FONT_BODY, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
@@ -152,11 +153,14 @@ def build_hints(b, root):
     group = b.node(root, 'Hints')
     for i, item in enumerate(art.hint_layout()):
         if item['kind'] == 'tag':
-            image(b, group, f'Tag{i}', item['pos'], asset_guid(str(art.HINT_SPRITES[item['sprite']]) + '.meta'),
-                  ORDER_HINT)
+            sprite = asset_guid(str(art.HINT_SPRITES[item['sprite']]) + '.meta')
+            image(b, group, f'Tag{i}', item['pos'], sprite, ORDER_HINT)
+            if item['sprite'] in art.HINT_ROLES:
+                device_hint.attach(b, group.transform.children[-1], art.HINT_ROLES[item['sprite']], sprite)
         else:
             text(b, group, f'Text{i}', item['pos'], art.LAYOUT['hint_px'], item['text'], art.HINT_COLOR,
                  ORDER_HINT_TEXT)
+    return group
 
 
 # ---------------------------------------------------------------- 店の画面 (root は画面の原点)
@@ -207,6 +211,8 @@ def build_ui(row_prefab_guid):
     b.field(presenter, 'purchaseSound_', PURCHASE_SOUND)
     b.field(presenter, 'refuseSound_', REFUSE_SOUND)
     b.field(presenter, 'cursorSound_', CURSOR_SOUND)
+    b.component(root, 'UiScreen', screenId_='Shop', locksPlayerControl_='true', destroysOnClose_='true',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
     return save_prefab(prefab, UI_PREFAB_DIR, 'ShopUI')
 
 

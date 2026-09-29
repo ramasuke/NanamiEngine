@@ -66,13 +66,11 @@ namespace GameCore
         [[nodiscard]] virtual NanamiEngine::Module::GameObject::Transform      & PlayerTransform () const = 0;
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
         [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
-        /** @brief この PC で操作しているアバターか */
+        /** @brief クライアントで操作しているアバターか */
         [[nodiscard]] virtual bool                                               IsOwner         () const = 0;
         virtual void SaveStatus() = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
-        virtual void EnableStateMachiine() = 0;
-        virtual void DisableStateMachine() = 0;
-        /** @brief いまの State が操作を受け付けているか。会話や店で止めている間は false */
+        
         [[nodiscard]] virtual bool IsAcceptingControl() const = 0;
         virtual void ApplySyncState(uint8_t stateValue) = 0;
         

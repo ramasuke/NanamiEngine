@@ -10,7 +10,7 @@
 
 namespace
 {
-    /** @brief アニメーションのブレンド率が壊れている等で NaN のボーン行列が来ることがあるので、Transform に流す前に弾く */
+    /** @brief NaN のボーン行列が来ることがあるので、Transform に流す前に弾くか判定 */
     bool BoneSyncIsFinite(const glm::mat4& matrix)
     {
         for (int column = 0; column < 4; ++column)
@@ -103,9 +103,7 @@ std::optional<glm::mat4> Component::BoneSync::GetBoneWorldMatrix(const int boneI
     const int modelHandle = CurrentModelHandle();
     if (modelHandle == -1 || boneIndex < 0 || boneIndex >= MV1GetFrameNum(modelHandle))
         return std::nullopt;
-
-    // MV1GetFrameLocalWorldMatrix は最後に描画で MV1SetMatrix された行列(補間・描画オフセット込み)基準なので、
-    // それを打ち消してモデル空間に戻し、今の Transform を掛け直す
+    
     const glm::mat4 renderMatrix     = LibCore::Dxlib::FromDxMatrix(MV1GetMatrix(modelHandle));
     const glm::mat4 boneRenderMatrix = LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, boneIndex));
     const glm::mat4 boneWorldMatrix  = Transform().GetWorldMatrix() * glm::inverse(renderMatrix) * boneRenderMatrix;

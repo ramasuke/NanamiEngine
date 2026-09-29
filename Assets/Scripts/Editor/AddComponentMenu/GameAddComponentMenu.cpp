@@ -37,7 +37,7 @@
 #include "../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../GamePlay/Prop/AirShip/Prop_AirShipWingFlap.h"
-#include "../../GamePlay/Prop/ProximityReveal/ProximityReveal.h"
+#include "../../GamePlay/Prop/ConditionalObject/Prop_ConditionalObject.h"
 #include "../../GamePlay/Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
 #include "../../GamePlay/Prop/ReturningIsland/Prop_ReturningIsland.h"
@@ -46,8 +46,6 @@
 #include "../../GamePlay/Prop/Grass/Grassable.h"
 #include "../../GamePlay/Prop/Grass/GrassRenderer.h"
 #include "../../GamePlay/Prop/IslandPedestial/Prop_IslandPedestial.h"
-#include "../../GamePlay/Prop/Cloud/CloudEffect.h"
-#include "../../GamePlay/Prop/LatticeBarrier/LatticeBarrierEffect.h"
 #include "../../GamePlay/Prop/Tree/TreeLeafSway.h"
 #include "../../GamePlay/Weather/WindZone.h"
 #include "../../GamePlay/Weather/Sandstorm.h"
@@ -285,6 +283,7 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::EventNoticeBoard>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::HerbPatch>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::RestorationGate>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ConditionalObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::FloatingStone>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ReturningIsland>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::TreasureChest>(addComponent);
@@ -306,9 +305,6 @@ namespace Editor::AddComponentMenu
             }
             if (ImGui::TreeNode("Shader"))
             {
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal     >(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::LatticeBarrierEffect>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::CloudEffect         >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::TreeLeafSway        >(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();

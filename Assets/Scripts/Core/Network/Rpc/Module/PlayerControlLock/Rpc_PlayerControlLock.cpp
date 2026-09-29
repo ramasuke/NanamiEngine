@@ -1,38 +1,21 @@
 ﻿#include "Rpc_PlayerControlLock.h"
 
-#include <memory>
-
 #include "../../Custom_RpcType.h"
-#include "../../../../Game/PlayerAvatar/IPlayerAvatar.h"
-#include "../../../../Game/PlayerAvatar/PlayerAvatar.h"
-#include "../../../../Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../../Game/PlayerAvatar/ControlLock/PlayerAvatar_ControlLock.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 
 namespace
 {
-    std::weak_ptr<GameCore::IPlayerAvatar> s_lockedAvatar;
+    constexpr const char* ENEMY_BT_CONTROL_LOCK_TAG = "EnemyBT";
 }
 
-void GameCore::Network::ApplyPlayerControlLock(const bool isLock)
+void GameCore::Network::ApplyPlayerControlLock(const bool isLock, NanamiEngine::Module::GameObject::IGameObject& source)
 {
     if (isLock)
-    {
-        const auto avatar = PlayerAvatar::Owner();
-        if (!avatar || avatar->PlayerStatus().IsDowned())
-            return;
-        
-        avatar->GetEventSceneStateMachine().OnDisable();
-        s_lockedAvatar = avatar;
-        return;
-    }
-
-    const auto avatar = s_lockedAvatar.lock();
-    s_lockedAvatar.reset();
-    if (!avatar)
-        return;
-    
-    avatar->GetEventSceneStateMachine().OnEnable();
-    avatar->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Idle);
+        PlayerAvatar::LockControlBy(source, ENEMY_BT_CONTROL_LOCK_TAG);
+    else
+        PlayerAvatar::UnlockControlBy(source, ENEMY_BT_CONTROL_LOCK_TAG);
 }
 
 namespace
@@ -42,9 +25,10 @@ namespace
         PlayerControlLockRpcRegistration()
         {
             GameCore::Network::PlayerControlLockRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
-                [](NanamiEngine::Module::Network::NetworkGameObject&, const bool isLock)
+                [](NanamiEngine::Module::Network::NetworkGameObject& networkObject, const bool isLock)
                 {
-                    GameCore::Network::ApplyPlayerControlLock(isLock);
+                    if (const auto source = networkObject.Entity().lock())
+                        GameCore::Network::ApplyPlayerControlLock(isLock, *source);
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
         }

@@ -77,7 +77,7 @@ namespace GamePlay::Prop
             std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
             &owner->PlayerStatus().Quest(),
             &owner->PlayerStatus().CompletedQuest(),
-            &GameCore::Story::StoryProgress::Instance(),
+            GameCore::Story::StoryProgress::Instance(),
             0);
         hasUnread_  = model.HasUnreadMainStory(Ui::QuestReadLog());
         isResolved_ = true;

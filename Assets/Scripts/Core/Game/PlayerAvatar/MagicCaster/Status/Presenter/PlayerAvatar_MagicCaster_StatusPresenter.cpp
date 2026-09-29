@@ -5,7 +5,7 @@
 #include "../../../../../../GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 #include "../../../../../../GamePlay/Ui/ControlGuide/Ui_MagicCasterControlGuide.h"
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
-#include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
+#include "../../../../../../GamePlay/Ui/ItemBar/Ui_AvatarItemBarSource.h"
 #include "../../../../../../GamePlay/Ui/SpellPalette/Ui_SpellPalette.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 

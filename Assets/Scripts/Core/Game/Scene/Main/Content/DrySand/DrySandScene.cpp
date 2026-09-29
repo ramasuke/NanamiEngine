@@ -98,7 +98,8 @@ namespace GameCore::Scene::Main
         }
 
         // カバーが明ける前に画を作っておく
-        arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<DrySandSceneContext>>(playerAvatar_, Context());
+        arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<DrySandSceneContext>>(
+            playerAvatar_, Context(), Story::StoryFlag::DesertOverviewSeen);
         arrivalMovie_->Begin();
         co_return EnterResult::Ok();
     }

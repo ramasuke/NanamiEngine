@@ -29,6 +29,11 @@ namespace GameCore::Story
         AncientDragonDefeated,
         // 古竜を倒した後の話 (エピローグ) を教官から聞いた
         EpilogueHeard,
+        
+        // 草原・砂漠・巣に初めて着いたときの演出を見た
+        GrassLandOverviewSeen,
+        DesertOverviewSeen,
+        DragonNestOverviewSeen,
     };
 
     constexpr std::string_view ToString(const StoryFlag flag)
@@ -46,6 +51,9 @@ namespace GameCore::Story
         case StoryFlag::NestVoyageStarted:  return "NestVoyageStarted";
         case StoryFlag::AncientDragonDefeated: return "AncientDragonDefeated";
         case StoryFlag::EpilogueHeard:      return "EpilogueHeard";
+        case StoryFlag::GrassLandOverviewSeen:  return "GrassLandOverviewSeen";
+        case StoryFlag::DesertOverviewSeen:     return "DesertOverviewSeen";
+        case StoryFlag::DragonNestOverviewSeen: return "DragonNestOverviewSeen";
         }
         return "UnknownStoryFlag";
     }
@@ -62,5 +70,8 @@ namespace GameCore::Story
         StoryFlag::NestVoyageStarted,
         StoryFlag::AncientDragonDefeated,
         StoryFlag::EpilogueHeard,
+        StoryFlag::GrassLandOverviewSeen,
+        StoryFlag::DesertOverviewSeen,
+        StoryFlag::DragonNestOverviewSeen,
     };
 }

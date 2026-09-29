@@ -377,9 +377,12 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::VisitNormalAttackPress(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        const bool canCharge = Status().CanChargeAttack();
+        // ジャスト回避直後の受付中はカウンターが溜め・コンボより優先
+        const bool canCounter = Status().CanCounter();
+        const bool canCharge = !canCounter && Status().CanChargeAttack();
+        visitor.OnInput(SwordManAvatarStateType::CounterAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, canCounter);
         visitor.OnInput(SwordManAvatarStateType::ChargeAttackCharging, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, canCharge);
-        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, !canCharge);
+        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, !canCounter && !canCharge);
     }
 
     void SwordManAvatarStateBase::RotateTowardsAttackTarget(AttackTurn& turn, const float smoothTime_secs, const float maxRotateSpeed) const

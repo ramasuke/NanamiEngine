@@ -748,6 +748,9 @@
     <ClCompile Include="Engine\Core\Application\Display\WindowDisplayMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Display\WindowDisplayModeController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1159,6 +1162,27 @@
     <ClCompile Include="Packages\R4\Core\Disposable\R4_Disposable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Hint\UiFlow_DeviceHint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Screen\UiFlow_UiScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Screen\UiFlow_ScreenStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Device\UiFlow_InputDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Input\UiFlow_UiInputReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\UiFlow\Input\UiFlow_UiActionMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\ControlLock\Core\ControlLock_Service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Packages\AssetUpdater\Http\HttpAssetUpdater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1219,6 +1243,9 @@
     <ClCompile Include="Engine\Module\Component\CircleGaugeRenderer\CircleGaugeRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Component\PathSpriteTrailRenderer\PathSpriteTrailRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1270,6 +1297,9 @@
     <ClCompile Include="Engine\Core\Platform\Render\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Platform\Render\Billboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Platform\Render\Environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1283,6 +1313,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Engine\Core\Application\Configuration\ApplicationConfiguration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\ApplicationMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Editor\EditorApplication.h">
@@ -2974,6 +3007,9 @@
     <ClInclude Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Popup\Interface\PopupWindowState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\Project\ProjectWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -3011,6 +3047,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Toolbar\Widget\IEditorToolbarWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Toolbar\Widget\EditorToolbarWidgetContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\FileSystem\Directory\Directory.h">
@@ -4445,6 +4484,9 @@
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\ILockOnCameraTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4679,6 +4721,12 @@
     <ClInclude Include="Engine\Module\Gui\StaticReflection\Engine_Module_StaticReflection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Module\Gui\StaticReflection\Engine_Module_CategoryMenuItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Gui\StaticReflection\Engine_Module_CategoryMenuNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\LifeCycleCallback\Group\LifeCycle_CallbackableType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4713,6 +4761,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Platform\Render\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Platform\Render\Billboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Platform\Render\Environment.h">
@@ -4847,6 +4898,9 @@
     <ClInclude Include="Engine\Core\Application\Display\WindowDisplayMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Display\WindowDisplayModeController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4964,6 +5018,42 @@
     <ClInclude Include="Packages\R4\Core\ReactiveProperty\R4_SerializableReactiveProperty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Hint\UiFlow_DeviceHint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Screen\UiFlow_UiScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Screen\UiFlow_ScreenStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Device\UiFlow_InputDevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Input\UiFlow_UiInputReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Input\UiFlow_UiActionMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\Input\UiFlow_UiAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\UiFlow\UiFlow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\ControlLock\Core\ControlLock_ScopedLock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\ControlLock\Core\ControlLock_Service.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\ControlLock\ControlLockConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\ControlLock\ControlLock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Http\HttpAssetUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4971,6 +5061,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Interface\IAssetUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Interface\UpdateCheckStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Interface\UpdateCheckResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Interface\DownloadProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Interface\DownloadResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Manifest\AssetManifest.h">
@@ -5010,6 +5112,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Component\CircleGaugeRenderer\CircleGaugeRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Component\PathSpriteTrailRenderer\PathSpriteTrailRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h">

@@ -35,5 +35,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         UseItemDrink       = 27,
         UseItemEat         = 28,
         UseItemPlace       = 29,
+        CounterAttack      = 30,
     };
 }

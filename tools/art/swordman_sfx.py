@@ -1,4 +1,4 @@
-"""SwordMan のダッシュ / ジャンプ攻撃の効果音を合成し、Assets/Audio/Physics に SoundFile アセットとして入れる。
+"""SwordMan のダッシュ / ジャンプ / カウンター攻撃の効果音を合成し、Assets/Audio/Physics に SoundFile アセットとして入れる。
 
     python tools/art/swordman_sfx.py [--only NAME ...] [--audition DIR] [--preview PATH]
 
@@ -16,6 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import magic_sfx as m  # noqa: E402
+import ui_sfx as u  # noqa: E402
 from magic_sfx import (SR, at, bp, curve, exp_decay, finish, hp, lp, norm, osc, reverb, sat, sweep,  # noqa: E402
                        trim_tail, white)
 
@@ -166,19 +167,227 @@ def slam_hit_b(rng):
     return finish(reverb(sat(mix, 1.8), rng, 0.9, 0.22), -1, fade_out=0.15)
 
 
+# ================================================================ CounterAttack: ジャスト回避からの振り下ろし (発生 0.27s、判定の瞬間に鳴る)
+def _cleave(d, rng, t0, dur=0.22, f_top=3800, f_end=260):
+    """振り下ろしの風切り: 上から叩き落とすので音程が一気に下がる"""
+    env = curve(dur, [(0, 0), (0.025, 1), (dur * 0.5, 0.6), (dur, 0)]) ** 1.3
+    swish = sweep(white(dur, rng), curve(dur, [(0, f_top), (dur, f_end)], 'exp'), 2.0) * env
+    body = bp(white(dur, rng), 70, 520) * env
+    return at(np.zeros(m.n_of(d)), norm(swish) + norm(body) * 0.7, t0)
+
+
+def _sha(d, rng, t0, dur=0.06):
+    """刃を走らせる明るい擦れ (avoid_sfx の「シャ」を短く)"""
+    fc = curve(dur, [(0, 2200), (dur, 8000)], 'exp')
+    x = sweep(white(dur, rng), fc, 1.2) * curve(dur, [(0, 0), (0.005, 1), (dur, 0)]) ** 1.5
+    return at(np.zeros(m.n_of(d)), x, t0)
+
+
+def _boom(d, t0, f=(58, 26), tau=0.35):
+    """腹に来る低い衝撃。_thud より長く低い"""
+    body = osc(curve(d, [(0, f[0]), (0.3, f[1])], 'exp'), d) * exp_decay(d, tau, 0.003)
+    return at(np.zeros(m.n_of(d)), body, t0)
+
+
+def _bronze(d, t0, f=196, tau=0.9):
+    """低い青銅の響き (音階にしない非整数倍の部分音)"""
+    ring = sum(osc(f * r, d) * exp_decay(d, tau * k, 0.002) * g
+               for r, k, g in [(1.0, 1.0, 1.0), (2.32, 0.6, 0.5), (3.61, 0.4, 0.3), (5.12, 0.25, 0.15)])
+    return at(np.zeros(m.n_of(d)), lp(ring, 2500), t0)
+
+
+def counter_whiff_a(rng):
+    """重い縦斬り: 叩き落とす低い風切り + 短い刃鳴り"""
+    d = 0.5
+    mix = norm(_cleave(d, rng, 0.0)) + norm(_thud(d, (90, 40), 0.07, 0.12)) * 0.5
+    return finish(reverb(sat(mix + _shing(d, 0.01, (2100, 3150), 0.06) * 0.12, 1.5), rng, 0.3, 0.14), -3)
+
+
+def counter_whiff_b(rng):
+    """派手な一閃: 刃のシャッ → 叩き落とす風切り → 低い衝撃の余韻"""
+    d = 0.8
+    mix = (norm(_sha(d, rng, 0.0)) * 0.55 + norm(_cleave(d, rng, 0.02, 0.24, 4500, 300))
+           + norm(_boom(d, 0.14, (70, 32), 0.2)) * 0.6 + _shing(d, 0.0, (2600, 3900, 5500), 0.09) * 0.15)
+    return finish(reverb(sat(mix, 1.5), rng, 0.6, 0.2), -3)
+
+
+def counter_whiff_c(rng):
+    """振りかぶり → 振り下ろし: 短く吸い込む風 → 太い風切り → 地面を打つ"""
+    d = 0.6
+    inhale = np.zeros(m.n_of(d))
+    at(inhale, _swish(0.12, rng, 300, 1400, 1800, 0.1, 1.6, 0.08), 0.0)
+    mix = (norm(inhale) * 0.35 + norm(_cleave(d, rng, 0.09, 0.2, 3200, 220))
+           + norm(_ground_slam(d, rng, 0.24, 0.5)) * 0.55)
+    return finish(reverb(sat(mix, 1.5), rng, 0.4, 0.16), -3)
+
+
+def counter_hit_a(rng):
+    """重い一刀両断: 斬撃 + 太い肉の手応え + 腹に来る衝撃 (明るい音なし)"""
+    d = 1.0
+    mix = (norm(_slice(d, rng, 0.0, 0.025, 1500, 7000)) * 0.6 + norm(_flesh(d, rng, 0.004, 0.09)) * 0.9
+           + norm(_thud(d, (95, 40), 0.1, 0.004)) * 0.8 + norm(_boom(d, 0.004)) * 1.1
+           + norm(_cleave(d, rng, 0.0, 0.12)) * 0.25)
+    return finish(reverb(sat(mix, 2.0), rng, 0.8, 0.2), -1, fade_out=0.15)
+
+
+def counter_hit_b(rng):
+    """ズバァン (派手): 刃のシャッ + 斬撃 + 深い衝撃 + 長い刃鳴り"""
+    d = 1.3
+    mix = (norm(_sha(d, rng, 0.0)) * 0.45 + norm(_slice(d, rng, 0.01, 0.03, 1500, 8000)) * 0.6
+           + norm(_flesh(d, rng, 0.012, 0.08)) * 0.8 + norm(_boom(d, 0.012, (62, 27), 0.4)) * 1.1
+           + _shing(d, 0.012, (1850, 2780, 3960), 0.35) * 0.22)
+    return finish(reverb(sat(mix, 1.9), rng, 1.1, 0.24), -1, fade_out=0.2)
+
+
+def counter_hit_c(rng):
+    """ズドン + 低い鐘: 重い斬撃に青銅の響きを重ね、決まった感を出す"""
+    d = 1.5
+    mix = (norm(_slice(d, rng, 0.0, 0.025, 1500, 7000)) * 0.55 + norm(_flesh(d, rng, 0.004, 0.08)) * 0.8
+           + norm(_boom(d, 0.004, (60, 28), 0.35)) * 1.1 + norm(_bronze(d, 0.01)) * 0.5
+           + norm(_rubble(d, rng, 0.03, 30, 0.25)) * 0.2)
+    return finish(reverb(sat(mix, 1.8), rng, 1.2, 0.22), -1, fade_out=0.25)
+
+
+def counter_hit_d(rng):
+    """B と C の間: シャッ + 斬撃 + 衝撃 + 低い鐘と短い刃鳴り"""
+    d = 1.4
+    mix = (norm(_sha(d, rng, 0.0)) * 0.4 + norm(_slice(d, rng, 0.01, 0.028, 1500, 7500)) * 0.55
+           + norm(_flesh(d, rng, 0.012, 0.08)) * 0.8 + norm(_boom(d, 0.012, (60, 27), 0.38)) * 1.1
+           + norm(_bronze(d, 0.015, 220, 0.8)) * 0.35 + _shing(d, 0.012, (2100, 3150), 0.18) * 0.14)
+    return finish(reverb(sat(mix, 1.9), rng, 1.1, 0.22), -1, fade_out=0.2)
+
+
+# ---------------------------------------------------------------- 斬れ味重視 + エフェクトに同期 (tools/art/counter_attack_effect.py)
+# CounterSlash: 0f 縦の一閃 / 3f (0.05s) 刃が地面を打つ (閃光・衝撃波・石片) / 火花 18〜32f / 砂煙 ~1s
+# CounterImpact (ヒット時のみ): 0f 閃光 + 1 本目の斬撃 / 2f (0.033s) 交差する 2 本目 / 火花 ~0.5s / 残り火 ~1s
+SLASH_GROUND_T = 3 / 60
+IMPACT_CROSS_T = 2 / 60
+
+
+def _cut(d, rng, t0, dur=0.1, f0=9000, f1=1600, q=1.3, tau=0.035):
+    """刃が走る「ズバッ」: 立ち上がりの鋭いノイズを高い方から一気に掃き下ろす"""
+    fc = curve(dur, [(0, f0), (dur, f1)], 'exp')
+    x = sweep(white(dur, rng), fc, q) * exp_decay(dur, tau, 0.0006)
+    return at(np.zeros(m.n_of(d)), x, t0)
+
+
+def _tear(d, rng, t0, dur=0.09, lo=350, hi=3200):
+    """肉と布を裂く手応え: 粒の荒い帯域ノイズ"""
+    grain = np.abs(rng.standard_normal(m.n_of(dur)))
+    grain = lp(grain, 180) * 3
+    x = bp(white(dur, rng), lo, hi) * np.clip(grain, 0, 1.5) * exp_decay(dur, 0.035, 0.001)
+    return at(np.zeros(m.n_of(d)), sat(x / (np.max(np.abs(x)) + 1e-9), 2.0), t0)
+
+
+def _air_cut(d, rng, t0, dur=0.14):
+    """刃が空気を裂く短く鋭い「ヒュッ」(重い風切りより高く速い)"""
+    env = curve(dur, [(0, 0), (0.018, 1), (dur, 0)]) ** 2
+    x = sweep(white(dur, rng), curve(dur, [(0, 2500), (0.02, 6500), (dur, 1400)], 'exp'), 2.6) * env
+    return at(np.zeros(m.n_of(d)), x, t0)
+
+
+def _ground_hit(d, rng, t0, weight=1.0):
+    """刃が地面を打つ: 短い地響き + 石の割れ + 石片"""
+    crack = np.zeros(m.n_of(d))
+    at(crack, sat(bp(white(0.2, rng), 200, 3000) * exp_decay(0.2, 0.03 * weight, 0.0008), 3.0), t0)
+    return (norm(_thud(d, (85, 36), 0.09 * weight, t0)) + norm(crack) * 0.55
+            + norm(_rubble(d, rng, t0 + 0.02, 30, 0.3)) * 0.25 * weight)
+
+
+def _spark_crackle(d, rng, t0, span=0.45, count=40):
+    """散る火花のパチパチ (最初に密で、だんだん疎に)"""
+    times = [t0 + span * rng.random() ** 2.2 for _ in range(count)]
+    return m.grains(d, rng, times, 2500, 8000, (0.002, 0.007), (0.1, 0.6))
+
+
+def _dust_tail(d, rng, t0, dur=0.8):
+    """砂煙の低いざわめき"""
+    x = lp(m.brown(dur, rng), 350) * curve(dur, [(0, 0), (0.05, 1), (dur, 0)]) ** 2
+    return at(np.zeros(m.n_of(d)), x, t0)
+
+
+def counter_whiff_d(rng):
+    """斬れ味: 鋭い空気の裂け + 刃鳴り → 3f 後に地面を打つ + 火花 + 砂煙"""
+    d = 1.0
+    mix = (norm(_air_cut(d, rng, 0.0)) * 0.9 + norm(_cut(d, rng, 0.0, 0.08, 7000, 2000, 1.5, 0.025)) * 0.35
+           + _shing(d, 0.0, (2400, 3600, 5100), 0.1) * 0.14
+           + _ground_hit(d, rng, SLASH_GROUND_T, 0.8) * 0.7 + norm(_spark_crackle(d, rng, SLASH_GROUND_T)) * 0.2
+           + norm(_dust_tail(d, rng, SLASH_GROUND_T + 0.03)) * 0.25)
+    return finish(reverb(sat(mix, 1.4), rng, 0.6, 0.16), -3, fade_out=0.15)
+
+
+def counter_whiff_e(rng):
+    """D を重く: 空気の裂けに太い胴鳴りを足し、地面の衝撃を強く"""
+    d = 1.0
+    mix = (norm(_air_cut(d, rng, 0.0)) * 0.8 + norm(_cleave(d, rng, 0.0, 0.12, 3000, 300)) * 0.4
+           + _shing(d, 0.0, (2200, 3300), 0.08) * 0.12
+           + _ground_hit(d, rng, SLASH_GROUND_T, 1.1) * 0.85 + norm(_spark_crackle(d, rng, SLASH_GROUND_T)) * 0.15
+           + norm(_dust_tail(d, rng, SLASH_GROUND_T + 0.03)) * 0.3)
+    return finish(reverb(sat(mix, 1.5), rng, 0.6, 0.16), -3, fade_out=0.15)
+
+
+def counter_hit_e(rng):
+    """ズバッ・ザンッ: 1 本目の斬撃 + 裂く手応え → 2f 後に交差する 2 本目 → 地面 + 火花 + 残り火"""
+    d = 1.3
+    mix = (norm(_cut(d, rng, 0.0)) * 0.9 + norm(_tear(d, rng, 0.004)) * 0.6
+           + norm(_cut(d, rng, IMPACT_CROSS_T, 0.09, 8000, 1800, 1.4, 0.03)) * 0.6
+           + _shing(d, 0.0, (2300, 3450, 4900), 0.16) * 0.16 + norm(_thud(d, (100, 45), 0.06, 0.004)) * 0.55
+           + _ground_hit(d, rng, SLASH_GROUND_T, 0.7) * 0.4 + norm(_spark_crackle(d, rng, 0.01, 0.5, 55)) * 0.22
+           + norm(_dust_tail(d, rng, SLASH_GROUND_T + 0.03)) * 0.15)
+    return finish(reverb(sat(mix, 1.6), rng, 0.8, 0.18), -1, fade_out=0.2)
+
+
+def counter_hit_f(rng):
+    """E をより鋭く: 二つの斬撃を強く、低音を控えめに、刃鳴りを長めに"""
+    d = 1.4
+    mix = (norm(_cut(d, rng, 0.0, 0.11, 10000, 2000, 1.2, 0.04)) + norm(_tear(d, rng, 0.004, 0.07, 500, 4000)) * 0.45
+           + norm(_cut(d, rng, IMPACT_CROSS_T, 0.1, 9500, 2200, 1.3, 0.035)) * 0.8
+           + _shing(d, 0.004, (2600, 3900, 5500), 0.3) * 0.2 + norm(_thud(d, (110, 50), 0.05, 0.004)) * 0.35
+           + _ground_hit(d, rng, SLASH_GROUND_T, 0.6) * 0.3 + norm(_spark_crackle(d, rng, 0.01, 0.5, 55)) * 0.25)
+    return finish(reverb(sat(mix, 1.5), rng, 0.9, 0.2), -1, fade_out=0.2)
+
+
+def counter_hit_g(rng):
+    """重い一太刀: 鋭い斬撃は 1 本、裂く手応えと衝撃を太く (交差の 2 本目は薄く)"""
+    d = 1.3
+    mix = (norm(_cut(d, rng, 0.0, 0.12, 8500, 1400, 1.3, 0.045)) * 0.9 + norm(_tear(d, rng, 0.004, 0.11)) * 0.8
+           + norm(_cut(d, rng, IMPACT_CROSS_T, 0.08, 7000, 1800, 1.4, 0.025)) * 0.3
+           + _shing(d, 0.0, (2100, 3150), 0.12) * 0.12 + norm(_thud(d, (90, 38), 0.1, 0.004)) * 0.8
+           + norm(_boom(d, 0.004, (60, 28), 0.25)) * 0.5
+           + _ground_hit(d, rng, SLASH_GROUND_T, 0.9) * 0.45 + norm(_spark_crackle(d, rng, 0.01, 0.45, 40)) * 0.18
+           + norm(_dust_tail(d, rng, SLASH_GROUND_T + 0.03)) * 0.2)
+    return finish(reverb(sat(mix, 1.7), rng, 0.8, 0.18), -1, fade_out=0.2)
+
+
 CANDIDATES = {
     'SwordDashAttack_Whiff': {'A': dash_whiff_a, 'B': dash_whiff_b, 'C': dash_whiff_c},
     'SwordDashAttack_Hit': {'A': dash_hit_a, 'B': dash_hit_b},
     'SwordJumpAttack_Plunge': {'A': plunge_a, 'B': plunge_b},
     'SwordJumpAttack_Whiff': {'A': slam_whiff_a, 'B': slam_whiff_b},
     'SwordJumpAttack_Hit': {'A': slam_hit_a, 'B': slam_hit_b},
+    'SwordCounterAttack_Whiff': {'A': counter_whiff_a, 'B': counter_whiff_b, 'C': counter_whiff_c,
+                                 'D': counter_whiff_d, 'E': counter_whiff_e},
+    'SwordCounterAttack_Hit': {'A': counter_hit_a, 'B': counter_hit_b, 'C': counter_hit_c, 'D': counter_hit_d,
+                               'E': counter_hit_e, 'F': counter_hit_f, 'G': counter_hit_g},
 }
-CHOSEN = {name: 'A' for name in CANDIDATES} | {'SwordJumpAttack_Plunge': 'B'}
+CHOSEN = {name: 'A' for name in CANDIDATES} | {'SwordJumpAttack_Plunge': 'B', 'SwordCounterAttack_Whiff': 'D',
+                                               'SwordCounterAttack_Hit': 'E'}
+
+
+# NOTE: ダッシュ攻撃のヒットが A=-12.4 dB。カウンターは見せ場なので少し上げる (ダッシュ / ジャンプはピーク基準のまま)
+LOUDNESS = {'SwordCounterAttack_Whiff': -13.0, 'SwordCounterAttack_Hit': -11.0}
+
+# NOTE: 音を足しても既存の音の乱数が変わらないよう、名前の並びは追記だけにする
+SEED_ORDER = ['SwordDashAttack_Hit', 'SwordDashAttack_Whiff', 'SwordJumpAttack_Hit', 'SwordJumpAttack_Plunge',
+              'SwordJumpAttack_Whiff', 'SwordCounterAttack_Hit', 'SwordCounterAttack_Whiff']
 
 
 def render(name, variant):
-    seed = 2000 + sorted(CANDIDATES).index(name) * 10 + sorted(CANDIDATES[name]).index(variant)
-    return trim_tail(CANDIDATES[name][variant](np.random.default_rng(seed)))
+    seed = 2000 + SEED_ORDER.index(name) * 10 + sorted(CANDIDATES[name]).index(variant)
+    stereo = CANDIDATES[name][variant](np.random.default_rng(seed))
+    if name in LOUDNESS:
+        stereo = u.match_loudness(stereo, LOUDNESS[name])
+    return trim_tail(stereo)
 
 
 def main():

@@ -10,6 +10,7 @@
 #include "../Model/ShopModel.h"
 #include "../UI_Shop.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "Packages/UiFlow/UiFlow.h"
 
 namespace GameCore
 {
@@ -37,23 +38,9 @@ namespace GamePlay::Ui
         void Bind(const std::weak_ptr<Prop::MerchantStall>& stall);
 
     private:
-        struct Keys
-        {
-            bool prev    = false;
-            bool next    = false;
-            bool less    = false;
-            bool more    = false;
-            bool confirm = false;
-            bool cancel  = false;
-        };
-
         void OnStart  () override;
         void OnUpdate () override;
-        void OnDestroy() override;
 
-        [[nodiscard]] static Keys ReadKeys();
-        [[nodiscard]] bool IsAnotherOpen() const;
-        void UpdateQuantity(const Keys& keys);
         void ChangeQuantity(int delta);
         void Purchase();
         void Refresh() const;
@@ -68,19 +55,11 @@ namespace GamePlay::Ui
         [[serialize(0)]] float quantityRepeatInterval_secs_ = 0.08f;
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<ShopUi> view_;
         std::unique_ptr<ShopModel> model_;
         std::weak_ptr<GameCore::IPlayerAvatar> suspendedAvatar_;
         std::weak_ptr<Prop::MerchantStall> stall_;
-
-        Keys previousKeys_;
-        int quantityHoldDirection_ = 0;
-        float quantityHold_secs_ = 0.0f;
-        float quantityRepeat_secs_ = 0.0f;
-        bool isClosing_ = false;
-        bool isClosed_ = false;
-        // 話しかけるたびに二重に生えるのを防ぐ
-        bool isOpen_ = false;
 
 #pragma region Serialization Function
     public:

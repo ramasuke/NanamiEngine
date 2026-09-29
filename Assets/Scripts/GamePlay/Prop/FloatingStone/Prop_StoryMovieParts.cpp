@@ -1,7 +1,5 @@
 ﻿#include "Prop_StoryMovieParts.h"
 
-#include "Engine/Core/Platform/Input/Input.h"
-
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Physics/Physics.h"
 #include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
@@ -9,46 +7,9 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
-#include "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
-#include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 
 namespace GamePlay::Prop::StoryMovie
 {
-    namespace
-    {
-        // 到着演出(100)や NPC の会話カメラより上に出す
-        constexpr int CAMERA_PRIORITY = 110;
-        constexpr unsigned char SKIP_TRIGGER_DEAD_ZONE = 30;
-
-        bool IsSkipInputDown()
-        {
-            if (NanamiEngine::Platform::Input::Keyboard::IsAnyDown())
-                return true;
-
-            const auto xInput = NanamiEngine::Platform::Input::Gamepad::Get();
-            if (!xInput.connected)
-                return false;
-
-            if (xInput.leftTrigger > SKIP_TRIGGER_DEAD_ZONE || xInput.rightTrigger > SKIP_TRIGGER_DEAD_ZONE)
-                return true;
-
-            for (const bool button : xInput.buttons)
-            {
-                if (button)
-                    return true;
-            }
-            return false;
-        }
-    }
-
-    bool SkipInput::IsSkipped()
-    {
-        const bool isDown = IsSkipInputDown();
-        isArmed_ |= !isDown;
-        return isArmed_ && isDown;
-    }
-
     void SetChildParticlesPlaying(NanamiEngine::Module::GameObject::IGameObject& root, const bool isPlaying)
     {
         for (const auto& child : root.Transform().GetAllChildren())
@@ -82,49 +43,5 @@ namespace GamePlay::Prop::StoryMovie
     void MoveBy(NanamiEngine::Module::GameObject::IGameObject& gameObject, const glm::vec3& offset)
     {
         gameObject.Transform().SetWorldPos(gameObject.Transform().GetWorldPos() + offset);
-    }
-
-    CameraScope::CameraScope(
-        std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar,
-        std::shared_ptr<NanamiEngine::CineMachine::CineMachineVirtualCamera> camera,
-        std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> lookTarget,
-        const glm::vec3& lookOffset)
-        : playerAvatar_(std::move(playerAvatar))
-        , camera_(std::move(camera))
-        , lookTarget_(std::move(lookTarget))
-        , lookOffset_(lookOffset)
-    {
-    }
-
-    CameraScope::~CameraScope() { End(); }
-
-    void CameraScope::Begin() const
-    {
-        if (const auto avatar = playerAvatar_.lock())
-            avatar->GetEventSceneStateMachine().OnDisable();
-
-        if (!camera_)
-            return;
-
-        const auto lookAt = camera_->Components().Catch<NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour>().lock();
-        if (lookAt && lookTarget_)
-        {
-            lookAt->SetTarget(lookTarget_);
-            lookAt->SetOffsetPos(lookOffset_);
-        }
-        camera_->SetPriority(CAMERA_PRIORITY);
-    }
-
-    void CameraScope::End()
-    {
-        if (isEnded_)
-            return;
-        isEnded_ = true;
-
-        // 優先度を戻すと三人称カメラが勝ち、Brain のブレンドで帰る
-        if (camera_)
-            camera_->OnDisable();
-        if (const auto avatar = playerAvatar_.lock())
-            avatar->GetEventSceneStateMachine().OnEnable();
     }
 }

@@ -11,7 +11,10 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         // NOTE: ドラゴンが飛び立ったらキャノンに乗れるようにする
         if (const auto sceneContext = Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>())
+        {
             sceneContext->PlayerControllabeCanon().Unlock();
+            sceneContext->SetNavigationObjective("PlayerCannon", true);
+        }
 
         return TickStatus::Success;
     }

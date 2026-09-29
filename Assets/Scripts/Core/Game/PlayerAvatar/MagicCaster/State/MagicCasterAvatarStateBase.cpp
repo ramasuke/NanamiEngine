@@ -63,14 +63,17 @@ namespace GameCore::PlayerAvatar::MagicCaster
     {
         if (slot == SPELL_BASIC_SLOT)
             return Resources().BasicSpell();
+        if (slot == SPELL_COUNTER_SLOT)
+            return Resources().CounterSpell();
         return Resources().LoadoutSpell(slot);
     }
 
     bool MagicCasterAvatarStateBase::TryBeginCast() const
     {
         std::optional<int> slot;
+        // ジャスト回避直後の受付中は基本魔法の代わりにカウンター魔法を撃つ
         if (Input().Cast().IsPressed())
-            slot = SPELL_BASIC_SLOT;
+            slot = CanCounterCast() ? SPELL_COUNTER_SLOT : SPELL_BASIC_SLOT;
         else
             slot = Input().PressedLoadoutSlot();
 
@@ -81,6 +84,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (!spell || !Status().CanCast(*slot, *spell))
             return false;
 
+        if (*slot == SPELL_COUNTER_SLOT)
+            Status().ConsumeCounter();
         Context().SetPendingCast(*slot, spell);
         OnChangeState(MagicCasterAvatarStateType::Cast);
         return true;
@@ -88,8 +93,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     bool MagicCasterAvatarStateBase::CanCastBasicSpell() const
     {
+        if (CanCounterCast())
+            return true;
         const auto spell = SpellAt(SPELL_BASIC_SLOT);
         return spell && Status().CanCast(SPELL_BASIC_SLOT, *spell);
+    }
+
+    bool MagicCasterAvatarStateBase::CanCounterCast() const
+    {
+        return Status().CanCounter() && Resources().CounterSpell();
     }
 
     namespace

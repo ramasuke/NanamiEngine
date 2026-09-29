@@ -13,6 +13,7 @@ void GameCore::Scene::DrySandSceneContext::Init()
     arrivalCamera_.Init();
     cameraBrain_.Init();
     arrivalPortalPrefab_.Init();
+    arrivalCaptionPrefab_.Init();
     floatingStone_.Init();
 }
 
@@ -79,6 +80,14 @@ void GameCore::Scene::DrySandSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalOverviewCameraStart_", arrivalOverviewCameraStart_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewCameraEnd_", arrivalOverviewCameraEnd_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewLookAt_", arrivalOverviewLookAt_);
+    ImGuiHelper::OnDrawInputField("arrivalIslandTitle_", arrivalIslandTitle_);
+    ImGuiHelper::OnDrawInputField("arrivalIslandSubtitle_", arrivalIslandSubtitle_);
+    ImGuiHelper::OnDrawInputField("arrivalTourShots_", arrivalTourShots_, [this]
+    {
+        if (ImGui::Button("Add Shot"))
+            arrivalTourShots_.emplace_back();
+    });
+    ImGuiHelper::OnDrawInputField("arrivalCaptionPrefab_", arrivalCaptionPrefab_);
     ImGuiHelper::OnDrawInputField("floatingStone_", floatingStone_);
 }
 

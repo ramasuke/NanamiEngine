@@ -108,6 +108,18 @@ namespace GameCore::Scene::Main
         phase_ = Phase::Idle;
     }
 
+    std::shared_ptr<SceneContextBase> GameSceneGroup::CurrentContext() const
+    {
+        if (HasPendingChange())
+            return nullptr;
+
+        const auto current = currentScene_.lock();
+        if (!current || !current->IsEntered())
+            return nullptr;
+
+        return current->BaseContext();
+    }
+
     void GameSceneGroup::BeginCovering()
     {
         coveringRequest_ = std::exchange(pendingRequest_, std::nullopt);

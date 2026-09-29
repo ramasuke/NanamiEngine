@@ -1,19 +1,11 @@
 ﻿#pragma once
 #include <functional>
 
-#include "Story_StoryFlag.h"
-#include "../Npc/Enemy/Type/EnemyKind.h"
+#include "Story_StageClearCondition.h"
 #include "Packages/R4/R4.h"
 
 namespace GameCore::Story
 {
-    /** @brief ステージのクリア条件。bossKind の敵を倒したら flag を立てる */
-    struct StageClearCondition
-    {
-        Npc::Enemy::EnemyKind bossKind;
-        StoryFlag             flag;
-    };
-
     /** @brief onDefeat に condition.bossKind が流れたら onClear(condition.flag) を呼ぶ。購読は自分が持ち、破棄か Dispose で外す */
     class StageClearWatcher final
     {

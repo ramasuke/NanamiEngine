@@ -30,6 +30,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] std::shared_ptr<const SwordManAvatarStateBase> CurrentStateValue() const;
 
     private:
+        [[nodiscard]] bool YieldsToControlLock() const override;
+
         R4::ReactiveProperty<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;
         R4::SerialDisposable baseStateSubscription_;
     };

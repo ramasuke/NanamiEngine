@@ -153,8 +153,8 @@ which is included **only from `.cpp` files**. Converting at the call site looks 
 `Engine/Core/Platform/Input/Input.h` (`Platform::Input::Keyboard::IsDown(Key::A)`, `Mouse`, `Gamepad::Get()`, `IsWindowActive`;
 game code includes `Assets/Scripts/Core/Input/InputAliases.h` for the short spelling), `Platform/Draw2D/Draw2D.h` (blend / bright /
 filter state, `ScopedDrawState`, `DrawRotaGraph`, `DrawBox`, `DrawString` with UTF-8, `ScreenSize`, `GraphSize`),
-`Platform/Render/{Camera,Environment,Shader,Model}.h` (camera queries, fog / light, constant + vertex / index buffers with
-`ShaderVertex3D`, MV1 frame queries), `Platform/AsyncLoad/AsyncLoad.h` (`SyncLoadScope`, `IsHandleLoading`),
+`Platform/Render/{Camera,Environment,Shader,Model,Billboard}.h` (camera queries, fog / light, constant + vertex / index buffers with
+`ShaderVertex3D`, MV1 frame queries, camera-facing sprites in 3D), `Platform/AsyncLoad/AsyncLoad.h` (`SyncLoadScope`, `IsHandleLoading`),
 `Time::NowMilliseconds()`, `SoundFile::Play/Stop/IsPlaying/SetVolume/SetNextPlayVolume/Set3DPosition`,
 `Render3D::Shapes::DrawLine3D`, `ApplicationBase::RequestClose()`. Add a wrapper there (the `.cpp` may include `DxLib.h`) rather
 than calling DxLib from game code.
@@ -179,6 +179,33 @@ drives it. Add a page with `REGISTER_DEBUG_SHEET_PAGE` in a game `.cpp` wrapped 
 **Don't change game code for debug features.** Use existing public APIs from the debug files (e.g. write the LocalPrefs
 file and call `Reload()`). When a hook is unavoidable, put every added line - include, base class, member, definition,
 call - inside `#if NANAMI_DEBUG_SHEET_ENABLED` (`Game`'s `OnUserInterfaceRender`, `RecordBook::Reload`).
+
+## Player control lock (ControlLock)
+
+Stopping the local player's control goes through **`Packages/ControlLock`** only (`NanamiEngine::ControlLock`).
+`ControlLock::Service::Instance().Acquire()` returns an `R4::Disposable` that holds the lock until disposed, so always give
+it a lifetime: `.AddTo(this)` in a Component, a `ControlLock::ScopedLock` for a coroutine local / non-Component member,
+`AcquireKeyed(key)` / `ReleaseKeyed(key)` for Lock/Unlock pairs (BT nodes, RPC; game helper
+`PlayerAvatar::LockControlBy(owner, tag)` in `Assets/Scripts/Core/Game/PlayerAvatar/ControlLock/`). Locks are counted, so
+overlapping holders never release each other. Never switch the avatar state machine to Disable yourself -
+`PlayerAvatarBase` polls `IsLocked()` and swaps states; states that already take no control (`ControlAcceptance() == None`:
+Death, Down, WarpIn, ...) are left alone, so a movie can still `GetEventSceneStateMachine().OnChangeState(...)` while it
+holds a lock. `IsLocked()` stays true for the frame in which the last holder released (the key that closed a screen must not
+reach gameplay). The caller is recorded with `std::source_location` (`Holders()`), compiled out of the Release game
+build by `NANAMI_CONTROL_LOCK_TRACE_ENABLED`. See **`Packages/ControlLock/README.md`**.
+
+## Menu screens (UiFlow)
+
+Menu-style screens use **`Packages/UiFlow`** (`NanamiEngine::UiFlow`): put a `UiFlow::UiScreen` on the same GameObject as the
+`<Name>Presenter` (in the prefab / scene: `screenId_`, `locksPlayerControl_`, `destroysOnClose_` = false for a resident
+screen), open / close with `screen_->Open()` / `Close()`, and read input with
+`screen_->Input().IsPressed(UiAction::Submit)` / `IsRepeated(...)` from `OnUpdate` - don't write another `ReadKeys()`.
+Only the top screen gets input (keys and `NanamiUi::Button` clicks under it); a nested screen is handled with
+`OnCovered()` / `OnRevealed()`. The current input device is `UiFlow::InputDevice::Current()`, and `UiFlow::DeviceHint` swaps
+a hint sprite per device (keyboard wooden tag / gamepad brass stud, same canvas size; sprites and prefab wiring come from
+`python tools/art/device_hint.py --emit` / `--patch`, see `docs/UIDesign.md` §5). Shop / StageReturn / Settings / EventBoard /
+CharacterSelect are migrated; Title / GameOver / StageSelect / AssetUpdate still read input themselves.
+See **`Packages/UiFlow/README.md`**.
 
 ## Multiplayer: relay server & room codes
 
@@ -209,6 +236,22 @@ Before designing or building any in-game UI screen (sprites, prefab, View/Presen
 palette / fonts / hint-tag / wording / motion conventions taken from the existing prefabs, the texture helpers
 in `tools/art/character_select.py`, and the mock-on-a-real-screen -> `--emit` -> `*_prefab.py` workflow.
 Show the user 2-3 composited mocks before implementing a new screen.
+
+## Player navigation ("what to do next")
+
+`Assets/Scene/ChattingUiScene.scene` > `Navigation` (loaded on every main scene but the title) shows the current objective:
+`NavigationPresenter` picks the first step of `Assets/Data/Navigation/Main.navGuide` whose `activeConditions_` hold and
+`doneConditions_` don't (story steps first, then taken quests) and puts it in `NavigationMemory`; `NavigationBanner` shows
+its title once at the top centre (never again for the same text), `NavigationMarker` draws the orb + "教官 52m" label or
+edge fireflies, `NavigationTrail` finds a `HeightGridAstar` path and hands it to the engine's `PathSpriteTrailRenderer`
+(on the same GameObject; sprites flowing along a polyline - the firefly look is tuned there), and the target's chat icon gets
+`BillBoardNpcChatIcon::SetObjectiveSurprise`. Targets and the path grid belong to the main-scene context
+(`SceneContextBase::navigationTargets_` / `navigationGrid_`, read through `GameCore::Navigation::INavigationSceneSource`);
+a step lists target ids in priority order and uses the first one the current context has, so no code checks scene types.
+Regenerate instead of hand-editing: `python tools/art/navigation_guide.py` (steps) and
+`python tools/art/navigation_targets.py` (targets + grids in GameManage.scene). F1 > 情報/ナビ shows the current step.
+Transient in-scene objectives (not saved, e.g. the prologue cannon) are `SceneContextBase::SetNavigationObjective(id, bool)`,
+matched by `SceneObjectiveCondition` (`scene_objective(id)` in the script); the presenter re-evaluates when they change.
 
 ## Story & island restoration
 

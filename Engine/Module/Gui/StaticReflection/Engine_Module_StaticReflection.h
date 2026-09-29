@@ -2,17 +2,18 @@
 #include "Engine/Core/Api/NanamiApi.h"
 #include <algorithm>
 #include <functional>
-#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include "ImGuiHelper.h"
+#include "Engine_Module_CategoryMenuItem.h"
+#include "Engine_Module_CategoryMenuNode.h"
 
 namespace NanamiEngine::Module::StaticReflection
 {
-    /** ノード構造（汎用） */
+    /** ノード構造 */
     template <typename T>
     struct NodeTree
     {
@@ -100,21 +101,6 @@ namespace NanamiEngine::Module::StaticReflection
             }
         }
     }
-
-    /** DrawCategoryMenu の 1 項目。category は "A::B" で入れ子になり、空ならトップレベルに並ぶ */
-    struct NANAMI_API CategoryMenuItem
-    {
-        std::string           category;
-        std::string           label;
-        bool                  enabled;
-        std::function<void()> onSelect;
-    };
-
-    struct NANAMI_NO_API CategoryMenuNode
-    {
-        std::map<std::string, std::unique_ptr<CategoryMenuNode>> children;
-        std::vector<const CategoryMenuItem*>                     items;
-    };
 
     inline void DrawCategoryMenuNode(const CategoryMenuNode& node)
     {

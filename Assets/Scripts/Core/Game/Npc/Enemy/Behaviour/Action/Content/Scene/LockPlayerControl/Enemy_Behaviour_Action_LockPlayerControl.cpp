@@ -8,7 +8,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::LockPlayerControl::DoTick(const TickContext& context)
     {
-        GameCore::Network::ApplyPlayerControlLock(true);
+        GameCore::Network::ApplyPlayerControlLock(true, context.EnemyGameObject());
 
         // NOTE: 敵の BT は権威側だけで Tick されるので、他ピアの Owner にも届ける
         if (context.IsNetworkAuthority())

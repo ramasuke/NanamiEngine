@@ -1,48 +1,16 @@
 ﻿#pragma once
-#include <array>
 #include <chrono>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "cereal/types/vector.hpp"
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Data_AnnouncementKind.h"
 
 namespace NanamiEngine::Module::Asset
 {
     constexpr auto ANNOUNCEMENT_EXTENSION_LABEL = ".announcement";
-
-    /** @brief お知らせの種類。掲示板の札と角印の絵はこの順で並べる */
-    enum class AnnouncementKind : int
-    {
-        Important = 0,
-        Update,
-        Bug,
-        Event,
-        Guide,
-    };
-
-    constexpr std::string_view ToString(const AnnouncementKind kind)
-    {
-        switch (kind)
-        {
-        case AnnouncementKind::Important: return "Important";
-        case AnnouncementKind::Update:    return "Update";
-        case AnnouncementKind::Bug:       return "Bug";
-        case AnnouncementKind::Event:     return "Event";
-        case AnnouncementKind::Guide:     return "Guide";
-        }
-        return "UnknownAnnouncementKind";
-    }
-
-    constexpr std::array ANNOUNCEMENT_KINDS{
-        AnnouncementKind::Important,
-        AnnouncementKind::Update,
-        AnnouncementKind::Bug,
-        AnnouncementKind::Event,
-        AnnouncementKind::Guide,
-    };
 
     /**
      * @brief 掲示板の「お知らせ」1件。掲載時刻は "YYYY-MM-DD HH:MM"(日本時間) で書き、それより前は出さない。

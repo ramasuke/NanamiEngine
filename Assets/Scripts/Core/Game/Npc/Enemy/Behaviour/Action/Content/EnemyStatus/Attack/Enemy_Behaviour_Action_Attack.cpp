@@ -37,7 +37,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             auto& attackArea = context.CatchPrefabObject<AttackArea>(attackAreaName_);
             attackArea.PhysicsAttack(context.EnemyGameObject(), attackPower_);
 
-            // 権威側限定Tickなら、他ピアの同じ AttackArea も発火させる(被弾判定は各ピアが自分の所有アバターに対して行う)
+            // 他ピアのAttackArea も発火させる
             if (context.IsNetworkAuthority())
             {
                 GameCore::Network::AttackAreaFireRpc::Send(
@@ -72,7 +72,6 @@ namespace GameCore::Npc::Enemy::Behaviour
         const glm::vec3 position = context.EnemyTransform().GetWorldPos();
         GamePlay::Sound::SoundPlayer::PlaySe(sound, position);
 
-        // 権威側限定Tickなら、Tickしていない他ピアにも同じSEを鳴らさせる
         if (context.IsNetworkAuthority())
             GameCore::Network::PlaySeRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, sound.GetGuid(), position);
     }

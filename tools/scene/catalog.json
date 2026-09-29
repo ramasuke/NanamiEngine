@@ -1249,7 +1249,7 @@
       "class": "AirShip",
       "fqn": "GamePlay::Prop::AirShip",
       "leaf": "AirShip",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1267,6 +1267,19 @@
           "named": true,
           "shape": "field",
           "type": "ParticleSystem"
+        },
+        {
+          "key": "evacuatePoint_",
+          "member": "evacuatePoint_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "deckHalfExtents_",
+          "member": "deckHalfExtents_",
+          "named": true,
+          "shape": "vec3"
         }
       ]
     },
@@ -1532,60 +1545,6 @@
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/ChargeStuckObstacle/GamePlay_ChargeStuckObstacle.h",
       "params": []
-    },
-    "GamePlay::Prop::CloudEffect": {
-      "class": "CloudEffect",
-      "fqn": "GamePlay::Prop::CloudEffect",
-      "leaf": "CloudEffect",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Prop/Cloud/CloudEffect.h",
-      "params": [
-        {
-          "key": "windX_",
-          "member": "windX_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "windZ_",
-          "member": "windZ_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "cloudScale_",
-          "member": "cloudScale_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "coverage_",
-          "member": "coverage_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "softness_",
-          "member": "softness_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "density_",
-          "member": "density_",
-          "named": true,
-          "shape": "float"
-        }
-      ]
     },
     "GamePlay::Prop::DestructibleObject": {
       "class": "DestructibleObject",
@@ -1925,54 +1884,6 @@
         }
       ]
     },
-    "GamePlay::Prop::LatticeBarrierEffect": {
-      "class": "LatticeBarrierEffect",
-      "fqn": "GamePlay::Prop::LatticeBarrierEffect",
-      "leaf": "LatticeBarrierEffect",
-      "version": 1,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Prop/LatticeBarrier/LatticeBarrierEffect.h",
-      "params": [
-        {
-          "key": "gridScale_",
-          "member": "gridScale_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "lineThickness_",
-          "member": "lineThickness_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "pulseSpeed_",
-          "member": "pulseSpeed_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "visibleRadius_",
-          "member": "visibleRadius_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "fadeWidth_",
-          "member": "fadeWidth_",
-          "named": true,
-          "shape": "float"
-        }
-      ]
-    },
     "GamePlay::Prop::MerchantStall": {
       "class": "MerchantStall",
       "fqn": "GamePlay::Prop::MerchantStall",
@@ -2001,50 +1912,6 @@
           "member": "focusPriority_",
           "named": true,
           "shape": "int"
-        }
-      ]
-    },
-    "GamePlay::Prop::ProximityReveal": {
-      "class": "ProximityReveal",
-      "fqn": "GamePlay::Prop::ProximityReveal",
-      "leaf": "ProximityReveal",
-      "version": 1,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Prop/ProximityReveal/ProximityReveal.h",
-      "params": [
-        {
-          "key": "revealRadius_",
-          "member": "revealRadius_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "transitionWidth_",
-          "member": "transitionWidth_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "vsFile_",
-          "member": "vsFile_",
-          "named": true,
-          "shape": "field",
-          "type": "HlslVsFile"
-        },
-        {
-          "key": "psFile_",
-          "member": "psFile_",
-          "named": true,
-          "shape": "field",
-          "type": "HlslPsFile"
         }
       ]
     },
@@ -2100,6 +1967,45 @@
         {
           "key": "restoredPrefab_",
           "member": "restoredPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
+    "GamePlay::Prop::ConditionalObject": {
+      "class": "ConditionalObject",
+      "fqn": "GamePlay::Prop::ConditionalObject",
+      "leaf": "ConditionalObject",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/ConditionalObject/Prop_ConditionalObject.h",
+      "params": [
+        {
+          "key": "conditions_",
+          "member": "conditions_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Conditions"
+        },
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "prefab_",
+          "member": "prefab_",
           "named": true,
           "shape": "field",
           "type": "PrefabGameObjectFile"
@@ -12644,6 +12550,667 @@
           "type": "UiSoundBankData"
         }
       ]
+    },
+    "NanamiEngine::UiFlow::UiScreen": {
+      "class": "UiScreen",
+      "fqn": "NanamiEngine::UiFlow::UiScreen",
+      "leaf": "UiScreen",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Packages/UiFlow/Screen/UiFlow_UiScreen.h",
+      "params": [
+        {
+          "key": "screenId_",
+          "member": "screenId_",
+          "named": true,
+          "shape": "string",
+          "default": ""
+        },
+        {
+          "key": "locksPlayerControl_",
+          "member": "locksPlayerControl_",
+          "named": true,
+          "shape": "bool",
+          "default": true
+        },
+        {
+          "key": "destroysOnClose_",
+          "member": "destroysOnClose_",
+          "named": true,
+          "shape": "bool",
+          "default": true
+        },
+        {
+          "key": "repeatDelay_secs_",
+          "member": "repeatDelay_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.35
+        },
+        {
+          "key": "repeatInterval_secs_",
+          "member": "repeatInterval_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.08
+        }
+      ]
+    },
+    "NanamiEngine::UiFlow::DeviceHint": {
+      "class": "DeviceHint",
+      "fqn": "NanamiEngine::UiFlow::DeviceHint",
+      "leaf": "DeviceHint",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Packages/UiFlow/Hint/UiFlow_DeviceHint.h",
+      "params": [
+        {
+          "key": "keyboardSprite_",
+          "member": "keyboardSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "gamepadSprite_",
+          "member": "gamepadSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        }
+      ]
+    },
+    "GamePlay::Ui::StageArrivalCaption": {
+      "class": "StageArrivalCaption",
+      "fqn": "GamePlay::Ui::StageArrivalCaption",
+      "leaf": "StageArrivalCaption",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/StageArrival/Ui_StageArrivalCaption.h",
+      "params": [
+        {
+          "key": "islandVignette_",
+          "member": "islandVignette_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "islandRuleTop_",
+          "member": "islandRuleTop_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "islandRuleBottom_",
+          "member": "islandRuleBottom_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "islandTitle_",
+          "member": "islandTitle_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "islandSubtitle_",
+          "member": "islandSubtitle_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "landmarkBand_",
+          "member": "landmarkBand_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "landmarkRule_",
+          "member": "landmarkRule_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "landmarkTitle_",
+          "member": "landmarkTitle_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "landmarkSubtitle_",
+          "member": "landmarkSubtitle_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "fadeIn_secs_",
+          "member": "fadeIn_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.8
+        },
+        {
+          "key": "fadeOut_secs_",
+          "member": "fadeOut_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 0.6
+        },
+        {
+          "key": "vignetteBlendRate_",
+          "member": "vignetteBlendRate_",
+          "named": true,
+          "shape": "int",
+          "default": 200
+        },
+        {
+          "key": "bandBlendRate_",
+          "member": "bandBlendRate_",
+          "named": true,
+          "shape": "int",
+          "default": 210
+        }
+      ]
+    },
+    "GamePlay::Ui::NavigationBanner": {
+      "class": "NavigationBanner",
+      "fqn": "GamePlay::Ui::NavigationBanner",
+      "leaf": "NavigationBanner",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Navigation/Ui_NavigationBanner.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "bandSprite_",
+          "member": "bandSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "font_",
+          "member": "font_",
+          "named": true,
+          "shape": "field",
+          "type": "TtfFontFile"
+        },
+        {
+          "key": "headingText_",
+          "member": "headingText_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "centerY_px_",
+          "member": "centerY_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "headingOffsetY_px_",
+          "member": "headingOffsetY_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "titleOffsetY_px_",
+          "member": "titleOffsetY_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "headingScale_",
+          "member": "headingScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "titleScale_",
+          "member": "titleScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "headingColor_",
+          "member": "headingColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "titleColor_",
+          "member": "titleColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "bandAlphaRate_",
+          "member": "bandAlphaRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "riseDistance_px_",
+          "member": "riseDistance_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeIn_secs_",
+          "member": "fadeIn_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hold_secs_",
+          "member": "hold_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeOut_secs_",
+          "member": "fadeOut_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::NavigationPresenter": {
+      "class": "NavigationPresenter",
+      "fqn": "GamePlay::Ui::NavigationPresenter",
+      "leaf": "NavigationPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Navigation/Ui_NavigationPresenter.h",
+      "params": [
+        {
+          "key": "guide_",
+          "member": "guide_",
+          "named": true,
+          "shape": "field",
+          "type": "NavigationGuide"
+        }
+      ]
+    },
+    "GamePlay::Ui::NavigationMarker": {
+      "class": "NavigationMarker",
+      "fqn": "GamePlay::Ui::NavigationMarker",
+      "leaf": "NavigationMarker",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Navigation/Ui_NavigationMarker.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "orbSprite_",
+          "member": "orbSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "fireflySprite_",
+          "member": "fireflySprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "font_",
+          "member": "font_",
+          "named": true,
+          "shape": "field",
+          "type": "TtfFontFile"
+        },
+        {
+          "key": "metersPerUnit_",
+          "member": "metersPerUnit_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hideDistance_",
+          "member": "hideDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeDistance_",
+          "member": "fadeDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbReferenceDistance_",
+          "member": "orbReferenceDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbMinScale_",
+          "member": "orbMinScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbMaxScale_",
+          "member": "orbMaxScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbPulsePeriod_secs_",
+          "member": "orbPulsePeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbPulseRate_",
+          "member": "orbPulseRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "labelOffset_px_",
+          "member": "labelOffset_px_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "nameScale_",
+          "member": "nameScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "distanceScale_",
+          "member": "distanceScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lineGap_px_",
+          "member": "lineGap_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "nameColor_",
+          "member": "nameColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "distanceColor_",
+          "member": "distanceColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "edgeMargin_px_",
+          "member": "edgeMargin_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "edgeFireflyCount_",
+          "member": "edgeFireflyCount_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "edgeFireflySpacing_px_",
+          "member": "edgeFireflySpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "edgeFireflyScale_",
+          "member": "edgeFireflyScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "edgeFlowPeriod_secs_",
+          "member": "edgeFlowPeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fade_secs_",
+          "member": "fade_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::NavigationTrail": {
+      "class": "NavigationTrail",
+      "fqn": "GamePlay::Ui::NavigationTrail",
+      "leaf": "NavigationTrail",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Navigation/Ui_NavigationTrail.h",
+      "params": [
+        {
+          "key": "renderer_",
+          "member": "renderer_",
+          "named": true,
+          "shape": "field",
+          "type": "PathSpriteTrailRenderer"
+        },
+        {
+          "key": "maxCellRange_",
+          "member": "maxCellRange_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "maxClimbAngle_deg_",
+          "member": "maxClimbAngle_deg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "searchInterval_secs_",
+          "member": "searchInterval_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hideDistance_",
+          "member": "hideDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fade_secs_",
+          "member": "fade_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::PathSpriteTrailRenderer": {
+      "class": "PathSpriteTrailRenderer",
+      "fqn": "NanamiEngine::Module::Component::PathSpriteTrailRenderer",
+      "leaf": "PathSpriteTrailRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/Component/PathSpriteTrailRenderer/PathSpriteTrailRenderer.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int",
+          "default": 0
+        },
+        {
+          "key": "sprite_",
+          "member": "sprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "blendMode_",
+          "member": "blendMode_",
+          "named": true,
+          "shape": "unknown",
+          "type": "BlendMode"
+        },
+        {
+          "key": "trailLength_",
+          "member": "trailLength_",
+          "named": true,
+          "shape": "float",
+          "default": 300.0
+        },
+        {
+          "key": "startOffset_",
+          "member": "startOffset_",
+          "named": true,
+          "shape": "float",
+          "default": 12.0
+        },
+        {
+          "key": "spacing_",
+          "member": "spacing_",
+          "named": true,
+          "shape": "float",
+          "default": 14.0
+        },
+        {
+          "key": "lift_",
+          "member": "lift_",
+          "named": true,
+          "shape": "float",
+          "default": 7.0
+        },
+        {
+          "key": "size_",
+          "member": "size_",
+          "named": true,
+          "shape": "float",
+          "default": 3.2
+        },
+        {
+          "key": "flowSpeed_",
+          "member": "flowSpeed_",
+          "named": true,
+          "shape": "float",
+          "default": 16.0
+        },
+        {
+          "key": "driftAmplitude_",
+          "member": "driftAmplitude_",
+          "named": true,
+          "shape": "float",
+          "default": 1.4
+        },
+        {
+          "key": "driftPeriod_secs_",
+          "member": "driftPeriod_secs_",
+          "named": true,
+          "shape": "float",
+          "default": 2.4
+        },
+        {
+          "key": "alphaRate_",
+          "member": "alphaRate_",
+          "named": true,
+          "shape": "float",
+          "default": 0.9
+        }
+      ]
     }
   },
   "by_leaf": {
@@ -12739,9 +13306,6 @@
     ],
     "CircleGaugeRenderer": [
       "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer"
-    ],
-    "CloudEffect": [
-      "GamePlay::Prop::CloudEffect"
     ],
     "CollisionListener": [
       "Component::CollisionListener"
@@ -12881,9 +13445,6 @@
     "ItemSlot": [
       "GamePlay::Ui::ItemSlot"
     ],
-    "LatticeBarrierEffect": [
-      "GamePlay::Prop::LatticeBarrierEffect"
-    ],
     "LayoutElement": [
       "NanamiEngine::Module::NanamiUi::LayoutElement"
     ],
@@ -12974,14 +13535,14 @@
     "PlayerStatus": [
       "GamePlay::Ui::PlayerStatus"
     ],
-    "ProximityReveal": [
-      "GamePlay::Prop::ProximityReveal"
-    ],
     "QuadRenderer": [
       "NanamiEngine::Module::Component::QuadRenderer"
     ],
     "RestorationGate": [
       "GamePlay::Prop::RestorationGate"
+    ],
+    "ConditionalObject": [
+      "GamePlay::Prop::ConditionalObject"
     ],
     "ReturningIsland": [
       "GamePlay::Prop::ReturningIsland"
@@ -13170,6 +13731,30 @@
     ],
     "SettingsScreenPresenter": [
       "GamePlay::Ui::SettingsScreenPresenter"
+    ],
+    "UiScreen": [
+      "NanamiEngine::UiFlow::UiScreen"
+    ],
+    "DeviceHint": [
+      "NanamiEngine::UiFlow::DeviceHint"
+    ],
+    "StageArrivalCaption": [
+      "GamePlay::Ui::StageArrivalCaption"
+    ],
+    "NavigationBanner": [
+      "GamePlay::Ui::NavigationBanner"
+    ],
+    "NavigationPresenter": [
+      "GamePlay::Ui::NavigationPresenter"
+    ],
+    "NavigationMarker": [
+      "GamePlay::Ui::NavigationMarker"
+    ],
+    "NavigationTrail": [
+      "GamePlay::Ui::NavigationTrail"
+    ],
+    "PathSpriteTrailRenderer": [
+      "NanamiEngine::Module::Component::PathSpriteTrailRenderer"
     ]
   },
   "bases": {

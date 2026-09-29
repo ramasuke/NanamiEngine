@@ -4,17 +4,19 @@
 #include "../../../../Libs/LibCore/DxLib/BlendMode.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Sprite/SpriteFile.h"
+#include "../../NanamiUI/NanamiUi_IInteractivableRenderer.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
     class NANAMI_API BlendImageRenderer final : public Component::ComponentBase,
                                      public LifeCycleCallback::IInitRenderable,
-                                     public LifeCycleCallback::IUserInterfaceRenderable
+                                     public LifeCycleCallback::IUserInterfaceRenderable,
+                                     public IInteractivableRenderer
     {
     public:
         void SetBlendRate(int blendRate);
         [[nodiscard]] int GetBlendRate() const { return blendRate_; }
-        void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite);
+        void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite) override;
 
     private:
         void InitRenderer         () override;

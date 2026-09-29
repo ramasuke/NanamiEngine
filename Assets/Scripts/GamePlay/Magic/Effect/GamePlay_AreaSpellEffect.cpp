@@ -1,6 +1,7 @@
 ﻿#include "GamePlay_AreaSpellEffect.h"
 
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../Component/GamePlay_MagicBlast.h"
@@ -13,7 +14,15 @@ namespace GamePlay::Magic
     {
         GameCore::Magic::MagicCastTarget target;
         target.origin    = caster.CastOrigin();
-        target.targetPos = ProjectToGround(AimPoint(caster, range_));
+        if (centerOnCaster_)
+        {
+            const auto casterObject = caster.CasterObject();
+            target.targetPos = ProjectToGround(casterObject ? casterObject->Transform().GetWorldPos() : caster.CastOrigin());
+        }
+        else
+        {
+            target.targetPos = ProjectToGround(AimPoint(caster, range_));
+        }
         target.rotation  = caster.CastRotation();
         target.powerRate = caster.SpellPowerRate();
         return target;
@@ -38,6 +47,7 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("power_", power_);
         ImGuiHelper::OnDrawInputField("delay_secs_", delay_secs_);
         ImGuiHelper::OnDrawInputField("range_", range_);
+        ImGuiHelper::OnDrawInputField("centerOnCaster_", centerOnCaster_);
     }
 }
 

@@ -1,0 +1,57 @@
+﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include <array>
+#include <cstdint>
+
+#include "UiFlow_UiActionMap.h"
+
+namespace NanamiEngine::UiFlow
+{
+    class UiScreen;
+
+    /**
+     * @brief メニュー操作の入力を読む。押した瞬間・押し続け・リピートを返す
+     * @note  問い合わせたときに 1 フレームに 1 回だけ読み直すので、Update を呼ぶ必要はない
+     */
+    class NANAMI_API UiInputReader final
+    {
+    public:
+        void SetMap(UiActionMap map);
+        [[nodiscard]] UiActionMap& Map() { return map_; }
+        void SetRepeat(float delay_secs, float interval_secs);
+        /** @brief いま押されている入力を、一度離されるまで無視する */
+        void WaitForRelease();
+
+        [[nodiscard]] bool IsPressed (UiAction action);
+        [[nodiscard]] bool IsHeld    (UiAction action);
+        
+        /** @brief 押した瞬間と、押し続けて delay を過ぎてからは interval ごとに true */
+        [[nodiscard]] bool IsRepeated(UiAction action);
+
+    private:
+        friend class UiScreen;
+
+        struct NANAMI_NO_API ActionState
+        {
+            bool  isDown      = false;
+            bool  isPressed   = false;
+            bool  isRepeated  = false;
+            bool  isIgnored   = true;
+            float held_secs   = 0.0f;
+            float repeat_secs = 0.0f;
+        };
+
+        /** @brief screen が最前面で開いているときだけ入力を返すようにする */
+        void SetGate(const UiScreen* screen);
+        void Poll();
+        [[nodiscard]] const ActionState& State(UiAction action);
+
+        UiActionMap map_ = UiActionMap::Default();
+        std::array<ActionState, static_cast<std::size_t>(UiAction::Count)> states_{};
+        const UiScreen* gate_ = nullptr;
+        float repeatDelay_secs_    = 0.35f;
+        float repeatInterval_secs_ = 0.08f;
+        std::uint64_t lastPolledFrame_ = 0;
+        bool hasPolled_ = false;
+    };
+}

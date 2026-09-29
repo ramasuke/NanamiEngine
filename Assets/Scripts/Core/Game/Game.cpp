@@ -13,6 +13,7 @@
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "Packages/ControlLock/ControlLock.h"
 #if NANAMI_DEBUG_SHEET_ENABLED
 #include <limits>
 
@@ -32,9 +33,10 @@ namespace GameCore
     
     Game::~Game()
     {
-        // NOTE: RemoveComponent は OnDestroy を呼ばないので、デストラクタでも解除する
         if (instance_ == this)
+        {
             instance_ = nullptr;
+        }
     }
     
     Scene::Sub::GameSceneGroup& Game::SubScenes() const
@@ -149,6 +151,8 @@ namespace GameCore
         sceneGroup_.reset();
         subSceneGroup_.reset();
         loadingScreen_.reset();
+
+        NanamiEngine::ControlLock::Service::Instance().Clear();
 
         if (instance_ == this)
         {

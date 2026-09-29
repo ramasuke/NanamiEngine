@@ -29,7 +29,6 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> Entity() const { return gameObjectRef_; }
         [[nodiscard]] GameObject::Transform& Transform() const { return gameObjectRef_.lock()->Transform(); }
-        //TODO: 現在は行っていないがRemoveComponentでもOnDestroy()を呼ぶようにする必要がある。
         //NOTE: Componentが破棄されるタイミングで呼ばれる関数
         virtual void OnDestroy() { }
         virtual void BasedOnDrawgui() { }

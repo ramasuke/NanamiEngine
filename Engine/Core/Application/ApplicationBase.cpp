@@ -21,7 +21,7 @@
 #include "Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 #include "Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Configuration/Physics/ApplicationConfiguration_Physics.h"
-#include "Display/WindowDisplayMode.h"
+#include "Display/WindowDisplayModeController.h"
 #include "HotReload/GameModule.h"
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
@@ -88,7 +88,6 @@ namespace NanamiEngine::Core::Application
         SetASyncLoadThreadNum  (ApplicationBaseAsyncLoadThreadNum());
         DxLib_Init             (              );
         Display::WindowDisplayModeController::ApplyAfterInit();
-        // NOTE: DxLib_Init が描画先を DX_SCREEN_FRONT に戻すので Init の後で指定する
         SetDrawScreen          (DX_SCREEN_BACK);
 
         /** リソースの初期化 */

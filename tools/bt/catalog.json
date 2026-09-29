@@ -1,5 +1,5 @@
 {
-  "generated_from": "9da1694d6dc061040d890b5fe1baf86cd9776fad",
+  "generated_from": "b89e68c5974bc32bd43afef618de9a7e18461828",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -1514,6 +1514,34 @@
         }
       ]
     },
+    "Sound::FadeBGM": {
+      "class": "FadeBGM",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::FadeBGM",
+      "leaf": "FadeBGM",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/FadeBGM/Enemy_Behaviour_Action_FadeBGM.h",
+      "params": [
+        {
+          "key": "bgm_",
+          "member": "bgm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "fadeOut_secs_",
+          "member": "fadeOut_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeIn_secs_",
+          "member": "fadeIn_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "Sound::PlayBGM": {
       "class": "PlayBGM",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM",
@@ -2031,6 +2059,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
     "GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "GameCore::Npc::Enemy::Behaviour::Action::FadeBGM": "Sound::FadeBGM",
     "GameCore::Npc::Enemy::Behaviour::Action::FallIsland": "GameObject::FallIsland",
     "GameCore::Npc::Enemy::Behaviour::Action::FleeFromIslandHeart": "Story::FleeFromIslandHeart",
     "GameCore::Npc::Enemy::Behaviour::Action::Flinch": "EnemyStatus::Flinch",
@@ -2096,6 +2125,7 @@
     "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
     "CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "FadeBGM": "Sound::FadeBGM",
     "FallIsland": "GameObject::FallIsland",
     "FleeFromIslandHeart": "Story::FleeFromIslandHeart",
     "Flinch": "EnemyStatus::Flinch",

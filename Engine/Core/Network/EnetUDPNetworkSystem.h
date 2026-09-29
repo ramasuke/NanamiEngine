@@ -5,6 +5,7 @@
 #include <queue>
 
 #include "Engine_Network_INetworkSystem.h"
+#include "Mode/NetworkSystem_NetworkStartSettings.h"
 #include "EnetPeerSupport.h"
 #include "Packet/NetworkSystem_Packet.h"
 #include "Object/Registry/NetworkObjectInstanceRegistry.h"

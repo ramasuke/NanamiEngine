@@ -25,6 +25,7 @@ namespace GamePlay::Ui
         void SetWorldEnterButtonEnabled(bool isEnabled);
         /** @brief 選んだステージへの遷移 */
         void EnterWorld(GameCore::Scene::Main::SceneType sceneType);
+        [[nodiscard]] bool IsEnteringWorld() const { return isEnteringWorld_; }
         void ShowMapMarker(const glm::vec2& position, bool isCleared);
         void HideMapMarker();
         void ShowStageDetail(const Asset::StageData& stage);

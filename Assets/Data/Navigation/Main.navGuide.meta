@@ -1,0 +1,560 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NavigationGuide",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Navigation/Main.navGuide",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D384B939-2C99-4F04-B104-42E59EC93844"
+                    }
+                },
+                "steps_": [
+                    {
+                        "cereal_class_version": 0,
+                        "id_": "FireCannon",
+                        "title_": "山頂の大砲で竜を撃ち落とす",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 2147483650,
+                                "polymorphic_name": "GameCore::Condition::SceneObjectiveCondition",
+                                "ptr_wrapper": {
+                                    "id": 2147483650,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "cereal_class_version": 0
+                                        },
+                                        "objectiveId_": "PlayerCannon"
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [],
+                        "targets_": [
+                            {
+                                "cereal_class_version": 0,
+                                "targetId_": "Cannon",
+                                "title_": "山頂の大砲で竜を撃ち落とす",
+                                "label_": "大砲"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "Prologue",
+                        "title_": "教官の訓練を受ける",
+                        "activeConditions_": [],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 2147483651,
+                                "polymorphic_name": "GameCore::Condition::StoryFlagCondition",
+                                "ptr_wrapper": {
+                                    "id": 2147483651,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {},
+                                        "storyFlag_": 0
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Instructor",
+                                "title_": "教官の訓練を受ける",
+                                "label_": "教官"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "HearInstructor",
+                        "title_": "教官に話を聞く",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483652,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 0
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483653,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 1
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Instructor",
+                                "title_": "教官に話を聞く",
+                                "label_": "教官"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "DefeatTyrant",
+                        "title_": "草原の大顎を倒す",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 2147483652,
+                                "polymorphic_name": "GameCore::Condition::QuestTakingCondition",
+                                "ptr_wrapper": {
+                                    "id": 2147483654,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {},
+                                        "questType_": 7
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483655,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 2
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "GrassLandTyrant",
+                                "title_": "村の跡の大顎を倒す",
+                                "label_": "大顎"
+                            },
+                            {
+                                "targetId_": "Portal",
+                                "title_": "転移台から草原へ渡る",
+                                "label_": "転移台"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "TakeTyrant",
+                        "title_": "掲示板で「草原の大顎」を受ける",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483656,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 1
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483657,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 2
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Board",
+                                "title_": "掲示板で「草原の大顎」を受ける",
+                                "label_": "掲示板"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "ReturnWithGreenStone",
+                        "title_": "拠点の島へ戻る",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483658,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 2
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483659,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 4
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": []
+                    },
+                    {
+                        "id_": "BuildClanHouse",
+                        "title_": "掲示板の「復興」で一族の家を建てる",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483660,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 4
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 2147483653,
+                                "polymorphic_name": "GameCore::Condition::FacilityRestoredCondition",
+                                "ptr_wrapper": {
+                                    "id": 2147483661,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {},
+                                        "facility_": 4
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Board",
+                                "title_": "掲示板の「復興」で一族の家を建てる",
+                                "label_": "掲示板"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "DefeatSkeletonDragon",
+                        "title_": "砂漠の骸竜を倒す",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 4,
+                                "ptr_wrapper": {
+                                    "id": 2147483662,
+                                    "data": {
+                                        "value0": {},
+                                        "questType_": 8
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483663,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 5
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "DesertSkeletonDragon",
+                                "title_": "城塞の広場の骸竜を倒す",
+                                "label_": "骸竜"
+                            },
+                            {
+                                "targetId_": "Portal",
+                                "title_": "転移台から砂漠へ渡る",
+                                "label_": "転移台"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "TakeSkeletonDragon",
+                        "title_": "掲示板で「砂漠の骸竜」を受ける",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483664,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 3
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483665,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 5
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Board",
+                                "title_": "掲示板で「砂漠の骸竜」を受ける",
+                                "label_": "掲示板"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "ReturnWithLightStone",
+                        "title_": "拠点の島へ戻る",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483666,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 5
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483667,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 7
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": []
+                    },
+                    {
+                        "id_": "HearDesertReport",
+                        "title_": "教官に話を聞く",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483668,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 5
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483669,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 8
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Instructor",
+                                "title_": "教官に話を聞く",
+                                "label_": "教官"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "DefeatAncientDragon",
+                        "title_": "古竜を倒す",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483670,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 8
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483671,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 9
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "AncientDragon",
+                                "title_": "古竜を倒す",
+                                "label_": "古竜"
+                            },
+                            {
+                                "targetId_": "Instructor",
+                                "title_": "教官に声をかけて出発する",
+                                "label_": "教官"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "HearEpilogue",
+                        "title_": "拠点の島で教官に話を聞く",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483672,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 9
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [
+                            {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483673,
+                                    "data": {
+                                        "value0": {},
+                                        "storyFlag_": 10
+                                    }
+                                }
+                            }
+                        ],
+                        "targets_": [
+                            {
+                                "targetId_": "Instructor",
+                                "title_": "教官に話を聞く",
+                                "label_": "教官"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "HyenaCull",
+                        "title_": "西の林のハイエナを減らす",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 4,
+                                "ptr_wrapper": {
+                                    "id": 2147483674,
+                                    "data": {
+                                        "value0": {},
+                                        "questType_": 3
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [],
+                        "targets_": [
+                            {
+                                "targetId_": "GrassLandHyenaWoods",
+                                "title_": "西の林のハイエナを減らす",
+                                "label_": "西の林"
+                            },
+                            {
+                                "targetId_": "Portal",
+                                "title_": "転移台から草原へ渡る",
+                                "label_": "転移台"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "HyenaHuntWeek",
+                        "title_": "ハイエナ狩りの週",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 4,
+                                "ptr_wrapper": {
+                                    "id": 2147483675,
+                                    "data": {
+                                        "value0": {},
+                                        "questType_": 4
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [],
+                        "targets_": [
+                            {
+                                "targetId_": "GrassLandHyenaWoods",
+                                "title_": "西の林でハイエナを狩る",
+                                "label_": "西の林"
+                            },
+                            {
+                                "targetId_": "Portal",
+                                "title_": "転移台から草原へ渡る",
+                                "label_": "転移台"
+                            }
+                        ]
+                    },
+                    {
+                        "id_": "ScorpionCull",
+                        "title_": "オアシスの大サソリを退治する",
+                        "activeConditions_": [
+                            {
+                                "polymorphic_id": 4,
+                                "ptr_wrapper": {
+                                    "id": 2147483676,
+                                    "data": {
+                                        "value0": {},
+                                        "questType_": 9
+                                    }
+                                }
+                            }
+                        ],
+                        "doneConditions_": [],
+                        "targets_": [
+                            {
+                                "targetId_": "DesertOasis",
+                                "title_": "オアシスの大サソリを退治する",
+                                "label_": "オアシス"
+                            },
+                            {
+                                "targetId_": "Portal",
+                                "title_": "転移台から砂漠へ渡る",
+                                "label_": "転移台"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

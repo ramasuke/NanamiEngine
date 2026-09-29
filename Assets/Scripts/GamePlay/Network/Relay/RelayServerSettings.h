@@ -3,7 +3,7 @@
 #include <string>
 
 #include "cereal/cereal.hpp"
-#include "Engine/Core/Network/Mode/NetworkSystem_Mode.h"
+#include "Engine/Core/Network/Mode/NetworkSystem_HostEndpoint.h"
 
 namespace GamePlay::Network
 {

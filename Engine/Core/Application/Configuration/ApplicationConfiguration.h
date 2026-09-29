@@ -2,22 +2,11 @@
 #include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
+#include "ApplicationMode.h"
 #include "../Display/WindowDisplayMode.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    enum class ApplicationMode
-    {
-        Editor,
-        Game
-    };
-
-#if defined(NANAMI_GAME_BUILD)
-    constexpr auto APPLICATION_MODE = ApplicationMode::Game;
-#else
-    constexpr auto APPLICATION_MODE = ApplicationMode::Editor;
-#endif
-    
     class NANAMI_API AppConfiguration final
     {
     public:

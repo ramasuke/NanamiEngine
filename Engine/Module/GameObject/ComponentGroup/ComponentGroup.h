@@ -50,7 +50,9 @@ namespace NanamiEngine::Module::GameObject
 
     private:
         void MoveAdd(const std::shared_ptr<Component::ComponentBase>& move);
-        
+        //NOTE: Component を破棄する時の共通処理（OnDestroy / トークンのキャンセル / Registry からの登録解除）
+        void DestroyComponent(const std::shared_ptr<Component::ComponentBase>& component);
+
         std::vector<std::shared_ptr<Component::ComponentBase>> components_;
         std::weak_ptr<IGameObject> ownerGameObject_;
     };
@@ -72,13 +74,20 @@ namespace NanamiEngine::Module::GameObject
     template <typename T>
     void ComponentGroup::Remove()
     {
-        auto it = std::remove_if(components_.begin(), components_.end(),
-                                 [](const std::unique_ptr<Component::ComponentBase>& component)
-                                 {
-                                     return dynamic_cast<T*>(component.get()) != nullptr;
-                                 });
+        // NOTE: OnDestroy の中で components_ が変わっても安全なよう、先に対象を集める
+        std::vector<std::shared_ptr<Component::ComponentBase>> targets;
+        for (const auto& component : components_)
+        {
+            if (dynamic_cast<T*>(component.get()) != nullptr)
+                targets.push_back(component);
+        }
 
-        components_.erase(it, components_.end());
+        for (const auto& component : targets)
+        {
+            // NOTE: OnDestroy の中で Components() を使えるよう、外すのはその後
+            DestroyComponent(component);
+            std::erase(components_, component);
+        }
     }
 
     template <typename T>

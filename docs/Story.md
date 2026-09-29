@@ -154,9 +154,21 @@
    訓練への道すじをその前に通し、教官に「あの下に島の心臓が眠っている」と言わせる。5. で竜がそこを狙うので、
    「島の心臓が狙いか！」が伝わる。置き場所と道すじはエディタで見て決める。
 3. ドラゴンが現れる。教官が「島の者を逃がす時間がいる」と言い、主人公が足止めする。（実装済み）
+   着地の前に、竜が島を回り込んで乗ってきた飛行船を撃ち落とす（2026-09-29。`FirstEventDragon` の BT の State0、"Ship ..." ノード）:
+   船の正面の空で止まる → 操作ロック・`ShootDownAirShip`（`Prop::AirShip::OnShootDown`: 乗客の NPC を消し、甲板のプレイヤーを
+   桟橋の `AirShipEvacuatePoint` へ移す）→ `AirShip Attack Camera`（島の上から船越しに竜を LookAt）→ 咆哮 → 火球がマストに着弾
+   （爆発・船に付く炎と黒煙・揺れ・雷）→ `AirShip Fall Camera`（南西から船を横に見る）で、船が船首から傾いて雲の下へ落ちる
+   （`FallIsland`）→ 竜が落ちる船の横を急降下し、桟橋の下から上がって着地する。船は雲の下へ消える（残骸は置かない。
+   青年の「墜ちた船を直したい」は造船所と一緒に決める）。配置・ルート・BT は `python tools/art/airship_shootdown.py` で組み直す。
+   音 (2026-09-29。BT の "Omen ..." ノード、`Sound::FadeBGM`): 竜が呼ばれたら到着時の BGM を下げて嵐の音だけにする → 雲の向こうの
+   遠吠え → 島の警鐘（教官の「鐘を鳴らせ！」と対。`ActionInstructure Appear Dragon`）→ 不穏な BGM `Omen_DragonApproach` が上がる →
+   火球が船に当たった瞬間に切り、急降下で戻し、着地の前に下げる → 静けさの中で着地 → 咆哮と同時に戦闘 BGM。
+   音は `python tools/art/dragon_omen_sfx.py`、BT は `python tools/art/dragon_omen_bt.py`。
 4. ドラゴンが空へ上がって島を壊し始める。山頂の大砲で撃ち落とす。（実装済み。BT の最後は `ChangeToMainIslandScene`）
    火球は噴水の島 → 家の島 → 拠点の島の順に落ち、着弾点で `IslandFireImpact`（爆発）・`IslandBurning`（燃え続ける炎と黒煙）・
    `IslandCrumble`（島の底が崩れ落ちる）を出す（BT の "DestroyIslandState 2..4"。`tools/art/island_destruction_effects.py`）。
+   教官の台詞は2つに分けてある。火球の前に「奴が空へ上がった！」（`FirstDragon Attack Crisis`）。
+   拠点の島に着弾した後に「島がもたん」「大砲で撃ち落とせ」（`FirstDragon Cannon Order`）を流し、そのまま操作を返す。
 5. 墜ちたドラゴンが島の中心に爪を突き立て、**2つの心臓が地面から抜け出して**二方の狩り場へ飛んでいく。
    島がぐらりと傾いて暗転する。
    → 実装済み（`FirstEventDragon` の BT の "Heart ..." ノード）: シーンの `Heart Dive Camera`（LookAt でドラゴンを追う）→
@@ -358,7 +370,9 @@ python tools/art/nest_context.py                         # GameManage.scene の 
   - 落とされていた島: 昔、古竜に心臓を奪われて沈んだ島。住人の生き残りや、その島の物語がある。
   - 昔の大地のかけら: 雲に呑まれる前の大地。竜狩りの時代の遺跡、見たことのない魔物。世界の謎（大地が雲に呑まれた理由）を少しずつ明かす場所。
 - 拠点の島は、島々へ渡る船着き場・ハブになる（転移の台座・飛行船）。
-- イベントの期間・報酬・マルチプレイとの関わり、本編をクリアしていない人の扱いは【未設計】。
+- 毎週のイベント【確定】（2026-09-29）: 金曜 12:00〜翌金曜 04:59。報酬は **島の飾り**（手元の PC にだけ保存、
+  マルチプレイでは共有しない）とお金。**本編の進み具合に関係なく誰でも参加できる**。型のローテーションと作り方は `docs/LiveOps.md`。
+- 島ごとの大型イベント（新しい島を足す）の期間・報酬は【未設計】。
 
 ## 5. 施設（`GameCore::Story::Facility`）
 
@@ -411,6 +425,19 @@ story.OnChanged().Subscribe(...).AddTo(this); // フラグか施設が変わる�
   Inspector 側で切り替えると、その場で保存され、`RestorationGate` の見た目もすぐ変わる。
 - **enum の値は必ず末尾に足す**（セーブとシーンに int で残る）。足したら `ToString` と配列にも足す。
 - `GameProgresion`（`MainProgression.h`）はタイトルからの開始シーン選びにまだ使っている。いずれ `StoryProgress` に寄せる。
+
+### 狩り場に着いたときの空撮（実装済み）
+
+草原・砂漠に **初めて** 着いたときだけ、ポータルの演出の前に島を見せる（`StageArrivalMovie::PlayOverviewAsync`）。
+島を見下ろして島の名前（「草 原 の 島」）→ 見どころを1か所ずつ切り替えで映して地名と一言 → 最後の見どころからポータルへ降りる。
+何かキーを押すとスキップ（ポータルも飛ばして操作を返す）。見たら（スキップしても）`GrassLandOverviewSeen` / `DesertOverviewSeen` /
+`DragonNestOverviewSeen` が立ち、2回目からはポータルの演出だけ。途中でシーンを抜けたら次にもう一度流す。
+
+- ショットと字幕の文言はシーンのコンテキスト（GameManage.scene の `arrivalOverview*` / `arrivalIslandTitle_` / `arrivalTourShots_`）。
+  見どころはポータルに近いものを最後に並べる（そこから降りる）。巣は空撮を作っていない（`arrivalOverview_msecs_` 0）。
+- 地名と一言はこの文書の正史から取った（草原: 村の跡 / 野営地 / 西の林、砂漠: 城塞 / 竜の骨 / オアシス）。
+- 字幕は `GamePlay::Ui::StageArrivalCaption`（`Assets/Prefab/UI/StageArrival/StageArrivalCaption.prefab`、
+  `python tools/art/stage_arrival_caption.py --emit` → `stage_arrival_caption_prefab.py`）。
 
 ### RestorationGate（実装済み）
 

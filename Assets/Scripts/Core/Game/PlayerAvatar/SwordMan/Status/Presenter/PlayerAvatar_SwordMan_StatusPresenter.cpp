@@ -4,7 +4,7 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../GamePlay/Ui/ControlGuide/Ui_SwordManControlGuide.h"
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
-#include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
+#include "../../../../../../GamePlay/Ui/ItemBar/Ui_AvatarItemBarSource.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"

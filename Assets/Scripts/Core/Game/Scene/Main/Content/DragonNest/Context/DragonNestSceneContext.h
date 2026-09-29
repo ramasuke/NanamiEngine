@@ -1,5 +1,9 @@
 ﻿#pragma once
 #include <optional>
+#include <string>
+#include <vector>
+
+#include "cereal/types/vector.hpp"
 
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Libs/LibCore/cereal/glm/GlmHelper.h"
@@ -9,6 +13,7 @@
 #include "../../../../../../../GamePlay/Network/Game_CustomNetworkRunner.h"
 #include "../../../../../Npc/Enemy/SpawnPoint/EnemySpawnPoint.h"
 #include "../../../../../Story/Story_StageClear.h"
+#include "../../GrassLand/ArrivalMovie/StageArrivalTourShot.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene
@@ -53,6 +58,13 @@ namespace GameCore::Scene
         [[nodiscard]] const glm::vec3& ArrivalOverviewCameraEnd  () const { return arrivalOverviewCameraEnd_;   }
         /** 空撮で注視する島の中心 (ワールド座標) */
         [[nodiscard]] const glm::vec3& ArrivalOverviewLookAt     () const { return arrivalOverviewLookAt_;      }
+        /** 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない */
+        [[nodiscard]] const std::string& ArrivalIslandTitle   () const { return arrivalIslandTitle_;    }
+        [[nodiscard]] const std::string& ArrivalIslandSubtitle() const { return arrivalIslandSubtitle_; }
+        /** 空撮のあとに巡る島の見どころ。最後の見どころからポータルへ降りるので、ポータルに近いものを最後に並べる */
+        [[nodiscard]] const std::vector<GrassLand::StageArrivalTourShot>& ArrivalTourShots() const { return arrivalTourShots_; }
+        /** 空撮の字幕 (StageArrivalCaption を持つプレハブ) */
+        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> ArrivalCaptionPrefab() const { return arrivalCaptionPrefab_.get(); }
         /** このステージのクリア条件。どちらかが -1 なら無し */
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
@@ -100,6 +112,10 @@ namespace GameCore::Scene
         [[serialize(0)]] glm::vec3 arrivalOverviewCameraStart_   = glm::vec3(0.0f);
         [[serialize(0)]] glm::vec3 arrivalOverviewCameraEnd_     = glm::vec3(0.0f);
         [[serialize(0)]] glm::vec3 arrivalOverviewLookAt_        = glm::vec3(0.0f);
+        [[serialize(2)]] std::string arrivalIslandTitle_;
+        [[serialize(2)]] std::string arrivalIslandSubtitle_;
+        [[serialize(2)]] std::vector<GrassLand::StageArrivalTourShot> arrivalTourShots_;
+        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile) arrivalCaptionPrefab_;
         [[serialize(1)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) heartsRoot_;
         [[serialize(1)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) floatingRoot_;
         [[serialize(1)]] FIELD(CineMachine::CineMachineVirtualCamera) endingCamera_;
@@ -163,6 +179,10 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(endingHold_secs_));
             archive(CEREAL_NVP(heartRiseHeight_));
             archive(CEREAL_NVP(heartFlyDistance_));
+            archive(CEREAL_NVP(arrivalIslandTitle_));
+            archive(CEREAL_NVP(arrivalIslandSubtitle_));
+            archive(CEREAL_NVP(arrivalTourShots_));
+            archive(CEREAL_NVP(arrivalCaptionPrefab_));
         }
 
         template<class Archive>
@@ -211,11 +231,18 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(heartRiseHeight_));
                 archive(CEREAL_NVP(heartFlyDistance_));
             }
+            if (version >= 2)
+            {
+                archive(CEREAL_NVP(arrivalIslandTitle_));
+                archive(CEREAL_NVP(arrivalIslandSubtitle_));
+                archive(CEREAL_NVP(arrivalTourShots_));
+                archive(CEREAL_NVP(arrivalCaptionPrefab_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::DragonNestSceneContext, 1);
+CEREAL_CLASS_VERSION(GameCore::Scene::DragonNestSceneContext, 2);
 #pragma endregion

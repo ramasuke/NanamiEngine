@@ -27,6 +27,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::shared_ptr<const GameCore::Magic::IMagicSpell> BasicSpell() const { return basicSpell_.get(); }
         /** @brief 持ち込んだ魔法。枠が空なら nullptr */
         [[nodiscard]] std::shared_ptr<const GameCore::Magic::IMagicSpell> LoadoutSpell(int slot) const;
+        /** @brief ジャスト回避の直後に攻撃ボタンで撃つ魔法。未設定なら nullptr */
+        [[nodiscard]] std::shared_ptr<const GameCore::Magic::IMagicSpell> CounterSpell() const { return counterSpell_.get(); }
         [[nodiscard]] float GroundCheckRadius  () const { return groundCheckRadius_;   }
         [[nodiscard]] float GroundCheckUpOffset() const { return groundCheckUpOffset_; }
         [[nodiscard]] float GroundCheckDistance() const { return groundCheckDistance_; }
@@ -74,6 +76,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(5)]] float                       footstepContactHeight_ = 5.0f;
         [[serialize(6)]] float                       avoidRollingStartSpeed_ = 120.0f;
         [[serialize(6)]] float                       avoidRollingEndSpeed_   = 20.0f;
+        [[serialize(7)]] FIELD(MagicSpellData)       counterSpell_;
 
 #pragma region Serialization Function
     public:
@@ -101,6 +104,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(footstepContactHeight_));
             archive(CEREAL_NVP(avoidRollingStartSpeed_));
             archive(CEREAL_NVP(avoidRollingEndSpeed_));
+            archive(CEREAL_NVP(counterSpell_));
         }
 
         template<class Archive>
@@ -146,11 +150,12 @@ namespace NanamiEngine::Module::Asset
             }
             if (version >= 6) archive(CEREAL_NVP(avoidRollingStartSpeed_));
             if (version >= 6) archive(CEREAL_NVP(avoidRollingEndSpeed_));
+            if (version >= 7) archive(CEREAL_NVP(counterSpell_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 6);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 7);
 #pragma endregion

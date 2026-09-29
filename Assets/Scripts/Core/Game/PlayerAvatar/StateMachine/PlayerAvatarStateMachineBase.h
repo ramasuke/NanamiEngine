@@ -125,11 +125,30 @@ namespace GameCore::PlayerAvatar
         {
             return currentStateType_;
         }
+        
+        void ApplyControlLock(
+            const bool isLocked,
+            const bool canRelease)
+        {
+            if (!isEnable_)
+                return;
 
-        void OnEnable()  override { OnChangeState(initialState_); }
-        void OnDisable() override { OnChangeState(disableState_); }
+            if (isLocked)
+            {
+                if (currentStateType_ != disableState_ && YieldsToControlLock())
+                    OnChangeState(disableState_);
+                
+                return;
+            }
+
+            if (canRelease && currentStateType_ == disableState_)
+                OnChangeState(initialState_);
+        }
 
     protected:
+        /** @brief currentState を操作ロックで止めてよいか */
+        [[nodiscard]] virtual bool YieldsToControlLock() const = 0;
+
         NanamiEngine::R4::Observable<std::shared_ptr<IPlayerAvatarState>> CurrentState()
         {
             return currentState_.AsObservable();

@@ -15,7 +15,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
         AvoidRolling,
     };
 
-    /// State を遷移させない操作
     enum class MagicCasterAvatarStateAction : uint8_t
     {
         Move,

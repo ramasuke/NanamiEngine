@@ -62,7 +62,6 @@ namespace GamePlay::Ui
             return;
         }
 
-        // UIは world 座標がそのままスクリーン座標
         if (const auto ui = Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f)).lock())
             assetUpdate_ = ui->Components().Catch<AssetUpdatePresenter>();
     }

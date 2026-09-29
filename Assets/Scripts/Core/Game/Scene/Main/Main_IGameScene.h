@@ -1,4 +1,10 @@
 ﻿#pragma once
+#include <memory>
+
+namespace GameCore::Scene
+{
+    class SceneContextBase;
+}
 
 namespace GameCore::Scene::Main
 {
@@ -34,6 +40,9 @@ namespace GameCore::Scene::Main
          * @brief Init で始めた読み込みと入場の準備が済んだか。
          */
         [[nodiscard]] virtual bool IsEntered() const = 0;
+
+        /** @brief このシーンのコンテキスト(GameManage.scene に常駐) */
+        [[nodiscard]] virtual std::shared_ptr<SceneContextBase> BaseContext() const = 0;
         
         virtual void OnDrawGui() = 0;
     };

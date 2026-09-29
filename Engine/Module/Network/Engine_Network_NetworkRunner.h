@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
+#include "../../Core/Network/Mode/NetworkSystem_NetworkStartSettings.h"
 #include "../../Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #define WIN32_LEAN_AND_MEAN
 #include "../../Core/Coroutine/Task/Task.h"

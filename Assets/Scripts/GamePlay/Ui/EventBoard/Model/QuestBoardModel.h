@@ -66,7 +66,7 @@ namespace GamePlay::Ui
             std::chrono::sys_seconds now,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
             const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
-            const GameCore::Story::StoryProgress* story,
+            const GameCore::Story::StoryProgress& story,
             size_t visibleRowCount);
 
         [[nodiscard]] const std::vector<QuestBoardEntry>& Entries() const { return entries_; }

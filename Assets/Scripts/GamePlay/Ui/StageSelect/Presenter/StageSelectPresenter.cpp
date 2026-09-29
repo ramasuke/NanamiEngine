@@ -12,6 +12,7 @@
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../../Core/Game/Decoration/Decoration_DecorationCollection.h"
 #include "../../../../Core/Game/Story/Story_StoryProgress.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -32,9 +33,10 @@ namespace GamePlay::Ui
 
         const auto owner = GameCore::PlayerAvatar::Owner();
         const GameCore::Condition::ConditionContext unlockContext{
-            &GameCore::Story::StoryProgress::Instance(),
+            GameCore::Story::StoryProgress::Instance(),
             owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()) };
+            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+            GameCore::Decoration::DecorationCollection::Instance() };
 
         const auto& stages = model_->Stages();
         for (size_t i = 0; i < stages.size(); ++i)
@@ -86,6 +88,7 @@ namespace GamePlay::Ui
 
         // 開いた直後に押しっぱなしを拾わない
         previousInput_ = ReadRoomInput();
+        wasCancelPressed_ = IsCancelDown();
     }
 
     void StageSelectPresenter::OnUpdate()
@@ -97,6 +100,15 @@ namespace GamePlay::Ui
             TryEnterWorld();
 
         wasConfirmPressed_ = isConfirmPressed;
+
+        const bool isCancelPressed = IsCancelDown();
+        const bool isCancelTriggered = isCancelPressed && !wasCancelPressed_;
+        wasCancelPressed_ = isCancelPressed;
+        if (isCancelTriggered)
+        {
+            Close();
+            return;
+        }
 
         const RoomInput input = ReadRoomInput();
         UpdateRoomInput(input);
@@ -265,6 +277,22 @@ namespace GamePlay::Ui
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Stamp);
         GameCore::Game::Instance().Matchmaker().SetNextRoom({ roomMode_, roomCode_ });
         view_->EnterWorld(model_->SelectedSceneType());
+    }
+
+    void StageSelectPresenter::Close()
+    {
+        if (!view_ || view_->IsEnteringWorld())
+            return;
+
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
+
+        if (const auto entity = Entity().lock())
+            entity->OnDestroy();
+    }
+
+    bool StageSelectPresenter::IsCancelDown()
+    {
+        return Keyboard::IsDown(Key::Escape) || IsPadButton(Gamepad::Get(), GamepadButton::B);
     }
 }
 

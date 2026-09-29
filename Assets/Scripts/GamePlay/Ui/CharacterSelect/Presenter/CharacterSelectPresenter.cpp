@@ -1,5 +1,4 @@
 ﻿#include "CharacterSelectPresenter.h"
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <limits>
 
@@ -12,33 +11,10 @@
 #include "../../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
-#include "Engine/Core/Application/ApplicationBase.h"
-#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short CHARACTER_SELECT_STICK_DEADZONE = 12000;
-    }
-
-    bool CharacterSelectPresenter::IsAnotherOpen() const
-    {
-        bool found = false;
-        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
-            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
-            {
-                if (found)
-                    return;
-
-                const auto presenter = gameObject->Components().Catch<CharacterSelectPresenter>().lock();
-                found = presenter && presenter.get() != this && presenter->isOpen_;
-            });
-        return found;
-    }
-
     void CharacterSelectPresenter::Bind(const std::weak_ptr<Prop::CharacterPodium>& podium)
     {
         podium_ = podium;
@@ -58,12 +34,6 @@ namespace GamePlay::Ui
         if (isClosed_ || model_)
             return;
 
-        if (IsAnotherOpen())
-        {
-            Discard();
-            return;
-        }
-
         const auto podium = podium_.lock();
         if (!podium || podium->Characters().empty())
         {
@@ -71,7 +41,15 @@ namespace GamePlay::Ui
             Discard();
             return;
         }
-        isOpen_ = true;
+
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        // 会話のたびに二重に生えるのを防ぐ
+        if (!screen_->Open())
+        {
+            Discard();
+            return;
+        }
+        screen_->Input().Map().AddKey(UiFlow::UiAction::Submit, Platform::Input::Key::Space);
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_  = RequireComponent<CharacterSelectUi>();
@@ -105,8 +83,6 @@ namespace GamePlay::Ui
         suspendedAvatar_ = owner;
         if (owner)
         {
-            owner->DisableStateMachine();
-
             const auto& characters = model_->Characters();
             for (size_t i = 0; i < characters.size(); ++i)
             {
@@ -139,37 +115,21 @@ namespace GamePlay::Ui
             return;
         }
 
-        const auto xInput = Gamepad::Get();
-
-        const bool isPrevPressed = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-            || Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
-            || xInput.IsDown(GamepadButton::DPadUp) || xInput.IsDown(GamepadButton::DPadLeft)
-            || xInput.thumbLY > CHARACTER_SELECT_STICK_DEADZONE;
-        const bool isNextPressed = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-            || Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
-            || xInput.IsDown(GamepadButton::DPadDown) || xInput.IsDown(GamepadButton::DPadRight)
-            || xInput.thumbLY < -CHARACTER_SELECT_STICK_DEADZONE;
-        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space)
-            || xInput.IsDown(GamepadButton::A);
-        const bool isCancelPressed = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B);
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
 
         const size_t previousIndex = model_->SelectedIndex();
-        if (isPrevPressed && !wasPrevPressed_)
+        if (input.IsPressed(UiAction::Up) || input.IsPressed(UiAction::Left))
             model_->MoveSelection(-1);
-        if (isNextPressed && !wasNextPressed_)
+        if (input.IsPressed(UiAction::Down) || input.IsPressed(UiAction::Right))
             model_->MoveSelection(1);
         // NOTE: 開いたときの初期選択でも OnSelectionChanged が来るので、音はキー操作でだけ鳴らす (マウスはホバーで鳴る)
         if (model_->SelectedIndex() != previousIndex)
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
-        if (isConfirmPressed && !wasConfirmPressed_)
+        if (input.IsPressed(UiAction::Submit))
             Confirm();
-        else if (isCancelPressed && !wasCancelPressed_)
+        else if (input.IsPressed(UiAction::Cancel))
             Close(false);
-
-        wasPrevPressed_    = isPrevPressed;
-        wasNextPressed_    = isNextPressed;
-        wasConfirmPressed_ = isConfirmPressed;
-        wasCancelPressed_  = isCancelPressed;
     }
 
     void CharacterSelectPresenter::Confirm()
@@ -208,11 +168,7 @@ namespace GamePlay::Ui
         isClosed_ = true;
 
         if (!didSwitch)
-        {
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
-            if (const auto owner = suspendedAvatar_.lock())
-                owner->EnableStateMachiine();
-        }
 
         if (const auto podium = podium_.lock())
         {
@@ -220,6 +176,7 @@ namespace GamePlay::Ui
             podium->RestoreCamera();
         }
 
+        screen_->Close();
         Entity().lock()->OnDestroy();
     }
 
@@ -227,11 +184,6 @@ namespace GamePlay::Ui
     {
         isClosed_ = true;
         Entity().lock()->OnDestroy();
-    }
-
-    void CharacterSelectPresenter::OnDestroy()
-    {
-        isOpen_ = false;
     }
 
     void CharacterSelectPresenter::OnDrawGui()

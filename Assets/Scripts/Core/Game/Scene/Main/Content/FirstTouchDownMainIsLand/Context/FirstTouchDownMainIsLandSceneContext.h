@@ -28,6 +28,9 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile>           SummonPlayerAvatarPrefab()                          { return summonPlayerAvatarPrefab_.get(); }
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject>               OpeningShots()                                      { return openingShots_.get(); }
         [[nodiscard]] const std::vector<float>&                              OpeningShotDurations_secs()                 const   { return openingShotDurations_secs_; }
+        [[nodiscard]] float                                                  HeroHoldRate()                              const   { return heroHoldRate_; }
+        [[nodiscard]] float                                                  HeroTurnStartRate()                         const   { return heroTurnStartRate_; }
+        [[nodiscard]] float                                                  HeroLookHeight()                            const   { return heroLookHeight_; }
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject>               AirShipDeckProps()                                  { return airShipDeckProps_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> SecondVirtualCamera()                               { return secondVirtualCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CinemachineCameraBrain>   CameraBrain()                                       { return cameraBrain_.get(); }
@@ -67,7 +70,13 @@ namespace GameCore::Scene
         [[serialize(23)]] std::vector<float>                          openingShotDurations_secs_;
         /** 甲板の小物。子孫の RigidBody は航行中 Kinematic で、着いたら Dynamic にする */
         [[serialize(24)]] FIELD(GameObject::IGameObject)              airShipDeckProps_;
-        
+        /** 最後のカット(主人公→追従カメラ)で、寄り始めるまで溜める割合 */
+        [[serialize(25)]] float                                       heroHoldRate_      = 0.3f;
+        /** 最後のカットで、追従カメラの向きへ振り向き始める割合 */
+        [[serialize(25)]] float                                       heroTurnStartRate_ = 0.7f;
+        /** 最後のカットで注視する、主人公の足元からの高さ */
+        [[serialize(25)]] float                                       heroLookHeight_    = 12.0f;
+
 #pragma region Serialization Function
 public:
 void OnDrawGui() override;
@@ -100,6 +109,9 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(openingShots_));
     archive(CEREAL_NVP(openingShotDurations_secs_));
     archive(CEREAL_NVP(airShipDeckProps_));
+    archive(CEREAL_NVP(heroHoldRate_));
+    archive(CEREAL_NVP(heroTurnStartRate_));
+    archive(CEREAL_NVP(heroLookHeight_));
 }
 
 template<class Archive>
@@ -138,11 +150,14 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 23) archive(CEREAL_NVP(openingShots_));
     if (version >= 23) archive(CEREAL_NVP(openingShotDurations_secs_));
     if (version >= 24) archive(CEREAL_NVP(airShipDeckProps_));
+    if (version >= 25) archive(CEREAL_NVP(heroHoldRate_));
+    if (version >= 25) archive(CEREAL_NVP(heroTurnStartRate_));
+    if (version >= 25) archive(CEREAL_NVP(heroLookHeight_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 24);
+CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 25);
 #pragma endregion

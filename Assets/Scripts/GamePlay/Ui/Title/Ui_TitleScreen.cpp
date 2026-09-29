@@ -22,6 +22,7 @@ namespace GamePlay::Ui
         {
             if (durationSecs <= 0.0f)
                 return elapsedSecs >= delaySecs ? 1.0f : 0.0f;
+            
             return std::clamp((elapsedSecs - delaySecs) / durationSecs, 0.0f, 1.0f);
         }
 
@@ -49,7 +50,7 @@ namespace GamePlay::Ui
         }
         if (const auto band = selectBand_.get())
             bandBasePos_ = band->Transform().GetLocalPos();
-        // NOTE: 文字の位置は上端、帯の位置は中心なので、置いたときの差を保って動かす
+        
         bandOffsetY_ = bandBasePos_.y - menuBasePos_[START_INDEX].y;
         bandY_ = menuBasePos_[START_INDEX].y;
 

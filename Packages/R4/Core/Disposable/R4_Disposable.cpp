@@ -2,7 +2,9 @@
 
 namespace NanamiEngine::R4
 {
-    void Detail::Attach(const rxcpp::composite_subscription& parent, const rxcpp::composite_subscription& child)
+    void Detail::Attach(
+        const rxcpp::composite_subscription& parent,
+        const rxcpp::composite_subscription& child)
     {
         if (!child.is_subscribed())
             return;

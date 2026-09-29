@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 5,
+                "cereal_class_version": 7,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -138,7 +138,7 @@
                 },
                 "groundCheckRadius_": 40.0,
                 "groundCheckUpOffset_": 3.0,
-                "groundCheckDistance_": 8.300000190734864,
+                "groundCheckDistance_": 8.300000190734863,
                 "maxWalkableSlope_deg_": 45.0,
                 "slopeCheckRadius_": 3.5,
                 "slopeCheckUpOffset_": 0.0,
@@ -203,7 +203,22 @@
                     "mixamorig:LeftFoot",
                     "mixamorig:RightFoot"
                 ],
-                "footstepContactHeight_": 5.0
+                "footstepContactHeight_": 5.0,
+                "avoidRollingStartSpeed_": 120.0,
+                "avoidRollingEndSpeed_": 20.0,
+                "counterSpell_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483663,
+                            "data": {
+                                "value0": {
+                                    "value_": "A5E96D56-123E-4AC0-B7C0-086E591D7E1C"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

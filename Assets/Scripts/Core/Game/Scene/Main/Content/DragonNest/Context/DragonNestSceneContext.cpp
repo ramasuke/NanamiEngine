@@ -13,6 +13,7 @@ void GameCore::Scene::DragonNestSceneContext::Init()
     arrivalCamera_.Init();
     cameraBrain_.Init();
     arrivalPortalPrefab_.Init();
+    arrivalCaptionPrefab_.Init();
     heartsRoot_.Init();
     floatingRoot_.Init();
     endingCamera_.Init();
@@ -115,6 +116,14 @@ void GameCore::Scene::DragonNestSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalOverviewCameraStart_", arrivalOverviewCameraStart_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewCameraEnd_", arrivalOverviewCameraEnd_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewLookAt_", arrivalOverviewLookAt_);
+    ImGuiHelper::OnDrawInputField("arrivalIslandTitle_", arrivalIslandTitle_);
+    ImGuiHelper::OnDrawInputField("arrivalIslandSubtitle_", arrivalIslandSubtitle_);
+    ImGuiHelper::OnDrawInputField("arrivalTourShots_", arrivalTourShots_, [this]
+    {
+        if (ImGui::Button("Add Shot"))
+            arrivalTourShots_.emplace_back();
+    });
+    ImGuiHelper::OnDrawInputField("arrivalCaptionPrefab_", arrivalCaptionPrefab_);
     ImGuiHelper::OnDrawInputField("heartsRoot_", heartsRoot_);
     ImGuiHelper::OnDrawInputField("floatingRoot_", floatingRoot_);
     ImGuiHelper::OnDrawInputField("endingCamera_", endingCamera_);

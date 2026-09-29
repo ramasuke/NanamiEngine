@@ -91,7 +91,10 @@ namespace GamePlay::Prop
     void TreeLeafSway::OnDestroy()
     {
         if (cbHandle_ != -1)
+        {
             Platform::Render::ConstantBuffer::Delete(cbHandle_);
+            cbHandle_ = -1;
+        }
     }
 
     void TreeLeafSway::OnDrawGui()

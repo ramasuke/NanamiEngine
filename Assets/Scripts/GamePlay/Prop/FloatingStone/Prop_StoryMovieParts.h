@@ -1,24 +1,15 @@
 ﻿#pragma once
 #include <algorithm>
 #include <cmath>
-#include <memory>
 
 #include "Libs/glm/vec3.hpp"
 #include "Libs/glm/gtc/quaternion.hpp"
-
-namespace GameCore
-{
-    class IPlayerAvatar;
-}
+#include "Prop_StoryMovieCameraScope.h"
+#include "Prop_StoryMovieSkipInput.h"
 
 namespace NanamiEngine::Module::GameObject
 {
     class IGameObject;
-}
-
-namespace NanamiEngine::CineMachine
-{
-    class CineMachineVirtualCamera;
 }
 
 /** @brief FloatingStone / ReturningIsland / ScatterFloatingStones の演出で共有する部品 */
@@ -31,16 +22,6 @@ namespace GamePlay::Prop::StoryMovie
     inline float Rate(const float elapsed_secs, const float during_secs) { return std::clamp(elapsed_secs / during_secs, 0.0f, 1.0f); }
     inline glm::quat Yaw(const float degrees) { return glm::angleAxis(glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f)); }
 
-    /** @brief 押しっぱなしで入ってきても即スキップにならないよう、一度離すまで待つ */
-    class SkipInput final
-    {
-    public:
-        bool IsSkipped();
-
-    private:
-        bool isArmed_ = false;
-    };
-
     /** @brief 子の ParticleSystem をまとめて再生/停止する */
     void SetChildParticlesPlaying(NanamiEngine::Module::GameObject::IGameObject& root, bool isPlaying);
 
@@ -48,26 +29,4 @@ namespace GamePlay::Prop::StoryMovie
     void RebuildColliders(NanamiEngine::Module::GameObject::IGameObject& root);
 
     void MoveBy(NanamiEngine::Module::GameObject::IGameObject& gameObject, const glm::vec3& offset);
-
-    /** @brief カメラとプレイヤーの操作を演出のあいだだけ借りる */
-    class CameraScope final
-    {
-    public:
-        CameraScope(
-            std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar,
-            std::shared_ptr<NanamiEngine::CineMachine::CineMachineVirtualCamera> camera,
-            std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> lookTarget,
-            const glm::vec3& lookOffset);
-        ~CameraScope();
-
-        void Begin() const;
-        void End();
-
-    private:
-        std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar_;
-        std::shared_ptr<NanamiEngine::CineMachine::CineMachineVirtualCamera> camera_;
-        std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> lookTarget_;
-        glm::vec3 lookOffset_;
-        bool isEnded_ = false;
-    };
 }

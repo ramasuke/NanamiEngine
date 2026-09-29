@@ -1,6 +1,6 @@
 {
     "name": "ChattingUIScene",
-    "gameObjectCount": 1,
+    "gameObjectCount": 2,
     "gameObject_0": {
         "polymorphic_id": 2147483649,
         "polymorphic_name": "NanamiEngine::Scene::CopiedPrefabGameObject",
@@ -765,6 +765,339 @@
                             }
                         }
                     }
+                }
+            }
+        }
+    },
+    "gameObject_1": {
+        "polymorphic_id": 3,
+        "ptr_wrapper": {
+            "id": 2147483673,
+            "data": {
+                "value0": {
+                    "value0": {}
+                },
+                "isActive_": true,
+                "name_": "Navigation",
+                "guid_": {
+                    "value_": "68011998-2D7F-4712-BC5A-5E27033DBCE5"
+                },
+                "components_": {
+                    "componentCount": 5,
+                    "component_0": {
+                        "polymorphic_id": 2147483654,
+                        "polymorphic_name": "GamePlay::Ui::NavigationBanner",
+                        "ptr_wrapper": {
+                            "id": 2147483674,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "2480057C-9B1B-4A83-BBF6-48324D947E6F"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "renderOrder_": 30,
+                                "bandSprite_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483675,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "406B4CCC-75B8-45DF-9164-8BE3FFF00147"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "font_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483676,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "headingText_": "— 新 た な 目 的 —",
+                                "centerY_px_": 196.0,
+                                "headingOffsetY_px_": -22.0,
+                                "titleOffsetY_px_": 12.0,
+                                "headingScale_": 0.3,
+                                "titleScale_": 0.62,
+                                "headingColor_": {
+                                    "cereal_class_version": 0,
+                                    "r_": 255,
+                                    "g_": 206,
+                                    "b_": 104
+                                },
+                                "titleColor_": {
+                                    "cereal_class_version": 0,
+                                    "r_": 255,
+                                    "g_": 255,
+                                    "b_": 247
+                                },
+                                "bandAlphaRate_": 1.0,
+                                "riseDistance_px_": 10.0,
+                                "fadeIn_secs_": 0.4,
+                                "hold_secs_": 3.5,
+                                "fadeOut_secs_": 0.6
+                            }
+                        }
+                    },
+                    "component_1": {
+                        "polymorphic_id": 2147483655,
+                        "polymorphic_name": "GamePlay::Ui::NavigationPresenter",
+                        "ptr_wrapper": {
+                            "id": 2147483677,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "guid_": {
+                                        "value_": "A62D3462-B74B-4530-B7B2-B42FBEFA6B60"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "guide_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483678,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "D384B939-2C99-4F04-B104-42E59EC93844"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "component_2": {
+                        "polymorphic_id": 2147483656,
+                        "polymorphic_name": "GamePlay::Ui::NavigationMarker",
+                        "ptr_wrapper": {
+                            "id": 2147483679,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "D6496C69-1CF4-4039-8AF2-17DA70F587A5"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "renderOrder_": 29,
+                                "orbSprite_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483680,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "DDD2CCA2-D653-49C0-89B4-A9758338AC47"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "fireflySprite_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483681,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "8ED459EF-8FDB-481E-864A-CE880AC398EC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "font_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483682,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "metersPerUnit_": 0.1,
+                                "hideDistance_": 45.0,
+                                "fadeDistance_": 25.0,
+                                "orbReferenceDistance_": 120.0,
+                                "orbMinScale_": 0.35,
+                                "orbMaxScale_": 0.8,
+                                "orbPulsePeriod_secs_": 1.6,
+                                "orbPulseRate_": 0.12,
+                                "labelOffset_px_": {
+                                    "value0": 18.0,
+                                    "value1": -14.0
+                                },
+                                "nameScale_": 0.33,
+                                "distanceScale_": 0.27,
+                                "lineGap_px_": 22.0,
+                                "nameColor_": {
+                                    "cereal_class_version": 0,
+                                    "r_": 255,
+                                    "g_": 255,
+                                    "b_": 247
+                                },
+                                "distanceColor_": {
+                                    "cereal_class_version": 0,
+                                    "r_": 210,
+                                    "g_": 228,
+                                    "b_": 223
+                                },
+                                "edgeMargin_px_": 56.0,
+                                "edgeFireflyCount_": 3,
+                                "edgeFireflySpacing_px_": 20.0,
+                                "edgeFireflyScale_": 0.7,
+                                "edgeFlowPeriod_secs_": 1.2,
+                                "fade_secs_": 0.3
+                            }
+                        }
+                    },
+                    "component_3": {
+                        "polymorphic_id": 2147483657,
+                        "polymorphic_name": "GamePlay::Ui::NavigationTrail",
+                        "ptr_wrapper": {
+                            "id": 2147483683,
+                            "data": {
+                                "cereal_class_version": 1,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "8523F506-829D-41C5-A570-48E1E94D1208"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "renderer_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483687,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "CA837639-62F7-4A2E-9A0D-BFCE3CD6A362"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "maxCellRange_": 400,
+                                "maxClimbAngle_deg_": 45.0,
+                                "searchInterval_secs_": 1.0,
+                                "hideDistance_": 45.0,
+                                "fade_secs_": 0.4
+                            }
+                        }
+                    },
+                    "component_4": {
+                        "polymorphic_id": 2147483658,
+                        "polymorphic_name": "NanamiEngine::Module::Component::PathSpriteTrailRenderer",
+                        "ptr_wrapper": {
+                            "id": 2147483685,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "CA837639-62F7-4A2E-9A0D-BFCE3CD6A362"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "value1": {
+                                    "cereal_class_version": 0
+                                },
+                                "renderOrder_": -100,
+                                "sprite_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483686,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "8ED459EF-8FDB-481E-864A-CE880AC398EC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "blendMode_": 2,
+                                "trailLength_": 300.0,
+                                "startOffset_": 12.0,
+                                "spacing_": 14.0,
+                                "lift_": 7.0,
+                                "size_": 3.2,
+                                "flowSpeed_": 16.0,
+                                "driftAmplitude_": 1.4,
+                                "driftPeriod_secs_": 2.4,
+                                "alphaRate_": 0.9
+                            }
+                        }
+                    }
+                },
+                "transform_": {
+                    "localPos_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0
+                    },
+                    "localRot_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 1.0
+                    },
+                    "localScale_": {
+                        "value0": 1.0,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 0
                 }
             }
         }

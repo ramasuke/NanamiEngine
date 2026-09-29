@@ -3,6 +3,7 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "Packages/ControlLock/ControlLock.h"
 
 namespace GamePlay::Prop
 {
@@ -18,11 +19,21 @@ namespace GamePlay::Prop
         {
             const auto gameObject = collision.second;
             const auto weakPlayerAvatar = gameObject->Components().Catch<GameCore::IPlayerAvatar>();
-            if (const auto playerAvatar = weakPlayerAvatar.lock())
+                
+            const auto playerAvatar = weakPlayerAvatar.lock();
+            if (!playerAvatar || !playerAvatar->IsOwner())
+                return;
+
+            const auto ui = Scene::GameObject::Instantiate(stageSelectUiPrefab_.get(), glm::vec3(0.0f, 0.0f, 0.0f)).lock();
+            if (!ui)
+                return;
+
+            // NOTE: 閉じるか、出発でシーンごと片付くまで操作を止める
+            if (const auto lifetime = ui->Components().Catch<Component::ComponentBase>().lock())
             {
-                playerAvatar->DisableStateMachine();
-                Scene::GameObject::Instantiate(stageSelectUiPrefab_.get(), glm::vec3(0.0f, 0.0f, 0.0f));
+                NanamiEngine::ControlLock::Service::Instance().Acquire().AddTo(*lifetime);
             }
+                
         }).AddTo(this);
     }
 

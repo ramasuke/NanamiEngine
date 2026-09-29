@@ -1,0 +1,70 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NpcChat",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\NpcChatText/FirstDragon Cannon Order.npcChat",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "7E526839-45DB-4666-A28E-C607BE37631B"
+                    }
+                },
+                "count": 2,
+                "item_0": {
+                    "cereal_class_version": 0,
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "CC427302-8F13-467C-8DFA-FDDE864C72FE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "まずい、このままじゃ\n島がもたん……！",
+                    "textColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 220,
+                        "g_": 55,
+                        "b_": 55
+                    }
+                },
+                "item_1": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "CC427302-8F13-467C-8DFA-FDDE864C72FE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "島の頂上に大砲がある！\nそいつで奴を撃ち落とせ！",
+                    "textColor_": {
+                        "r_": 220,
+                        "g_": 55,
+                        "b_": 55
+                    }
+                }
+            }
+        }
+    }
+}

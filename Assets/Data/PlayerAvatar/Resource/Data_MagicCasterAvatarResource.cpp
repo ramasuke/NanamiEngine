@@ -18,6 +18,7 @@ namespace NanamiEngine::Module::Asset
     void MagicCasterAvatarResource::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("basicSpell_", basicSpell_);
+        ImGuiHelper::OnDrawInputField("counterSpell_", counterSpell_);
         if (ImGui::TreeNode("loadout_"))
         {
             for (size_t i = 0; i < loadout_.size(); ++i)

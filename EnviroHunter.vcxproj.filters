@@ -133,6 +133,12 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieSkipInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieCameraScope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -275,6 +281,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Counter\SwordManAvatarCounterAttackState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.cpp">
@@ -458,6 +467,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\EventNotice\Data_Announcement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Navigation\Data_NavigationGuide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\Restoration\Data_RestorationFacility.cpp">
@@ -751,22 +763,61 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_DefeatRequestQuest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_StoryFlagCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_SceneObjectiveCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_FacilityRestoredCondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_MoneyReward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_DecorationReward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Decoration\Decoration_DecorationCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Decoration\Data_DecorationData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_DecorationOwnedCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_QuestTakingCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Navigation\Navigation_NavigationTargetEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ConditionalObject\Prop_ConditionalObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\DecorationDebugPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.cpp">
@@ -997,6 +1048,18 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationBanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationTrail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1151,6 +1214,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\StageArrivalTourShot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageArrival\Ui_StageArrivalCaption.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.cpp">
@@ -1489,6 +1558,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerControl\Enemy_Behaviour_Action_UnlockPlayerControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Sound\FadeBGM\Enemy_Behaviour_Action_FadeBGM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1496,6 +1568,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StoryDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\NavigationDebugPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\QuestReadDebugPage.cpp">
@@ -1555,16 +1630,31 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClearCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_IslandHeartDeparture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStoneShot.h">
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_DepartShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_ReturnShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_IslandReturnShot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieSkipInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieCameraScope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.h">
@@ -1693,6 +1783,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarStateTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarControlAcceptance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarInputPhase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1729,6 +1825,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Counter\SwordManAvatarCounterAttackState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1760,6 +1859,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateTransition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateType.h">
@@ -1922,6 +2027,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\EventNotice\Data_Announcement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\EventNotice\Data_AnnouncementKind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Navigation\Data_NavigationGuide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Restoration\Data_RestorationFacility.h">
@@ -2224,22 +2335,70 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_StoryFlagCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_SceneObjectiveCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_FacilityRestoredCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_RewardContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_RewardFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_MoneyReward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_DecorationReward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Decoration\Decoration_DecorationCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Decoration\Data_DecorationData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_DecorationOwnedCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_QuestTakingCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Navigation\Navigation_INavigationSceneSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Navigation\Navigation_NavigationTargetEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ConditionalObject\Prop_ConditionalObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.h">
@@ -2494,6 +2653,24 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationObjective.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationBanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationTrail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2564,6 +2741,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBarSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_AvatarItemBarSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.h">
@@ -2684,6 +2864,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\StageArrivalTourShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageArrival\Ui_StageArrivalCaption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h">
@@ -3032,6 +3218,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerControl\Enemy_Behaviour_Action_UnlockPlayerControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Sound\FadeBGM\Enemy_Behaviour_Action_FadeBGM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.h">

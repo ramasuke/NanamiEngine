@@ -59,6 +59,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (invincibleRemaining_secs_ > 0.0f)
             invincibleRemaining_secs_ = (std::max)(invincibleRemaining_secs_ - Time::DeltaTime(), 0.0f);
 
+        if (counterWindowRemaining_secs_ > 0.0f)
+            counterWindowRemaining_secs_ = (std::max)(counterWindowRemaining_secs_ - Time::DeltaTime(), 0.0f);
+
         if (!IsDeath() && mana_.Value() < maxMana_)
         {
             const auto regened = mana_.Value() + StatusParameter::Mana(manaRegenPerSecond_ * Time::DeltaTime());
@@ -158,6 +161,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     bool MagicCasterAvatarStatus::CanCast(const int slot, const GameCore::Magic::IMagicSpell& spell) const
     {
+        if (slot == SPELL_COUNTER_SLOT)
+            return true;
         if (!IsValidSpellSlot(slot))
             return false;
         if (cooldownRemaining_secs_[static_cast<size_t>(slot)] > 0.0f)
@@ -218,6 +223,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
             isStaminaExhausted_ = false;
     }
 
+    void MagicCasterAvatarStatus::OnJustAvoided()
+    {
+        RestoreStamina(justAvoidStaminaRestore_);
+        counterWindowRemaining_secs_ = counterWindow_secs_;
+    }
+
     void MagicCasterAvatarStatus::ApplyAttackBuff(const float rate, const float duration_secs)
     {
         if (rate <= 0.0f || duration_secs <= 0.0f)
@@ -260,6 +271,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStateDuration_secs_", avoidRollingStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("justAvoidWindow_secs_", justAvoidWindow_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("justAvoidStaminaRestore_", justAvoidStaminaRestore_);
+        LibCore::ImGuiHelper::OnDrawInputField("counterWindow_secs_", counterWindow_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);

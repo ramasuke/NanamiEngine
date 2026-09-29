@@ -138,13 +138,6 @@ LIVELY = [
 
 # 第1章: 襲撃のあと。焼け落ちた物、倒れた木、落ちた島から逃げてきた人の仮住まい。花は無い
 RUINED = [
-    # 拠点の島: 仮住まいは西の芝生 (焚き火の集まり場だった所)
-    ('First', 'SurvivorCamp', 'Prop/Settlement/Campfire', -56.0, 76.0, 0.0, 1.0),
-    ('First', 'SurvivorCamp', 'Particle/CampfireSmoke', -56.0, 76.0, 0.0, 8.0),
-    ('First', 'SurvivorCamp', 'Prop/Settlement/HideTent', -66.0, 56.0, 20.0, 1.0),
-    ('First', 'SurvivorCamp', 'Prop/Settlement/LeanTo', -40.0, 96.0, 200.0, 1.0),
-    ('First', 'SurvivorCamp', 'Prop/Settlement/SupplyPile', -44.0, 58.0, 30.0, 0.9),
-    ('First', 'SurvivorCamp', 'Prop/Nature/FallenLog', -64.0, 94.0, 120.0, 1.0),
     # 瓦礫: 落ちた噴水の島への橋のたもと、壊れた家の脇。まだ燻っている
     ('First', 'Rubble', 'Prop/Settlement/RubblePile', -50.0, 192.0, 40.0, 1.1),
     ('First', 'Rubble', 'Particle/CampfireSmoke', -50.0, 192.0, 0.0, 5.0),

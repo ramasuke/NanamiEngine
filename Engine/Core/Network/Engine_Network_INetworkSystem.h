@@ -5,7 +5,7 @@
 #include "IPacketSender.h"
 #include "IPlayerIdProvider.h"
 #include "../../Core/Network/Packet/NetworkSystem_Packet.h"
-#include "Mode/NetworkSystem_Mode.h"
+#include "Mode/NetworkSystem_ConnectionState.h"
 #include "Object/Registry/INetworkObjectInstanceRegistry.h"
 
 namespace NanamiEngine::Core::Network

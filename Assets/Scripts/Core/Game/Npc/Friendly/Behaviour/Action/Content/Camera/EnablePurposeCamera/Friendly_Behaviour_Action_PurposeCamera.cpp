@@ -1,25 +1,27 @@
 ﻿#include "Friendly_Behaviour_Action_PurposeCamera.h"
 #include "../../../TickContext/Friendly_Behaviour_TickContext.h"
-#include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
+#include "../../../../../../../PlayerAvatar/ControlLock/PlayerAvatar_ControlLock.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
+    namespace
+    {
+        constexpr const char* PURPOSE_CAMERA_CONTROL_LOCK_TAG = "NpcPurposeCamera";
+    }
+
     TickStatus Action::PurposeCamera::DoTick(const TickContext& context)
     {
-        const auto player = context.Player();
         if (onPurposeCameraEnable_)
         {
             purposeCamera_->SetPriority(ENABLE_PURPOSE_CAMERA_PRIORITY);
             // カメラがNPCを映している間はプレイヤーを動かさない
-            if (player)
-                player->GetEventSceneStateMachine().OnDisable();
+            PlayerAvatar::LockControlBy(context.NpcGameObject(), PURPOSE_CAMERA_CONTROL_LOCK_TAG);
         }
         else
         {
             purposeCamera_->OnDisable();
-            if (player)
-                player->GetEventSceneStateMachine().OnEnable();
+            PlayerAvatar::UnlockControlBy(context.NpcGameObject(), PURPOSE_CAMERA_CONTROL_LOCK_TAG);
         }
         return TickStatus::Success;
     }

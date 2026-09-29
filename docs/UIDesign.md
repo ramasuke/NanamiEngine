@@ -92,6 +92,20 @@
   重ねてクリックも受ける（`AssetUpdateUI.prefab` の `Hints/Confirm/Click`）。
 - 既存のヒント札: `CharacterSelect/HintTag_{Move,Confirm,Cancel}.png`、`EventBoard/HintTag_{LB,RB,LBRB,UpDown}.png`、
   `StageReturn/StageReturn_Hint_{UpDown,Enter,Esc}.png`。同じ用途なら作り直さず使い回す。
+- **札はキーボードとパッドで差し替える**（`tools/art/device_hint.py`、取り付けは `UiFlow::DeviceHint`）。
+
+  | 役割 | キーボード（木札） | パッド（真鍮の鋲） |
+  | --- | --- | --- |
+  | 決める | `Enter` | `A`（`Hint/HintPad_A.png`） |
+  | やめる / 閉じる / もどる | `Esc` | `B`（`Hint/HintPad_B.png`） |
+  | 分類・頁の切り替え | `Q E` | `LB RB`（`Hint/HintPad_LBRB.png`） |
+  | 見出しの両脇（掲示板） | `Q` / `E`（`Hint/HintKey_{Q,E}.png`） | `LB` / `RB`（`Hint/HintPad_{LB,RB}.png`） |
+  | 選ぶ・個数（矢印） | `▲▼` / `◀▶` | 同じ札のまま（差し替えない） |
+
+  パッドの札は、キーボードの札と同じ大きさ（68×42、`LB RB` は 84×42）の透明な絵の**右寄せ**に描く。
+  差し替えてもラベルの位置が動かない。キーボードの札にパッドの字（`A` / `B`）を書かない。
+  店・設定・帰還の貼り紙・掲示板・キャラ選択が対応済み。`CharacterSelect/HintTag_{Confirm,Cancel}.png`（`A` / `B` の木札）と
+  `EventBoard/HintTag_{LB,RB,LBRB}.png` はもう使っていない。
 - ラベルの語彙: **選ぶ / 決める / やめる / 閉じる / 切り替え**、画面ごとの動詞（買う・受注する・個数）。
   ゲームオーバーだけは鉄の語彙なので「選ぶ / 決める」を `#c6ced4` で出している。
 
@@ -126,10 +140,14 @@ Model/           状態とカーソル（BoardListCursor など）。描画を�
 Row/ Page/ ...   繰り返す部品。自分の prefab を持ち、Ui が表示窓の分だけ生やす
 ```
 
-- 入力はキーボードと XInput を両方読む（`ReadKeys()`、スティックのしきい値 12000）。前フレームと比べて押した瞬間だけ拾い、
-  **開いた直後は押しっぱなしを拾わない**（`previousKeys_ = ReadKeys()` を OnStart で）。
-- 開いている間はプレイヤーの `DisableStateMachine()`。閉じるのは次のフレームにして、閉じた B をジャンプとして拾わせない。
-- 二重に開かないよう static の `isOpen_` で弾く（`ShopPresenter`）。
+- 画面の開閉・入力・操作ロックは **`Packages/UiFlow`** に任せる（`Packages/UiFlow/README.md`）。Presenter と同じ
+  GameObject に `UiFlow::UiScreen` を付け、`screen_->Open()` / `Close()` で開閉し、入力は
+  `screen_->Input().IsPressed(UiAction::Submit)` で読む。キーボードと XInput の両方、押した瞬間、
+  **開いた直後の押しっぱなしを拾わない**、二重に開かない（`screenId_`）はそこで済む。`ReadKeys()` は新しく書かない。
+- 開いている間のプレイヤーの操作は `UiScreen` の `locksPlayerControl_` が止める（`Packages/ControlLock`）。
+  解けるのは閉じた次のフレームなので、閉じた B をジャンプとして拾わない。
+- Shop / StageReturn / Settings / EventBoard / CharacterSelect が移行済み。タイトル・ゲームオーバー・ステージ選択・
+  アセット更新はまだ自前の `ReadKeys()` のまま。
 - 効果音は共通の `GamePlay::Sound::UiSoundBank::Play(uiSounds_, UiSe::…)` で鳴らす（音は ScriptableObject
   `Assets/Data/UiSound/UiSoundBank.uiSoundBank`（`UiSoundBankData`）が持つ。鳴らすコンポーネントは
   `FIELD(Asset::UiSoundBankData) uiSounds_` を持ち、prefab でその bank を指す。新しい共通音は `UiSe` と `UiSoundBankData` の両方に足す。DxLib で直接 2D 再生するので `SoundPlayer` の無いシーンでも鳴る）。画面固有の音が要るときだけ

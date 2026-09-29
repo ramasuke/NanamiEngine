@@ -102,6 +102,7 @@ namespace GamePlay::Ui
             case SwordManAvatarStateType::Jump:                 return Label::Jump;
             case SwordManAvatarStateType::AvoidRolling:         return Label::AvoidRolling;
             case SwordManAvatarStateType::NormalAttack:
+            case SwordManAvatarStateType::CounterAttack:
                 return phase == PlayerAvatarInputPhase::Pressed ? std::optional(Label::Attack) : std::nullopt;
             case SwordManAvatarStateType::JumpAttackAir:
                 return phase == PlayerAvatarInputPhase::Pressed ? std::optional(Label::JumpAttack) : std::nullopt;

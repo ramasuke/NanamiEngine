@@ -14,18 +14,15 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /** @brief 同じ GameObject の ModelRenderer のボーン姿勢を取り出し、登録された Sync に渡す */
     class NANAMI_API BoneSync final : public ComponentBase,
-                           public LifeCycleCallback::IPreFixedUpdate,
-                           public LifeCycleCallback::ILateUpdatable
+                                      public LifeCycleCallback::IPreFixedUpdate,
+                                      public LifeCycleCallback::ILateUpdatable
     {
     public:
         BoneSync() = default;
-        // NOTE: export されたクラスは暗黙のコピーも実体化される。unique_ptr の vector を持つので明示的に消す
         BoneSync(const BoneSync&)            = delete;
         BoneSync& operator=(const BoneSync&) = delete;
 
-        /** @brief ボーン名からインデックス*/
         [[nodiscard]] int FindBoneIndex(const std::string& boneName) const;
         [[nodiscard]] std::optional<glm::mat4>      GetBoneWorldMatrix(int boneIndex) const;
         [[nodiscard]] std::optional<Bone::BonePose> GetBoneWorldPose  (int boneIndex) const;

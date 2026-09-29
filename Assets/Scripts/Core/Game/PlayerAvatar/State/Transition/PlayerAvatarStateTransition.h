@@ -1,26 +1,12 @@
 ﻿#pragma once
-#include <cstdint>
 #include <functional>
 
 #include "../../Input/PlayerAvatarInput.h"
+#include "PlayerAvatarControlAcceptance.h"
+#include "PlayerAvatarInputPhase.h"
 
 namespace GameCore::PlayerAvatar
 {
-    enum class PlayerAvatarControlAcceptance : uint8_t
-    {
-        None,
-        /// 一瞬で終わるので、受け付ける操作は直前の State のものとみなす
-        Momentary,
-        Accept,
-    };
-
-    enum class PlayerAvatarInputPhase : uint8_t
-    {
-        Pressed,
-        Holding,
-        NotHolding,
-    };
-
     /**
      * @brief State が起こしうる遷移と State 内の操作を、評価順に受け取る
      * @note 遷移させる実装は最初に成立した遷移で止まり、以降の宣言は実行しない。表示用の実装には全ての宣言が届く

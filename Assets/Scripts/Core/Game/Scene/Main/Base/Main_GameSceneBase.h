@@ -58,6 +58,7 @@ namespace GameCore::Scene::Main
         /** @brief 読み込んだメインシーンとサブシーンを外す */
         void Unload();
         [[nodiscard]] bool IsEntered() const override { return isEntered_; }
+        [[nodiscard]] std::shared_ptr<SceneContextBase> BaseContext() const override { return context_; }
         Coroutine::Task<void> EnterAsync(NanamiEngine::R4::CancellationToken token);
         /** @brief 入場の失敗をロード画面に出しセーフ処理 */
         void FailEnter(const NanamiEngine::R4::CancellationToken& token, const std::string& message);

@@ -1,4 +1,5 @@
 ﻿#include "Data_BoardQuest.h"
+#include "../../Scripts/Core/Game/Condition/Condition_ConditionList.h"
 
 #include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestType.h"
 #include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_TakeableQuestFactory.h"

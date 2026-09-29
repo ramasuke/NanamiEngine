@@ -2,15 +2,10 @@
 #include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Module/Guid/Guid.h"
 #include "../DrawGuiContext/PopupWindowDrawGuiContext.h"
+#include "PopupWindowState.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    enum class PopupWindowState
-    {
-        Open,
-        Closed,
-    };
-
     class NANAMI_API IPopupWindow
     {
     public:

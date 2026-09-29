@@ -49,13 +49,13 @@ namespace GameCore::Npc::Friendly::Behaviour
             return TickStatus::Failure;
         }
 
-        // UIは world 座標がそのままスクリーン座標
         const auto ui = Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f)).lock();
         if (!ui)
             return TickStatus::Failure;
 
         if (const auto presenter = ui->Components().Catch<GamePlay::Ui::CharacterSelectPresenter>().lock())
             presenter->Bind(podium);
+        
         return TickStatus::Success;
     }
 

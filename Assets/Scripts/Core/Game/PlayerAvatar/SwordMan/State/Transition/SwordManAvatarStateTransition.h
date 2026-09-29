@@ -1,35 +1,11 @@
 ﻿#pragma once
-#include <cstdint>
-
+#include "SwordManAvatarInput.h"
+#include "SwordManAvatarStateAction.h"
 #include "../SwordManAvatarStateType.h"
 #include "../../../State/Transition/PlayerAvatarStateTransition.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    enum class SwordManAvatarInput : uint8_t
-    {
-        Move,
-        Run,
-        Jump,
-        AvoidRolling,
-        NormalAttack,
-        DashAttack,
-        Chat,
-    };
-
-    /// State を遷移させない操作
-    enum class SwordManAvatarStateAction : uint8_t
-    {
-        Move,
-        ComboAttack,
-        LockOn,
-        LockOnRelease,
-        CannonTurn,
-        CannonFire,
-        CycleItem,
-        UseItem,
-    };
-
     using ISwordManAvatarTransitionVisitor =
         IPlayerAvatarTransitionVisitor<SwordManAvatarStateType, SwordManAvatarInput, SwordManAvatarStateAction>;
 }

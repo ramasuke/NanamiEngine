@@ -86,6 +86,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         /** 回避の出だしからこの秒数までに受け流した被弾をジャスト回避として扱う */
         [[nodiscard]] float JustAvoidWindow_secs() const { return justAvoidWindow_secs_; }
         void ConsumeAvoidRollingStamina() { ConsumeStamina(avoidRollingStaminaCost_); }
+        /** @brief ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く */
+        void OnJustAvoided();
+        [[nodiscard]] bool CanCounter() const { return counterWindowRemaining_secs_ > 0.0f; }
+        void ConsumeCounter() { counterWindowRemaining_secs_ = 0.0f; }
 
         [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
         [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
@@ -152,6 +156,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(5)]] float avoidRollingStateDuration_secs_;
         [[serialize(5)]] float avoidRollingStaminaCost_;
         [[serialize(7)]] float justAvoidWindow_secs_ = 0.15f;
+        float justAvoidStaminaRestore_ = 100.0f;
+        float counterWindow_secs_ = 0.5f; ///< ジャスト回避からカウンターを受け付ける時間
+        float counterWindowRemaining_secs_ = 0.0f;
 
         [[serialize(0)]] float damageStateDuration_secs_;
         [[serialize(0)]] float deathStateDuration_secs_;

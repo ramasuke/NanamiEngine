@@ -76,10 +76,21 @@ CHATS = {
         'ここらの空じゃ、魔物は待ってくれん。\n着いたその日から訓練を始める。',
         'ついて来い。\nまずは体の動かし方からだ。',
     ],
+    # 訓練の後、ドラゴンが飛んでくるのを見て。3 ページ目の鐘は FirstEventDragon の BT (tools/art/dragon_omen_sfx.py) が鳴らす
+    'ActionInstructure Appear Dragon': [
+        '……待て。\n空の様子がおかしい。',
+        'あれは……ドラゴンだと！？\nなぜこんな所に！',
+        '鐘を鳴らせ！ 島の者を\n一人残らず逃がすんだ！',
+        '島の者を逃がす時間がいる。\nお前が頼りだ、奴を食い止めてくれ！',
+        'さっきの訓練を思い出せ。\n正面に立つな、足を止めるな！',
+    ],
     # ドラゴンを撃ち落とした直後。話すのは教官 (displayName_)
     'FirstDragon Heart Shatter': [
         'やったか……！？\n――待て、奴の様子がおかしい！',
         '島の真ん中に爪を……！\nまずい、島の心臓が狙いか！',
+    ],
+    # 爪で心臓を抜いた直後 (Heart Break の後)
+    'FirstDragon Heart Pulled': [
         '心臓が抜かれた……！\n島が傾くぞ、何かに掴まれ！',
     ],
 
@@ -924,7 +935,7 @@ def desert():
 # ---------------------------------------------------------------- 序章
 def prologue():
     # 船上の2人と教官の訓練は BT をそのまま使い、台詞だけ差し替える
-    write_chats(['AirShipKunoichi', 'AirShipYoungMan', 'Introduction ActionInstructure'])
+    write_chats(['AirShipKunoichi', 'AirShipYoungMan', 'Introduction ActionInstructure', 'ActionInstructure Appear Dragon'])
 
 
 DRAGON_TREE = 'Assets/Data/EnemyBehaviour/FirstEventDragon.enemyBehaviourData'
@@ -939,7 +950,7 @@ DRAGON_CLAW_STATE, DRAGON_FLYING_IDLE_STATE = 10, 4    # FirstEventDragon.animTr
 def dragon():
     """撃ち落とした後、巣へ帰る前に島の浮遊石を抜く (docs/Story.md 序章 5)。
     島へ降りて爪を突き立て、2つの浮遊石が二方へ飛んでいき、教官が叫ぶ。前に入れた Heart ノードは作り直す"""
-    write_chats(['FirstDragon Heart Shatter'])
+    write_chats(['FirstDragon Heart Shatter', 'FirstDragon Heart Pulled'])
     tree = reader.read_tree_file(REPO / DRAGON_TREE)
     nodes = list(walk(tree.entry))
     parent = next(n for n in nodes if any(isinstance(c, model.Action) and c.name == 'Return To Residence'

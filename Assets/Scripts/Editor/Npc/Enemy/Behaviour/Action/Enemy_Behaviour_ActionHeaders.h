@@ -61,3 +61,4 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Timeline/ActionTimeline/Enemy_Behaviour_Action_ActionTimeline.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/RandomWriteBlackBoard/Enemy_Behaviour_Action_RandomWriteBlackBoard.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/PlayerAngleDispatch/Enemy_Behaviour_Action_PlayerAngleDispatch.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/FadeBGM/Enemy_Behaviour_Action_FadeBGM.h"

@@ -11,14 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" />
-    <None Include="Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" />
     <None Include="Assets\Art\Shaders\Grass\Grass_PS.hlsl" />
     <None Include="Assets\Art\Shaders\Grass\Grass_VS.hlsl" />
-    <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" />
-    <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" />
-    <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" />
-    <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" />
     <None Include="Assets\Art\Shaders\Tree\Tree_PS.hlsl" />
     <None Include="Assets\Art\Shaders\Tree\Tree_VS.hlsl" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_AncientDragon.cpp" />
@@ -42,6 +36,7 @@
     <ClCompile Include="Assets\Data\EventNotice\Data_EventNotice.cpp" />
     <ClCompile Include="Assets\Data\EventNotice\Data_BoardQuest.cpp" />
     <ClCompile Include="Assets\Data\EventNotice\Data_Announcement.cpp" />
+    <ClCompile Include="Assets\Data\Navigation\Data_NavigationGuide.cpp" />
     <ClCompile Include="Assets\Data\Restoration\Data_RestorationFacility.cpp" />
     <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp" />
     <ClCompile Include="Assets\Data\Shop\Data_ShopData.cpp" />
@@ -62,6 +57,8 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_IslandHeartDeparture.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieSkipInput.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieCameraScope.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
@@ -190,12 +187,25 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_ITakeableQuest.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_RequestQuestBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_DefeatRequestQuest.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionList.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_StoryFlagCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_SceneObjectiveCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_FacilityRestoredCondition.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_MoneyReward.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_DecorationReward.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Decoration\Decoration_DecorationCollection.cpp" />
+    <ClCompile Include="Assets\Data\Decoration\Data_DecorationData.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_DecorationOwnedCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_QuestTakingCondition.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Navigation\Navigation_NavigationTargetEntry.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ConditionalObject\Prop_ConditionalObject.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\DecorationDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Record\PlayerAvatar_RecordBook.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestList.cpp" />
@@ -223,6 +233,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackChargingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Counter\SwordManAvatarCounterAttackState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.cpp" />
@@ -271,6 +282,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\Context\FirstTouchDownMainIsLandSceneContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\FirstTouchDownMainIsLandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\StageArrivalTourShot.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.cpp" />
@@ -325,10 +337,12 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\WakeUpPlayer\Rpc_WakeUpPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlaySe\Rpc_PlaySe.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayBgm\Rpc_PlayBgm.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\FadeBgm\Rpc_FadeBgm.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnPrefab\Rpc_SpawnPrefab.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnMovingPrefab\Rpc_SpawnMovingPrefab.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PurposeCamera\Rpc_PurposeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayerControlLock\Rpc_PlayerControlLock.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\ControlLock\PlayerAvatar_ControlLock.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ScenePurposeCamera\Rpc_ScenePurposeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Chat\Rpc_Chat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ChangeMainScene\Rpc_ChangeMainScene.cpp" />
@@ -348,9 +362,6 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_DesertScorpion.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SandWorm.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SkeletonDragon.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Tree\TreeLeafSway.cpp" />
@@ -427,6 +438,10 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconSurpriseMotion.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationBanner.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationPresenter.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMarker.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationTrail.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuide.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuideRow.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_MagicCasterControlGuide.cpp" />
@@ -538,6 +553,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Timeline\ActionTimeline\Enemy_Behaviour_Action_ActionTimeline.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\RandomWriteBlackBoard\Enemy_Behaviour_Action_RandomWriteBlackBoard.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\PlayerAngleDispatch\Enemy_Behaviour_Action_PlayerAngleDispatch.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Sound\FadeBGM\Enemy_Behaviour_Action_FadeBGM.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.cpp" />
@@ -560,11 +576,13 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingDrift\GamePlay_FloatingDrift.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\GaugeEffects\Ui_GaugeEffects.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\RoomCode\Ui_RoomCodeHud.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageArrival\Ui_StageArrivalCaption.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameCursor\Ui_GameCursor.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Room\Ui_StageSelect_RoomUi.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StoryDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\NavigationDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\QuestReadDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SceneDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StageEntryDebugPage.cpp" />
@@ -604,6 +622,8 @@
     <ClInclude Include="Assets\Data\EventNotice\Data_EventNotice.h" />
     <ClInclude Include="Assets\Data\EventNotice\Data_BoardQuest.h" />
     <ClInclude Include="Assets\Data\EventNotice\Data_Announcement.h" />
+    <ClInclude Include="Assets\Data\EventNotice\Data_AnnouncementKind.h" />
+    <ClInclude Include="Assets\Data\Navigation\Data_NavigationGuide.h" />
     <ClInclude Include="Assets\Data\Restoration\Data_RestorationFacility.h" />
     <ClInclude Include="Assets\Data\Item\Data_ItemData.h" />
     <ClInclude Include="Assets\Data\Item\Data_ItemStack.h" />
@@ -627,10 +647,15 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryFlag.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClearCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_IslandHeartDeparture.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStoneShot.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_DepartShot.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_ReturnShot.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_IslandReturnShot.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieSkipInput.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieCameraScope.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
@@ -758,12 +783,28 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_DefeatRequestQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ICondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionList.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_ConditionFactory.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_StoryConditions.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_StoryFlagCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_SceneObjectiveCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_FacilityRestoredCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_QuestCompletedCondition.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_CompositeConditions.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_RewardContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_RewardFactory.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_MoneyReward.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_DecorationReward.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Decoration\Decoration_DecorationCollection.h" />
+    <ClInclude Include="Assets\Data\Decoration\Data_DecorationData.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_DecorationOwnedCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_QuestTakingCondition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Navigation\Navigation_INavigationSceneSource.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Navigation\Navigation_NavigationTargetEntry.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ConditionalObject\Prop_ConditionalObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Request\PlayerAvatar_CollectRequestQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Record\PlayerAvatar_IRecordBook.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Record\PlayerAvatar_RecordBook.h" />
@@ -780,6 +821,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\IPlayerAvatarState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\PlayerAvatarStateBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarStateTransition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarControlAcceptance.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarInputPhase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\HitFeelParam\HitFeelParam.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.h" />
@@ -797,6 +840,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackChargingState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Counter\SwordManAvatarCounterAttackState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.h" />
@@ -816,6 +860,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateTransition.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarInput.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.h" />
@@ -853,6 +899,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\Context\FirstTouchDownMainIsLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\FirstTouchDownMainIsLandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\StageArrivalTourShot.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.h" />
@@ -889,6 +936,7 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnEnemy\Packet_Dispatch_SpawnEnemy.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Custom_RpcType.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Module\PlayerControlLock\Rpc_PlayerControlLock.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\ControlLock\PlayerAvatar_ControlLock.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Graph\BehaviourTreeGraphDelegate.h" />
@@ -939,9 +987,6 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Tree\TreeLeafSway.h" />
@@ -970,6 +1015,12 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\Motion\ChatIconSurpriseMotion.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationObjective.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMemory.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationBanner.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationPresenter.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationMarker.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Navigation\Ui_NavigationTrail.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuide.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuideRow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_MagicCasterControlGuide.h" />
@@ -1004,6 +1055,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Traits\MagicCasterAvatarTraits.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBarSource.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_AvatarItemBarSource.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
@@ -1113,6 +1165,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Room\Ui_StageSelect_RoomUi.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\RoomCode\Ui_RoomCodeHud.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageArrival\Ui_StageArrivalCaption.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameCursor\Ui_GameCursor.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.h" />
@@ -1135,6 +1188,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Timeline\ActionTimeline\Enemy_Behaviour_Action_ActionTimeline.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\RandomWriteBlackBoard\Enemy_Behaviour_Action_RandomWriteBlackBoard.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\PlayerAngleDispatch\Enemy_Behaviour_Action_PlayerAngleDispatch.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Sound\FadeBGM\Enemy_Behaviour_Action_FadeBGM.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\UseItem\MagicCasterAvatarUseItemState.h" />
@@ -1242,13 +1296,7 @@
   <Import Project="$(NanamiEngineDir)NanamiEngine.Game.props" />
   <ItemDefinitionGroup>
     <PreBuildEvent>
-      <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" /Fo "Assets\Art\Shaders\Cloud\Cloud_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "Assets\Art\Shaders\Cloud\Cloud_PS.pso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\Grass\Grass_VS.hlsl" /Fo "Assets\Art\Shaders\Grass\Grass_VS.vso"
+      <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\Grass\Grass_VS.hlsl" /Fo "Assets\Art\Shaders\Grass\Grass_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "Assets\Art\Shaders\Grass\Grass_PS.hlsl" /Fo "Assets\Art\Shaders\Grass\Grass_PS.pso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "Assets\Art\Shaders\Tree\Tree_VS.hlsl" /Fo "Assets\Art\Shaders\Tree\Tree_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "Assets\Art\Shaders\Tree\Tree_PS.hlsl" /Fo "Assets\Art\Shaders\Tree\Tree_PS.pso"</Command>

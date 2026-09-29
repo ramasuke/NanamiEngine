@@ -25,6 +25,7 @@ from tools.common.blob import Ver  # noqa: E402
 from tools.common.cereal_json import Num, OrderedObj, dumps, loads, to_file_bytes  # noqa: E402
 from tools.scene import catalog as catalog_mod, edits, mathutil, model, reader, validate, writer  # noqa: E402
 
+import device_hint  # noqa: E402
 import event_board as art  # noqa: E402
 from game_over_prefab import (  # noqa: E402
     ALIGN_LEFT, BLACK_MASK, FONT_PX, Builder, asset_guid, check, guid_of, new_prefab, save_prefab)
@@ -455,22 +456,28 @@ def build_restoration_page(row_prefab_guid):
 
 
 # ---------------------------------------------------------------- 掲示板の画面 (見出し + 頁 + 操作ガイド)
-HINT_SPRITES = {
-    'HintTag_Cancel': HINT_CANCEL,
-    'HintTag_Confirm': HINT_CONFIRM,
-}
+def fill_hint_group(b, group, items):
+    for i, item in enumerate(art.v2_hint_layout(items)):
+        if item['kind'] == 'tag':
+            role = art.HINT_ROLES.get(item['sprite'])
+            sprite = device_hint.sprite_guid(device_hint.keyboard_sprite(role)) if role else sprite_guid(item['sprite'])
+            image(b, group, f'Tag{i}', item['pos'], sprite, ORDER_HINT)
+            if role:
+                device_hint.attach(b, group.transform.children[-1], role, sprite)
+        else:
+            text(b, group, f'Text{i}', item['pos'], art.LAYOUT['hint_px'], item['text'], art.HINT_COLOR,
+                 ORDER_HINT_TEXT)
 
 
 def hint_group(b, parent, name, items):
     group = b.node(parent, name)
-    for i, item in enumerate(art.v2_hint_layout(items)):
-        if item['kind'] == 'tag':
-            sprite = HINT_SPRITES.get(item['sprite']) or sprite_guid(item['sprite'])
-            image(b, group, f'Tag{i}', item['pos'], sprite, ORDER_HINT)
-        else:
-            text(b, group, f'Text{i}', item['pos'], art.LAYOUT['hint_px'], item['text'], art.HINT_COLOR,
-                 ORDER_HINT_TEXT)
+    fill_hint_group(b, group, items)
     return group
+
+
+def tab_hint(b, parent, name, pos, role):
+    image(b, parent, name, pos, device_hint.sprite_guid(device_hint.keyboard_sprite(role)), ORDER_TAB)
+    device_hint.attach(b, parent.transform.children[-1], role)
 
 
 def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid, restoration_page_guid):
@@ -483,8 +490,8 @@ def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid, resto
                       scale=L['veil_scale'])
     image(b, root, 'Strip', V['strip'], sprite_guid('Strip'), ORDER_BOARD)
     image(b, root, 'TabRope', V['tab_rope'], sprite_guid('TabRope'), ORDER_TAB_ROPE)
-    image(b, root, 'TabHintLB', V['tab_hint_lb'], sprite_guid('HintTag_LB'), ORDER_TAB)
-    image(b, root, 'TabHintRB', V['tab_hint_rb'], sprite_guid('HintTag_RB'), ORDER_TAB)
+    tab_hint(b, root, 'TabHintLB', V['tab_hint_lb'], 'tab_prev')
+    tab_hint(b, root, 'TabHintRB', V['tab_hint_rb'], 'tab_next')
     tabs = b.node(root, 'Tabs', V['tabs_root'])
     pages = b.node(root, 'Pages')
     with_accept = hint_group(b, root, 'HintsWithAccept', art.V2_HINTS_WITH_ACCEPT)
@@ -509,6 +516,7 @@ def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid, resto
     b.field(presenter, 'acceptSound_', ACCEPT_SOUND)
     b.field(presenter, 'restoreSound_', RESTORE_SOUND)
     b.field(presenter, 'refuseSound_', REFUSE_SOUND)
+    device_hint.add_screen(b, root, 'EventBoard')
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardUI')
 
 

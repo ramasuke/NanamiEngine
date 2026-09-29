@@ -7,6 +7,7 @@
 
 #include "DxLib.h"
 #include "../../../Brain/CinemachineCameraBrain.h"
+#include "../ILockOnCameraTarget.h"
 #include "../IVirtualCameraTarget.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"

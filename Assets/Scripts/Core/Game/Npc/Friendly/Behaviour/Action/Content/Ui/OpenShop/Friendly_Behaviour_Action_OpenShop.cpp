@@ -12,13 +12,13 @@ namespace GameCore::Npc::Friendly::Behaviour
         if (!prefab)
             return TickStatus::Failure;
 
-        // UIは world 座標がそのままスクリーン座標
         const auto ui = Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f)).lock();
         if (!ui)
             return TickStatus::Failure;
 
         if (const auto presenter = ui->Components().Catch<GamePlay::Ui::ShopPresenter>().lock())
             presenter->Bind(stall_.get());
+        
         return TickStatus::Success;
     }
 

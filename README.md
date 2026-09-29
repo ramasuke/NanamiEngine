@@ -194,8 +194,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   `AttackAreaFire` RPCで各ピアの同じ `AttackArea` 上に再現されます。
 - **`GamePlay/PlayerAvatar/`**（`Bullet`、`InteractableArea`、`HitShakeReceiver`、
   `LockOnDetectionArea`、`SwordMan`、`WakeUpArea`（ダウンした味方の蘇生範囲））、
-  **`GamePlay/Prop/`**（`AirShip`、`Canon`、`Cloud`、`DestructibleObject`、`IslandPedestial`、
-  `LatticeBarrier`、`ProximityReveal`）、**`GamePlay/Ui/`**（`ActionInstructTutorial`、
+  **`GamePlay/Prop/`**（`AirShip`、`Canon`、`DestructibleObject`、`IslandPedestial`）、**`GamePlay/Ui/`**（`ActionInstructTutorial`、
   `BillBoardNpcChatIcon`、`BossHealthGauge`、`DealDamageTextBillBoard`、`LockOnReticle`、`NpcChatting`、
   `PlayerStatus`（`Ui_DamageFlash`、`Ui_LowHealthScreenEffect` 等）、
   `StageSelect`（Model/Presenter/MapMarker に分割）等）、**`GamePlay/{Network, Spawn, Sound}`**

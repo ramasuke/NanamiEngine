@@ -35,7 +35,7 @@ cbuffer TreeWindBuffer : register(b4)
     float4 lightColor;     // w=ambient
 };
 
-// MV1 モデルの頂点入力 (剛体メッシュ)。ProximityReveal_VS.hlsl と同じレイアウト。
+// MV1 モデルの頂点入力 (剛体メッシュ)。
 // TexCoords1 には Blender でベイクした揺れマスクが入っている
 // (x=揺れの重み 0..1 / 樹皮は0、y=葉カードごとのランダム位相 0..1)。
 struct VS_INPUT

@@ -19,19 +19,24 @@ void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoFixedUpdat
 {
     MoveAvoidRolling();
 
-    // NOTE: 転がっている間の被ダメージは受け流す(捨てる)。演出は出だしの窓で受け流した時だけ
     if (Status().IsDamaged())
     {
         if (!isAvoided_ && During_secs() <= Status().JustAvoidWindow_secs())
         {
             if (const auto particle = Context().SuccessAvoidRollingParticle())
                 particle->Play();
+            
             if (const auto sound = Resources().JustAvoidRollingSound())
                 GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+            Status().OnJustAvoided();
             isAvoided_ = true;
         }
         Status().DiscardDamage();
     }
+
+    // ジャスト回避すれば残りの転がりを打ち切ってカウンター魔法を撃てる
+    if (isAvoided_ && MIN_ROLL_BEFORE_COUNTER_SECS <= During_secs() && CanCounterCast() && Input().Cast().IsPressed() && TryBeginCast())
+        return;
 
     if (Status().AvoidRollingStateDuration_secs() <= During_secs())
         OnChangeState(Input().Move().IsUpdatePressed() ? MagicCasterAvatarStateType::Walk : MagicCasterAvatarStateType::Idle);

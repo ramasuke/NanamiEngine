@@ -24,6 +24,7 @@ namespace GameCore::PlayerAvatar::Quest
         takingQuests_ = LocalPrefs::LoadOrDefault<QuestList>(TAKING_QUEST_SAVE_KEY, QuestList());
         completedQuests_.Reload();
         takingQuests_.StartAll(Context());
+        onChanged_.OnNext(NanamiEngine::R4::Unit{});
     }
 
     void QuestJournal::Save() const
@@ -34,7 +35,11 @@ namespace GameCore::PlayerAvatar::Quest
 
     bool QuestJournal::Take(const std::shared_ptr<ITakeableQuest>& quest)
     {
-        return takingQuests_.Add(quest, Context());
+        if (!takingQuests_.Add(quest, Context()))
+            return false;
+
+        onChanged_.OnNext(NanamiEngine::R4::Unit{});
+        return true;
     }
 
     void QuestJournal::Adopt(const std::vector<std::shared_ptr<ITakeableQuest>>& quests)
@@ -56,12 +61,13 @@ namespace GameCore::PlayerAvatar::Quest
 
         // 依頼は何度でも受けられるので、達成のたびに報酬を出し、達成済みとしては残さない。
         // メインストーリーは職業をまたいで初回だけ報酬を出す
-        const auto reward      = quest->RewardMoney();
-        const bool rewardsNow  = quest->IsRepeatable() || MarkCompleted(completeQuest);
+        const auto rewards    = quest->Rewards();
+        const bool rewardsNow = quest->IsRepeatable() || MarkCompleted(completeQuest);
         takingQuests_.Remove(completeQuest);
+        onChanged_.OnNext(NanamiEngine::R4::Unit{});
 
         if (rewardsNow)
-            onRewarded_.OnNext(reward);
+            onRewarded_.OnNext(rewards);
     }
 
     bool QuestJournal::CheckCompleted(const QuestType& quest) const
@@ -75,6 +81,7 @@ namespace GameCore::PlayerAvatar::Quest
             return false;
 
         completedQuests_.Subscribe(quest);
+        onChanged_.OnNext(NanamiEngine::R4::Unit{});
         return true;
     }
 

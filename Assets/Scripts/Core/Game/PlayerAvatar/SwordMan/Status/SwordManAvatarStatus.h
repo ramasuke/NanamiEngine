@@ -112,6 +112,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             AvoidRollingStateDuration_secs       () const   { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                             AvoidRollingStaminaCost              () const   { return avoidRollingStaminaCost_; }
         [[nodiscard]] float                             JustAvoidWindow_secs                 () const   { return justAvoidWindow_secs_; }
+        [[nodiscard]] bool                              CanCounter                           () const   { return counterWindowRemaining_secs_ > 0.0f; }
+        [[nodiscard]] const AttackParam<Damage::PhysicsPower>& CounterAttack                 () const   { return counterAttack_; }
+        [[nodiscard]] const HitFeelParam&               CounterHitFeel                       () const   { return counterHitFeel_; }
+        /** @brief ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く */
+                      void                              OnJustAvoided();
+                      void                              ConsumeCounter() { counterWindowRemaining_secs_ = 0.0f; }
         [[nodiscard]] float                             DeathStateDuration_secs              () const   { return deathStateDuration_secs_; }
         [[nodiscard]] float                             DownStateDuration_secs               () const   { return downStateDuration_secs_; }
         [[nodiscard]] float                             FallDownStateDuration_secs           () const   { return fallDownStateDuration_secs_; }
@@ -191,6 +197,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
         [[serialize(0)]] float                      avoidRollingStaminaCost_;
         float                                       justAvoidWindow_secs_ = 0.15f;
+        float                                       justAvoidStaminaRestore_ = 100.0f;
+        float                                       counterWindow_secs_ = 0.5f; ///< ジャスト回避からカウンターを受け付ける時間
+        float                                       counterWindowRemaining_secs_ = 0.0f;
+        AttackParam<Damage::PhysicsPower>           counterAttack_ = AttackParam(Damage::PhysicsPower(45, Damage::FlinchPower(60)), EnhancePower(15), 0.2666666667f, 0.6f); ///< 発生・全体は CounterAttack クリップ(Great Sword Downward Slash の 6〜33F を 1.5 倍速)に合わせる
+        HitFeelParam                                counterHitFeel_ = HitFeelParam(1.0f, 0.15f, 7.0f, 0.9f, 0.22f, 45.0f);
         [[serialize(0)]] float                      deathStateDuration_secs_;
         [[serialize(0)]] float                      downStateDuration_secs_ = 13.6363636364f;
         [[serialize(16)]] float                     fallDownStateDuration_secs_ = 1.3333333333f;

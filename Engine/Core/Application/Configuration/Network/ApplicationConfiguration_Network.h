@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
-#include "../../../Network/Mode/NetworkSystem_Mode.h"
+#include "../../../Network/Mode/NetworkSystem_ServerType.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {

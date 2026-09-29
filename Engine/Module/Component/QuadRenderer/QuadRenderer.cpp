@@ -124,7 +124,10 @@ namespace NanamiEngine::Module::Component
     void QuadRenderer::OnDestroy()
     {
         if (cbHandle_ != -1)
+        {
             DeleteShaderConstantBuffer(cbHandle_);
+            cbHandle_ = -1;
+        }
     }
 
     void QuadRenderer::OnDrawGui()

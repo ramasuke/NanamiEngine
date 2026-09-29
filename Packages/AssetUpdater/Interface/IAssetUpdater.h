@@ -1,48 +1,13 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
-#include <atomic>
-#include <cstdint>
 #include <stop_token>
-#include <string>
 
-#include "../Manifest/AssetManifest.h"
+#include "DownloadProgress.h"
+#include "DownloadResult.h"
+#include "UpdateCheckResult.h"
 
 namespace NanamiEngine::AssetUpdater
 {
-    enum class UpdateCheckStatus
-    {
-        UpToDate,
-        UpdateAvailable,
-        ClientTooOld,
-        Failed,
-    };
-
-    struct NANAMI_API UpdateCheckResult
-    {
-        UpdateCheckStatus status = UpdateCheckStatus::Failed;
-        AssetManifest     remote;
-        /** 取得したマニフェストそのもの。適用できたら installed.json としてこのまま書く */
-        std::string       remoteJson;
-        ManifestDiff      diff;
-        std::string       error;
-    };
-
-    /** ダウンロード中に別スレッドから書かれ、画面側が毎フレーム読む */
-    struct NANAMI_API DownloadProgress
-    {
-        std::atomic<std::uint64_t> receivedBytes {0};
-        std::atomic<std::uint64_t> totalBytes    {0};
-        std::atomic<std::uint32_t> finishedFiles {0};
-        std::atomic<std::uint32_t> totalFiles    {0};
-    };
-
-    struct NANAMI_API DownloadResult
-    {
-        bool        ok        = false;
-        bool        cancelled = false;
-        std::string error;
-    };
-
     class NANAMI_API IAssetUpdater
     {
     public:

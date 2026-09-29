@@ -50,6 +50,9 @@ namespace GameCore::Scene
                 openingShotDurations_secs_.push_back(4.0f);
         });
         ImGuiHelper::OnDrawInputField("airShipDeckProps_", airShipDeckProps_);
+        ImGuiHelper::OnDrawInputField("heroHoldRate_", heroHoldRate_);
+        ImGuiHelper::OnDrawInputField("heroTurnStartRate_", heroTurnStartRate_);
+        ImGuiHelper::OnDrawInputField("heroLookHeight_", heroLookHeight_);
     }
 }
 
