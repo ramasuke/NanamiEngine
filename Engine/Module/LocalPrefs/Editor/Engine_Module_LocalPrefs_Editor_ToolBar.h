@@ -13,8 +13,7 @@
 
 namespace NanamiEngine::Module::LocalPrefs::Editor
 {
-    // 型ごとの ImGui ウィジェット描画。プリミティブ型は直接ウィジェットへ、
-    // OnDrawGui() を持つ型はそれを呼ぶ。どちらでもない場合は型名を表示するだけ。
+    // 型ごとの ImGui ウィジェット描画。未対応の型は型名を表示するだけ
     template<typename T>
     void DrawLocalPrefWidget(const std::string& label, T& value)
     {
@@ -67,8 +66,7 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
             
             // 型を知らなくても、レジストリ側から共通で叩ける操作
             std::function<void()> saveDefault;
-            // ファイルから値をロードし、ImGui ウィジェットで編集・保存できるUIを描画する
-            // 初回呼び出し時にファイルから値を読み込み、以降は内部 state を保持する
+            // 編集・保存 UI を描画する。値は初回だけファイルから読み、以降は内部 state を使う
             std::function<void()> drawEditGui;
             // 登録元のモジュール
             Core::ModuleHandle module;
@@ -136,7 +134,6 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
 /**
  * LocalPrefs の項目をエディタのツールバーへ静的登録する。
  * NOTE: .cpp のグローバル / namespace スコープに書く (末尾の ; は不要)
- * NOTE: 登録元モジュールを記録するので、HotReload でゲーム DLL を差し替えると UnregisterModule で消える
  */
 #define REGISTER_LOCAL_PREF_WITH_PATH(Type, KeyName, DefaultValue, SubPath)                    \
     static const bool NANAMI_LOCAL_PREF_CONCAT(nanamiLocalPrefRegistered_, __COUNTER__) =      \

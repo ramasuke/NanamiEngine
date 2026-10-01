@@ -64,9 +64,7 @@ namespace NanamiEngine::Module::Serialization
             report.outputBindings += EraseOutputBinding<cereal::PortableBinaryOutputArchive>(record.type);
         }
 
-        // 2. 記録から: 型の関係。派生として登録された型は、直接の基底だけでなく cereal が推移的に足した祖先にも
-        //    入っている (map[祖先][派生]、reverseMap[派生] = 祖先) ので、派生をキーに全部消す。
-        //    その型を基底とする項目 (map[型]) も、派生はすべて同じ DLL の型なので丸ごと消してよい
+        // 2. 記録から: 型の関係。cereal が推移的に足した祖先の項目も含め、派生をキーに全部消す
         for (const auto& record : records)
         {
             for (auto& [base, derivedMap] : casters.map)

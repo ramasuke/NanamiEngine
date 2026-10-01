@@ -35,8 +35,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
 
     /**
      * @brief IUpdatableの継承をやめたクラスが、旧データに残るIUpdatableのノードを読み捨てる
-     * @details cerealはクラスバージョンを型ごとに初出の1回しか書かないため、ノードを読まずに飛ばすと
-     *          後から読む別コンポーネントのIUpdatableがバージョンを見つけられずに失敗する
+     * NOTE: 飛ばすと初出だけに書かれたクラスバージョンが失われ、後続の読み込みが失敗する
      */
     template <class Archive>
     void DiscardUpdatableBase(Archive& archive)

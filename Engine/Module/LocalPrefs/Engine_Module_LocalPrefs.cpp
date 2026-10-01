@@ -24,8 +24,7 @@ namespace NanamiEngine::Module::LocalPrefs
     void EnsureDirectory(const std::string& path)
     {
         const std::filesystem::path p(path);
-        // path はファイルパスなので parent_path() でディレクトリ部分のみを取り出して作成する
-        // create_directories は既に存在する場合は何もしないので冪等に呼べる
+        // 親ディレクトリを作る (既にあれば何もしない)
         std::filesystem::create_directories(p.parent_path());
     }
 }

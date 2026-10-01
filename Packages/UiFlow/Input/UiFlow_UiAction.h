@@ -20,17 +20,25 @@ namespace NanamiEngine::UiFlow
         TabNext,
         /** メニューを開く / 閉じる */
         Menu,
+        /** 1 文字消す */
+        Erase,
+        /** 値を上げる / 下げる。上下の移動と別に使う 2 組目の上下 */
+        ValueUp,
+        ValueDown,
         Count,
     };
 
-    /** @brief 左スティックを方向キーとして読む向き */
+    /** @brief スティックを方向キーとして読む向き */
     enum class StickDirection : std::uint8_t
     {
-        None,
         Up,
         Down,
         Left,
         Right,
+        RightStickUp,
+        RightStickDown,
+        RightStickLeft,
+        RightStickRight,
     };
 
     /** @brief 1 つのアクションに割り当てる入力。どれかが押されていれば押されている */
@@ -38,6 +46,6 @@ namespace NanamiEngine::UiFlow
     {
         std::vector<Platform::Input::Key>           keys;
         std::vector<Platform::Input::GamepadButton> buttons;
-        StickDirection                              stick = StickDirection::None;
+        std::vector<StickDirection>                 sticks;
     };
 }

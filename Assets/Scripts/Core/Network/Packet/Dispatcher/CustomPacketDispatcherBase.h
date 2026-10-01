@@ -24,8 +24,7 @@ namespace GameCore::Network
     protected:
         [[nodiscard]] Core::Network::IPacketSender& PacketSender() const { return packetSender_; }
 
-        // Server/Client 共通のゲームロジック。全 Dispatcher で実装必須。
-        // (OnServerRelayReceive / OnServerAuthoritativeReceive のデフォルト実装がここを呼ぶ)
+        // Server/Client 共通のゲームロジック
         virtual void OnReceive(const Core::Network::Packet& packet) = 0;
 
     private:

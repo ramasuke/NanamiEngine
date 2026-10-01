@@ -24,8 +24,7 @@ namespace NanamiEngine::Module::Component
             return vert;
         }
 
-        // 板ポリゴンの頂点を構築する。裏面は同じ位置の三角形を巻き順だけ反転させて積むことで、
-        // DxLib側のカリング方向(CW/CCW)に依存せず両面から見えるようにする。
+        // 裏面は巻き順を反転した三角形を積む (カリング方向に依存せず両面から見える)
         std::vector<VERTEX3D> BuildQuadVertices(const float width, const float height, const bool doubleSided)
         {
             const float hw = width  * 0.5f;

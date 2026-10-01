@@ -17,7 +17,6 @@ namespace GamePlay::Ui
         auto& status = boss.Status();
         const auto maxHealth = status.MaxHealth();
 
-        // HealthObservable は購読時に現在値を流さないので、最初に一度そろえておく
         if (const auto gauge = view_.lock())
             gauge->SetHealthRate(status.Health() / maxHealth);
 
@@ -27,7 +26,6 @@ namespace GamePlay::Ui
                     gauge->SetHealthRate(health / maxHealth);
             }).AddTo(this);
 
-        // ボスが消えたらゲージUIごと自分も片付ける
         boss.DestroyCancellationToken().Register(
             [weakSelf = Components().Catch<BossHealthGaugePresenter>()]
             {

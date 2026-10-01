@@ -15,15 +15,11 @@ namespace NanamiEngine::Module
         // func を C++例外・SEH例外の両方から保護して実行する。
         static bool Execute(const std::function<void()>& func, std::string& outErrorMessage);
 
-        // SEH(nullptr参照等のハードウェア例外)を捕捉して継続するかどうか。
-        // NOTE: スキップする(その代わり、壊れた可能性のある状態のまま処理を続ける前提を受け入れることになる)。
+        // SEH(nullptr参照等)を捕捉して、壊れたかもしれない状態のまま処理を続けるか
         [[nodiscard]] static bool IsCrashRecoveryEnabled();
         static void SetCrashRecoveryEnabled(bool enabled);
 
-        // true(デフォルト)の場合、デバッガ(Rider/Visual Studio等)がアタッチされている間は、
-        // IsCrashRecoveryEnabled() が true でもそれを無視し、SEHを常に素通りさせて通常通り
-        // クラッシュ(デバッガがその場で停止)させる。デバッグ中でもコンポーネント単位の継続動作
-        // 自体を確認したい場合はfalseにする。
+        // true(既定)ならデバッガのアタッチ中は SEH を捕捉せず、その場でクラッシュさせる
         [[nodiscard]] static bool IsDebuggerFailFastEnabled();
         static void SetDebuggerFailFastEnabled(bool enabled);
 

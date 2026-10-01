@@ -74,7 +74,6 @@ namespace GamePlay::Ui
             }).AddTo(this);
         }
 
-        // Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
         Refresh();
     }
 
@@ -88,20 +87,22 @@ namespace GamePlay::Ui
 
         if (input.IsPressed(UiAction::Up))
             model_->Cursor().Move(-1);
+        
         if (input.IsPressed(UiAction::Down))
             model_->Cursor().Move(1);
 
-        // 左右を同時に押している間は増減しない
         if (input.IsHeld(UiAction::Left) != input.IsHeld(UiAction::Right))
         {
             if (input.IsRepeated(UiAction::Left))
                 ChangeQuantity(-1);
+            
             if (input.IsRepeated(UiAction::Right))
                 ChangeQuantity(1);
         }
 
         if (input.IsPressed(UiAction::Submit))
             Purchase();
+        
         if (input.IsPressed(UiAction::Cancel))
             Close();
     }

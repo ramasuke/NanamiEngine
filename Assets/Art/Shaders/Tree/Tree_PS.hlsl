@@ -1,6 +1,5 @@
 // Tree 用 ピクセルシェーダー (葉のマテリアル専用)
-// DxLib(Direct3D 11) は b0～b3 を内部で使用するため、ユーザー定数バッファは b4 に置く
-// (Component::CUSTOM_SHADER_CB_SLOT / Tree_VS.hlsl と一致させること)
+// NOTE: ユーザー定数バッファは b4 (b0～b3 は DxLib が使う)。Tree_VS.hlsl と一致させる
 cbuffer TreeWindBuffer : register(b4)
 {
     float4 wind;

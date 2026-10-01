@@ -1,6 +1,7 @@
 """GameManage.scene の SceneContexts に DrySandSceneContext (砂漠) を足す / 作り直す。
 
     python tools/art/desert_context.py        # desert_scene.py でシーンを作り直したら、続けて流す
+    python tools/art/movie_markers.py         # 続けて流す (到着の空撮のマーカー)
 
 - シーンのコンテキストは tools.scene のカタログに無い (docs: memory scene-context-fields) ので、JSON を直接いじる。
   草原の GrassLandSceneContext を写し、型名を DrySandSceneContext に替えて、SceneContexts の最後の component に足す。

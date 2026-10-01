@@ -38,6 +38,7 @@ namespace NanamiEngine::Module::AnimationTree
     {
         nodes_  .clear();
         names_  .clear();
+        sizes_  .clear();
         indexOf_.clear();
         links_  .clear();
 
@@ -49,6 +50,7 @@ namespace NanamiEngine::Module::AnimationTree
             indexOf_[node.get()] = nodes_.size();
             nodes_.push_back(node);
             names_.push_back(node->GraphNodeName());
+            sizes_.push_back(MeasureNodeSize(names_.back(), node->GraphNodeDetail(), false));
         };
         addNode(tree_->entryNode_);
         addNode(tree_->visualAnyStateNode_);
@@ -156,18 +158,13 @@ namespace NanamiEngine::Module::AnimationTree
 
         const auto&  node     = nodes_[nodeIndex];
         const auto&  options  = host_->Options();
-        const float  zoom     = ZoomOf(rectangle, NODE_SIZE.x);
-        const float  fontSize = ImGui::GetFontSize() * 0.85f * zoom;
+        const float  zoom     = Zoom();
+        const float  fontSize = DetailFontSize();
         const ImRect frame    = NodeFrame(rectangle, zoom);
         const ImVec2 nodeMin  = frame.Min;
         const ImVec2 nodeMax  = frame.Max;
 
-        if (const std::string detail = node->GraphNodeDetail(); !detail.empty() && fontSize >= 6.0f)
-        {
-            drawList->PushClipRect(rectangle.Min, rectangle.Max, true);
-            drawList->AddText(ImGui::GetFont(), fontSize, rectangle.Min, K_DETAIL_TEXT_COLOR, detail.c_str());
-            drawList->PopClipRect();
-        }
+        DrawNodeDetail(drawList, rectangle, node->GraphNodeDetail(), K_DETAIL_TEXT_COLOR);
 
         // 実行中の再生状態。末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
         const auto& currentNodes = tree_->currentNodes_;
@@ -194,7 +191,7 @@ namespace NanamiEngine::Module::AnimationTree
         {
             char label[64];
             snprintf(label, sizeof(label), "%.2f / %.2fs  blend %.2f", progress.duringSecs, progress.durationSecs, clip->GetBlendRate());
-            drawList->AddText(ImGui::GetFont(), fontSize, ImVec2(barMin.x, barMax.y + 2.0f * zoom), IM_COL32_WHITE, label);
+            drawList->AddText(Gui::Graph::FontForSize(fontSize), fontSize, ImVec2(barMin.x, barMax.y + 2.0f * zoom), IM_COL32_WHITE, label);
         }
     }
 
@@ -231,7 +228,7 @@ namespace NanamiEngine::Module::AnimationTree
         {
             names_[index].c_str(),
             KindOf(index),
-            ImRect(min, min + NODE_SIZE),
+            ImRect(min, min + sizes_[index]),
             IsSelected(index)
         };
     }

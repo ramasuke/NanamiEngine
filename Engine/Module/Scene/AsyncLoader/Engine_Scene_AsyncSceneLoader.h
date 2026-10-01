@@ -12,9 +12,7 @@
 namespace NanamiEngine::Scene
 {
     /**
-     * @brief .scene のデシリアライズをワーカースレッドで行う。
-     *        GameObject の生成まではワーカーで済ませ、InitGameObject 以降は
-     *        メインスレッドが受け取ってから行う
+     * @brief .scene のデシリアライズと GameObject の生成をワーカースレッドで行う (InitGameObject 以降はメイン)
      */
     class NANAMI_API AsyncSceneLoader final
     {

@@ -16,8 +16,7 @@ namespace GamePlay::Ui
 {
     class ControlGuideRow;
 
-    // 操作ガイドの見せ方だけを受け持つ。行は rowPrefab_ から rows_ の子へ生成し、行の積み上げは VerticalLayoutGroup が行う。
-    // どの行に何を出すかはキャラごとのガイド（SwordManControlGuide など）が毎フレーム Present で渡す
+    // 操作ガイドの表示。行は rowPrefab_ から rows_ の子に生成し、VerticalLayoutGroup で積む
     class ControlGuide final : public Component::ComponentBase
     {
     public:

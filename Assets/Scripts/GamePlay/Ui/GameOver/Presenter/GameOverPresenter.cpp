@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "../Ui_GameOverScreen.h"
 #include "../DeathCamera/GameOverDeathCamera.h"
@@ -19,16 +18,13 @@
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックを方向キーとして読むためのしきい値
-        constexpr short GAME_OVER_STICK_DEADZONE = 12000;
-    }
-
     void GameOverPresenter::OnStart()
     {
         view_ = RequireComponent<GameOverScreenUi>();
         lastTickMs_ = Time::NowMilliseconds();
+
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        screen_->Input().Map().AddKey(UiFlow::UiAction::Submit, Platform::Input::Key::Space);
 
         for (const int index : {GameOverScreenUi::RETRY_INDEX, GameOverScreenUi::TITLE_INDEX})
         {
@@ -62,7 +58,6 @@ namespace GamePlay::Ui
             break;
 
         case Phase::Presenting:
-            // 別の経路でシーンが切り替わった（デバッグの遷移ボタン等）
             if (!HasAnyPlayer())
             {
                 Abort();
@@ -72,7 +67,6 @@ namespace GamePlay::Ui
             break;
 
         case Phase::LeavingByLoading:
-            // 石版はロード画面の下に隠れてから消す。先に消すと倒れたプレイヤーが一瞬見える
             if (GameCore::Game::Instance().LoadingScreen().IsCoverOpaque())
             {
                 view_->HideImmediately();
@@ -81,7 +75,6 @@ namespace GamePlay::Ui
             break;
 
         case Phase::WaitingSceneChange:
-            // 新しいシーンの入場が済むまでは、前のシーンの倒れたプレイヤーを数えない
             if (GameCore::Game::Instance().Scenes().HasPendingChange())
                 break;
 
@@ -108,40 +101,28 @@ namespace GamePlay::Ui
 
     void GameOverPresenter::UpdateInput()
     {
-        const auto xInput = Gamepad::Get();
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
+        const bool isPrevPressed    = input.IsPressed(UiAction::Left);
+        const bool isNextPressed    = input.IsPressed(UiAction::Right);
+        const bool isConfirmPressed = input.IsPressed(UiAction::Submit);
+        
+        if (!view_->IsInputReady())
+            return;
 
-        const bool isPrevPressed = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
-            || xInput.IsDown(GamepadButton::DPadLeft)
-            || xInput.thumbLX < -GAME_OVER_STICK_DEADZONE;
-        const bool isNextPressed = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
-            || xInput.IsDown(GamepadButton::DPadRight)
-            || xInput.thumbLX > GAME_OVER_STICK_DEADZONE;
-        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space)
-            || xInput.IsDown(GamepadButton::A);
-
-        // 石版が出切るまでは押下の記録だけ取る。倒れる直前から押しっぱなしのキーで決定させない
-        if (view_->IsInputReady())
-        {
-            if (isPrevPressed && !wasPrevPressed_)
-                Select(GameOverScreenUi::RETRY_INDEX);
-            if (isNextPressed && !wasNextPressed_)
-                Select(GameOverScreenUi::TITLE_INDEX);
-            if (isConfirmPressed && !wasConfirmPressed_)
-                Decide(selection_);
-        }
-
-        wasPrevPressed_    = isPrevPressed;
-        wasNextPressed_    = isNextPressed;
-        wasConfirmPressed_ = isConfirmPressed;
+        if (isPrevPressed)
+            Select(GameOverScreenUi::RETRY_INDEX);
+        if (isNextPressed)
+            Select(GameOverScreenUi::TITLE_INDEX);
+        if (isConfirmPressed)
+            Decide(selection_);
     }
 
     void GameOverPresenter::BeginGameOver()
     {
         phase_ = Phase::Presenting;
         selection_ = GameOverScreenUi::RETRY_INDEX;
-        wasPrevPressed_ = true;
-        wasNextPressed_ = true;
-        wasConfirmPressed_ = true;
+        screen_->Open();
 
         Sound::SoundPlayer::StopAllBgm();
         view_->Show();
@@ -202,14 +183,15 @@ namespace GamePlay::Ui
 
     void GameOverPresenter::RequestSceneChange(const GameCore::Scene::Main::SceneType sceneType)
     {
-        // ロード画面を出して覆い切るのを待つところまで GameSceneGroup が受け持つ
         GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
+        screen_->Close();
         phase_ = Phase::LeavingByLoading;
     }
 
     void GameOverPresenter::Abort()
     {
         view_->HideImmediately();
+        screen_->Close();
         fallenSecs_ = 0.0f;
         phase_ = Phase::Watching;
     }

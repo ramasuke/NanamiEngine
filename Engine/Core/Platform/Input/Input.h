@@ -5,8 +5,8 @@
 
 #include "vec2.hpp"
 
-// キーボード / マウス / ゲームパッドの生入力。DxLib の CheckHitKey / GetMouseInput / GetJoypadXInputState の DxLib を出さない入口
-// (docs/HotReload.md §2: ゲームコードは DxLib を直接呼ばない)。列挙の値は DxLib の定数と同じで、.cpp で static_assert している
+// キーボード / マウス / ゲームパッドの生入力の DxLib を出さない入口
+// NOTE: 列挙の値は DxLib の定数と同じ (.cpp で static_assert)
 namespace NanamiEngine::Platform::Input
 {
     /** DirectInput のキーコード (DxLib の KEY_INPUT_*) */

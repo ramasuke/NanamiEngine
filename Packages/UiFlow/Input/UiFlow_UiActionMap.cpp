@@ -18,15 +18,16 @@ namespace NanamiEngine::UiFlow
     UiActionMap UiActionMap::Default()
     {
         UiActionMap map;
-        map.Set(UiAction::Up,      { { Key::Up,    Key::W }, { GamepadButton::DPadUp    }, StickDirection::Up    });
-        map.Set(UiAction::Down,    { { Key::Down,  Key::S }, { GamepadButton::DPadDown  }, StickDirection::Down  });
-        map.Set(UiAction::Left,    { { Key::Left,  Key::A }, { GamepadButton::DPadLeft  }, StickDirection::Left  });
-        map.Set(UiAction::Right,   { { Key::Right, Key::D }, { GamepadButton::DPadRight }, StickDirection::Right });
-        map.Set(UiAction::Submit,  { { Key::Return }, { GamepadButton::A             }, StickDirection::None });
-        map.Set(UiAction::Cancel,  { { Key::Escape }, { GamepadButton::B             }, StickDirection::None });
-        map.Set(UiAction::TabPrev, { { Key::Q      }, { GamepadButton::LeftShoulder  }, StickDirection::None });
-        map.Set(UiAction::TabNext, { { Key::E      }, { GamepadButton::RightShoulder }, StickDirection::None });
-        map.Set(UiAction::Menu,    { { Key::Escape }, { GamepadButton::Start         }, StickDirection::None });
+        map.Set(UiAction::Up,      { { Key::Up,    Key::W }, { GamepadButton::DPadUp    }, { StickDirection::Up    } });
+        map.Set(UiAction::Down,    { { Key::Down,  Key::S }, { GamepadButton::DPadDown  }, { StickDirection::Down  } });
+        map.Set(UiAction::Left,    { { Key::Left,  Key::A }, { GamepadButton::DPadLeft  }, { StickDirection::Left  } });
+        map.Set(UiAction::Right,   { { Key::Right, Key::D }, { GamepadButton::DPadRight }, { StickDirection::Right } });
+        map.Set(UiAction::Submit,  { { Key::Return }, { GamepadButton::A             } });
+        map.Set(UiAction::Cancel,  { { Key::Escape }, { GamepadButton::B             } });
+        map.Set(UiAction::TabPrev, { { Key::Q      }, { GamepadButton::LeftShoulder  } });
+        map.Set(UiAction::TabNext, { { Key::E      }, { GamepadButton::RightShoulder } });
+        map.Set(UiAction::Menu,    { { Key::Escape }, { GamepadButton::Start         } });
+        map.Set(UiAction::Erase,   { { Key::Back   }, { GamepadButton::X             } });
         return map;
     }
 
@@ -45,6 +46,12 @@ namespace NanamiEngine::UiFlow
     UiActionMap& UiActionMap::AddButton(const UiAction action, const Platform::Input::GamepadButton button)
     {
         bindings_[UiActionIndex(action)].buttons.push_back(button);
+        return *this;
+    }
+
+    UiActionMap& UiActionMap::AddStick(const UiAction action, const StickDirection stick)
+    {
+        bindings_[UiActionIndex(action)].sticks.push_back(stick);
         return *this;
     }
 
@@ -69,14 +76,20 @@ namespace NanamiEngine::UiFlow
         if (std::ranges::any_of(binding.buttons, [&pad](const GamepadButton button) { return pad.IsDown(button); }))
             return true;
 
-        switch (binding.stick)
+        return std::ranges::any_of(binding.sticks, [this, &pad](const StickDirection stick)
         {
-        case StickDirection::Up:    return pad.thumbLY >  stickThreshold_;
-        case StickDirection::Down:  return pad.thumbLY < -stickThreshold_;
-        case StickDirection::Left:  return pad.thumbLX < -stickThreshold_;
-        case StickDirection::Right: return pad.thumbLX >  stickThreshold_;
-        case StickDirection::None:  return false;
-        }
-        return false;
+            switch (stick)
+            {
+            case StickDirection::Up:              return pad.thumbLY >  stickThreshold_;
+            case StickDirection::Down:            return pad.thumbLY < -stickThreshold_;
+            case StickDirection::Left:            return pad.thumbLX < -stickThreshold_;
+            case StickDirection::Right:           return pad.thumbLX >  stickThreshold_;
+            case StickDirection::RightStickUp:    return pad.thumbRY >  stickThreshold_;
+            case StickDirection::RightStickDown:  return pad.thumbRY < -stickThreshold_;
+            case StickDirection::RightStickLeft:  return pad.thumbRX < -stickThreshold_;
+            case StickDirection::RightStickRight: return pad.thumbRX >  stickThreshold_;
+            }
+            return false;
+        });
     }
 }

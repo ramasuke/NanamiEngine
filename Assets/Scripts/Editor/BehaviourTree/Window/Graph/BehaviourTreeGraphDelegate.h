@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "Engine/Module/Gui/Graph/Editor/GraphDelegateBase.h"
@@ -17,9 +18,7 @@ namespace Editor::Npc::Behaviour
 {
     /**
      * @brief BehaviourTree（敵 / 友好 NPC 共通）を ImGuizmo GraphEditor に見せるアダプタ。
-     * @note  毎フレーム EntryNode と浮きノード（親から切り離したサブツリー）を辿ってノード列・リンク列を作る。
-     *        リンクは親の出力スロット → 子の入力スロット。ドラッグで繋ぎ替え、切ったサブツリーは浮きノードとして残す。
-     *        子の実行順は Inspector の ↑↓ で並べ替え、グラフには #n バッジで表示する。
+     * @note  切り離したサブツリーは浮きノードとして残す
      */
     class BehaviourTreeGraphDelegate final : public NanamiEngine::Module::Gui::Graph::GraphDelegateBase
     {
@@ -47,6 +46,7 @@ namespace Editor::Npc::Behaviour
         const GraphEditor::Node GetNode(GraphEditor::NodeIndex index) override;
         const size_t GetLinkCount() override;
         const GraphEditor::Link GetLink(GraphEditor::LinkIndex index) override;
+        void NodeDoubleClicked(GraphEditor::NodeIndex nodeIndex) override;
 
     protected:
         // GraphDelegateBase
@@ -56,6 +56,7 @@ namespace Editor::Npc::Behaviour
         void OnRightClickNode(GraphEditor::NodeIndex nodeIndex) override;
         void OnRightClickLink(GraphEditor::LinkIndex linkIndex) override;
         void DrawBackgroundMenu() override;
+        void DrawToolbarItems() override;
         void DrawNodeMenu() override;
         void DrawLinkMenu() override;
         void DeleteSelection() override;
@@ -68,6 +69,9 @@ namespace Editor::Npc::Behaviour
             std::shared_ptr<NodeBase> node;
             std::string               title;
             std::string               detail;
+            ImVec2                    size;
+            /** @brief リスト表示している子（畳まれた葉だけの Sequence） */
+            std::vector<std::shared_ptr<NodeBase>> rows;
             GraphEditor::NodeIndex    parent      = INVALID_INDEX;
             std::size_t               childOrder  = 0;
             std::size_t               siblingCount = 0;
@@ -100,6 +104,23 @@ namespace Editor::Npc::Behaviour
         void AddChildNode(const std::shared_ptr<NodeBase>& parent, const std::shared_ptr<NodeBase>& child);
         void AddDetachedNode(const std::shared_ptr<NodeBase>& node, const glm::vec2& position);
 
+        /** @brief 左→右のツリーに並べ直す（深さ = X、兄弟 = 上から実行順） */
+        void AutoLayout();
+        /** @brief node をサブツリーごと (x, y) から並べ、次の兄弟を置ける y を返す */
+        float LayoutSubtree(const std::shared_ptr<NodeBase>& node, float x, float y, std::unordered_set<const NodeBase*>& visited);
+        [[nodiscard]] ImVec2 NodeSize(const NodeBase* node) const;
+        /** @brief サブツリーの一番下の y（ノードの下端） */
+        [[nodiscard]] float SubtreeBottom(const std::shared_ptr<NodeBase>& root) const;
+
+        /** @brief 子が全部アクションの Sequence（既定で畳んでリスト表示する） */
+        [[nodiscard]] static bool IsListSequence(const NodeBase& node);
+        [[nodiscard]] bool IsFolded(const NodeBase& node) const;
+        void ToggleFold(const NodeBase& node);
+        /** @brief 畳まれたノードの子へは降りずに集める */
+        void CollectVisible(const std::shared_ptr<NodeBase>& root,
+                            std::vector<std::shared_ptr<NodeBase>>& out,
+                            std::unordered_set<const NodeBase*>& visited) const;
+
         [[nodiscard]] GraphEditor::NodeIndex IndexOf(const NodeBase* node) const;
         [[nodiscard]] std::shared_ptr<NodeBase> ParentOf(const NodeBase* node) const;
         [[nodiscard]] bool IsEntry(const NodeBase* node) const { return node == entryNode_.get(); }
@@ -111,10 +132,13 @@ namespace Editor::Npc::Behaviour
         std::unordered_map<const NodeBase*, GraphEditor::NodeIndex>   indexOf_;
         std::vector<LinkEntry>                                        links_;
 
-        // NOTE: GraphEditor はリンクをドラッグしている間ノード index を覚えているので、
-        //       親子関係が変わってもノードの並び順は変えない（初めて見た順に並べる）
+        // NOTE: GraphEditor はドラッグ中ノード index を覚えるので、並び順は初めて見た順で固定する
         std::unordered_map<const NodeBase*, std::uint64_t> firstSeenOrder_;
         std::uint64_t                                      nextSeenOrder_ = 0;
+
+        /** @brief 既定の開閉を反転したノード */
+        std::unordered_set<Guid, GuidHash> toggled_;
+        bool                               pendingLayout_ = false;
 
         LastDetached            lastDetached_;
         std::weak_ptr<NodeBase> menuNode_;

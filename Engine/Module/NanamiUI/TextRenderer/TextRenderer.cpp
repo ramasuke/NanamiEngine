@@ -192,8 +192,7 @@ namespace NanamiEngine::Module::NanamiUi
         const float y = Transform().GetWorldPos().y;
         const auto font = fontFile_.get();
 
-        // 基準サイズのフォントを縮めて描くと最近傍補間で細い線が欠けるので、画面上の大きさのハンドルで描き、
-        // 残りの端数(スケールのアニメ中など)だけを拡大率として渡す
+        // 縮小描画だと細い線が欠けるので、画面上の大きさのハンドルで描き端数だけ拡大率で渡す
         const float fontSize = static_cast<float>(font->Size());
         const float pixelSizeY = fontSize * Transform().GetWorldScale().y;
         if (pixelSizeY <= 0.0f)

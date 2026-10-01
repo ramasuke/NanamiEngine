@@ -78,43 +78,6 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "7A131572-F6B4-4989-95CA-8AAA42C6D741"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Idle",
-                "position_": {
-                    "value0": 276.0,
-                    "value1": 380.0
-                },
-                "guid_": {
-                    "value_": "DF323527-09FF-430F-9A1D-C2BAC20FA507"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 100000000376832.0,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_1": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483655,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483656,
-                            "data": {
-                                "value0": {
                                     "value_": "E2A27C7E-647E-4108-9D84-FEB8048F2D6C"
                                 }
                             }
@@ -136,6 +99,43 @@
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
                 "nameCheck_": true
+            }
+        }
+    },
+    "nodes_1": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483655,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "value0": {
+                                    "value_": "7A131572-F6B4-4989-95CA-8AAA42C6D741"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Idle",
+                "position_": {
+                    "value0": 276.0,
+                    "value1": 380.0
+                },
+                "guid_": {
+                    "value_": "DF323527-09FF-430F-9A1D-C2BAC20FA507"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000000376832.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
             }
         }
     },
@@ -226,43 +226,6 @@
                             "id": 2147483662,
                             "data": {
                                 "value0": {
-                                    "value_": "D7E8B955-CCBA-4201-BF5C-34EF34120BAB"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Bump",
-                "position_": {
-                    "value0": 820.0,
-                    "value1": 40.0
-                },
-                "guid_": {
-                    "value_": "3235152A-333C-4CF2-84F0-41807F5A6500"
-                },
-                "speed_": 40.0,
-                "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": false,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_5": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483663,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483664,
-                            "data": {
-                                "value0": {
                                     "value_": "829CEE01-6918-443E-B7E5-AB15FBB7D25F"
                                 }
                             }
@@ -284,6 +247,43 @@
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
                 "nameCheck_": true
+            }
+        }
+    },
+    "nodes_5": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483663,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483664,
+                            "data": {
+                                "value0": {
+                                    "value_": "D7E8B955-CCBA-4201-BF5C-34EF34120BAB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Bump",
+                "position_": {
+                    "value0": 820.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "value_": "3235152A-333C-4CF2-84F0-41807F5A6500"
+                },
+                "speed_": 40.0,
+                "blendAnimationOffset_secs_": 0.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
             }
         }
     },

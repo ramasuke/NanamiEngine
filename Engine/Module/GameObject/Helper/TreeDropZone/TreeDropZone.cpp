@@ -58,11 +58,8 @@ namespace NanamiEngine::Module::GameObject
         ImGui::PopID();
         ImGui::PopID();
 
-        // 上でずらして描画した Dummy と、その前後の自動 ItemSpacing による縦方向のレイアウト
-        // 移動を打ち消し、兄弟行の間隔を機能追加前と同じに保つ（このドロップゾーンをレイアウト上
-        // 完全にゼロコストなオーバーレイにする）。
-        // 注意: SetCursorPos/SetCursorScreenPos が CursorMaxPos を更新しない現行 ImGui(1.89.8) の
-        // 実装に依存している。ImGui をアップグレードした際はこの前提を再確認すること。
+        // ItemSpacing によるレイアウトのずれを打ち消し、ドロップゾーンをゼロコストのオーバーレイにする
+        // WARNING: SetCursorPos が CursorMaxPos を更新しない ImGui 1.89.8 の実装に依存している
         ImGui::SetCursorPos(originalCursorPos);
     }
 }

@@ -27,14 +27,9 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief シーン遷移中に出す全画面ロード画面(紙の航路図)。
-     *
-     * StageLoadingScene に常駐させる。ロード中は新規オブジェクトの暖機が止まりうるため、
-     * ロード開始より前から登録済みでないと動かない。
-     * 出し入れは黒を挟む: 黒い幕(cover_)で画面を覆い切ってから地図(visualRoot_)を出し、幕を明けて地図を見せる。
-     * 片付けるときも幕で地図を覆ってから地図を消し、幕を明けてゲーム画面へ戻す。
-     * アニメーションは Time::DeltaTime() を使わない。ChangeMainScene が SkipNextFrame を
-     * 60 回積むので、その間 DeltaTime() は 0 を返し続ける
+     * @brief シーン遷移中に出す全画面ロード画面
+     * NOTE: ロード開始より前から常駐していないと動かない
+     * NOTE: ChangeMainScene の間は Time::DeltaTime() が 0 なので、時間は壁時計で進める
      */
     class LoadingScreenUi final : public Component::ComponentBase,
                                   public LifeCycleCallback::IStartable,

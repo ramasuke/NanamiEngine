@@ -1216,6 +1216,39 @@
     <ClCompile Include="Packages\AssetUpdater\Text\Utf8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Text\VersionString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistExclusion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistHashCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistScan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistReferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistManifestBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistUpload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\Rclone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistJob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Dist\DistSelfTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Packages\DebugSheet\Core\DebugSheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5100,6 +5133,39 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\AssetUpdater\Text\Utf8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Text\VersionString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistExclusion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistHashCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistScan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistReferences.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistManifestBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistUpload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\Rclone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistJob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Dist\DistSelfTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Object\Field\CreateField.h">

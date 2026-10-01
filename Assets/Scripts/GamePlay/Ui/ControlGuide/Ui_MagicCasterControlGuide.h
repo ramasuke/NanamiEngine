@@ -16,8 +16,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
 
 namespace GamePlay::Ui
 {
-    // State が宣言する遷移と操作から、どの行に何を出すかを決める。見せ方は controlGuide_ が行う。
-    // 魔法の枠（LT+ABXY / 1〜4）はスペルパレットが出すので、ここでは基本魔法だけを扱う
+    // State が宣言する遷移と操作から、どの行に何を出すかを決める (魔法の枠はスペルパレットが出す)
     class MagicCasterControlGuide final : public Component::ComponentBase,
                                           public LifeCycleCallback::IUpdatable
     {

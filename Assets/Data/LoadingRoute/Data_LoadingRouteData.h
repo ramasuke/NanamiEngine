@@ -12,11 +12,8 @@ namespace NanamiEngine::Module::Asset
     constexpr auto LOADING_ROUTE_DATA_EXTENSION_LABEL = ".loadingRoute";
 
     /**
-     * @brief ロード画面の航路図で、飛行船がどこからどこへ飛ぶか。
-     *
-     * 座標はロード画面の 1920x1080 の画面座標(カメラを動かす前)。
-     * 航路は 3 次ベジェで、飛行船は弧長で進捗ぶん進む。
-     * isHover_ のときは航路を引かず、hoverCenter_ の上空を楕円で回り続ける(行き先の島が地図に無い遷移用)
+     * @brief ロード画面の航路図で飛行船が飛ぶ 3 次ベジェ航路。座標は 1920x1080 の画面座標
+     * isHover_ なら航路を引かず hoverCenter_ の上空を楕円で回る
      */
     class LoadingRouteData final : public ScriptableObject
     {

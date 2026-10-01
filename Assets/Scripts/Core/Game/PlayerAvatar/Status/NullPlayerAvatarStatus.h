@@ -50,8 +50,7 @@ namespace GameCore::PlayerAvatar
         void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;
 
     private:
-        // Event()/Quest()/CompletedQuest()が返す参照を満たすためだけのダミー実装。
-        // NullPlayerAvatarStatusは実際のAvatarには使われないため、これらが実際に呼ばれることは想定していない。
+        // Event()/Quest()/CompletedQuest() の参照を返すためだけのダミー
         class NullQuestGroup final : public IQuestGroup
         {
         public:

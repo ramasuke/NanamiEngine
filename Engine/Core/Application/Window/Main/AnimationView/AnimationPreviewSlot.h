@@ -15,10 +15,7 @@ namespace NanamiEngine::Core::MainWindow
 {
     /**
      * @brief AnimationViewWindow で再生する 1 クリップ分の再生状態と DxLib のアタッチ管理
-     *
-     * @details
-     *  再生仕様(時間の進め方・区間・ループ/非ループ停止・NameCheck)は AnimationClipNode に合わせ、ゲーム中と同じ見た目になるようにする。
-     *  animationFile_ が空のときはモデル自身が持つアニメーションを使う(MV1AttachAnim の AnimSrcMHandle = -1)。
+     * @note  再生仕様は AnimationClipNode に合わせる。animationFile_ が空ならモデル自身のアニメーションを使う
      */
     class NANAMI_API AnimationPreviewSlot final
     {

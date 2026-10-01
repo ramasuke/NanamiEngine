@@ -125,7 +125,6 @@ namespace GamePlay::Ui
         noticeModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
         restorationModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
 
-        // Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
         view_->ShowTab(currentTab_);
         Refresh();
     }
@@ -278,7 +277,6 @@ namespace GamePlay::Ui
         switch (currentTab_)
         {
         case EventBoardTabType::Quest:
-            // 依頼の頁が出た時点で、並んでいるメインストーリーの依頼は見たとみなす
             questModel_->MarkMainStoryRead(questReadLog_);
             if (const auto page = view_->QuestPage())
                 page->Bind(*questModel_);
@@ -288,7 +286,6 @@ namespace GamePlay::Ui
                 page->Bind(*eventModel_);
             break;
         case EventBoardTabType::Notice:
-            // 右に本文が出た時点で読んだとみなす
             noticeModel_->MarkSelectedRead();
             if (const auto page = view_->NoticePage())
                 page->Bind(*noticeModel_);
@@ -310,7 +307,6 @@ namespace GamePlay::Ui
         std::optional<GameCore::Story::Facility> wanted;
         if (!isClosed_ && currentTab_ == EventBoardTabType::Restoration)
         {
-            // NOTE: 前提がまだの施設は建つ場所が無いことがある(噴水の島が戻る前など)ので下見しない
             const auto entry = restorationModel_->Selected();
             if (entry && entry->state != RestorationBoardState::Locked)
                 wanted = entry->facility->Facility();

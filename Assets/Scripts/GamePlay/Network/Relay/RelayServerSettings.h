@@ -7,10 +7,7 @@
 
 namespace GamePlay::Network
 {
-    /**
-     * 中継サーバー(EnviroHunter-Server)の接続情報。LocalPrefs/Network/RelayServer.json に保存し、
-     * エディタでは LocalPrefs ウィンドウから編集できる。ファイルが無ければ既定値(本番サーバー)を使う
-     */
+    /** 中継サーバーの接続情報 (LocalPrefs/Network/RelayServer.json、無ければ既定値) */
     struct RelayServerSettings final
     {
         bool          useRelayServer = true;

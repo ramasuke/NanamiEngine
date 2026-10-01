@@ -12,8 +12,8 @@
 
 namespace GamePlay::Prop
 {
-    // 同じ GameObject の ModelRenderer に対して、葉のマテリアルだけ風で揺れるシェーダーを供給する。
-    // 揺れの重みと葉カードごとの位相は .mv1 の第2UV(TEXCOORD1)にベイク済み。
+    // ModelRenderer の葉のマテリアルだけに風揺れシェーダーを供給する
+    // NOTE: 揺れの重みと位相は .mv1 の TEXCOORD1 にベイク済み
     class TreeLeafSway final : public Component::ComponentBase,
                                public Component::IShaderConstantBufferHost,
                                public Component::IModelMaterialShaderPolicy

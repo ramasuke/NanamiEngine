@@ -82,8 +82,7 @@ namespace GameCore::Scene::Main
             // NOTE: 着いたら野営地への道しるべが正面に見えるよう、マーカーの向きで出す
             Context()->PlayerSpawnRotation());
 
-        // 敵はホスト側だけがスポーンする。クライアント側は
-        // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
+        // NOTE: 敵はホストだけがスポーンする
         if (networkRunner.IsServer())
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())

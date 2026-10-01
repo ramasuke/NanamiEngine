@@ -11,11 +11,7 @@
 
 namespace GamePlay::Pickup
 {
-    /**
-     * @brief 地面に落ちている拾い物の共通部分。跳ね上げて出し、少し待ってから拾えるようにし、
-     *        拾えるようになったらこの PC のプレイヤーへ飛んでいって渡し、SE とパーティクルを出して消える。
-     *        持ち物に入りきらない間は地面に残り、島の外へ落ちたら消える
-     */
+    /** @brief 地面に落ちている拾い物の共通部分。少し待ってからこの PC のプレイヤーへ飛んでいき渡す */
     class PickupItemBase : public Component::ComponentBase,
                            public LifeCycleCallback::IUpdatable,
                            public GameCore::PlayerAvatar::IPlayerPickable

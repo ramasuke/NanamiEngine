@@ -12,9 +12,8 @@
 namespace GameCore::PlayerAvatar::Quest
 {
     /**
-     * @brief 受注中の職業を問わないクエスト(メインストーリー・依頼)と達成済みの記録。職業をまたいで1冊。
-     * ステータスの一部として扱い、読み込むのは手元のアバターを作ったとき、書き出すのはそのステータスを保存したときだけ。
-     * 所持金(Wallet)と同じ時点で保存されるので、保存の前に落ちても「報酬だけ」「受注の消滅だけ」が残ることはない
+     * @brief 職業を問わないクエスト(メインストーリー・依頼)の受注と達成の記録。職業をまたいで1冊
+     * NOTE: Wallet と同時に保存するので、報酬と受注の消滅がずれて残ることはない
      */
     class QuestJournal final : public SingletonBase<QuestJournal>,
                                public ICompleteQuestGroup

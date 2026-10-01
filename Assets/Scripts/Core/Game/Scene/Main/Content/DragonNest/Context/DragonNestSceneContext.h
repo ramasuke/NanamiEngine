@@ -18,10 +18,7 @@
 
 namespace GameCore::Scene
 {
-    /**
-     * 古竜の巣 (DragonNestScene) のコンテキスト。持つものは砂漠 (DrySandSceneContext) から浮遊石を除いたもので、
-     * 到着演出も同じ StageArrivalMovie を使う。嵐はシーンに置いた WeatherService が入場時から始める
-     */
+    /** 古竜の巣 (DragonNestScene) のコンテキスト */
     class DragonNestSceneContext final : public SceneContextBase
     {
     public:
@@ -53,11 +50,11 @@ namespace GameCore::Scene
         [[nodiscard]] int ArrivalOverview_msecs       () const { return arrivalOverview_msecs_;        }
         /** 空撮の終点からポータルのショットの始点まで降りてくる尺 */
         [[nodiscard]] int ArrivalOverviewDescend_msecs() const { return arrivalOverviewDescend_msecs_; }
-        /** 空撮のカメラの始点と終点 (ワールド座標) */
-        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraStart() const { return arrivalOverviewCameraStart_; }
-        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraEnd  () const { return arrivalOverviewCameraEnd_;   }
-        /** 空撮で注視する島の中心 (ワールド座標) */
-        [[nodiscard]] const glm::vec3& ArrivalOverviewLookAt     () const { return arrivalOverviewLookAt_;      }
+        /** 空撮のカメラが2台とも置かれているか */
+        [[nodiscard]] bool HasArrivalOverviewCamera() const { return arrivalOverviewStartCamera_ && arrivalOverviewEndCamera_; }
+        /** 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く */
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewStartCamera() const { return arrivalOverviewStartCamera_.get(); }
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewEndCamera  () const { return arrivalOverviewEndCamera_  .get(); }
         /** 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない */
         [[nodiscard]] const std::string& ArrivalIslandTitle   () const { return arrivalIslandTitle_;    }
         [[nodiscard]] const std::string& ArrivalIslandSubtitle() const { return arrivalIslandSubtitle_; }
@@ -76,7 +73,7 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> HeartTrail(const std::string& heartName) const;
         /** 心臓が抜け出す瞬間に山の上で出す閃光 */
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> HeartBurst() const { return heartBurst_.get(); }
-        [[nodiscard]] const glm::vec3& HeartMoundCenter() const { return heartMoundCenter_; }
+        [[nodiscard]] glm::vec3 HeartMoundCenter() const;
         [[nodiscard]] float EndingDelay_secs  () const { return endingDelay_secs_;   }
         [[nodiscard]] float HeartRise_secs    () const { return heartRise_secs_;     }
         [[nodiscard]] float HeartFly_secs     () const { return heartFly_secs_;      }
@@ -109,9 +106,6 @@ namespace GameCore::Scene
         [[serialize(0)]] int       clearStoryFlag_                = -1;
         [[serialize(0)]] int       arrivalOverview_msecs_        = 0;
         [[serialize(0)]] int       arrivalOverviewDescend_msecs_ = 3500;
-        [[serialize(0)]] glm::vec3 arrivalOverviewCameraStart_   = glm::vec3(0.0f);
-        [[serialize(0)]] glm::vec3 arrivalOverviewCameraEnd_     = glm::vec3(0.0f);
-        [[serialize(0)]] glm::vec3 arrivalOverviewLookAt_        = glm::vec3(0.0f);
         [[serialize(2)]] std::string arrivalIslandTitle_;
         [[serialize(2)]] std::string arrivalIslandSubtitle_;
         [[serialize(2)]] std::vector<GrassLand::StageArrivalTourShot> arrivalTourShots_;
@@ -123,7 +117,6 @@ namespace GameCore::Scene
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) lightHeartTrail_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) fireHeartTrail_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) heartBurst_;
-        [[serialize(1)]] glm::vec3 heartMoundCenter_  = glm::vec3(750.0f, 124.0f, 720.0f);
         [[serialize(1)]] float     endingDelay_secs_  = 1.0f;
         [[serialize(1)]] float     heartRise_secs_    = 1.8f;
         [[serialize(1)]] float     heartFly_secs_     = 3.2f;
@@ -131,6 +124,9 @@ namespace GameCore::Scene
         [[serialize(1)]] float     endingHold_secs_   = 3.0f;
         [[serialize(1)]] float     heartRiseHeight_   = 60.0f;
         [[serialize(1)]] float     heartFlyDistance_  = 3000.0f;
+        [[serialize(3)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewStartCamera_;
+        [[serialize(3)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewEndCamera_;
+        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) heartMoundCenterPos_;
 
 #pragma region Serialization Function
     public:
@@ -161,9 +157,6 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(clearStoryFlag_));
             archive(CEREAL_NVP(arrivalOverview_msecs_));
             archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
-            archive(CEREAL_NVP(arrivalOverviewCameraStart_));
-            archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
-            archive(CEREAL_NVP(arrivalOverviewLookAt_));
             archive(CEREAL_NVP(heartsRoot_));
             archive(CEREAL_NVP(floatingRoot_));
             archive(CEREAL_NVP(endingCamera_));
@@ -171,7 +164,6 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(lightHeartTrail_));
             archive(CEREAL_NVP(fireHeartTrail_));
             archive(CEREAL_NVP(heartBurst_));
-            archive(CEREAL_NVP(heartMoundCenter_));
             archive(CEREAL_NVP(endingDelay_secs_));
             archive(CEREAL_NVP(heartRise_secs_));
             archive(CEREAL_NVP(heartFly_secs_));
@@ -183,6 +175,9 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(arrivalIslandSubtitle_));
             archive(CEREAL_NVP(arrivalTourShots_));
             archive(CEREAL_NVP(arrivalCaptionPrefab_));
+            archive(CEREAL_NVP(arrivalOverviewStartCamera_));
+            archive(CEREAL_NVP(arrivalOverviewEndCamera_));
+            archive(CEREAL_NVP(heartMoundCenterPos_));
         }
 
         template<class Archive>
@@ -210,9 +205,16 @@ namespace GameCore::Scene
             if (version >= 0) archive(CEREAL_NVP(clearStoryFlag_));
             if (version >= 0) archive(CEREAL_NVP(arrivalOverview_msecs_));
             if (version >= 0) archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
-            if (version >= 0) archive(CEREAL_NVP(arrivalOverviewCameraStart_));
-            if (version >= 0) archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
-            if (version >= 0) archive(CEREAL_NVP(arrivalOverviewLookAt_));
+            if (version <= 2)
+            {
+                // v2 までは空撮の位置をワールド座標で持っていた。今はマーカーを置くので読み捨てる
+                [[serialize(0)]] glm::vec3 arrivalOverviewCameraStart_ = glm::vec3(0.0f);
+                [[serialize(0)]] glm::vec3 arrivalOverviewCameraEnd_   = glm::vec3(0.0f);
+                [[serialize(0)]] glm::vec3 arrivalOverviewLookAt_      = glm::vec3(0.0f);
+                archive(CEREAL_NVP(arrivalOverviewCameraStart_));
+                archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
+                archive(CEREAL_NVP(arrivalOverviewLookAt_));
+            }
             if (version >= 1)
             {
                 archive(CEREAL_NVP(heartsRoot_));
@@ -222,7 +224,12 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(lightHeartTrail_));
                 archive(CEREAL_NVP(fireHeartTrail_));
                 archive(CEREAL_NVP(heartBurst_));
-                archive(CEREAL_NVP(heartMoundCenter_));
+                if (version <= 2)
+                {
+                    // v2 までは心臓の山の中心をワールド座標で持っていた。今はマーカーを置くので読み捨てる
+                    [[serialize(1)]] glm::vec3 heartMoundCenter_ = glm::vec3(0.0f);
+                    archive(CEREAL_NVP(heartMoundCenter_));
+                }
                 archive(CEREAL_NVP(endingDelay_secs_));
                 archive(CEREAL_NVP(heartRise_secs_));
                 archive(CEREAL_NVP(heartFly_secs_));
@@ -238,11 +245,17 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(arrivalTourShots_));
                 archive(CEREAL_NVP(arrivalCaptionPrefab_));
             }
+            if (version >= 3)
+            {
+                archive(CEREAL_NVP(arrivalOverviewStartCamera_));
+                archive(CEREAL_NVP(arrivalOverviewEndCamera_));
+                archive(CEREAL_NVP(heartMoundCenterPos_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::DragonNestSceneContext, 2);
+CEREAL_CLASS_VERSION(GameCore::Scene::DragonNestSceneContext, 3);
 #pragma endregion

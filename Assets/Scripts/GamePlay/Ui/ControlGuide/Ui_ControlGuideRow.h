@@ -11,8 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // 操作ガイドの1行。行の並びは親の VerticalLayoutGroup(行の占める割合は自身の LayoutElement)、行内の配置は子オブジェクトの Transform が決める。
-    // 表示内容と透明度は ControlGuide が毎フレーム渡す
+    // 操作ガイドの1行
     class ControlGuideRow final : public Component::ComponentBase
     {
     public:

@@ -1,6 +1,5 @@
 // Grass 用 ピクセルシェーダー
-// DxLib(Direct3D 11) は b0～b3 を内部で使用するため、ユーザー定数バッファは b4 に置く
-// (GrassRenderer::CUSTOM_SHADER_CB_SLOT / Grass_VS.hlsl と一致させること)
+// NOTE: ユーザー定数バッファは b4 (b0～b3 は DxLib が使う)。Grass_VS.hlsl と一致させる
 cbuffer GrassBuffer : register(b4)
 {
     float4 wind;

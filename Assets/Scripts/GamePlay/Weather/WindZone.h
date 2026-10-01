@@ -5,8 +5,7 @@
 
 namespace GamePlay::Weather
 {
-    // 草と木が同じ風を見るための供給元。シーンに1つ置く。
-    // 振幅は消費側(草は cm 相当の値、葉は別スケール)が持ち、ここが配るのは向き・速さ・空間周波数・0..1の強度だけ。
+    // 草と木が共有する風の供給元。シーンに1つ置く。NOTE: 振幅は消費側が持つ
     class WindZone final : public Component::ComponentBase,
                            public LifeCycleCallback::IInitRenderable
     {

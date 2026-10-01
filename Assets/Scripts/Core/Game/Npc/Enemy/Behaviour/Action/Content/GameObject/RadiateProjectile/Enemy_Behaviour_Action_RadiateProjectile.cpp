@@ -23,8 +23,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         GamePlay::Npc::Enemy::IAttackProjectile::TrySetDamage(projectile, physicsDamage_);
 
-        // 権威側限定Tickなら、他ピアにも同じ軌道・ダメージで投射物を出させる(被弾判定は各ピアが自分の所有アバターに対して行う)。
-        // targetPos は権威側の値で固定する(Position::TargetObject が各ピアのローカルプレイヤーを指すのを避ける)
+        // NOTE: targetPos は権威側の値で送る (TargetObject は各ピアのローカルプレイヤーを指すため)
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::SpawnMovingPrefabRpc::Send(

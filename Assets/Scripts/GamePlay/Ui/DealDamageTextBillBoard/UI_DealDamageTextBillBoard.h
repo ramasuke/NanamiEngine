@@ -37,8 +37,7 @@ namespace GamePlay::Ui
         float minScale_       = 0.8f;
         float maxScale_       = 2.0f;
 
-        // 色は minScaleDamage_ -> heavyDamage_ -> maxScaleDamage_ で lowColor_ -> heavyColor_ -> maxColor_ へ log で補間する
-        // heavyDamage_ 以上は一瞬大きく出してから縮める
+        // 色はダメージで lowColor_ -> heavyColor_ -> maxColor_ へ log 補間。heavyDamage_ 以上はポップさせる
         int     heavyDamage_   = 150;
         Color32 lowColor_      = Color32(255, 255, 255);
         Color32 heavyColor_    = Color32(255, 140, 0);

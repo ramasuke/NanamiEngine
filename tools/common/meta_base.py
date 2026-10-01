@@ -97,3 +97,50 @@ def read_meta(spec: MetaSpec, path: Path) -> dict:
     fname = Path(path).name
     name = fname[: -len(spec.meta_ext)] if fname.endswith(spec.meta_ext) else Path(cp).name.split(".")[0]
     return {"name": name, "guid": guid, "content_path": cp}
+
+
+def _find_guid(node) -> str | None:
+    if isinstance(node, OrderedObj):
+        for key, value in node.items():
+            if key == "guid_" and isinstance(value, OrderedObj) and "value_" in value:
+                raw = value["value_"]
+                if isinstance(raw, str):
+                    return raw
+            found = _find_guid(value)
+            if found:
+                return found
+    elif isinstance(node, list):
+        for item in node:
+            found = _find_guid(item)
+            if found:
+                return found
+    return None
+
+
+def decode_meta(raw: bytes) -> tuple[str, str]:
+    """``.meta`` のバイト列を (テキスト, 使った encoding) にする。
+
+    大半は UTF-8 だが、``/execution-charset:utf-8`` を入れる前のエンジンが書いた
+    ``.meta`` が CP932 のまま残っている (``contentPath_`` に日本語を含むもの)。
+    guid 自体は ASCII なのでどちらで読んでも取れる。
+    """
+    if raw.startswith(b"\xef\xbb\xbf"):
+        raw = raw[3:]
+    try:
+        return raw.decode("utf-8"), "utf-8"
+    except UnicodeDecodeError:
+        return raw.decode("cp932", errors="replace"), "cp932"
+
+
+def read_guid(meta_path: Path) -> tuple[str, str]:
+    """``.meta`` から ``(guid_.value_, encoding)`` を取り出す。読めなければ guid は空文字。
+
+    thin proxy と fat ScriptableObject でペイロードの形は違うが、guid_ はどちらも 1 個だけなので
+    再帰探索で一意に決まる (エンジン側は ``Packages/AssetUpdater/Dist/DistScan.cpp`` の ``ReadMetaGuid``)。
+    """
+    try:
+        text, encoding = decode_meta(Path(meta_path).read_bytes())
+        root = loads(text)
+    except Exception:  # noqa: BLE001 - 壊れた .meta 1 個で呼び出し側を止めない
+        return "", ""
+    return _find_guid(root) or "", encoding

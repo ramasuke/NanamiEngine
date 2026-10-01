@@ -12,7 +12,6 @@ namespace GameCore::PathFinding
     constexpr float PI    = 3.14159265358979323846f;
     constexpr float SQRT2 = 1.41421356237309504880f;
 
-    // open リストの最初の容量。足りなくなったら FindPath が倍々で広げる
     constexpr std::size_t HEIGHT_GRID_ASTAR_INITIAL_HEAP_CAPACITY = 4096;
 
     HeightGridAstar::~HeightGridAstar()
@@ -46,8 +45,7 @@ namespace GameCore::PathFinding
             {
                 searchTimer_ = (std::max)(0.0f, searchIntervalSec);
                 isSearching_ = true;
-                // 前回の探索スレッドは結果を書き終えている(isReady_ を見てから来る)ので、ここの join は待たない。
-                // scratch_ は探索スレッドだけが触るため、join してから次のスレッドを起動すれば共有にならない
+                // NOTE: 前回のスレッドは結果を書き終えているので join は待たない。scratch_ は探索スレッド専用
                 if (pathThread_.joinable())
                     pathThread_.join();
 
@@ -103,10 +101,13 @@ namespace GameCore::PathFinding
             std::size_t       smallest = i;
             if (left < size && heap[left].f < heap[smallest].f)
                 smallest = left;
+            
             if (right < size && heap[right].f < heap[smallest].f)
                 smallest = right;
+            
             if (smallest == i)
                 break;
+            
             std::swap(heap[i], heap[smallest]);
             i = smallest;
         }
@@ -263,7 +264,7 @@ namespace GameCore::PathFinding
             const int cz = cur / W;
             path.push_back(grid.CellToWorld(cx, cz));
         }
-        std::reverse(path.begin(), path.end());
+        std::ranges::reverse(path);
         return path;
     }
 }

@@ -12,10 +12,7 @@ namespace GameCore::PlayerAvatar::Record
         int  count = 0;
     };
 
-    /**
-     * @brief 記録帳の読み取り口。倒した敵の数(種別ごと)と手に入れたアイテムの数(アイテムごと)を持つ。
-     * 職業をまたいで1冊なので、剣士で倒した数も魔術師で拾った数も同じところに積もる
-     */
+    /** @brief 記録帳 (敵の撃破数・アイテムの取得数) の読み取り口。職業をまたいで1冊 */
     class IRecordBook
     {
     public:

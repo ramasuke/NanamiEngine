@@ -11,11 +11,8 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 力尽きたプレイヤーを見下ろすカメラ。GameOverDeathCamera.prefab の根に付ける。
-     *
-     * 仮想カメラは Brain があるシーンにしか登録できないので、常駐の GameOverScene には置かず、
-     * ゲームオーバーのたびにメインシーンへ生成する（メインシーンと一緒に消える）。
-     * 今映っている位置から始めて、背中側へ回り込みながら上へ引いていく
+     * @brief 力尽きたプレイヤーを、背中側へ回り込みながら上へ引いて見下ろすカメラ
+     * NOTE: 仮想カメラは Brain のあるシーンにしか登録できないので、メインシーンへ生成する
      */
     class GameOverDeathCamera final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable

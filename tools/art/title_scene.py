@@ -9,7 +9,7 @@
   船は乗り降りの当たり判定・NPC・プレイヤーの出現位置を外し、翼帆の羽ばたき (AirShipWingFlap) だけ残す。
 - 序章の浮島は遠いので、ショットの奥に中くらいの距離の島 (TitleSkyIslands, sky_islands.add_islands) を足す。
 - カメラは TitleShots の子を上から順に映してループする (GamePlay::Title::TitleCameraDirector)。
-  各ショットは子の End へゆっくり動き、NoiseCameraBehaviour で手持ちのように少し揺らす。
+  各ショットは子の End のカメラへ Brain の補間でゆっくり動き、NoiseCameraBehaviour で手持ちのように少し揺らす。
 - 空のドームに SceneFog を付け、遠景の浮島を空の色に霞ませる (ドーム自体はフォグを切って描かれる)。
 - 花びらと光の粒 (tools/art/title_effects.py) を船尾楼のまわりに流す。
 - UI は TitleScreenUi / TitleScreenPresenter (右寄せの題字、「ボタンを押してください」、右寄せのメニュー)。
@@ -237,15 +237,17 @@ def build_shots(b, dip_mask):
         end_rot = framed_rotation(end_pos, subject, sx, sy, fov)
         shot = edits.add_gameobject(b.target, parent=root.guid, name=name, pos=pos)
         shot.transform.local_rot = edits._quat_from_floats(rot)
-        camera = b.component(shot, 'CineMachineVirtualCamera', overrideFov_='true', fov_=f'{fov}')
-        camera.data['priority_'] = OrderedObj([('value', Num.of_int(SHOT_DISABLED_PRIORITY))])
-        b.component(shot, 'NoiseCameraBehaviour', rotationAmplitude_deg_='0.35,0.5,0.12',
-                    positionAmplitude_='0.04,0.05,0.04', frequency_='0.22', octaves_='2', amplitudeGain_='1',
-                    frequencyGain_='1', blendIn_secs_='0.1', seed_=f'{11.3 + i * 7.1},{47.9 + i * 3.3},{83.1 - i * 5.7}')
         # NOTE: End はショットの子なので、ワールドの終わりの姿勢をショットのローカルへ直して置く
         end = edits.add_gameobject(b.target, parent=shot.guid, name='End')
         end.transform.local_pos = edits._vec3_from_floats(to_local(pos, rot, end_pos))
         end.transform.local_rot = edits._quat_from_floats(quat_mul(quat_conj(rot), end_rot))
+        # 始めのカメラから End のカメラへ、Brain の補間で動かす (TitleCameraDirector)。揺れは同じにして継ぎ目を消す
+        for node in (shot, end):
+            camera = b.component(node, 'CineMachineVirtualCamera', overrideFov_='true', fov_=f'{fov}')
+            camera.data['priority_'] = OrderedObj([('value', Num.of_int(SHOT_DISABLED_PRIORITY))])
+            b.component(node, 'NoiseCameraBehaviour', rotationAmplitude_deg_='0.35,0.5,0.12',
+                        positionAmplitude_='0.04,0.05,0.04', frequency_='0.22', octaves_='2', amplitudeGain_='1',
+                        frequencyGain_='1', blendIn_secs_='0.1', seed_=f'{11.3 + i * 7.1},{47.9 + i * 3.3},{83.1 - i * 5.7}')
 
     director = b.component(root, 'TitleCameraDirector', defaultShotDuration_secs_='9', dipDuration_secs_='0.9',
                            shotPriority_='100')
@@ -340,6 +342,9 @@ def build_ui(b, old_canvas):
     presenter.data['assetUpdatePrefab_'] = copy.deepcopy(old_title.data['assetUpdatePrefab_'])
     presenter.data['uiSounds_'] = copy.deepcopy(old_title.data['uiSounds_'])
     b.field(presenter, 'settingsPrefab_', SETTINGS_PREFAB)
+    # 常駐する一番下の画面。操作するプレイヤーはいない
+    b.component(root, 'UiScreen', screenId_='Title', locksPlayerControl_='false', destroysOnClose_='false',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
 
     # BGM は前のタイトルの Canvas から引き継ぐ
     for comp in old_canvas.components:

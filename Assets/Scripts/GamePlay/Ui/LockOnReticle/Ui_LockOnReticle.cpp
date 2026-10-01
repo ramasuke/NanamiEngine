@@ -24,7 +24,6 @@ namespace GamePlay::Ui
     void LockOnReticle::InitRenderer()
     {
         // NOTE: candidateFade_secs_ をロード後の値で使うため、コンストラクタではなくここで組む
-        // 候補マーカーは一定速度で 0<->1 を往復する
         candidateFade_.Set(tweeny::from(0.0f).to(1.0f)
             .during(LibCore::Tween::Ms(candidateFade_secs_))
             .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
@@ -168,8 +167,7 @@ namespace GamePlay::Ui
 
     float LockOnReticle::DistanceScaleRate(const glm::vec3& worldPos) const
     {
-        // NOTE: GetCameraPosition との距離ではなく、画面位置と同じ ConvWorldPosToScreenPos で
-        //       「1ユニットが何ピクセルに映るか」を測り、referenceDistance_ 先でのそれとの比にする
+        // 1ユニットが何ピクセルに映るかを、referenceDistance_ 先での値との比にする
         const float maxRate = std::max(minDistanceScale_, maxDistanceScale_);
         const float tanHalfFov = std::tan(Platform::Render::Camera::Fov() * 0.5f);
         const int screenHeight = Platform::Draw2D::ScreenSize().y;

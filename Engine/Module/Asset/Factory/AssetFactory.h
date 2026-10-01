@@ -118,8 +118,7 @@ namespace NanamiEngine::Module::Asset
                 }
                 catch (const Exception::SerializationException& exception)
                 {
-                    // 壊れた .meta が 1 つあっても起動時のスキャンや Reload Assets 全体を止めない。
-                    // このファイルは「中身の無い File」（content_ == nullptr）として扱われ、Save でも上書きされない
+                    // NOTE: 壊れた .meta でスキャン全体を止めない。中身の無い File として扱い、Save でも上書きしない
                     LogError("AssetFactory: .meta の読み込みに失敗しました: " + std::string(exception.what()));
                     return nullptr;
                 }

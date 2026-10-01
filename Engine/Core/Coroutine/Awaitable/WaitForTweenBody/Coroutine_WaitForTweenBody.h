@@ -36,10 +36,8 @@ namespace Coroutine
     };
 
     /**
-     * @brief tween の位置を RigidBody の速度に変換して動かす。Jolt の衝突で押し戻されながら動く
-     * @note 物理と同じ固定ステップ(OnBeginPhysics の前)で Tick され、そのステップの速度を SetLinearVelocity する
-     *       Dynamic 前提。Kinematic は Transform に書き、そのステップの MoveKinematic で動く(衝突で止まらず、他を押す)
-     *       回転は WaitForTween と同じく Transform に直接書く
+     * @brief tween の位置を RigidBody の速度に変換して物理の固定ステップで動かす (衝突で押し戻される)
+     * NOTE: Kinematic は Transform に書くので衝突で止まらない。回転は常に Transform に直接書く
      */
     template<typename... Types>
     class WaitForTweenBody final : public ITickableWaitable

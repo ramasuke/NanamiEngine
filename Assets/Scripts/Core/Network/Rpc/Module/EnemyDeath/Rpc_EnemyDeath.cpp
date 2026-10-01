@@ -4,8 +4,7 @@
 
 namespace
 {
-    // 権威側で死亡確定した敵を、他ピアでも同じ NetworkObjectId の個体でローカル破棄する。
-    // OnDeath(BTリーフ)は権威側限定Tickにより非権威側では呼ばれないため、RPCで明示的に揃える。
+    // 権威側で死亡確定した敵を他ピアでもローカル破棄する (OnDeath は非権威側で呼ばれないため)
     struct EnemyDeathRpcRegistration
     {
         EnemyDeathRpcRegistration()

@@ -12,8 +12,7 @@ namespace NanamiEngine::Module::Asset
     constexpr auto DECORATION_EXTENSION_LABEL = ".decoration";
 
     /**
-     * @brief イベントの報酬などで手に入る、島の飾り1つ。持っているかは DecorationCollection が guid で覚える。
-     * 島のどこに何が出るかはシーン側(ConditionalObject + DecorationOwnedCondition)が持つ
+     * @brief 島の飾り1つ。所持は DecorationCollection が guid で覚える
      */
     class DecorationData final : public ScriptableObject
     {

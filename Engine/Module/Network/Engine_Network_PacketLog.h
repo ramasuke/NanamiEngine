@@ -24,8 +24,7 @@ namespace NanamiEngine::Module::Network
         float timestamp;
     };
 
-    // NOTE: LogPacket/PacketLogHistory/ClearPacketLogHistory はすべて内部でmutexを
-    // 取っているためスレッドセーフ。ネットワークスレッドから呼んでも良い。
+    // NOTE: 以下はすべてスレッドセーフ
 
     /** @brief パケットの送受信を記録し、同じ内容をEngineLog（Module::Log）にも流す */
     NANAMI_API void LogPacket(PacketDirection direction, Core::Network::PacketType rawType,

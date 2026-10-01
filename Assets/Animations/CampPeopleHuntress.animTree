@@ -115,43 +115,6 @@
                             "id": 2147483656,
                             "data": {
                                 "value0": {
-                                    "value_": "EE8E34B4-DB1B-4F88-A4AE-3D0DB8D7A055"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Talk",
-                "position_": {
-                    "value0": 276.0,
-                    "value1": 260.0
-                },
-                "guid_": {
-                    "value_": "D992B83C-00D5-4536-A71C-ED0093D603EF"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 1,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_2": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483657,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483658,
-                            "data": {
-                                "value0": {
                                     "value_": "20495242-165C-411D-85AD-9FFDED1DAB39"
                                 }
                             }
@@ -172,6 +135,43 @@
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
                 "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_2": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483657,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483658,
+                            "data": {
+                                "value0": {
+                                    "value_": "EE8E34B4-DB1B-4F88-A4AE-3D0DB8D7A055"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Talk",
+                "position_": {
+                    "value0": 276.0,
+                    "value1": 260.0
+                },
+                "guid_": {
+                    "value_": "D992B83C-00D5-4536-A71C-ED0093D603EF"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 1,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
                 "nameCheck_": false
             }
         }

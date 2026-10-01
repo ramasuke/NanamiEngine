@@ -246,8 +246,8 @@
                     "screenId_": "Shop",
                     "locksPlayerControl_": true,
                     "destroysOnClose_": true,
-                    "repeatDelay_secs_": 0.35,
-                    "repeatInterval_secs_": 0.08
+                    "repeatDelay_secs_": 0.3499999940395355,
+                    "repeatInterval_secs_": 0.07999999821186066
                 }
             }
         }
@@ -3400,15 +3400,12 @@
                                                 "id": 2147483765,
                                                 "data": {
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "3D04C31E-E16C-49F0-9B1E-3637CE0D92D5"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -3425,7 +3422,6 @@
                                                     "renderOrder_": 7051,
                                                     "text_": "閉じる",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 240,
                                                         "g_": 226,
                                                         "b_": 202
@@ -3449,20 +3445,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.43333333333333335,
-                                            "value1": 0.43333333333333335,
+                                            "value0": 0.4333333373069763,
+                                            "value1": 0.4333333373069763,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.43333333333333335,
+                                                "value0": 0.4333333373069763,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.43333333333333335,
+                                                "value1": 0.4333333373069763,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -3511,12 +3507,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -3652,9 +3644,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -3671,7 +3661,6 @@
                                                     "renderOrder_": 7051,
                                                     "text_": "買う",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 240,
                                                         "g_": 226,
                                                         "b_": 202
@@ -3695,20 +3684,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.43333333333333335,
-                                            "value1": 0.43333333333333335,
+                                            "value0": 0.4333333373069763,
+                                            "value1": 0.4333333373069763,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.43333333333333335,
+                                                "value0": 0.4333333373069763,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.43333333333333335,
+                                                "value1": 0.4333333373069763,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -3757,12 +3746,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -3896,9 +3881,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -3915,7 +3898,6 @@
                                                     "renderOrder_": 7051,
                                                     "text_": "個数",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 240,
                                                         "g_": 226,
                                                         "b_": 202
@@ -3939,20 +3921,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.43333333333333335,
-                                            "value1": 0.43333333333333335,
+                                            "value0": 0.4333333373069763,
+                                            "value1": 0.4333333373069763,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.43333333333333335,
+                                                "value0": 0.4333333373069763,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.43333333333333335,
+                                                "value1": 0.4333333373069763,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -4001,12 +3983,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -4100,9 +4078,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -4119,7 +4095,6 @@
                                                     "renderOrder_": 7051,
                                                     "text_": "選ぶ",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 240,
                                                         "g_": 226,
                                                         "b_": 202
@@ -4143,20 +4118,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.43333333333333335,
-                                            "value1": 0.43333333333333335,
+                                            "value0": 0.4333333373069763,
+                                            "value1": 0.4333333373069763,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.43333333333333335,
+                                                "value0": 0.4333333373069763,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.43333333333333335,
+                                                "value1": 0.4333333373069763,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -4205,12 +4180,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,

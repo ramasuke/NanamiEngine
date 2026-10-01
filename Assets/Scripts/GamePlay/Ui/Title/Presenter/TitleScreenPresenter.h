@@ -7,12 +7,12 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Packages/UiFlow/UiFlow.h"
 #include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
     class AssetUpdatePresenter;
-    class SettingsScreenPresenter;
     class TitleScreenUi;
 
     class TitleScreenPresenter final : public Component::ComponentBase,
@@ -24,25 +24,13 @@ namespace GamePlay::Ui
         {
             Press,
             Menu,
-            /** 設定画面を重ねている。閉じたら Menu へ戻る */
             Settings,
             Leaving,
-        };
-
-        struct Keys
-        {
-            bool any     = false;
-            bool up      = false;
-            bool down    = false;
-            bool confirm = false;
-            bool cancel  = false;
         };
 
         void OnStart () override;
         void OnUpdate() override;
 
-        [[nodiscard]] static Keys ReadKeys();
-        [[nodiscard]] bool IsAssetUpdatePrompting() const;
         void Select(int index);
         void Decide(int index);
         void StartGame();
@@ -54,11 +42,10 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) settingsPrefab_;
 
         std::shared_ptr<TitleScreenUi> view_;
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::weak_ptr<AssetUpdatePresenter> assetUpdate_;
-        std::weak_ptr<SettingsScreenPresenter> settings_;
         Phase phase_ = Phase::Press;
         int selection_ = 0;
-        Keys previousKeys_;
 
 #pragma region Serialization Function
     public:

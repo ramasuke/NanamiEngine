@@ -4,12 +4,7 @@
 #include <string>
 #include <utility>
 
-// エンジン共通の例外階層。
-// すべて std::runtime_error（= std::exception）派生なので、
-//   catch (const Exception::DeserializeException&)   ... 種類を絞って捕捉
-//   catch (const Exception::NanamiException&)        ... エンジン由来の例外を一括捕捉
-//   catch (const std::exception&)                    ... 標準例外と一緒に捕捉
-// のいずれでも受けられる。
+// エンジン共通の例外階層。すべて NanamiException (std::runtime_error 派生) の子
 namespace NanamiEngine::Module::Exception
 {
     /** エンジンが投げる全例外の基底 */

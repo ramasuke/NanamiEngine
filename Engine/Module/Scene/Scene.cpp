@@ -40,13 +40,10 @@ void Scene::Scene::Deserialize(
     DeserializedContent& outContent,
     DeserializeProgress* progress)
 {
-    // FIELD の初期化待ちは共有キューに積まず outContent に貯める。
-    // 共有キューに積むと、まだ ObjectRegistry に登録されていない GameObject を
-    // メインスレッドが解決してしまい、参照が null のまま確定する
+    // NOTE: FIELD の初期化待ちは outContent に貯める (共有キューだと未登録の参照が null で確定する)
     const Core::Application::FieldInitStagingScope stagingScope(outContent.pendingFieldContexts);
 
-    // 未作成のファイルは空の Scene として扱う（新規作成 → Save のフローで使う）。
-    // 破損している場合は DeserializeException が投げられる
+    // 未作成のファイルは空の Scene。破損していれば DeserializeException
     NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath, [&outContent, progress](cereal::JSONInputArchive& archive)
     {
         archive(cereal::make_nvp("name", outContent.name));
@@ -92,8 +89,7 @@ void Scene::Scene::AdoptDeserializedContent(
 {
     name_ = std::move(content.name);
 
-    // デシリアライズ中に貯めた FIELD を共有キューへ戻す。
-    // InitGameObject より先に積んでおくと、同期読み込みのときと順序が揃う
+    // 貯めた FIELD を InitGameObject より先に共有キューへ戻す (同期読み込みと順序を揃える)
     Core::Application::ApplicationBase::ApplicationLifeCycle().AddStagedFieldInittables(content.pendingFieldContexts);
 
     for (const auto& gameObject : content.gameObjects)

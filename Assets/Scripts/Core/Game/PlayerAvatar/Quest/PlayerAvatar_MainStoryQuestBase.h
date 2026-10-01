@@ -5,10 +5,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /**
-     * @brief メインストーリーのクエストの土台。職業を問わず、すべての PlayerAvatarType が受けられる。
-     * 報酬が出るのは初回の達成だけで、達成済みとして残る
-     */
+    /** @brief メインストーリーのクエストの土台。全職業が受けられ、報酬は初回達成時のみ */
     class MainStoryQuestBase : public Quest::ITakeableQuest
     {
     public:

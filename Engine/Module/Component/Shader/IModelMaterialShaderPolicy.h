@@ -18,15 +18,13 @@ namespace NanamiEngine::Module::Component
         bool disableCulling = false; // この材質を使うメッシュを両面描画にする
     };
 
-    // ModelRendererは「材質」は知るが「用途」は知らない。同じGameObject上の兄弟コンポーネントがこれを実装し、
-    // 材質名ごとの描画パスを供給する(ComponentGroup::Catches<IModelMaterialShaderPolicy>()で発見される)。
+    // 同じ GameObject の兄弟コンポーネントが実装し、材質名ごとの描画パスを ModelRenderer に渡す
     class NANAMI_API IModelMaterialShaderPolicy
     {
     public:
         virtual ~IModelMaterialShaderPolicy() = default;
 
-        // materialNameの描画を引き受けるならtrueを返しoutPassを埋める。定数バッファの更新もここで行う。
-        // 通常描画パスからのみ呼ばれる。
+        // 引き受けるなら outPass を埋めて true を返す。定数バッファもここで更新する (通常パス専用)
         [[nodiscard]] virtual bool TryGetMaterialShaderPass(const std::string& materialName, MaterialShaderPass& outPass) = 0;
 
         // 影パス専用。定数バッファの更新が二重に走らないよう、副作用を持たせないこと。

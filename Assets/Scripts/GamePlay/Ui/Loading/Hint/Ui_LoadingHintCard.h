@@ -9,10 +9,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ロード画面に出す操作ヒント1行。
-     *        ロード中はプレイヤーアバターが居ないので、パッド/キーボードの判定を自前で行う
-     */
+    /** @brief ロード画面の操作ヒント1行。NOTE: アバターが居ないので入力デバイスは自前で判定する */
     class LoadingHintCard final : public Component::ComponentBase
     {
     public:

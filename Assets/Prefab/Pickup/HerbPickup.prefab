@@ -80,7 +80,7 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 1,
+                        "cereal_class_version": 2,
                         "value0": {
                             "guid_": {
                                 "value_": "062B736D-BE8B-4597-AEAE-696488356AFD"
@@ -121,7 +121,12 @@
                                 }
                             }
                         },
-                        "fallOutDepth_": 500.0
+                        "fallOutDepth_": 500.0,
+                        "homingSpeed_": 80.0,
+                        "homingAcceleration_": 600.0,
+                        "homingMaxSpeed_": 700.0,
+                        "homingArriveDistance_": 25.0,
+                        "homingTargetHeight_": 20.0
                     },
                     "item_": {
                         "cereal_class_version": 0,

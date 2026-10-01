@@ -181,6 +181,9 @@ def build_ui():
     presenter = b.component(root, 'AssetUpdatePresenter')
     b.field(presenter, 'stampSound_', STAMP_SOUND)
     b.field(presenter, 'confirmSound_', CONFIRM_SOUND)
+    # 札が出ている間だけ開く。タイトルに常駐する
+    b.component(root, 'UiScreen', screenId_='AssetUpdate', locksPlayerControl_='false', destroysOnClose_='false',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
     return save_prefab(prefab, UI_PREFAB_DIR, 'AssetUpdateUI')
 
 

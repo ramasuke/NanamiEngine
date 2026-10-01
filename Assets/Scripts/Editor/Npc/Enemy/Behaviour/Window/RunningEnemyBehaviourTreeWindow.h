@@ -8,8 +8,7 @@
 namespace Editor::Npc::Enemy
 {
     /**
-     * @note シーン上で実際に動いているEnemyBaseインスタンスのBehaviourTreeをリアルタイムに覗くPopupWindow。
-     *       EnemyBase::BasedOnDrawgui()の「実行中のBehaviourTreeを表示」ボタンから対象がセットされる。
+     * @note 実行中の敵の BehaviourTree をリアルタイムに覗くPopupWindow
      */
     class RunningEnemyBehaviourTreeWindow final : public Core::PopupWindow::IPopupWindow
     {

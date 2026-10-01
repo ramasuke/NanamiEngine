@@ -15,7 +15,6 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
 {
     namespace
     {
-        /// 課題の順番。ガイドのどの行を指すかと、何が起きたら達成かをここだけで決める
         struct ActionInstructTutorialStepPlan
         {
             SwordManControlGuideFocus focus;

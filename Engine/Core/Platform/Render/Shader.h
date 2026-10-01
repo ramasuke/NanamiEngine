@@ -7,8 +7,7 @@
 #include "mat4x4.hpp"
 #include "../../../Module/Color/Color32.h"
 
-// カスタムシェーダー描画の DxLib を出さない入口: 定数バッファ、頂点 / インデックスバッファ、描画ステート。
-// ハンドルはすべて DxLib の int。ShaderVertex3D は DxLib の VERTEX3DSHADER と同じ並び (.cpp で static_assert)
+// カスタムシェーダー描画の DxLib を出さない入口。ハンドルはすべて DxLib の int
 namespace NanamiEngine::Platform::Render
 {
     enum class ShaderStage : int

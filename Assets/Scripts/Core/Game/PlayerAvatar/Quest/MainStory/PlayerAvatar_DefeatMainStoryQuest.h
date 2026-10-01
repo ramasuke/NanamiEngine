@@ -9,8 +9,8 @@
 namespace GameCore::PlayerAvatar::Quest::MainStory
 {
     /**
-     * @brief メインストーリーの討伐。受注してから enemyKind_ を1体倒したら達成。
-     * 受注の前に clearedFlag_ が立っていれば(もう倒していれば)受注した時点で達成
+     * @brief メインストーリーの討伐。受注後に enemyKind_ を1体倒したら達成
+     * NOTE: 受注時に clearedFlag_ が立っていればその時点で達成
      */
     class DefeatMainStoryQuest final : public MainStoryQuestBase
     {

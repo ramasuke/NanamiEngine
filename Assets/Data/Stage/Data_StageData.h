@@ -17,10 +17,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto STAGE_DATA_EXTENSION_LABEL = ".stageData";
 
-    /**
-     * @brief ステージ選択の1行。unlockConditions_ を全部満たすまでは「？？？」で出し、
-     * 選べても出発はできない(lockedDescriptionLines_ で条件を伝える)。
-     */
+    /** @brief ステージ選択の1行。unlockConditions_ を全部満たすまでは「？？？」で出発不可 */
     class StageData final : public ScriptableObject
     {
     public:

@@ -33,8 +33,8 @@ S = 4
 GLYPH_FONT = r'C:/Windows/Fonts/segoeuib.ttf'
 LABEL_FONT = REPO_ROOT / 'Assets' / 'Art' / 'Font' / 'ipam.ttf'
 
-STRIP_W, STRIP_H = 300, 36
-STRIP_OPAQUE_RATE = 0.62  # 帯はラベルの下では STRIP_ALPHA のまま、その先でフェードアウトする
+STRIP_W, STRIP_H = 360, 36
+STRIP_OPAQUE_RATE = 0.78  # 帯はラベルの下では STRIP_ALPHA のまま、その先でフェードアウトする
 STRIP_ALPHA = 0.8
 GLOW_W = 64
 GLOW_BAR_X = 30
@@ -56,7 +56,7 @@ LABEL_FONT_SIZE = 60  # ipam.ttf の .meta の size_
 LABEL_SHADOW_OFFSET = 1.5
 DIM_ALPHA = 110  # ControlGuide::dimAlpha_
 SLIDE_DISTANCE = 8  # ControlGuide::slideDistance_px_
-FOCUS_MARK_X = 268  # フォーカス矢印／チェックの中心（帯の左端から）
+FOCUS_MARK_X = 292  # フォーカス矢印／チェックの中心（帯の左端から）
 
 
 def hexc(h):

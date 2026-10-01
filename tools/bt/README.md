@@ -19,7 +19,7 @@ python -m tools.bt <command>        # or: python tools/bt.py <command>
 | `show FILE` | print a tree as a readable outline |
 | `validate FILE` | check every node/action against the catalog |
 | `add-node` / `remove-node` / `move-node` | structural edits (auto-arrange the tree unless `--no-layout`) |
-| `layout` | re-arrange every node into a tidy top-down tree (`--dx` / `--dy` gaps) |
+| `layout` | re-arrange every node into a left-to-right tree like the editor's 整列 button (`--dx` / `--dy` gaps) |
 | `set-params` / `set-weight` | edit an action's params / a RandomSelector weight (positions untouched) |
 | `add-bb-param` / `remove-bb-param` | edit the blackboard parameter list |
 | `apply FILE OPS.json` | apply a batch of edit ops atomically (primary agent interface) |

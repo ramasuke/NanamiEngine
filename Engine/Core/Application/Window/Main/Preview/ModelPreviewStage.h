@@ -24,11 +24,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 namespace NanamiEngine::Core::MainWindow
 {
     /**
-     * @brief ModelViewWindow / AnimationViewWindow 共通の、モデル 1 体を置いて眺めるためのプレビュー環境
-     *
-     * @details
-     *  プレビュー用 GameObject + ModelRenderer とエディタカメラ・グリッドを持つ。
-     *  モデルの描画自体は所有ウィンドウの LifeCycle().OnUpdateForEditor() で行われる。
+     * @brief モデル 1 体を置いて眺めるプレビュー環境 (GameObject + ModelRenderer とカメラ・グリッド)
      */
     class NANAMI_API ModelPreviewStage final
     {

@@ -16,8 +16,7 @@ namespace NanamiEngine::Module::Asset
     constexpr auto DROP_TABLE_EXTENSION_LABEL = ".dropTable";
 
     /**
-     * @brief 壊したときに落とすものの一覧。お金は毎回、アイテムは行ごとの確率で落とす。
-     * 同じ種類の置き物はこのアセットを共有するので、シーン上の個々には何も書かない
+     * @brief 壊したときに落とすものの一覧。お金は毎回、アイテムは行ごとの確率で落とす
      */
     class DropTable final : public ScriptableObject
     {

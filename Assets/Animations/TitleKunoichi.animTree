@@ -137,43 +137,6 @@
                             "id": 2147483657,
                             "data": {
                                 "value0": {
-                                    "value_": "11B64F7A-C8B5-4B72-8732-3EF0D4541040"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Laugh",
-                "position_": {
-                    "value0": 760.0,
-                    "value1": 40.0
-                },
-                "guid_": {
-                    "value_": "79967005-F7A4-4AC4-8E14-9DA783D5B837"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.699999988079071,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": true
-            }
-        }
-    },
-    "nodes_3": {
-        "polymorphic_id": 1,
-        "ptr_wrapper": {
-            "id": 2147483658,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483659,
-                            "data": {
-                                "value0": {
                                     "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
                                 }
                             }
@@ -198,6 +161,43 @@
             }
         }
     },
+    "nodes_3": {
+        "polymorphic_id": 1,
+        "ptr_wrapper": {
+            "id": 2147483658,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483659,
+                            "data": {
+                                "value0": {
+                                    "value_": "11B64F7A-C8B5-4B72-8732-3EF0D4541040"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Laugh",
+                "position_": {
+                    "value0": 760.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "value_": "79967005-F7A4-4AC4-8E14-9DA783D5B837"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 0.699999988079071,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": true
+            }
+        }
+    },
     "nodes_4": {
         "polymorphic_id": 1,
         "ptr_wrapper": {
@@ -211,19 +211,19 @@
                             "id": 2147483661,
                             "data": {
                                 "value0": {
-                                    "value_": "6C62B196-3D68-4E6C-BF0A-62DA317D5178"
+                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Ask",
+                "name_": "Agree",
                 "position_": {
-                    "value0": 940.0,
-                    "value1": 130.0
+                    "value0": 1120.0,
+                    "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "A2DFBE36-CE3C-448F-831F-3196964DD36F"
+                    "value_": "B883C1AD-0F77-47DC-824F-8FDF342882A2"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 0.699999988079071,
@@ -248,19 +248,19 @@
                             "id": 2147483663,
                             "data": {
                                 "value0": {
-                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
+                                    "value_": "6C62B196-3D68-4E6C-BF0A-62DA317D5178"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Agree",
+                "name_": "Ask",
                 "position_": {
-                    "value0": 1120.0,
-                    "value1": 40.0
+                    "value0": 940.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "B883C1AD-0F77-47DC-824F-8FDF342882A2"
+                    "value_": "A2DFBE36-CE3C-448F-831F-3196964DD36F"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 0.699999988079071,

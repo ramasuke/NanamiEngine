@@ -9,8 +9,7 @@
 
 namespace GamePlay::Ui
 {
-    // 大砲の再装填ゲージ。鋼のリングにゲージを溜め、満タンになった瞬間と発射した時に演出を再生する。
-    // 画像は tools/art/cannon_cooldown_gauge.py で生成し、配置の数値（gaugeRadius_ や各 Offset）もそのスクリプトの出力に合わせる
+    // 大砲の再装填ゲージ。満タンになった瞬間と発射時に演出を再生する
     class CannonCooldownGauge final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUserInterfaceRenderable,
                                       public LifeCycleCallback::IUpdatable

@@ -31,8 +31,7 @@ namespace Coroutine
 
             void unhandled_exception()
             {
-                // コルーチン内で投げられた例外はここで止まり、await している側は「完了」として再開される。
-                // 黙って握りつぶさず、少なくともログには残す（保持して await_resume で再 throw する設計は今後の課題）
+                // NOTE: 例外はここで止まり await 側は完了として再開されるので、ログに残す
                 try
                 {
                     throw;
@@ -102,8 +101,7 @@ namespace Coroutine
 
             void unhandled_exception()
             {
-                // コルーチン内で投げられた例外はここで止まり、await している側は「完了」として再開される。
-                // 黙って握りつぶさず、少なくともログには残す（保持して await_resume で再 throw する設計は今後の課題）
+                // NOTE: 例外はここで止まり await 側は完了として再開されるので、ログに残す
                 try
                 {
                     throw;

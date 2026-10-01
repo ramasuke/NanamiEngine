@@ -5,10 +5,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の一覧の選択位置。行は表示窓の分しか作らないので、窓の先頭もここで持つ。
-     * 催し・依頼・お知らせの3つの一覧で同じものを使う。
-     */
+    /** @brief 掲示板の一覧の選択位置と表示窓の先頭 */
     class BoardListCursor final
     {
     public:

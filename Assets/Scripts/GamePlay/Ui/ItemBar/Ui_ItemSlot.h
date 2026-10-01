@@ -11,8 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // アイテム欄の1枠。枠の並びは親の HorizontalLayoutGroup、枠内の配置は子オブジェクトの Transform が決める。
-    // 何を出すかと明るさは ItemBar が毎フレーム渡す
+    // アイテム欄の1枠。表示内容と明るさは外から毎フレーム渡される
     class ItemSlot final : public Component::ComponentBase
     {
     public:

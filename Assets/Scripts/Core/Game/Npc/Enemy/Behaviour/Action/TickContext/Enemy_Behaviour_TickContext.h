@@ -112,8 +112,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
         // この敵の NetworkObjectId。ネットワーク生成されていない個体は Invalid()
         [[nodiscard]] Core::Network::NetworkObjectId NetworkObjectId() const { return networkObjectId_; }
-        // このTickが権威側限定(他ピアはTickしていない)なら true。
-        // 一回限りの副作用(SE/エフェクト/攻撃発火等)は、この時だけ RPC で他ピアへ複製する。
+        // 権威側だけが Tick している (一回限りの副作用は RPC で他ピアへ複製する)
         [[nodiscard]] bool IsNetworkAuthority() const { return isNetworkAuthority_; }
 
 

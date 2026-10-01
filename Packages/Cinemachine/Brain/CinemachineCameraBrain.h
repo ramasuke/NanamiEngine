@@ -69,8 +69,7 @@ namespace NanamiEngine::CineMachine
         float appliedFov_              = 100.0f;
         static CinemachineCameraBrain* cameraBrain_;
 
-        // Shake/Noiseなどのオフセットを含まない、補完だけの姿勢。
-        // 揺れた後のTransformを次フレームの補完開始点にすると揺れが蓄積・増幅するため分離して保持する。
+        // NOTE: 揺れを含まない補完だけの姿勢。揺れた姿勢から補完すると揺れが増幅する
         glm::vec3 smoothedPos_ = glm::vec3(0.0f);
         glm::quat smoothedRot_ = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
         float smoothedFov_ = 100.0f;
@@ -81,6 +80,7 @@ namespace NanamiEngine::CineMachine
         const CineMachineVirtualCamera* blendTargetCamera_ = nullptr;
         bool      isBlending_     = false;
         float     blendElapsed_   = 0.0f;
+        BlendIn   blend_;
         glm::vec3 blendFromPos_   = glm::vec3(0.0f);
         glm::quat blendFromRot_   = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
         float     blendFromFov_   = 100.0f;

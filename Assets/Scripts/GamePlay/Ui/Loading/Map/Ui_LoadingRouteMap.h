@@ -34,8 +34,7 @@ namespace GamePlay::Ui
          */
         void Tick(float progress01, float clockSecs, float deltaSecs);
         /**
-         * @brief 地図一式の表示を切り替える。親の SetEnable は子の有効フラグをまとめて書き換えるだけなので、
-         *        航路ごとに出し分けている部品はここで付け直す
+         * @brief 地図一式の表示を切り替え、航路ごとに出し分ける部品を付け直す
          */
         void SetShown(bool isShown);
 

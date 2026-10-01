@@ -65,9 +65,21 @@ namespace NanamiEngine::AssetUpdater
 
     std::optional<std::string> Sha256OfFile(const std::filesystem::path& filePath)
     {
+        return Sha256OfFileCopyingTo(filePath, {});
+    }
+
+    std::optional<std::string> Sha256OfFileCopyingTo(const std::filesystem::path& filePath, const std::filesystem::path& copyTo)
+    {
         std::ifstream stream(filePath, std::ios::binary);
         if (!stream)
             return std::nullopt;
+        std::ofstream output;
+        if (!copyTo.empty())
+        {
+            output.open(copyTo, std::ios::binary | std::ios::trunc);
+            if (!output)
+                return std::nullopt;
+        }
 
         const Sha256Algorithm algorithm;
         if (algorithm.Get() == nullptr)
@@ -85,9 +97,17 @@ namespace NanamiEngine::AssetUpdater
                 break;
             if (!BCRYPT_SUCCESS(BCryptHashData(hash.Get(), reinterpret_cast<PUCHAR>(buffer.data()), static_cast<ULONG>(read), 0)))
                 return std::nullopt;
+            if (output.is_open() && !output.write(buffer.data(), read))
+                return std::nullopt;
         }
         if (stream.bad())
             return std::nullopt;
+        if (output.is_open())
+        {
+            output.close();
+            if (!output)
+                return std::nullopt;
+        }
 
         std::array<UCHAR, SHA256_DIGEST_BYTES> digest{};
         if (!BCRYPT_SUCCESS(BCryptFinishHash(hash.Get(), digest.data(), static_cast<ULONG>(digest.size()), 0)))

@@ -1,5 +1,4 @@
 ﻿#include "StageSelectPresenter.h"
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 #include <chrono>
@@ -18,16 +17,15 @@
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        bool IsPadButton(const GamepadState& pad, const GamepadButton button)
-        {
-            return pad.IsDown(button);
-        }
-    }
-
     void StageSelectPresenter::OnStart()
     {
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        if (!screen_->Open())
+        {
+            Entity().lock()->OnDestroy();
+            return;
+        }
+
         view_  = RequireComponent<StageSelectUi>();
         model_ = std::make_unique<StageSelectModel>(view_->Stages());
 
@@ -86,96 +84,89 @@ namespace GamePlay::Ui
         }
         ApplyRoomToView();
 
-        // 開いた直後に押しっぱなしを拾わない
-        previousInput_ = ReadRoomInput();
-        wasCancelPressed_ = IsCancelDown();
+        screen_->Input().Map()
+            .SetStickThreshold(static_cast<std::int16_t>(stickThreshold_))
+            .AddKey(UiFlow::UiAction::Submit, Platform::Input::Key::Space);
+        ApplyInputMap();
     }
 
     void StageSelectPresenter::OnUpdate()
     {
-        const auto xInput = Gamepad::Get();
-        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space) || IsPadButton(xInput, GamepadButton::A);
+        if (!model_)
+            return;
 
-        if (isConfirmPressed && !wasConfirmPressed_)
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
+        if (input.IsPressed(UiAction::Submit))
             TryEnterWorld();
 
-        wasConfirmPressed_ = isConfirmPressed;
-
-        const bool isCancelPressed = IsCancelDown();
-        const bool isCancelTriggered = isCancelPressed && !wasCancelPressed_;
-        wasCancelPressed_ = isCancelPressed;
-        if (isCancelTriggered)
+        if (input.IsPressed(UiAction::Cancel))
         {
             Close();
             return;
         }
 
-        const RoomInput input = ReadRoomInput();
-        UpdateRoomInput(input);
-        previousInput_ = input;
+        UpdateRoomInput();
     }
 
-    StageSelectPresenter::RoomInput StageSelectPresenter::ReadRoomInput() const
+    void StageSelectPresenter::ApplyInputMap() const
     {
-        const auto pad = Gamepad::Get();
+        using UiFlow::UiAction;
+        using UiFlow::StickDirection;
+        using Platform::Input::GamepadButton;
+        using Platform::Input::Key;
 
-        RoomInput input;
-        input.previousMode = Keyboard::IsDown(Key::Left) || IsPadButton(pad, GamepadButton::LeftShoulder);
-        input.nextMode     = Keyboard::IsDown(Key::Right) || IsPadButton(pad, GamepadButton::RightShoulder);
-        input.cursorLeft   = IsPadButton(pad, GamepadButton::DPadLeft) || pad.thumbLX < -stickThreshold_;
-        input.cursorRight  = IsPadButton(pad, GamepadButton::DPadRight) || pad.thumbLX > stickThreshold_;
-        input.digitUp      = IsPadButton(pad, GamepadButton::DPadUp) || pad.thumbLY > stickThreshold_;
-        input.digitDown    = IsPadButton(pad, GamepadButton::DPadDown) || pad.thumbLY < -stickThreshold_;
-        input.erase        = Keyboard::IsDown(Key::Back) || IsPadButton(pad, GamepadButton::X);
-
-        // 番号で入るときは十字キーと左スティックが数字入力なので、右スティックと ↑↓ キーだけでステージを選ぶ
         const bool isDigitInput = roomMode_ == Network::RelayRoom::Mode::Join;
-        input.stageUp   = Keyboard::IsDown(Key::Up) || pad.thumbRY > stickThreshold_
-                          || (!isDigitInput && input.digitUp);
-        input.stageDown = Keyboard::IsDown(Key::Down) || pad.thumbRY < -stickThreshold_
-                          || (!isDigitInput && input.digitDown);
+        auto& map = screen_->Input().Map();
+        map.Set(UiAction::TabPrev,   { { Key::Left  }, { GamepadButton::LeftShoulder  } })
+            .Set(UiAction::TabNext,   { { Key::Right }, { GamepadButton::RightShoulder } })
+            .Set(UiAction::Left,      { {}, { GamepadButton::DPadLeft  }, { StickDirection::Left  } })
+            .Set(UiAction::Right,     { {}, { GamepadButton::DPadRight }, { StickDirection::Right } })
+            .Set(UiAction::ValueUp,   { {}, { GamepadButton::DPadUp    }, { StickDirection::Up    } })
+            .Set(UiAction::ValueDown, { {}, { GamepadButton::DPadDown  }, { StickDirection::Down  } })
+            .Set(UiAction::Up,        { { Key::Up   }, {}, { StickDirection::RightStickUp   } })
+            .Set(UiAction::Down,      { { Key::Down }, {}, { StickDirection::RightStickDown } });
 
-        for (int digit = 0; digit <= 9; ++digit)
-        {
-            if (Keyboard::IsDigitDown(digit))
-            {
-                input.typedDigit = digit;
-                break;
-            }
-        }
-        return input;
+        if (isDigitInput)
+            return;
+
+        map.AddButton(UiAction::Up,   GamepadButton::DPadUp)  .AddStick(UiAction::Up,   StickDirection::Up)
+           .AddButton(UiAction::Down, GamepadButton::DPadDown).AddStick(UiAction::Down, StickDirection::Down);
     }
 
-    void StageSelectPresenter::UpdateRoomInput(const RoomInput& input)
+    void StageSelectPresenter::UpdateRoomInput()
     {
-        if (input.previousMode && !previousInput_.previousMode)
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
+
+        if (input.IsPressed(UiAction::TabPrev))
             CycleMode(-1);
-        if (input.nextMode && !previousInput_.nextMode)
+        if (input.IsPressed(UiAction::TabNext))
             CycleMode(1);
-        if (input.stageUp && !previousInput_.stageUp)
+        if (input.IsPressed(UiAction::Up))
             MoveStage(-1);
-        if (input.stageDown && !previousInput_.stageDown)
+        if (input.IsPressed(UiAction::Down))
             MoveStage(1);
 
         if (roomMode_ != Network::RelayRoom::Mode::Join)
             return;
 
         const int previousCursor = cursor_;
-        if (input.cursorLeft && !previousInput_.cursorLeft)
+        if (input.IsPressed(UiAction::Left))
             MoveCursor(-1);
-        if (input.cursorRight && !previousInput_.cursorRight)
+        if (input.IsPressed(UiAction::Right))
             MoveCursor(1);
         if (cursor_ != previousCursor)
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
-        if (input.digitUp && !previousInput_.digitUp)
+        if (input.IsPressed(UiAction::ValueUp))
             SetDigit(cursor_ < static_cast<int>(roomCode_.size()) ? (roomCode_[cursor_] - '0' + 1) % 10 : 0);
-        if (input.digitDown && !previousInput_.digitDown)
+        if (input.IsPressed(UiAction::ValueDown))
             SetDigit(cursor_ < static_cast<int>(roomCode_.size()) ? (roomCode_[cursor_] - '0' + 9) % 10 : 9);
-        if (input.erase && !previousInput_.erase)
+        if (input.IsPressed(UiAction::Erase))
             Erase();
-        if (input.typedDigit >= 0 && previousInput_.typedDigit != input.typedDigit)
+        if (const int digit = input.PressedDigit(); digit >= 0)
         {
-            SetDigit(input.typedDigit);
+            SetDigit(digit);
             MoveCursor(1);
         }
     }
@@ -189,6 +180,7 @@ namespace GamePlay::Ui
         roomCode_.clear();
         cursor_ = 0;
         ApplyRoomToView();
+        ApplyInputMap();
     }
 
     void StageSelectPresenter::MoveStage(const int delta)
@@ -217,7 +209,6 @@ namespace GamePlay::Ui
 
     void StageSelectPresenter::MoveCursor(const int delta)
     {
-        // 入れていない桁より先へは行かない
         const int last = std::min(static_cast<int>(roomCode_.size()), CodeLength() - 1);
         cursor_ = std::clamp(cursor_ + delta, 0, last);
         ApplyRoomToView();
@@ -285,14 +276,7 @@ namespace GamePlay::Ui
             return;
 
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
-
-        if (const auto entity = Entity().lock())
-            entity->OnDestroy();
-    }
-
-    bool StageSelectPresenter::IsCancelDown()
-    {
-        return Keyboard::IsDown(Key::Escape) || IsPadButton(Gamepad::Get(), GamepadButton::B);
+        screen_->Close();
     }
 }
 

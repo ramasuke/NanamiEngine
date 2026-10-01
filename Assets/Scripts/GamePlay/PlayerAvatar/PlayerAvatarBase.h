@@ -258,8 +258,7 @@ namespace GamePlay::PlayerAvatar
         if (status_->IsDeath())
             return;
 
-        // 報酬を入れた所持金と、受注・達成の記録は同じ時点で保存する。
-        // 間で落ちたときは報酬が消えるほうに倒す(受注が残っていれば読み直したときにもう一度達成できる)
+        // NOTE: 所持金とクエスト記録は同時に保存する (間で落ちたら報酬が消える側に倒す)
         GameCore::PlayerAvatar::Quest::QuestJournal::Instance().Save();
         GameCore::PlayerAvatar::SaveStatus<Status, TraitsT>(status_);
     }

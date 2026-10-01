@@ -7,11 +7,15 @@ namespace GamePlay::Npc::Enemy
 {
     void FirstEventDragon::DoUpdate()
     {
-        if (Transform().GetWorldPos().y < -100)
-        {
-            Transform().SetLocalPos(glm::vec3{0.0f, 300.0f, 0.0f});
-        }
+        if (Transform().GetWorldPos().y < fallLimitY_)
+            Transform().SetWorldPos(respawnPosition_);
+    }
 
+    void FirstEventDragon::BasedOnDrawgui()
+    {
+        BossEnemyBase::BasedOnDrawgui();
+        ImGuiHelper::OnDrawInputField("respawnPosition_", respawnPosition_);
+        ImGuiHelper::OnDrawInputField("fallLimitY_", fallLimitY_);
     }
 }
 

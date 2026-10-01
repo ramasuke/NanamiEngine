@@ -5,9 +5,7 @@
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    // 手持ちカメラのような微小な揺れ(Cinemachine の Basic Multi Channel Perlin 相当)を常時加えるビヘイビア。
-    // 演出用VirtualCameraに付けると「止まっているのに自然に動いている」カメラになる。
-    // MainCameraCallbackはアクティブなVirtualCameraでしか呼ばれないため、揺れるのはそのカメラが使われている間だけ。
+    // 手持ちカメラのような微小な揺れ (Basic Multi Channel Perlin 相当) を常時加える
     class NANAMI_API NoiseCameraBehaviour final : public Component::ComponentBase,
                                        public IVirtualCameraBehaviour
     {

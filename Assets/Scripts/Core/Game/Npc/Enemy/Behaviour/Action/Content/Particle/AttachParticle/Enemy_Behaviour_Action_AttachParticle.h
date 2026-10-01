@@ -6,10 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * position_(ワールド座標)にパーティクルを出し、target_ に貼り付けたまま動かす。
-     * 燃えている島が落ちるとき、炎と煙も一緒に落ちるようにするためのもの。
-     */
+    /** position_(ワールド座標)にパーティクルを出し、target_ に貼り付けたまま動かす */
     class AttachParticle final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

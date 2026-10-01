@@ -10,17 +10,13 @@
 
 namespace NanamiEngine::Module::Component
 {
-    // NOTE: .mv1モデルを使わず、ローカルXY平面の板ポリゴンをシェーダー付きで描画する軽量レンダラー。
-    // DxLibのMV1系APIを一切経由しない(SetTransformToWorld + DrawPrimitive3DToShader2)ため、
-    // 格子状バリア壁のような「見た目はほぼ平面」なエフェクトをモデルアセット無しで実現できる。
-    // 格子模様そのものはジオメトリではなくpsFile_側のUV演算で作る想定。
+    // ローカルXY平面の板ポリゴンをシェーダー付きで描画する (.mv1 を使わない)
     class NANAMI_API QuadRenderer final : public ComponentBase,
                                public LifeCycleCallback::IRenderable,
                                public IShaderConstantBufferHost
     {
     public:
-        // カスタムシェーダー用の定数バッファハンドルを返す(未生成なら生成する)。
-        // vsFile_ / psFile_ が有効でない場合は -1。
+        // 定数バッファハンドル (未生成なら生成)。vsFile_ / psFile_ が無効なら -1
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
 
     private:

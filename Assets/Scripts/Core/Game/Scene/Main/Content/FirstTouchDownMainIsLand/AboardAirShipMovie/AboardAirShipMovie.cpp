@@ -189,19 +189,27 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         if (!camera)
             co_return;
 
-        auto& transform = shot->Transform();
-        const glm::vec3 fromPos = transform.GetWorldPos();
-        const glm::quat fromRot = transform.GetWorldRot();
-        const auto children = transform.GetChildren();
-        const glm::vec3 toPos = children.empty() ? fromPos : children.front()->Transform().GetWorldPos();
-        const glm::quat toRot = children.empty() ? fromRot : children.front()->Transform().GetWorldRot();
+        // 子の End のカメラへ、カットの長さをかけて Brain の補間で動かす
+        const auto children = shot->Transform().GetChildren();
+        auto endCamera = children.empty() ? nullptr : children.front()->Components().Catch<CineMachine::CineMachineVirtualCamera>().lock();
+        if (!endCamera)
+            endCamera = camera;
 
         camera->SetImmediateApply(true);
+        endCamera->SetImmediateApply(true);
         camera->SetPriority(OPENING_SHOT_PRIORITY);
         if (const auto brain = Context()->CameraBrain())
             brain->SnapToVirtualCamera(*camera);
 
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
+        if (ShouldStop())
+            co_return;
+
+        if (endCamera != camera)
+        {
+            endCamera->SetBlendIn(duration_secs, LibCore::EaseType::Linear);
+            endCamera->SetPriority(OPENING_SHOT_PRIORITY + 1);
+        }
 
         float elapsed_secs = 0.0f;
         while (elapsed_secs < duration_secs)
@@ -211,10 +219,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
                 co_return;
 
             elapsed_secs += Time::DeltaTime();
-            const float t = std::clamp(elapsed_secs / duration_secs, 0.0f, 1.0f);
-            transform.SetWorldPos(glm::mix(fromPos, toPos, t));
-            transform.SetWorldRot(glm::slerp(fromRot, toRot, t));
         }
+        endCamera->OnDisable();
         camera->OnDisable();
     }
 

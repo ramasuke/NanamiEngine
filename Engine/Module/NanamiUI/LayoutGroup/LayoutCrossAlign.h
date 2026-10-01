@@ -4,10 +4,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // HorizontalLayoutGroup/VerticalLayoutGroupの積み重ね軸と直交する軸(cross axis)の揃え方。
-    // このエンジンにはRectTransformが無く、各UIコンポーネントは自身のTransform位置を
-    // 要素の中心として扱う(Button::eventAreaSize_等参照)ため、Start/Endは
-    // cellSize_の半分だけ中心をオフセットすることで「揃える」。
+    // LayoutGroupの積み重ね軸と直交する軸の揃え方。Start/End は中心を cellSize_ の半分ずらす
     enum class LayoutCrossAlign : int
     {
         Start = 0,

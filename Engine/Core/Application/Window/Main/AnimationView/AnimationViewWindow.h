@@ -17,13 +17,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::MainWindow
 {
-    /**
-     * @brief モデルにアニメーションクリップを当てて再生・シーク・2 クリップのブレンドを確認するビューア
-     *
-     * @details
-     *  表示は ModelViewWindow と同じ ModelPreviewStage を使う。
-     *  モデル / アニメ .mv1 は Project ウィンドウからのドラッグ&ドロップ、または ModelViewWindow の「Open in AnimationView」で指定する。
-     */
+    /** @brief モデルにアニメーションクリップを当てて再生・シーク・2 クリップのブレンドを確認するビューア */
     class NANAMI_API AnimationViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;

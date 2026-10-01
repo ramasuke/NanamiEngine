@@ -369,10 +369,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         }
     }
 
-    /**
-     * @brief コマンド実装。この .cpp の中だけで定義し、AutoMcpEngineAccess の friend として
-     * エンジン側クラスの非公開部分に触れる。
-     */
+    /** @brief コマンド実装。AutoMcpEngineAccess 経由でエンジン側の非公開部分に触れる */
     class AutoMcpCommandHandlers final
     {
     public:
@@ -417,7 +414,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         /**
          * JSON から作り直した GameObject で既存のものを置き換える。
-         * GUID を引き継ぐため、GameWindow::TryReplaceGameObject（同じ GUID だと Scene の追加と削除が打ち消し合う）は使わない。
+         * NOTE: 同じ GUID だと追加と削除が打ち消し合うので TryReplaceGameObject は使わない
          */
         static void ReplaceGameObject(const FoundGameObject& target, const GameObjectPtr& replacement)
         {

@@ -22,7 +22,7 @@ namespace NanamiEngine::Module::Component
         );
     }
 
-    const glm::vec3& CapsuleCollider::CalcColliderWorldPos() const
+    glm::vec3 CapsuleCollider::CalcColliderWorldPos() const
     {
         return Transform().GetWorldPos() + Transform().GetWorldRot() * (offset_ * Transform().GetWorldScale());
     }

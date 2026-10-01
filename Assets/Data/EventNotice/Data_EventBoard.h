@@ -14,9 +14,7 @@ namespace NanamiEngine::Module::Asset
     constexpr auto EVENT_BOARD_EXTENSION_LABEL = ".eventBoard";
 
     /**
-     * @brief 掲示板に貼るものの一覧。催し(.eventNotice)・依頼(.boardQuest)・お知らせ(.announcement)・復興(.restorationFacility)を
-     * このアセットに足すだけで貼り出せ、シーンもプレハブも触らない。
-     * 終わった催しや期間外の依頼は表示側で弾くので、ここから外さなくてもよい。
+     * @brief 掲示板に貼るもの(催し・依頼・お知らせ・復興)の一覧。期間外のものは表示側で弾く
      */
     class EventBoardData final : public ScriptableObject
     {

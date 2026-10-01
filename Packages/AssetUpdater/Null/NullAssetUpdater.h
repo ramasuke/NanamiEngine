@@ -4,7 +4,6 @@
 
 namespace NanamiEngine::AssetUpdater
 {
-    /** 配信を使わないゲームやエディタ用。常に「更新なし」を返し、何も落とさない */
     class NANAMI_API NullAssetUpdater final : public IAssetUpdater
     {
     public:

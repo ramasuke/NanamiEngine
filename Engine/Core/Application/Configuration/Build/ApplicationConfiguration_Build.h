@@ -19,8 +19,8 @@ namespace NanamiEngine::Core::Application::Configuration
     };
 
     /**
-     * @brief Build Settings ウィンドウで Game 版をビルドするときの設定。
-     *        製品名・起動シーン・クライアント版はゲームも読むので ProjectConfig/Build/Runtime/ に置いて同梱し、残りはエディタ専用
+     * @brief Game 版ビルドの設定
+     * NOTE: 製品名・起動シーン・クライアント版はゲームも読むので ProjectConfig/Build/Runtime/ に置く
      */
     class NANAMI_API BuildConfiguration final
     {

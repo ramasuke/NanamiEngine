@@ -19,8 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
 namespace GamePlay::Ui
 {
-    // 戦闘訓練クエストの課題カード。操作ガイドが指している行のすぐ右に吸い付き、尾で行を指す。
-    // 何を押すかは光っているガイドの行が示すので、本文にボタン名は書かない
+    // 戦闘訓練クエストの課題カード。操作ガイドの注目行の右に吸い付く
     class SwordManActionInstructTutorial final : public Component::ComponentBase,
                                                  public LifeCycleCallback::IUpdatable
     {
@@ -54,7 +53,7 @@ namespace GamePlay::Ui
         [[serialize(5)]] std::string clearedText_ = "よし！";
 
         /// 指された行の画面座標からカード中心までのずらし量
-        [[serialize(5)]] glm::vec2 anchorOffset_px_ = glm::vec2(376.0f, 0.0f);
+        [[serialize(5)]] glm::vec2 anchorOffset_px_ = glm::vec2(406.0f, 0.0f);
         [[serialize(5)]] glm::vec2 fallbackPos_px_ = glm::vec2(542.0f, 540.0f);
         [[serialize(5)]] float anchorFollowSpeed_pxPerSec_ = 900.0f;
         [[serialize(5)]] float appearDuration_secs_ = 0.25f;

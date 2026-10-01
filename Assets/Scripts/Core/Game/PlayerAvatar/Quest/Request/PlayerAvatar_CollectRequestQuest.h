@@ -6,8 +6,7 @@
 namespace GameCore::PlayerAvatar::Quest::Request
 {
     /**
-     * @brief 収集依頼。受注してから item_ を requiredCount_ 個拾ったら達成。
-     * 納品ではないので、拾ったアイテムはそのまま手元に残る
+     * @brief 受注後に item_ を requiredCount_ 個拾ったら達成 (納品はしない)
      */
     class CollectRequestQuest final : public RequestQuestBase
     {

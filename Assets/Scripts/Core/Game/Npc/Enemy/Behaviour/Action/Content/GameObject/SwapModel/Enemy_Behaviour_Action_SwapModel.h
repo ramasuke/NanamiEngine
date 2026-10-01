@@ -9,8 +9,8 @@
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * target_ の ModelRenderer のモデルを model_ に差し替える(島破壊で壊れた建物にする等)。
-     * 差し替えは model_ の読み込みを待って裏で行うので、Tick はすぐ Success を返す。
+     * target_ の ModelRenderer のモデルを model_ に差し替える
+     * NOTE: 差し替えは読み込みを待って裏で行うので、Tick はすぐ Success を返す
      */
     class SwapModel final : public ActionBase
     {

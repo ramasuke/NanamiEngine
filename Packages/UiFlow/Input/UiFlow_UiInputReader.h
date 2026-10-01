@@ -28,6 +28,11 @@ namespace NanamiEngine::UiFlow
         /** @brief 押した瞬間と、押し続けて delay を過ぎてからは interval ごとに true */
         [[nodiscard]] bool IsRepeated(UiAction action);
 
+        /** @brief キー・マウス・パッドのどれかを押した瞬間 */
+        [[nodiscard]] bool IsAnyPressed();
+        /** @brief 押した瞬間の数字キー (0-9)。無ければ -1 */
+        [[nodiscard]] int  PressedDigit();
+
     private:
         friend class UiScreen;
 
@@ -44,10 +49,15 @@ namespace NanamiEngine::UiFlow
         /** @brief screen が最前面で開いているときだけ入力を返すようにする */
         void SetGate(const UiScreen* screen);
         void Poll();
+        void Step(ActionState& state, bool isDown, float deltaTime) const;
         [[nodiscard]] const ActionState& State(UiAction action);
+
+        static constexpr int DIGIT_COUNT = 10;
 
         UiActionMap map_ = UiActionMap::Default();
         std::array<ActionState, static_cast<std::size_t>(UiAction::Count)> states_{};
+        ActionState anyState_{};
+        std::array<ActionState, DIGIT_COUNT> digitStates_{};
         const UiScreen* gate_ = nullptr;
         float repeatDelay_secs_    = 0.35f;
         float repeatInterval_secs_ = 0.08f;

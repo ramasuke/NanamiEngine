@@ -11,24 +11,13 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 開始からの経過時間でアクションを順に動かす
-     *
-     * Seq[PlayAnimation, WaitSeconds, ShakeCamera, WaitSeconds, PlaySE, ...] のような演出を 1 ノードにまとめる。
-     */
     class ActionTimeline final : public ActionBase
     {
     public:
         struct Cue
         {
-            /** @brief 開始する時刻（タイムライン開始からの秒） */
             float at_secs_ = 0.0f;
-            /** @brief true なら、このアクションが Running の間はタイムラインを終えない */
             bool waitDone_ = false;
-            /**
-             * @brief 終わった後もタイムラインが終わるまで毎フレーム Tick する
-             * NOTE: Sequence が前の子を毎フレーム Tick し直すのと同じ動き。PlayAnimation の遅延 SE などはこれが前提
-             */
             bool keepTicking_ = false;
             std::unique_ptr<ActionBase> action_;
 
@@ -60,11 +49,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         void ResetCues();
 
         [[serialize(0)]] std::vector<Cue> cues_;
-        /** @brief この秒数が経つまでは Running（Cue が先に全部終わっても待つ） */
         [[serialize(0)]] float duration_secs_ = 0.0f;
-        /** @brief true なら、Cue が Failure を返した時点でタイムラインも Failure */
         [[serialize(0)]] bool failOnChildFailure_ = false;
-        /** @brief OnceExecute と同じく、1 回終わった後は Success を返し続ける（RandomSelector が枝を選び直すと戻る） */
         [[serialize(0)]] bool once_ = false;
 
         std::vector<CueState> cueStates_;

@@ -8,13 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** 攻撃後の硬直。holdSeconds_ の間は向きを変えずに止まり、その後一番近いプレイヤーへ向き直る。
-     * NOTE:
-     * - プレイヤーとの角度が turnWalkAngle_ を超えていたら、前へ歩きながら弧を描いて向き直る(その場で回さない)。
-     *   歩いている間は turnRotateSpeed_、その場では rotateSpeed_ で回す。
-     * - holdSeconds_ 後に faceToleranceDeg_ 以内を向いたら Success。
-     *   打ち切り時間は開始ごとに [minSeconds_, maxSeconds_] から選ぶ。
-     * - その場で turnInPlaceAngle_ を超えて回すときは、左右で turnLeft/RightAnimationNumber_ を使う(-1 なら animationNumber_)。
+    /** 攻撃後の硬直。holdSeconds_ 止まった後、一番近いプレイヤーへ向き直る。
+     * NOTE: 角度が turnWalkAngle_ を超えていたらその場で回さず、歩きながら弧を描いて向き直る
      */
     class RecoverFacingPlayer final : public ActionBase
     {

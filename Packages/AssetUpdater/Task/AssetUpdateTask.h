@@ -16,7 +16,7 @@ namespace NanamiEngine::AssetUpdater
     {
         Idle,
         Checking,
-        /** installed.json が無い (エディタや開発中のリポジトリ)。更新は一切しない */
+        /** installed.json が無い 更新は一切しない */
         NotInstalled,
         /** オフラインなどで確認できなかった。今のアセットで遊べる */
         CheckFailed,
@@ -33,8 +33,8 @@ namespace NanamiEngine::AssetUpdater
     };
 
     /**
-     * 確認・ダウンロード・適用を別スレッドで進める。呼び出し側は毎フレーム State() を見る。
-     * CheckResult() / ErrorMessage() は Checking / Downloading / Applying の間は読まないこと
+     * 確認・ダウンロード・適用を別スレッドで進める
+     * WARNING: CheckResult() / ErrorMessage() は Checking / Downloading / Applying の間は読まないこと
      */
     class NANAMI_API AssetUpdateTask final
     {
@@ -66,7 +66,7 @@ namespace NanamiEngine::AssetUpdater
         UpdateCheckResult              checkResult_;
         std::string                    errorMessage_;
         DownloadProgress               progress_;
-        // 最後に宣言して最初に破棄させる。走っている処理を止めて待ってから、ほかのメンバーが消える
+        
         std::jthread                   worker_;
     };
 }

@@ -9,8 +9,7 @@
 namespace NanamiEngine::Core::PopupWindow
 {
     /**
-     * @note シーン上で実際に動いているAnimatorのAnimationTreeをリアルタイムに覗くPopupWindow。
-     *       Animator::OnDrawGui()の「Show Running AnimationTree」ボタンから対象がセットされる。
+     * @note 実行中のAnimatorのAnimationTreeをリアルタイムに覗くPopupWindow
      */
     class NANAMI_API RunningAnimationTreeWindow final : public IPopupWindow
     {

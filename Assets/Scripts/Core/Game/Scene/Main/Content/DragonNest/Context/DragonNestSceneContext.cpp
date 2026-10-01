@@ -14,6 +14,11 @@ void GameCore::Scene::DragonNestSceneContext::Init()
     cameraBrain_.Init();
     arrivalPortalPrefab_.Init();
     arrivalCaptionPrefab_.Init();
+    arrivalOverviewStartCamera_.Init();
+    arrivalOverviewEndCamera_.Init();
+    heartMoundCenterPos_.Init();
+    for (auto& shot : arrivalTourShots_)
+        shot.Init();
     heartsRoot_.Init();
     floatingRoot_.Init();
     endingCamera_.Init();
@@ -21,6 +26,11 @@ void GameCore::Scene::DragonNestSceneContext::Init()
     lightHeartTrail_.Init();
     fireHeartTrail_.Init();
     heartBurst_.Init();
+}
+
+glm::vec3 GameCore::Scene::DragonNestSceneContext::HeartMoundCenter() const
+{
+    return heartMoundCenterPos_->Transform().GetWorldPos();
 }
 
 std::vector<std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>>
@@ -113,9 +123,8 @@ void GameCore::Scene::DragonNestSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalLookAtHeight_", arrivalLookAtHeight_);
     ImGuiHelper::OnDrawInputField("arrivalOverview_msecs_", arrivalOverview_msecs_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewDescend_msecs_", arrivalOverviewDescend_msecs_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraStart_", arrivalOverviewCameraStart_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraEnd_", arrivalOverviewCameraEnd_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewLookAt_", arrivalOverviewLookAt_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewStartCamera_", arrivalOverviewStartCamera_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewEndCamera_", arrivalOverviewEndCamera_);
     ImGuiHelper::OnDrawInputField("arrivalIslandTitle_", arrivalIslandTitle_);
     ImGuiHelper::OnDrawInputField("arrivalIslandSubtitle_", arrivalIslandSubtitle_);
     ImGuiHelper::OnDrawInputField("arrivalTourShots_", arrivalTourShots_, [this]
@@ -131,7 +140,7 @@ void GameCore::Scene::DragonNestSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("lightHeartTrail_", lightHeartTrail_);
     ImGuiHelper::OnDrawInputField("fireHeartTrail_", fireHeartTrail_);
     ImGuiHelper::OnDrawInputField("heartBurst_", heartBurst_);
-    ImGuiHelper::OnDrawInputField("heartMoundCenter_", heartMoundCenter_);
+    ImGuiHelper::OnDrawInputField("heartMoundCenterPos_", heartMoundCenterPos_);
     ImGuiHelper::OnDrawInputField("endingDelay_secs_", endingDelay_secs_);
     ImGuiHelper::OnDrawInputField("heartRise_secs_", heartRise_secs_);
     ImGuiHelper::OnDrawInputField("heartFly_secs_", heartFly_secs_);

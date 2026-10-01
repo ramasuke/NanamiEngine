@@ -86,9 +86,7 @@ namespace NanamiEngine::Core::Network
             (Write(args), ...);
         }
 
-        // 波括弧初期化で書くこと（[dcl.init.list]により左から右の評価順序が保証される）。
-        // std::make_tuple(...) は引数評価順序が未規定なため、複数フィールドのRPCで
-        // 送受信の順序がズレる可能性があり使用不可。
+        // WARNING: 左から右の評価順を保証するため波括弧初期化で書く (make_tuple は順序未規定)
         template<typename... Args>
         std::tuple<Args...> ReadAll(size_t& offset) const
         {

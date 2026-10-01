@@ -7,9 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 子GameObjectをY軸方向に一列に並べる。子の実際の見た目サイズは知らないため、
-    // cellSize_を「各子が占めるものとみなす仮想サイズ」として並べる(実サイズの変更は行わない)。
-    // LayoutElement を持つ子は、その割合だけ枠を占める
+    // 子をY軸方向に一列に並べる。各子は cellSize_ (LayoutElement があればその割合) を占めるとみなす
     class NANAMI_API VerticalLayoutGroup final : public Component::ComponentBase,
                                       public LifeCycleCallback::ILateUpdatable
     {

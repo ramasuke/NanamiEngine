@@ -6,6 +6,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Packages/UiFlow/UiFlow.h"
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "../../../Sound/UiSoundBank.h"
 
@@ -16,13 +17,6 @@ namespace GamePlay::Ui
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief プレイヤーが全員倒れたらゲームオーバーを出し、「もう一度挑む」「タイトルへ戻る」を捌く。
-     *
-     * 倒れたかどうかは同期されている体力(IsDeath)で見るので、キャラの種類にも
-     * ローカル/リモートにも依らない。1人でも立っていれば救助の余地があるので出さない。
-     * どちらを選んでも遷移は GameSceneGroup に頼むだけで、ロード画面が覆い切ったところで石版を消す
-     */
     class GameOverPresenter final : public Component::ComponentBase,
                                     public LifeCycleCallback::IStartable,
                                     public LifeCycleCallback::IUpdatable
@@ -38,7 +32,6 @@ namespace GamePlay::Ui
 
         void OnStart() override;
         void OnUpdate() override;
-        /** @brief timeScale にも SkipNextFrame にも影響されない壁時計の差分を返す */
         [[nodiscard]] float TickWallClockSeconds();
 
         void UpdateWatching(float deltaSecs);
@@ -61,14 +54,11 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<GameOverScreenUi> view_;
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         Phase phase_ = Phase::Watching;
         float fallenSecs_ = 0.0f;
         int selection_ = 0;
         int lastTickMs_ = 0;
-
-        bool wasPrevPressed_ = false;
-        bool wasNextPressed_ = false;
-        bool wasConfirmPressed_ = false;
 
 #pragma region Serialization Function
     public:

@@ -181,7 +181,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             cues_.push_back(std::move(cue));
         }
 
-        // NOTE: 編集で並びや数が変わったので、実行時状態は作り直す
         if (cueStates_.size() != cues_.size())
             cueStates_.clear();
     }

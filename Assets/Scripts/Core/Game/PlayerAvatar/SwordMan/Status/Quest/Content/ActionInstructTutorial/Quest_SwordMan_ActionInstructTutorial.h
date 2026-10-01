@@ -28,7 +28,9 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
 
     private:
         void StartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context) override;
-        [[nodiscard]] const PlayerAvatar::QuestType& QuestType() const override { return QuestType::SwordManActionInstructTutorial; }
+        // WARNING: 列挙子を直接返すと一時オブジェクトへの参照になり、Release で別の値に化ける
+        static constexpr PlayerAvatar::QuestType QUEST_TYPE = PlayerAvatar::QuestType::SwordManActionInstructTutorial;
+        [[nodiscard]] const PlayerAvatar::QuestType& QuestType() const override { return QUEST_TYPE; }
 
         Coroutine::Task<void> StartQuestAsync(PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup);
 

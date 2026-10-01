@@ -37,8 +37,7 @@ namespace NanamiEngine::Core::Network
             glm::quat rotation);
 
         /**
-         * policy: 所有者が離脱したときの扱い(プレイヤーアバターは Destroy、敵などそれ以外は Transfer)
-         * owner: 初期所有者。送信側は自分、受信側は spawn パケットの送信者
+         * policy: 所有者離脱時の扱い。owner: 初期所有者 (受信側は spawn パケットの送信者)
          */
         std::vector<NetworkObjectId> AllocateIdsAndRegister(
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
@@ -57,10 +56,8 @@ namespace NanamiEngine::Core::Network
         void OnReceive(const Packet& packet) override;
 
     private:
-        // ルート自身 → 全ての子孫(Transform().GetAllChildren()のDFS順)のうち、
-        // NetworkGameObject を持つノード、または INetworkAwakable(NetworkComponent 派生)を1つ以上持つノードを順番に集める。
-        // 後者は NetworkGameObject を置かなくても固有の NetworkObjectId を受け取り、RPC の宛先として解決できる
-        // (例: 子オブジェクト上の AttackArea)。送信側と受信側は同じプレハブ・同じ手順で数え上げるため ID 数は一致する。
+        // ルートと子孫(DFS順)から NetworkGameObject か INetworkAwakable を持つノードを集める
+        // WARNING: 送信側と受信側で同じ順・同じ数になる前提で ID を割り当てる
         [[nodiscard]] std::vector<std::shared_ptr<Module::GameObject::IGameObject>> CollectNetworkGameObjects(
             const std::shared_ptr<Module::GameObject::IGameObject>& root) const;
         [[nodiscard]] static bool IsNetworkNode(const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);

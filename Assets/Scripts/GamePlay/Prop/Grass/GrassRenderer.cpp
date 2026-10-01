@@ -25,8 +25,7 @@ namespace GamePlay::Prop
         constexpr float         GRASS_MID_HEIGHT_RATIO   = 0.55f;
         constexpr float         GRASS_MID_WIDTH_RATIO    = 0.7f;
 
-        // spos.xyz に根元の位置、w に揺れの位相を入れて、葉全体が同じ位相で揺れるようにする。
-        // u は根元からの高さ比率、v は葉の高さ(揺れで伸びて見えない補正に使う)
+        // spos = (根元, 位相) で葉全体を同じ位相で揺らす。u = 高さ比率、v = 葉の高さ
         Platform::Render::ShaderVertex3D MakeGrassVertex(
             const glm::vec3& position,
             const glm::vec3& root,

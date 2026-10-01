@@ -23,12 +23,6 @@ namespace GameCore
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板UIの開閉と入力。依頼・催し・お知らせはこのプレハブが持つ .eventBoard から読む。
-     * 依頼は A でその場で受け、プレイヤーのクエストに入れて保存する。
-     * 復興は A でその場でお金を払って直し、StoryProgress に残す(島の見た目は RestorationGate が変える)。
-     * 復興の頁で施設を選んでいる間は、その施設の RestorationGate に下見をさせる(カメラが寄り、直った姿が建つ)。
-     */
     class EventBoardPresenter final : public Component::ComponentBase,
                                       public LifeCycleCallback::IStartable,
                                       public LifeCycleCallback::IUpdatable
@@ -50,7 +44,6 @@ namespace GamePlay::Ui
         void RestoreFacility();
         void PlaySe(const FIELD(Asset::SoundFile)& sound) const;
         void Refresh();
-        /** @brief 今の頁と選択に合わせて、下見する施設を切り替える */
         void UpdatePreview();
         void EndPreview();
         void Close();

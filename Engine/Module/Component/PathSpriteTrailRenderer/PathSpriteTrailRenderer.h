@@ -14,8 +14,7 @@
 namespace NanamiEngine::Module::Component
 {
     /**
-     * @brief 折れ線に沿ってスプライトをビルボードで並べ、始点から終点へ流す（道しるべの蛍など）。
-     * 折れ線と表示度は使う側が SetPath / SetVisibility で毎フレーム渡す
+     * @brief 折れ線に沿ってスプライトをビルボードで並べ、始点から終点へ流す
      */
     class NANAMI_API PathSpriteTrailRenderer final : public ComponentBase,
                                           public LifeCycleCallback::IUpdatable,

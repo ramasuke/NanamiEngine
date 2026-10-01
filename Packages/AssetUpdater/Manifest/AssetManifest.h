@@ -46,13 +46,11 @@ namespace NanamiEngine::AssetUpdater
         std::vector<std::string>   removedPaths;
         std::uint64_t              downloadBytes = 0;
 
-        /** installed から remote にするための差分 */
         [[nodiscard]] static ManifestDiff Between(const AssetManifest& installed, const AssetManifest& remote);
 
         [[nodiscard]] bool        IsUpToDate()  const;
         [[nodiscard]] std::size_t UpdateCount() const;
 
-        /** 差分で必要になるファイル (本体と .meta)。中身が同じものは1つにまとめる */
         [[nodiscard]] std::vector<ManifestBlob> BlobsToInstall() const;
     };
 }

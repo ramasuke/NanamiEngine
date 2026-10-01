@@ -5,24 +5,20 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * target_ を pivot_ を中心にぐらりと傾け、加速しながら落として、落ちきったら無効にする。
-     * 落下は裏で進むので、Tick はすぐ Success を返す。
-     */
     class FallIsland final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
         void DoDrawGui() override;
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) target_;
-        [[serialize(0)]] glm::vec3 pivot_    = {};                  // 傾きの中心(ワールド座標)。モデルの原点は島の真ん中とは限らない
-        [[serialize(0)]] glm::vec3 tiltAxis_ = {0.0f, 0.0f, 1.0f};  // ワールド座標の軸
+        [[serialize(2)]] FIELD(GameObject::IGameObject) pivotPos_; 
+        [[serialize(0)]] glm::vec3 tiltAxis_ = {0.0f, 0.0f, 1.0f};
         [[serialize(0)]] float tiltAngleDeg_ = 12.0f;
         [[serialize(0)]] float tiltSecs_     = 1.5f;
-        [[serialize(0)]] float fallAngleDeg_ = 30.0f;               // 落ちながらさらに傾く角度
+        [[serialize(0)]] float fallAngleDeg_ = 30.0f;               
         [[serialize(0)]] float fallDistance_ = 900.0f;
         [[serialize(0)]] float fallSecs_     = 4.5f;
-        [[serialize(1)]] float tiltSinkDistance_ = 6.0f;            // 傾くあいだに沈む量
+        [[serialize(1)]] float tiltSinkDistance_ = 6.0f;            
 
     public:
         template<class Archive>
@@ -30,7 +26,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         {
             archive(cereal::base_class<ActionBase>(this));
             archive(CEREAL_NVP(target_));
-            archive(CEREAL_NVP(pivot_));
+            archive(CEREAL_NVP(pivotPos_));
             archive(CEREAL_NVP(tiltAxis_));
             archive(CEREAL_NVP(tiltAngleDeg_));
             archive(CEREAL_NVP(tiltSecs_));
@@ -45,7 +41,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         {
             archive(cereal::base_class<ActionBase>(this));
             if (version >= 0) archive(CEREAL_NVP(target_));
-            if (version >= 0) archive(CEREAL_NVP(pivot_));
+            if (version <= 1)
+            {
+                [[serialize(0)]] glm::vec3 pivot_ = {};
+                archive(CEREAL_NVP(pivot_));
+            }
+            if (version >= 2) archive(CEREAL_NVP(pivotPos_));
             if (version >= 0) archive(CEREAL_NVP(tiltAxis_));
             if (version >= 0) archive(CEREAL_NVP(tiltAngleDeg_));
             if (version >= 0) archive(CEREAL_NVP(tiltSecs_));
@@ -59,4 +60,4 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(FallIsland, "GameObject::FallIsland")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::FallIsland, 1)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::FallIsland, 2)

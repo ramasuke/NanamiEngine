@@ -8,11 +8,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief OS カーソルの代わりにマウス位置へ出すカーソル。ゲームビルドでだけ表示する。
-     * マウスで操作する UI (NanamiUi::Button) が出ている間だけ表示し、
-     * 三人称カメラがマウスを中央に留めている間と、ウィンドウが非アクティブの間は隠す
-     */
+    /** @brief OS カーソルの代わりのカーソル。ゲームビルドで、ボタンが出ている間だけ表示する */
     class GameCursor final : public Component::ComponentBase,
                              public LifeCycleCallback::IStartable,
                              public LifeCycleCallback::IUpdatable

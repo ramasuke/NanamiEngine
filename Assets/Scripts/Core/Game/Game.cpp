@@ -62,8 +62,7 @@ namespace GameCore
 
     void Game::InitStageLoadingScene()
     {
-        // メインシーンの入れ替えを跨いで出し続けるので、GameManage.scene と同じく
-        // 起動時に読んでそのまま contents_ に残す
+        // メインシーンを入れ替えても出し続けるので contents_ に残す
         const auto scene = stageLoadingSceneFile_->LoadScene();
         Core::Application::ApplicationBase::GameWindow()->AddContent(scene);
         stageLoadingScene_ = scene;

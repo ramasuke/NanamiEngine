@@ -71,8 +71,7 @@ namespace NanamiEngine::Core::Network
         {
             instanceRegistry_.RegisterWithId(ids[i], nodes[i], policy, owner);
 
-            // NetworkGameObject があればそれ経由で同一 GameObject 上の NetworkComponent へ配る。
-            // 無い(NetworkComponent だけを持つ子オブジェクト)場合は直接 NetworkAwake で配る
+            // NetworkGameObject が無い子オブジェクトは NetworkComponent へ直接 NetworkAwake する
             if (const auto networkGameObject = nodes[i]->Components().Catch<Module::Network::NetworkGameObject>().lock())
             {
                 networkGameObject->SetNetworkObjectId(ids[i]);

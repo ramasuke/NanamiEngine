@@ -28,10 +28,6 @@ namespace GamePlay::Ui
                                            public LifeCycleCallback::IUpdatable
     {
     public:
-        /**
-         * @brief 展示台を渡す。OnStart の前後どちらでもよく、両方揃った時点で開く
-         * @details Instantiate の中で OnStart まで走るので、生成直後の Bind は OnStart の後になる
-         */
         void Bind(const std::weak_ptr<Prop::CharacterPodium>& podium);
 
     private:
@@ -39,10 +35,8 @@ namespace GamePlay::Ui
         void OnUpdate () override;
 
         void Open();
-        /** @brief 開く前に捨てる。アバターや展示台のカメラには触らない */
         void Discard();
         void Confirm();
-        /** @param didSwitch 差し替えた後は新しいアバターが操作可能な状態で出来ているので、元のアバターは触らない */
         void Close(bool didSwitch);
 
         std::shared_ptr<UiFlow::UiScreen> screen_;

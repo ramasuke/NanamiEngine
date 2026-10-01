@@ -320,6 +320,9 @@ def build_ui(button_prefab, death_camera_guid):
 
     presenter = b.component(root, 'GameOverPresenter', fallenConfirmSecs_='0.6', curtainHoldSecs_='0.35')
     b.field(presenter, 'deathCameraPrefab_', death_camera_guid)
+    # 常駐するシーンに置く。全員倒れているので操作は止めない
+    b.component(root, 'UiScreen', screenId_='GameOver', locksPlayerControl_='false', destroysOnClose_='false',
+                repeatDelay_secs_='0.35', repeatInterval_secs_='0.08')
     return save_prefab(prefab, UI_PREFAB_DIR, 'GameOverUI')
 
 

@@ -40,9 +40,8 @@ namespace NanamiEngine::Core::Network
         virtual ~INetworkObjectInstanceRegistry() = default;
 
         /**
-         * 登録。owner は初期所有者で、既に所有者が設定済みのエントリは上書きしない。
-         * 後入りピアには OwnershipSnapshot が spawn 履歴の再送より先に届き、履歴パケットが運ぶ
-         * 所有者は移譲前の値なので、後から来るこの登録で巻き戻さないようにするため
+         * 登録。owner は初期所有者
+         * NOTE: 所有者が設定済みなら上書きしない (後入りピアは OwnershipSnapshot が spawn 履歴より先に届く)
          */
         virtual void RegisterWithId(
             NetworkObjectId id,

@@ -41,8 +41,7 @@ namespace cereal::detail
             if (const auto it = table.slots.find(key); it != table.slots.end())
                 return it->second.object;
         }
-        // WARNING: create() は別の StaticObject を触って再入してくる (OutputBindingCreator のコンストラクタが
-        //          OutputBindingMap を取る等) ので、ロックの外で作る
+        // WARNING: create() は別の StaticObject を触って再入してくるので、ロックの外で作る
         const NanamiEngine::Core::ModuleHandle owner = NanamiEngine::Core::ModuleOf(reinterpret_cast<const void*>(create));
         void* const object = create();
         std::lock_guard lock(table.mutex);

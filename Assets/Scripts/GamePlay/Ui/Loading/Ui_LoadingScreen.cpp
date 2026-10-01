@@ -16,8 +16,7 @@ using GameCore::Scene::Main::SceneLoadStep;
 namespace
 {
     /**
-     * @brief 段階ごとの進捗の取り分。合計 1.0。
-     *        接続を挟まないシーンでは Connecting の取り分を読み込みと暖機へ回す
+     * @brief 段階ごとの進捗の取り分 (合計 1.0)
      */
     float LoadingScreenStepWeight(const SceneLoadStep step, const bool hasNetworkStep)
     {
@@ -47,8 +46,7 @@ namespace
     }
 
     /**
-     * @brief 残り時間が原理的に分からない段階を埋める飽和カーブ。
-     *        必ず単調増加しつつ 1.0 には届かないので、実完了時の詰めと噛み合う
+     * @brief 残り時間が分からない段階を埋める、1.0 に届かない飽和カーブ
      */
     float LoadingScreenSaturate(const float elapsedSecs, const float timeConstantSecs)
     {
@@ -180,8 +178,7 @@ namespace GamePlay::Ui
 
     void LoadingScreenUi::OnStart()
     {
-        // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく。
-        // 起動時のタイトルの読み込みは OnStart より先に Show するので、そのときは触らない
+        // NOTE: 起動時のタイトル読み込みでは OnStart より先に Show されるので、そのときは畳まない
         lastTickMs_ = Time::NowMilliseconds();
         if (phase_ != Phase::Hidden)
             return;
@@ -213,8 +210,7 @@ namespace GamePlay::Ui
         const float deltaSecs = static_cast<float>(nowMs - lastTickMs_) / 1000.0f;
         lastTickMs_ = nowMs;
 
-        // GetNowCount は int なのでいつか折り返す。旧シーン破棄のような重いフレームで
-        // 一気に進みすぎないよう上限も掛ける
+        // NOTE: ミリ秒カウンタの折り返しと重いフレームでの飛びを防ぐ
         return std::clamp(deltaSecs, 0.0f, 0.25f);
     }
 

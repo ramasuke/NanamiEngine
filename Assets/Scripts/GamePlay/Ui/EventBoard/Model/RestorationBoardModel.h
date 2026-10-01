@@ -36,9 +36,8 @@ namespace GamePlay::Ui
     };
 
     /**
-     * 復興の一覧のModel。並びはデータの順のまま(直しても札が動かない)。
-     * 状態は StoryProgress と財布から読み、直すたびに全件を読み直す(直した施設が次の前提になるため)。
-     * 教官から復興を任される(StoryFlag::RestorationStarted)までは空。
+     * 復興の一覧のModel。StoryFlag::RestorationStarted までは空
+     * NOTE: 直した施設が次の前提になるので、直すたびに全件を読み直す
      */
     class RestorationBoardModel final
     {

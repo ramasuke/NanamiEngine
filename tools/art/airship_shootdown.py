@@ -67,7 +67,8 @@ EVACUATE_POINT = 'AirShipEvacuatePoint'
 EMPTY_SOURCE = 'SampleAppearDragonPos'     # コンポーネントを持たない空の GameObject
 
 # 船首から (z 軸まわり、正で -X が下がる) 少し横にも傾いて落ちる
-FALL = dict(pivot=(-17.0, 40.0, -67.0), axis=(0.25, 0.0, 1.0), tilt=12.0, tilt_secs=1.4,
+# 傾きの中心は tools/art/movie_markers.py が置くマーカー (MovieMarkers/AirShipFallPivot)。先にそちらを流しておく
+FALL = dict(axis=(0.25, 0.0, 1.0), tilt=12.0, tilt_secs=1.4,
             fall_angle=30.0, distance=1400.0, fall_secs=5.5, sink=8.0)
 
 # 元のルート (流し直しても同じになるよう、ここから組み直す)
@@ -174,7 +175,8 @@ def build_scene():
 
     scene = reader.read_scene_file(SCENE)
     cvc = lambda name: scene_model.find_component_guid(component(find(scene, 'DestroyIslandMovie', name), 'CineMachineVirtualCamera'))
-    guids = dict(attack=cvc(ATTACK_CAMERA), fall=cvc(FALL_CAMERA), ship=find(scene, 'AirShip').guid)
+    guids = dict(attack=cvc(ATTACK_CAMERA), fall=cvc(FALL_CAMERA), ship=find(scene, 'AirShip').guid,
+                 pivot=find(scene, 'MovieMarkers', 'AirShipFallPivot').guid)
     print(f'placed {ATTACK_CAMERA} {guids["attack"]}, {FALL_CAMERA} {guids["fall"]}, {EVACUATE_POINT} {EVACUATE_POS}')
     return guids
 
@@ -256,7 +258,7 @@ def build_tree(guids):
     fireball = with_params(clone(SRC_FIREBALL, 'FireBall'), **{
         'spawnPosition_.offset_': vec(FIREBALL_FROM), 'targetPosition_.offset_': vec(MAST_HIT),
         'moveSpeed_': str(FIREBALL_SPEED)})
-    fall = with_params(clone(SRC_FALL, 'Fall AirShip'), target_=guids['ship'], pivot_=vec(FALL['pivot']),
+    fall = with_params(clone(SRC_FALL, 'Fall AirShip'), target_=guids['ship'], pivotPos_=guids['pivot'],
                        tiltAxis_=vec(FALL['axis']), tiltAngleDeg_=str(FALL['tilt']), tiltSecs_=str(FALL['tilt_secs']),
                        fallAngleDeg_=str(FALL['fall_angle']), fallDistance_=str(FALL['distance']),
                        fallSecs_=str(FALL['fall_secs']), tiltSinkDistance_=str(FALL['sink']))

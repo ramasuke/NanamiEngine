@@ -16,9 +16,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief ステージ選択の「部屋」の行。◀▶ で 相席する / 部屋を作る / 番号で入る を切り替え、
-     *        番号で入るときは数字の枠を出す。入力と状態は StageSelectPresenter が持ち、ここは見た目だけ。
-     * @note 行き方ごとの言葉・操作ヒント・桁数はすべてインスペクタの値
+     * @brief ステージ選択の「部屋」の行の見た目。番号で入るときは数字の枠を出す
      */
     class StageSelectRoomUi final : public Component::ComponentBase
     {

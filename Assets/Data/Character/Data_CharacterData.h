@@ -13,8 +13,7 @@ namespace NanamiEngine::Module::Asset
     constexpr auto CHARACTER_DATA_EXTENSION_LABEL = ".characterData";
 
     /**
-     * @brief 酒場のキャラ選択に出す一人ぶんの定義。
-     * 見た目のプレビューは展示台に立てる displayModelPrefab_ が担う(UIに3Dを描く仕組みは無い)。
+     * @brief キャラ選択に出す一人ぶんの定義。見た目は displayModelPrefab_ を展示台に立てて見せる
      */
     class CharacterData final : public ScriptableObject
     {

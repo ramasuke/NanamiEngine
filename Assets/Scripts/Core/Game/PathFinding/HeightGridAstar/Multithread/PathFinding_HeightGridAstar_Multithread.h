@@ -14,13 +14,8 @@
 namespace GameCore::PathFinding
 {
     /**
-     * Tick() を毎フレーム呼ぶと searchIntervalSec間隔でバックグラウンド検索を起動し、
-     * 結果が出たら Path() で取得できる。
-     *
-     * @note 探索の内側のループでは STL のイテレータを一切作らない(作業用の配列は生ポインタで触る)。
-     *       Debug ビルドの MSVC STL はイテレータの生成・破棄のたびにプロセス共通のロック(std::_Lockit)を取るため、
-     *       複数の敵が同時に探索するとこのロックを奪い合い、同じロックを使うメインスレッドの文字列や vector の
-     *       操作まで待たされて FPS が 1 桁まで落ちていた(ハイエナ 9 頭で 60 → 6〜15)。
+     * searchIntervalSec 間隔でバックグラウンド検索し、結果を Path() で返す
+     * @note 探索ループでは STL イテレータを作らない (Debug の MSVC STL はイテレータ毎に共通ロックを取り極端に遅い)
      */
     class HeightGridAstar
     {
@@ -50,13 +45,6 @@ namespace GameCore::PathFinding
             int   z;
         };
 
-        /**
-         * 探索の作業用配列。セル数ぶん(750x750 なら約 56 万)あるので、探索のたびに確保・初期化せず
-         * このインスタンスで使い回す。探索中はワーカースレッドだけが触る(次の探索は前のスレッドを join してから起動する)。
-         *
-         * 毎回全セルを初期化しなくて済むよう、セルごとに「何回目の探索で書いたか」を stamp で持つ。
-         * stamp が今回の searchStamp と違うセルは「未訪問」として扱う。
-         */
         struct SearchScratch
         {
             std::vector<float>         gScore;       // 始点からの最小コスト。openStamp が今回のときだけ有効
@@ -66,11 +54,7 @@ namespace GameCore::PathFinding
             std::vector<OpenNode>      heap;         // open リストの二分ヒープ(先頭 heapSize 個が有効)
             std::uint32_t              searchStamp = 0;
         };
-
-        /**
-         * open リストの二分ヒープ(f が最小のものが根)。heap の先頭 size 個が有効で、容量の確保は呼び出し側が行う。
-         * std::priority_queue / std::push_heap は Debug ビルドでイテレータを作ってロックを取るため自前で持つ
-         */
+        
         static void     HeapPush(OpenNode* heap, std::size_t& size, const OpenNode& node);
         static OpenNode HeapPop (OpenNode* heap, std::size_t& size);
 

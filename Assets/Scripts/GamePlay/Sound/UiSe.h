@@ -3,8 +3,7 @@
 namespace GamePlay::Sound
 {
     /**
-     * @brief UI の効果音。語彙は docs/UIDesign.md の2系統に合わせてある
-     * NOTE: 音は tools/art/ui_sfx.py が作る (Assets/Audio/UI/Ui_* / Hud_* / Chat_*)
+     * @brief UI の効果音
      */
     enum class UiSe
     {

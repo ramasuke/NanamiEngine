@@ -44,8 +44,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
         if (!startRecord_ || currentRecord - *startRecord_ < requiredCount_)
             return;
 
-        // CompleteQuest の中で受注リストから外されて自分が破棄されるので、先に購読を切り、種別は写してから渡す。
-        // これより後で this に触れない
+        // WARNING: CompleteQuest の中で this が破棄されるので、以降 this に触れない
         subscription_.Dispose();
         const auto type = questType_;
         completedQuests.CompleteQuest(type);

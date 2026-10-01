@@ -41,8 +41,7 @@ namespace GamePlay::Network
     Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(
         const std::weak_ptr<CustomNetworkRunner> runner, const std::string stageKey, const RelayRoom room)
     {
-        // 中継サーバーが使えるなら、部屋への参加もホストになるのも中継サーバーに任せる。
-        // 公開部屋はつながらなければ LAN で探す。非公開部屋は中継サーバーにしか無いので、そこで諦める
+        // 中継サーバーに任せる。公開部屋は失敗したら LAN で探し、非公開部屋はそこで諦める
         const auto relay = RelayServerSettings::Load();
         if (room.IsPrivate() && !relay.IsEnabled())
             co_return std::string("中継サーバーを使う設定になっていないので、部屋を使えません");

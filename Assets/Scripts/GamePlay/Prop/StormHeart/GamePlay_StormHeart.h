@@ -12,9 +12,9 @@
 namespace GamePlay::Prop
 {
     /**
-     * @brief 骸竜が呼んだ砂嵐の間だけ叩ける光の心臓。requiredHits_ 回叩くと揺らぎ、骸竜が気絶して砂嵐が止む
-     * @note 同じ GameObject に Sensor でない Collider と Static な RigidBody が要る。
-     *       砂嵐の外では当たり判定ごと地面の下へ退ける (無効にしたコライダーも当たるため)
+     * @brief 骸竜の砂嵐中だけ叩ける光の心臓。requiredHits_ 回叩くと骸竜が気絶して砂嵐が止む
+     * @note 同じ GameObject に非 Sensor の Collider と Static な RigidBody が要る
+     * WARNING: 無効にしたコライダーも当たるので、砂嵐の外では地面の下へ退ける
      */
     class StormHeart final : public Component::ComponentBase,
                              public LifeCycleCallback::IAwakable,

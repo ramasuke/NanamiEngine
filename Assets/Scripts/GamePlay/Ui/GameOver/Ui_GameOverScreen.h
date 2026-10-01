@@ -17,12 +17,8 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 力尽きたときに出す石版と選択肢の見た目。
-     *
-     * GameOverScene.scene に常駐させる（ロード画面と同じく、メインシーンを入れ替えても残る）。
-     * 黒い幕が降りる → 石版がせり上がって着地する → 鉄札が並ぶ、の順に出す。
-     * 抜けるときは幕を真っ黒まで下ろし、遷移が済んだら OpenCurtain で明ける。
-     * ChangeMainScene の間は Time::DeltaTime() が 0 になるので、時間は壁時計で進める
+     * @brief 力尽きたときに出す石版と選択肢の見た目
+     * NOTE: ChangeMainScene の間は Time::DeltaTime() が 0 なので、時間は壁時計で進める
      */
     class GameOverScreenUi final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,

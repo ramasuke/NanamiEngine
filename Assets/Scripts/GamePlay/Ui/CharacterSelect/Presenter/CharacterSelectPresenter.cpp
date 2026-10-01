@@ -107,7 +107,6 @@ namespace GamePlay::Ui
         if (isClosed_)
             return;
 
-        // Bind は生成と同じ Tick で来るので、最初の Update までに来なければ誰も渡していない
         if (!model_)
         {
             NanamiEngine::Module::LogError("CharacterSelectPresenter: 展示台が Bind されていないので、キャラ選択を開けません");

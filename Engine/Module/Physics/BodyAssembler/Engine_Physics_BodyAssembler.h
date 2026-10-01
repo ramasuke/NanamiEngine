@@ -41,8 +41,7 @@ namespace NanamiEngine::Module::Physics
 
     /**
      * @brief RigidBody と Collider から Jolt の Body を組み立てる。両方の Component を知っているのはここだけ
-     * @note OnAwake では登録するだけで、Body は Flush() で作る。
-     *       Flush() を呼ぶのは「Awake フェーズの直後」と「物理ステップの直前」だけ
+     * @note Body は登録時でなく Flush() (Awake フェーズ直後と物理ステップ直前) で作る
      */
     class NANAMI_API BodyAssembler final
     {

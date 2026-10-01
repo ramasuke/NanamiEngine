@@ -13,9 +13,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
      * @brief 一番近いプレイヤーへの水平角度で、最初に当てはまった範囲の値をブラックボードに書く
-     *
-     * Selector[Seq[ToPlayerAngle, WriteBlackBoard]..., WriteBlackBoard] の代わり。角度の向きは ToPlayerAngle と同じ。
-     * どの範囲にも入らなければ、useFallback_ なら fallbackValue_ を書いて Success、そうでなければ Failure。
+     * NOTE: どの範囲にも入らなければ useFallback_ なら fallbackValue_ を書いて Success、でなければ Failure
      */
     class PlayerAngleDispatch final : public ActionBase
     {

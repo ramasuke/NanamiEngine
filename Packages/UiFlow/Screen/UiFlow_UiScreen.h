@@ -16,11 +16,7 @@ namespace NanamiEngine::UiFlow
         Opened,
         Covered,
     };
-
-    /**
-     * @brief メニュー画面 1 枚。画面の Presenter と同じ GameObject に付け、Presenter が Open() / Close() と Input() を使う
-     * @note  開いている間の操作ロックと、閉じずに破棄されたときの後始末はここが行う
-     */
+    
     class NANAMI_API UiScreen final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable
     {

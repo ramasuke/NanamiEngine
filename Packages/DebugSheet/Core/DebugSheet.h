@@ -14,9 +14,7 @@
 namespace NanamiEngine::DebugSheet
 {
     /**
-     * @brief UnityDebugSheet 風のデバッグメニュー。ページを "Save/Reset All" のようなパスで登録し、
-     *        カテゴリ一覧 -> 子ページとページスタックで辿る
-     * @note  エンジンからは呼ばれない。ゲーム側が毎フレーム Update() と、UI 描画の最後に Render() を呼ぶ
+     * @brief デバッグメニュー。ページを "Save/Reset All" のようなパスで登録し、ページスタックで辿る
      */
     class NANAMI_API Sheet final : public SingletonBase<Sheet>
     {

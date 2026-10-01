@@ -35,10 +35,7 @@ namespace GameCore::Scene::Main
     };
 
     /**
-     * @brief メインシーンの基底。
-     *
-     * 入場の流れは基底が持つ: シーンファイルを読み込む → SubScenes を積む → OnEnterAsync → OnEntered。
-     * どこかで失敗したらロード画面に出して FallbackSceneOnFailure へ逃がす。
+     * @brief メインシーンの基底。入場に失敗したら FallbackSceneOnFailure へ逃がす
      */
     template<typename ContextT>
     requires std::derived_from<ContextT, SceneContextBase>

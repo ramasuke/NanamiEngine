@@ -76,8 +76,7 @@ namespace NanamiEngine::Module::Asset
     };
 
     /**
-     * @brief プレイヤーに「次にすること」を示す段の並び。上から見て最初に当てはまる段を出す。
-     * ストーリーの段を先に、受注中の依頼の段を後ろに並べる
+     * @brief 「次にすること」の段の並び。上から見て最初に当てはまる段を出す
      */
     class NavigationGuide final : public ScriptableObject
     {

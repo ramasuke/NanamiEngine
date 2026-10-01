@@ -1,6 +1,6 @@
 {
     "name": "GrassLand",
-    "gameObjectCount": 18,
+    "gameObjectCount": 19,
     "gameObject_0": {
         "polymorphic_id": 2147483649,
         "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -154087,6 +154087,1571 @@
                         }
                     },
                     "childCount": 0
+                },
+                "mark_": 0
+            }
+        }
+    },
+    "gameObject_18": {
+        "polymorphic_id": 1,
+        "ptr_wrapper": {
+            "id": 2147488349,
+            "data": {
+                "value0": {
+                    "value0": {}
+                },
+                "isActive_": true,
+                "name_": "MovieMarkers",
+                "guid_": {
+                    "value_": "E8256DDD-21D3-4A21-845C-7586FA62A3E2"
+                },
+                "components_": {
+                    "componentCount": 0
+                },
+                "transform_": {
+                    "localPos_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0
+                    },
+                    "localRot_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 1.0
+                    },
+                    "localScale_": {
+                        "value0": 1.0,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 12,
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488350,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "OverviewCameraStart",
+                                "guid_": {
+                                    "value_": "8CCAD80A-1133-4DBF-8E67-8144EB2338CE"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488351,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "4279B779-E9C6-4A3E-9FFA-174CD364299D"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488352,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "8A66701E-2E43-4A61-BD66-B2FA6E8EECAE"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488353,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "D1DC7AEA-7971-45BF-BD50-ABC8B64FD35F"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488354,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "7902757C-EE03-480D-A350-74812DD019AE"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 1450.0,
+                                        "value1": 520.0,
+                                        "value2": 180.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.1834316788683145,
+                                        "value1": -0.3783433837924209,
+                                        "value2": 0.07676538578401639,
+                                        "value3": 0.9040554068603779
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.7019267082214355,
+                                            "value1": -2.7755575615628914e-17,
+                                            "value2": 0.7122491598129272,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.27760064601898193,
+                                            "value1": 0.9209197759628296,
+                                            "value2": 0.2735774517059326,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.655924379825592,
+                                            "value1": -0.3897521495819092,
+                                            "value2": 0.6464182138442993,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1450.0,
+                                            "value1": 520.0,
+                                            "value2": 180.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488355,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "OverviewCameraEnd",
+                                "guid_": {
+                                    "value_": "C711368A-34F2-48C4-A5E3-06B97B241D96"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488356,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "AB987062-3B6F-4337-A7F5-21CBE68C3783"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488357,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "6471875F-4D5B-49F0-9200-4619357AB989"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488358,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "D1DC7AEA-7971-45BF-BD50-ABC8B64FD35F"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488359,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "E029441E-4215-41E1-9E66-59E1D4761752"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 1280.0,
+                                        "value1": 450.0,
+                                        "value2": 340.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.19849149783310094,
+                                        "value1": -0.37374701495880736,
+                                        "value2": 0.08221787041822022,
+                                        "value3": 0.9023051124100128
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.7071067690849304,
+                                            "value1": 0.0,
+                                            "value2": 0.7071067690849304,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.29674240946769714,
+                                            "value1": 0.9076827168464661,
+                                            "value2": 0.29674240946769714,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6418285965919495,
+                                            "value1": -0.4196571409702301,
+                                            "value2": 0.6418285965919495,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1280.0,
+                                            "value1": 450.0,
+                                            "value2": 340.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488360,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "OverviewLookAt",
+                                "guid_": {
+                                    "value_": "D1DC7AEA-7971-45BF-BD50-ABC8B64FD35F"
+                                },
+                                "components_": {
+                                    "componentCount": 0
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 760.0,
+                                        "value1": 110.0,
+                                        "value2": 860.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 1.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 1.0,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 760.0,
+                                            "value1": 110.0,
+                                            "value2": 860.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488361,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour1CameraStart",
+                                "guid_": {
+                                    "value_": "E654064C-E61F-4475-9D2D-61D71ABA7139"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488362,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "D81E07B2-BAF0-4736-BA7E-3771A0BEFC7F"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488363,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "79393A23-1082-4639-890E-F27FC98F0962"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488364,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "34B5E477-9596-4F85-A3B9-4CFAD8D2A867"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488365,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "D7959B40-1FBE-453E-AF10-27727BB52C5A"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 1010.0,
+                                        "value1": 170.0,
+                                        "value2": 560.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.20774022691521452,
+                                        "value1": -0.38522606591839986,
+                                        "value2": 0.08944803630595473,
+                                        "value3": 0.8946753182352001
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.6871998310089111,
+                                            "value1": 0.0,
+                                            "value2": 0.7264684438705444,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.3201077878475189,
+                                            "value1": 0.8976860642433167,
+                                            "value2": 0.3028046786785126,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6521406173706055,
+                                            "value1": -0.4406355321407318,
+                                            "value2": 0.6168897747993469,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1010.0,
+                                            "value1": 170.0,
+                                            "value2": 560.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488366,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour1CameraEnd",
+                                "guid_": {
+                                    "value_": "F02B9DCC-6FDB-46C9-A18C-6DFB5E595CB2"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488367,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "7B70B754-6C89-44B6-B6C9-8CA38FB1F38E"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488368,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "3DD71FEA-0BB1-49C6-ABDD-7C8A7F3011E0"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488369,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "34B5E477-9596-4F85-A3B9-4CFAD8D2A867"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488370,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "7F243149-C61D-42DE-B5A2-5AA9821C4F5C"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 965.0,
+                                        "value1": 140.0,
+                                        "value2": 585.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.19731192785455548,
+                                        "value1": -0.34908036569478856,
+                                        "value2": 0.07544334874364318,
+                                        "value3": 0.9129727282581098
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.7449023723602295,
+                                            "value1": -2.7755575615628914e-17,
+                                            "value2": 0.667173445224762,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.27551087737083435,
+                                            "value1": 0.9107525944709778,
+                                            "value2": 0.3076092302799225,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6076299548149109,
+                                            "value1": -0.41295239329338074,
+                                            "value2": 0.6784217953681946,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 965.0,
+                                            "value1": 140.0,
+                                            "value2": 585.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488371,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour1LookAt",
+                                "guid_": {
+                                    "value_": "34B5E477-9596-4F85-A3B9-4CFAD8D2A867"
+                                },
+                                "components_": {
+                                    "componentCount": 0
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 862.0,
+                                        "value1": 70.0,
+                                        "value2": 700.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 1.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 1.0,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 862.0,
+                                            "value1": 70.0,
+                                            "value2": 700.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488372,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour2CameraStart",
+                                "guid_": {
+                                    "value_": "CBE8AEB4-7B25-41D3-8C07-84706BA03A49"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488373,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "29FD0A16-1F12-493D-8FF6-479E19E5A83A"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488374,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "6EE1BA85-5F88-4CE9-BCDC-9692A2DA1995"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488375,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "D004F6F6-3E75-4D0A-9E9B-DD2C071B8829"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488376,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "3A60B925-F816-4D89-A19A-2D45832790B8"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 1120.0,
+                                        "value1": 290.0,
+                                        "value2": 1290.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.07876395977117441,
+                                        "value1": -0.9103813252380574,
+                                        "value2": 0.20420410959574153,
+                                        "value3": 0.3511449315071676
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.7409869432449341,
+                                            "value1": 2.7755575615628914e-17,
+                                            "value2": 0.67151939868927,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.2868209481239319,
+                                            "value1": 0.9041938185691833,
+                                            "value2": -0.31649208068847656,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6071837544441223,
+                                            "value1": -0.4271223545074463,
+                                            "value2": -0.6699958443641663,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1120.0,
+                                            "value1": 290.0,
+                                            "value2": 1290.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488377,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour2CameraEnd",
+                                "guid_": {
+                                    "value_": "5FC986CC-0BB3-4F14-8FAE-B80917EC63FB"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488378,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "ED9D88AD-2C6B-4BD8-B43F-B5697DB2EB8E"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488379,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "D94111E8-26D7-41B2-8DE8-E7DFCDF577CA"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488380,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "D004F6F6-3E75-4D0A-9E9B-DD2C071B8829"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488381,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "B24518C1-D696-4767-B864-57C6FB081C83"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 1085.0,
+                                        "value1": 265.0,
+                                        "value2": 1255.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.07586520475184749,
+                                        "value1": -0.9137484686276496,
+                                        "value2": 0.201048488037097,
+                                        "value3": 0.3448009748341537
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.7507135272026062,
+                                            "value1": -2.7755575615628914e-17,
+                                            "value2": 0.6606279015541077,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.2772868573665619,
+                                            "value1": 0.907647967338562,
+                                            "value2": -0.31509870290756226,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.5996175408363342,
+                                            "value1": -0.41973230242729187,
+                                            "value2": -0.6813836097717285,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1085.0,
+                                            "value1": 265.0,
+                                            "value2": 1255.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488382,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour2LookAt",
+                                "guid_": {
+                                    "value_": "D004F6F6-3E75-4D0A-9E9B-DD2C071B8829"
+                                },
+                                "components_": {
+                                    "componentCount": 0
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 975.0,
+                                        "value1": 188.0,
+                                        "value2": 1130.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 1.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 1.0,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 975.0,
+                                            "value1": 188.0,
+                                            "value2": 1130.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488383,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour3CameraStart",
+                                "guid_": {
+                                    "value_": "105F6C6E-C949-4ECC-BD7D-E39DBA689A4B"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488384,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "B555E8ED-810C-4A14-89A2-D5012B845BDA"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488385,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "CD204793-8B37-4D1C-B1C0-61DDD9EA8819"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488386,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "6AAB4968-D193-4696-A683-7641FA20F4D1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488387,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "8ACC560E-E6C6-40EB-AEC8-3EB7AF206F15"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 600.0,
+                                        "value1": 300.0,
+                                        "value2": 690.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.21646568219307546,
+                                        "value1": -0.4205096994559436,
+                                        "value2": 0.10403878549012316,
+                                        "value3": 0.874922929297146
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.6246950626373291,
+                                            "value1": 0.0,
+                                            "value2": 0.7808688282966614,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.36410367488861084,
+                                            "value1": 0.8846370577812195,
+                                            "value2": 0.2912829518318176,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6907855272293091,
+                                            "value1": -0.4662802219390869,
+                                            "value2": 0.5526283979415894,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 600.0,
+                                            "value1": 300.0,
+                                            "value2": 690.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488388,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour3CameraEnd",
+                                "guid_": {
+                                    "value_": "8E6B6D37-D8CF-4FBD-8AAA-7C814BBCFA58"
+                                },
+                                "components_": {
+                                    "componentCount": 3,
+                                    "component_0": {
+                                        "polymorphic_id": 18,
+                                        "ptr_wrapper": {
+                                            "id": 2147488389,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "EE5B7F2E-376E-4C14-8F16-13CBBA87610F"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "priority_": {
+                                                    "value": -1
+                                                },
+                                                "overrideFov_": true,
+                                                "fov_": 60.0
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 20,
+                                        "ptr_wrapper": {
+                                            "id": 2147488390,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "CA4106F8-F849-4162-8CCA-FBF8ACB0823F"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "value3": {},
+                                                "value4": {},
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147488391,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "6AAB4968-D193-4696-A683-7641FA20F4D1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "lookAtTargetOffset_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_2": {
+                                        "polymorphic_id": 21,
+                                        "ptr_wrapper": {
+                                            "id": 2147488392,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "288F043D-4572-478D-9F95-F2D86151C94C"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "rotationAmplitude_deg_": {
+                                                    "value0": 0.5,
+                                                    "value1": 0.7,
+                                                    "value2": 0.25
+                                                },
+                                                "positionAmplitude_": {
+                                                    "value0": 0.0,
+                                                    "value1": 0.0,
+                                                    "value2": 0.0
+                                                },
+                                                "frequency_": 0.3,
+                                                "octaves_": 3,
+                                                "amplitudeGain_": 1.0,
+                                                "frequencyGain_": 1.0,
+                                                "blendIn_secs_": 0.6,
+                                                "seed_": {
+                                                    "value0": 27.13,
+                                                    "value1": 53.71,
+                                                    "value2": 89.37
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 570.0,
+                                        "value1": 280.0,
+                                        "value2": 720.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.2187955697148738,
+                                        "value1": -0.4296328788881906,
+                                        "value2": 0.10812278017534886,
+                                        "value3": 0.8693983853553803
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.6074501276016235,
+                                            "value1": 0.0,
+                                            "value2": 0.7943578362464905,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.376007080078125,
+                                            "value1": 0.8808759450912476,
+                                            "value2": 0.28753483295440674,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.6997306942939758,
+                                            "value1": -0.4733472466468811,
+                                            "value2": 0.5350881814956665,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 570.0,
+                                            "value1": 280.0,
+                                            "value2": 720.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147488393,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Tour3LookAt",
+                                "guid_": {
+                                    "value_": "6AAB4968-D193-4696-A683-7641FA20F4D1"
+                                },
+                                "components_": {
+                                    "componentCount": 0
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 400.0,
+                                        "value1": 165.0,
+                                        "value2": 850.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 1.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 1.0,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 400.0,
+                                            "value1": 165.0,
+                                            "value2": 850.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    }
                 },
                 "mark_": 0
             }

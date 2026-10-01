@@ -18,8 +18,7 @@ namespace NanamiEngine::Module::Network
 
 namespace
 {
-    // Engine既定のPacketType名をここで登録しておく。ゲーム独自のPacketTypeは
-    // Assets/Scripts/Core/Network/Packet/Custom_PacketTypeNameRegistration.cpp が登録する。
+    // Engine既定のPacketType名を登録する
     struct DefaultPacketTypeNameRegistration
     {
         DefaultPacketTypeNameRegistration()

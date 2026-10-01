@@ -10,8 +10,7 @@ namespace NanamiEngine::Module::Component
     public:
         virtual ~IShaderConstantBufferHost() = default;
 
-        // カスタムシェーダー用の定数バッファハンドルを返す(未生成なら生成する)。
-        // シェーダー(vs/ps)が未設定/無効な場合は -1。
+        // 定数バッファハンドルを返す(未生成なら生成)。シェーダーが無効なら -1
         [[nodiscard]] virtual int GetOrCreateShaderConstantBufferHandle() = 0;
 
         template<class Archive> void save(Archive& archive, const std::uint32_t version) const { }

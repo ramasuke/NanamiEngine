@@ -13,9 +13,7 @@ namespace GamePlay::Prop
 {
     /**
      * @brief facility_ が直っているかどうかで、壊れた見た目と直った見た目の GameObject を切り替える。
-     *        StoryProgress が変わるとその場で切り替わる。
-     *        restoredPrefab_ は建った時だけ子に生成する(隠すだけだとコライダーが残るため)。
-     *        掲示板の「復興」で選ばれている間は下見として、直った見た目を出して previewCamera_ へ寄せる
+     * NOTE: restoredPrefab_ は建った時だけ子に生成する (隠すだけだとコライダーが残るため)
      */
     class RestorationGate final : public Component::ComponentBase,
                                   public LifeCycleCallback::IStartable

@@ -49,8 +49,8 @@ namespace NanamiEngine::Module::Network
     };
 
     /**
-     * 「対象NetworkObjectIdのコンポーネントに対してメソッドを1つ呼ぶ」RPCを表す汎用機構。
-     * WARNING: 呼び出し側は本クラスを直接使わず、必ずRpcDef経由で使って下さい(型変更をビルドエラーで検出するため)
+     * 対象NetworkObjectIdのコンポーネントのメソッドを1つ呼ぶRPC
+     * WARNING: 直接使わず必ずRpcDef経由で使う
      */
     template<typename... Args>
     requires (RPCPackable<Args> && ...)
@@ -127,8 +127,7 @@ namespace NanamiEngine::Module::Network
     };
 
     /**
-     * RpcTypeとArgsを1つのシンボルに束ねる。Send側/OnTargeted側は必ずこのエイリアスを
-     * 経由することで、Argsの型・個数の食い違いをビルドエラーとして検出できる。
+     * RpcTypeとArgsを束ね、送受信側のArgsの食い違いをビルドエラーにする
      */
     template<auto RpcType, typename... Args>
     struct RpcDef final

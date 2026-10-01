@@ -2,8 +2,6 @@
 #include <cstdint>
 #include <vector>
 
-#include "vec3.hpp"
-#include "gtc/quaternion.hpp"
 #include "cereal/types/vector.hpp"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
@@ -16,10 +14,8 @@
 namespace GamePlay::Title
 {
     /**
-     * @brief タイトル画面のカメラ。shotsRoot_ の子の VirtualCamera を上から順に映し、最後まで行ったら最初に戻る。
-     *
-     * 各カメラは子 (先頭) の位置と向きへ、ショットの長さをかけてゆっくり動く (序章の OpeningShots と同じ置き方)。
-     * ショットの切り替えは dipMask_ (全面の黒) を一瞬下ろして繋ぐ。dipDuration_secs_ が 0 ならそのまま切る
+     * @brief タイトル画面のカメラ。shotsRoot_ の子の VirtualCamera を順に映してループする。
+     * @note  各ショットはカメラからその先頭の子の VirtualCamera へ Brain の補間で動く
      */
     class TitleCameraDirector final : public Component::ComponentBase,
                                       public LifeCycleCallback::IStartable,
@@ -29,10 +25,7 @@ namespace GamePlay::Title
         struct Shot
         {
             std::weak_ptr<CineMachine::CineMachineVirtualCamera> camera;
-            glm::vec3 fromPos = glm::vec3(0.0f);
-            glm::quat fromRot = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-            glm::vec3 toPos   = glm::vec3(0.0f);
-            glm::quat toRot   = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+            std::weak_ptr<CineMachine::CineMachineVirtualCamera> endCamera;
             float duration_secs = 0.0f;
         };
 
@@ -40,7 +33,6 @@ namespace GamePlay::Title
         void OnUpdate() override;
 
         void BeginShot(std::size_t index);
-        void ApplyShotPose(const Shot& shot, float rate) const;
         void ApplyDip(float rate) const;
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) shotsRoot_;

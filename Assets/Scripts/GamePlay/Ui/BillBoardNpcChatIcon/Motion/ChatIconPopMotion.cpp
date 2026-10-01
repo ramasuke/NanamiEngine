@@ -39,8 +39,7 @@ namespace GamePlay::Ui
         if (!billboard)
             return false;
 
-        // BillBoardNpcChatIcon だけでなく GameObjectSetEnable で直接切り替えられることもあるので、
-        // 有効/無効は呼び出し元を問わず毎フレームの変化で検知する
+        // 外から直接切り替えられることもあるので、有効/無効は毎フレームの変化で検知する
         const bool isEnabled = billboard->IsEnable();
         if (isEnabled && !wasEnabled_)
         {

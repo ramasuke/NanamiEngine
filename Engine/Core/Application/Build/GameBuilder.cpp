@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::Application::Build
 {
     namespace
     {
-        // tools/dist/manifest.py の is_excluded と揃える。ただし .meta は実行時に要るので配る
+        // AssetUpdater::Dist::IsExcludedFromDistribution と揃える。ただし .meta は実行時に要るので配る
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORIES[]      = { L"assets/scripts" };
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORY_NAMES[] = { L"_source" };
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_EXTENSIONS[]      = { L".fbx", L".blend", L".blend1", L".efkproj", L".h", L".cpp", L".bak" };

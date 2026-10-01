@@ -5,6 +5,7 @@
 #include "../../../../Core/Application/ApplicationBase.h"
 #include "../../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
+#include "../../../../../Libs/LibCore/ImGui/Wrapper/ImGuiWrapper.h"
 
 namespace NanamiEngine::Module::Gui::Graph
 {
@@ -37,11 +38,12 @@ namespace NanamiEngine::Module::Gui::Graph
         options_.mMaxZoom                  = 1.6f;
         options_.mHeaderHeight             = 22.0f;
         options_.mDrawIONameOnHover        = true;
+        options_.mFontForSize              = &FontForSize;
     }
 
     void GraphEditorHost::Draw(GraphEditor::Delegate& delegate, const bool readOnly)
     {
-        DrawToolbar();
+        DrawToolbar(readOnly);
 
         isFocused_ = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
         if (isFocused_ && !ImGui::GetIO().WantTextInput && ImGui::IsKeyPressed(ImGuiKey_F, false))
@@ -80,7 +82,7 @@ namespace NanamiEngine::Module::Gui::Graph
         fit_ = selectedOnly ? GraphEditor::Fit_SelectedNodes : GraphEditor::Fit_AllNodes;
     }
 
-    void GraphEditorHost::DrawToolbar()
+    void GraphEditorHost::DrawToolbar(const bool readOnly)
     {
         if (ImGui::SmallButton("Fit All (F)"))
             RequestFit();
@@ -105,6 +107,13 @@ namespace NanamiEngine::Module::Gui::Graph
                               "右クリック: メニュー\n"
                               "F: 全体表示");
         }
+
+        if (toolbarExtra_ && !readOnly)
+        {
+            ImGui::SameLine();
+            toolbarExtra_();
+        }
+        toolbarExtra_ = nullptr;
     }
 
     GraphEditor::Template MakeNodeTemplate(const ImU32 headerColor, const ImU8 inputCount, const ImU8 outputCount)
@@ -121,6 +130,14 @@ namespace NanamiEngine::Module::Gui::Graph
             nullptr,
             nullptr
         };
+    }
+
+    ImFont* FontForSize(const float pixelSize)
+    {
+        const ImGuiIO& io        = ImGui::GetIO();
+        ImFont*        baseFont  = io.Fonts->Fonts.empty() ? ImGui::GetFont() : io.Fonts->Fonts[0];
+        ImFont*        largeFont = ImGuiWrapper::Instance().LargeFont();
+        return largeFont && pixelSize > baseFont->FontSize ? largeFont : baseFont;
     }
 
     void ShowInInspector(const std::weak_ptr<Object::IObject>& object)

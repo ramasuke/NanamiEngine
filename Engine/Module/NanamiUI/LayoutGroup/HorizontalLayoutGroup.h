@@ -7,8 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 子GameObjectをX軸方向に一列に並べる。子の実際の見た目サイズは知らないため、
-    // cellSize_を「各子が占めるものとみなす仮想サイズ」として並べる(実サイズの変更は行わない)。
+    // 子GameObjectを cellSize_ 間隔でX軸方向に一列に並べる (子の実サイズは見ない)
     class NANAMI_API HorizontalLayoutGroup final : public Component::ComponentBase,
                                         public LifeCycleCallback::ILateUpdatable
     {

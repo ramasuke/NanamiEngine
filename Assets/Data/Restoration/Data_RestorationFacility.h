@@ -14,9 +14,8 @@ namespace NanamiEngine::Module::Asset
     constexpr auto RESTORATION_FACILITY_EXTENSION_LABEL = ".restorationFacility";
 
     /**
-     * @brief 掲示板の「復興」に貼る普請の見積もり1枚。お金を払うと facility_ が直ったことになる。
-     * 前提(requiredStoryFlag_ / requiredFacility_)は -1 で「なし」。一覧は docs/Story.md §5
-     * 建つ場所と姿は、シーンの同じ facility の RestorationGate が持つ(掲示板で選ぶとそこへカメラが寄る)
+     * @brief 復興の普請1件。お金を払うと facility_ が直ったことになる
+     * NOTE: requiredStoryFlag_ / requiredFacility_ は -1 で前提なし
      */
     class RestorationFacility final : public ScriptableObject
     {

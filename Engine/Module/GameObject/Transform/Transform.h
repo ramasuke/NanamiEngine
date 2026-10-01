@@ -51,9 +51,7 @@ namespace NanamiEngine::Module::GameObject
         
         void SetParent(const std::weak_ptr<IGameObject>& parent, bool keepWorldScale = true);
 
-        // siblingIndex は「自分自身を除去する前」の parent の子リストにおける挿入位置
-        // （0 = 先頭, children.size() = 末尾）。同一親内での並べ替え時のインデックス補正は
-        // 内部で自動的に行うため、呼び出し側は補正不要。
+        // siblingIndex は自分を除去する前の子リストでの挿入位置 (同一親内の補正は内部で行う)
         void SetParent(const std::weak_ptr<IGameObject>& parent, std::size_t siblingIndex, bool keepWorldScale = true);
         [[nodiscard]] std::shared_ptr<IGameObject> GetParent    () const { return parent_         .lock(); }
         [[nodiscard]] std::shared_ptr<IGameObject> GetGameObject() const { return ownerGameObject_.lock(); }

@@ -11,8 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // 全ボス共通のHP表示。shards_ の結晶1本（Slider）がHPの 1/結晶数 にあたり、右端（最後の要素）の結晶から欠けていく。
-    // 描画は子オブジェクトの Slider / ImageRenderer / BlendImageRenderer / TextRenderer が行う
+    // ボスのHP表示。shards_ の結晶1本が HP の 1/結晶数 で、最後の要素から欠けていく
     class BossHealthGauge final : public Component::ComponentBase,
                                   public LifeCycleCallback::IUpdatable
     {

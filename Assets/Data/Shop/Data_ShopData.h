@@ -10,10 +10,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto SHOP_DATA_EXTENSION_LABEL = ".shopData";
 
-    /**
-     * @brief 店の品揃え。品を足すときはこのアセットに1行足すだけで、UI もシーンも触らない。
-     * 品物のアセットが消えている行は表示側で飛ばす。
-     */
+    /** @brief 店の品揃え。NOTE: 品物のアセットが消えている行は表示側で飛ばす */
     class ShopData final : public ScriptableObject
     {
     public:

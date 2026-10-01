@@ -57,13 +57,16 @@ namespace GameCore::Scene::Main
     namespace
     {
         Coroutine::Task<void> PlayStageRewardsAsync(
-            std::shared_ptr<GamePlay::Prop::FloatingStone> greenStone,
-            std::shared_ptr<GamePlay::Prop::ReturningIsland> island,
-            std::shared_ptr<GamePlay::Prop::FloatingStone> lightStone,
+            std::weak_ptr<GamePlay::Prop::FloatingStone> weakGreenStone,
+            std::weak_ptr<GamePlay::Prop::ReturningIsland> weakIsland,
+            std::weak_ptr<GamePlay::Prop::FloatingStone> weakLightStone,
             std::weak_ptr<IPlayerAvatar> playerAvatar,
             std::function<bool()> canStart)
         {
-            // NOTE: シーンを抜けたら残りは次に来たときに改めて流す
+            const auto greenStone = weakGreenStone.lock();
+            const auto island     = weakIsland.lock();
+            const auto lightStone = weakLightStone.lock();
+
             if (greenStone)
             {
                 co_await greenStone->PlayReturnAsync(
@@ -89,12 +92,13 @@ namespace GameCore::Scene::Main
         }
 
         Coroutine::Task<void> PlayNestDepartureAsync(
-            std::shared_ptr<CineMachine::CineMachineVirtualCamera> camera,
+            std::weak_ptr<CineMachine::CineMachineVirtualCamera> weakCamera,
             std::shared_ptr<Asset::SoundFile> rumble,
             std::weak_ptr<IPlayerAvatar> playerAvatar,
             const float departure_secs)
         {
-            // NOTE: カメラの向きはシーンに置いたまま (島の南の外から、北の嵐と島を一緒に映す)
+            // NOTE: カメラはシーンの物なのでローカルに持ち直す
+            const auto camera = weakCamera.lock();
             GamePlay::Prop::StoryMovie::CameraScope scope(playerAvatar, camera, nullptr, glm::vec3(0.0f));
             scope.Begin();
             if (rumble)
@@ -218,7 +222,6 @@ namespace GameCore::Scene::Main
         playerAvatar_.reset();
         attachments_ = {};
         
-        // NOTE: 敵の BT (PlayBGM) が差し替えた BGM も残さないよう、シーンの BGM だけでなく全部止める
         GamePlay::Sound::SoundPlayer::StopAllBgm();
     }
 

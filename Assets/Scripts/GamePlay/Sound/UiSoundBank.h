@@ -8,9 +8,8 @@
 namespace GamePlay::Sound
 {
     /**
-     * @brief UI の共通効果音 (UiSoundBankData) を鳴らす。鳴らす側の UI が FIELD(UiSoundBankData) を持って渡す
-     * SoundPlayer と違い 3D 位置を使わず DxLib で直接 2D 再生するので、SoundPlayer の無いシーン
-     * (GameOverScene / ChattingUiScene など) でも鳴る
+     * @brief UI の共通効果音を 2D で直接鳴らす
+     * NOTE: SoundPlayer を使わないので、SoundPlayer の無いシーンでも鳴る
      */
     class UiSoundBank final
     {

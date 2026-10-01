@@ -8,8 +8,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 列数/行数のどちらを固定して折り返すか。UnityのFlexibleに相当する
-    // 「利用可能幅から自動算出」は、このエンジンにRectTransform(幅の概念)が無いため未対応。
+    // 列数/行数のどちらを固定して折り返すか
     enum class GridConstraint : int
     {
         FixedColumnCount = 0,
@@ -61,8 +60,7 @@ namespace NanamiEngine::Module::NanamiUi
         return "Unknown";
     }
 
-    // 子GameObjectを格子状に並べる。子の実際の見た目サイズは知らないため、
-    // cellSize_を「各子が占めるものとみなす仮想サイズ」として並べる(実サイズの変更は行わない)。
+    // 子 GameObject を cellSize_ の格子状に並べる (子の実サイズは変えない)
     class NANAMI_API GridLayoutGroup final : public Component::ComponentBase,
                                   public LifeCycleCallback::ILateUpdatable
     {

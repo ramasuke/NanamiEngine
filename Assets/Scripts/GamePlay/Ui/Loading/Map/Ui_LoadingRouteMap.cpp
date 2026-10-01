@@ -282,7 +282,7 @@ namespace GamePlay::Ui
             const char isPassed = at <= progress01 ? 1 : 0;
             if (dashPassed_[i] != isPassed)
             {
-                // 通り過ぎた区間を赤インクでなぞる。差し替えは変わったときだけ
+                // 通り過ぎた区間を赤インクでなぞる
                 // NOTE: 航路を出した直後(-1 から)は弾ませない
                 if (isPassed && dashPassed_[i] == 0)
                 {

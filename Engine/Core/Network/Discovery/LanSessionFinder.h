@@ -12,8 +12,7 @@
 namespace NanamiEngine::Core::Network
 {
     /**
-     * 探す側: セッションキーが一致するホストを LAN から探す。
-     * 同一 PC(127.0.0.1)・255.255.255.255・各 IPv4 アダプタのサブネットブロードキャストへ問い合わせる
+     * セッションキーが一致するホストを LAN から探す (同一 PC と各サブネットへブロードキャスト)
      */
     class NANAMI_API LanSessionFinder final
     {

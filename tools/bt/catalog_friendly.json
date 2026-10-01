@@ -1,5 +1,5 @@
 {
-  "generated_from": "9da1694d6dc061040d890b5fe1baf86cd9776fad",
+  "generated_from": "8b67a628a628a3eb811426d312285ac6b99ac74b",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -272,15 +272,9 @@
       "class": "SampleFirstEventDragonChat",
       "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat",
       "leaf": "SampleFirstEventDragonChat",
-      "version": 1,
+      "version": 2,
       "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/Sample/Friendly_Behaviour_Action_SampleFirstEventDragonChat.h",
       "params": [
-        {
-          "key": "appearFirstEventDragonPosition_",
-          "member": "appearFirstEventDragonPosition_",
-          "named": true,
-          "shape": "vec3"
-        },
         {
           "key": "enemyFactory_",
           "member": "enemyFactory_",

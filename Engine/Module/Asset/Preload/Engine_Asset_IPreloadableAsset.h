@@ -3,10 +3,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    /**
-     * @brief 起動時には読まず、初めて使われるときかシーンの先読みで DxLib のハンドルを作るアセット。
-     *        AssetPreloader が先読みと解放に使う
-     */
+    /** @brief 初めて使われるときかシーンの先読みでハンドルを作るアセット */
     class NANAMI_API IPreloadableAsset
     {
     public:

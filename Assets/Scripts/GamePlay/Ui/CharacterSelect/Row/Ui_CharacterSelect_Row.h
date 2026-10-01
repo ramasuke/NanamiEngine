@@ -13,10 +13,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 酒場の板に打ち付けた手配書1枚。名簿の1行にあたる。
-     * 中身は実行時に Initialize で流し込むので、行ごとのアセット参照は持たない。
-     */
+    /** @brief キャラクター選択の名簿の1行 (手配書1枚)。中身は Initialize で流し込む */
     class CharacterSelectRow final : public Component::ComponentBase,
                                      public LifeCycleCallback::IAwakable
     {

@@ -9,8 +9,7 @@ namespace NanamiEngine::R4
     template <typename T>
     class ReactiveProperty;
 
-    ///NOTE: 値を読む・購読するだけの側（R3 の ReadOnlyReactiveProperty<T>）
-    ///      元の ReactiveProperty と状態を共有するので、元が破棄された後も安全に読める
+    ///NOTE: 読み取り専用の側。状態を共有するので元が破棄された後も安全に読める
     template <typename T>
     class ReadOnlyReactiveProperty final
     {
@@ -35,11 +34,8 @@ namespace NanamiEngine::R4
         rxcpp::subjects::behavior<T> behavior_;
     };
 
-    ///NOTE: 今の値を持ち、変わった時に通知する（R3 の ReactiveProperty<T>）
-    ///      - Value(v) は == で比較できる型なら同じ値のとき通知しない。必ず通知したいときは OnNext(v) / ForceNotify()
-    ///      - Subscribe した瞬間に今の値が流れる
-    ///      - 持ち主がコピーされた時に購読者が連動しないよう、コピー先は値だけ複製した新しい実体から始まり、
-    ///        代入は Value(v) と同じ（自分の購読者はそのまま、変わっていれば通知）
+    ///NOTE: 今の値を持ち、変わった時に通知する。Value(v) は同じ値なら通知しない (必ず通知は ForceNotify())
+    ///      コピーは値だけ複製した新しい実体になり、購読者は引き継がない
     template <typename T>
     class ReactiveProperty
     {

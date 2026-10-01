@@ -19,8 +19,7 @@
 GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
 {
     filePath_ = filePath;
-    // 未作成のファイルは空の Prefab として扱う（新規作成 → Save のフローで使う）。
-    // 破損している場合は DeserializeException が投げられ、Prefab は生成されない
+    // NOTE: 未作成のファイルは空の Prefab、破損していれば DeserializeException
     NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
     {
         archive(CEREAL_NVP(isActive_    ));
@@ -358,9 +357,7 @@ CopyForInstantiate()
 
 std::shared_ptr<GameObject::PrefabGameObject> GameObject::PrefabGameObject::CreateWorkingCopy() const
 {
-    // Prefab ウィンドウで編集するための使い捨てコピー。CopyForInstantiate() と異なり
-    // シーンへの新規インスタンス化ではなく同じファイルへの保存を目的とするため、
-    // guid_ / copiedObjectGuidList_ はリセットせず元のまま引き継ぐ。
+    // 同じファイルへ保存する編集用コピーなので guid_ / copiedObjectGuidList_ は引き継ぐ
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);

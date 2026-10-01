@@ -11,9 +11,7 @@
 namespace GamePlay::Prop
 {
     /**
-     * @brief 拠点のイベント掲示板。近づくとアイコンが変わり、調べると告知一覧のUIを出す。
-     * 一覧の中身はUIプレハブ側が .eventBoard から読むので、ここは開くだけ。
-     * board_ にまだ見ていない受付中のメインストーリーの依頼があれば、離れている間はビックリマークを出す。
+     * @brief イベント掲示板。調べると告知一覧のUIを開き、未読のメイン依頼があればビックリマークを出す
      */
     class EventNoticeBoard final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,

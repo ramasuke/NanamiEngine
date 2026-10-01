@@ -132,7 +132,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] int   errorLineUnits_       = 34;
         [[serialize(0)]] int   errorMaxLines_        = 3;
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
-        // 降りるときに行き過ぎてから戻る量 (OutBack)
+        
         [[serialize(2)]] float dropOvershoot_ = 1.4f;
         [[serialize(3)]] std::string offerNoteText_     = "受け取ったあと、ゲームを起動し直します";
         [[serialize(3)]] std::string receivedNoteText_  = "ゲームを起動し直してください";

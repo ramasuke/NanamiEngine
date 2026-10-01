@@ -24,11 +24,8 @@ namespace GamePlay::Network
         void SetNextRoom(RelayRoom room);
 
         /**
-         * @brief SetNextRoom で決めた部屋に入る
-         *        公開部屋: 中継サーバーで同じステージの部屋に相席する。つながらなければ LAN で探し、居なければ自分がホストになる
-         *        非公開部屋: 中継サーバーでコード付きの部屋を作る・コードの部屋に入る。LAN には切り替えない
+         * @brief SetNextRoom で決めた部屋に入る。公開部屋だけ LAN → 自分がホストへフォールバックする
          * @return 入れなかったときの理由。入れた・runner が途中で消えたときは nullopt
-         * @note 入れたかどうかは runner の IsStarted() / GetConnectionState() で見る
          */
         [[nodiscard]] Coroutine::Task<std::optional<std::string>> JoinOrHostAsync(std::weak_ptr<CustomNetworkRunner> runner, std::string stageKey);
 

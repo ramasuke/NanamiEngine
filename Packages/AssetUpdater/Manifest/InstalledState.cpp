@@ -19,9 +19,7 @@ namespace NanamiEngine::AssetUpdater
 {
     namespace
     {
-        // tools/dist/manifest.py の SCHEMA と揃える
         constexpr int     INSTALLED_STATE_SCHEMA        = 1;
-        // NOTE: 配信した版ではなく書き出したときの Assets/ そのものなので、版名の代わり
         constexpr char    INSTALLED_STATE_VERSION[]     = "local";
         constexpr wchar_t INSTALLED_STATE_META_SUFFIX[] = L".meta";
         constexpr wchar_t INSTALLED_STATE_TEMP_SUFFIX[] = L".tmp";

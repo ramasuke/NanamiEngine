@@ -203,8 +203,8 @@ screen), open / close with `screen_->Open()` / `Close()`, and read input with
 Only the top screen gets input (keys and `NanamiUi::Button` clicks under it); a nested screen is handled with
 `OnCovered()` / `OnRevealed()`. The current input device is `UiFlow::InputDevice::Current()`, and `UiFlow::DeviceHint` swaps
 a hint sprite per device (keyboard wooden tag / gamepad brass stud, same canvas size; sprites and prefab wiring come from
-`python tools/art/device_hint.py --emit` / `--patch`, see `docs/UIDesign.md` §5). Shop / StageReturn / Settings / EventBoard /
-CharacterSelect are migrated; Title / GameOver / StageSelect / AssetUpdate still read input themselves.
+`python tools/art/device_hint.py --emit` / `--patch`, see `docs/UIDesign.md` §5). Every menu screen is migrated (Title / GameOver /
+AssetUpdate are resident, unlocked screens); "press any key" and digit entry are `Input().IsAnyPressed()` / `PressedDigit()`.
 See **`Packages/UiFlow/README.md`**.
 
 ## Multiplayer: relay server & room codes
@@ -404,32 +404,30 @@ officially supported CLI.
 
 ## Asset distribution (manifest + Cloudflare R2)
 
-To cut a release of the runtime assets, use the toolkit instead of listing or uploading files by hand:
+To cut a release of the runtime assets, use the editor toolbar's **Asset Dist** button instead of listing or uploading
+files by hand. It is C++ in the engine (`Packages/AssetUpdater/Dist/`, run on a worker thread by `Dist::DistJob`; the old
+Python `tools/dist` is gone) and is shown only when `ProjectConfig/Build/AssetDistribution/` exists:
 
-```
-python -m tools.dist build --version <v> [--base-url <url>] [--out <file>]
-python -m tools.dist upload [manifest.json] [--dry-run] [--no-release]   # blobs -> manifest-<v>.json -> manifest.json
-python -m tools.dist show <manifest.json>              # summary + largest entries
-python -m tools.dist diff <installed.json> <manifest.json>   # what clients would download
-python tools/dist/selftest.py             # run after touching tools/dist/{manifest,upload,config,refs}.py
-```
+- **Build Manifest** - scan `Assets/` and write `<project>/manifest.json`
+- **Upload (Dry Run)** / **Upload (Release)** - blobs -> `manifest-<v>.json` -> `manifest.json` (Release needs a successful
+  build of that version in this session, then a confirm)
+- **Diff vs Live** - the live `manifest.json` on R2 vs the local one (what clients would download)
+- **Self Test** - `Dist/DistSelfTest`; run it after touching anything under `Packages/AssetUpdater/Dist/`
 
-The editor toolbar's **Asset Dist** button (`Packages/AssetUpdater/Editor/`, shown only when `tools/dist/` exists) runs the
-same `build` / `upload --dry-run` / `upload` (Release needs a successful build of that version first, then a confirm);
-its Version / Python fields are stored in `ProjectConfig/Build/AssetDistribution/`.
+Version / Required Client Version / Remote / Public Base URL / Rclone are stored in `ProjectConfig/Build/AssetDistribution/`.
 
 `manifest.json` lists every deliverable file under `Assets/` (2026-09-18: **1,812 entries / 1.76 GB**, 3,146
 unique blobs) and is what `Packages/AssetUpdater/` fetches at runtime. It is hosted on **Cloudflare R2**
-(bucket `nanami-assets`, uploaded through the rclone remote `r2`; the target and public URL live in
-`tools/dist/dist_config.json`, the keys in `%APPDATA%\rclone\rclone.conf` outside the repo). Server layout:
+(bucket `nanami-assets`, uploaded through the rclone remote `r2` - rclone is still the uploader, `Dist/Rclone`; the target
+and public URL live in `ProjectConfig/Build/AssetDistribution/`, the keys in `%APPDATA%\rclone\rclone.conf` outside the repo). Server layout:
 `files/<sha256>` (immutable blobs, bodies and `.meta` alike) + `manifest-<v>.json` (immutable) +
 `manifest.json` (the only mutable object - swapping it *is* the release; rollback = copy an older
 `manifest-<v>.json` over it). Clients fetch `baseUrl + <hash>`, so download URLs are always ASCII; an entry's
 `path` is only where the file goes locally (the `Assets/` tree, because `contentPath_` and the `.mv1`/`.efkefc`
-relative references depend on it). `upload` sends only hashes missing on the remote, re-hashes the actual
+relative references depend on it). Upload sends only hashes missing on the remote, re-hashes the actual
 bytes before sending, and refuses to reuse a version number with different content. The public URL is still
 the development-only `r2.dev` one: before shipping to players, replace it with a custom domain in
-`dist_config.json` **and** in the client's `MANIFEST_URL` (compiled into the exe, so that needs a new build).
+*Public Base URL* **and** in the client's `MANIFEST_URL` (compiled into the exe, so that needs a new build).
 
 An entry covers a body file **and its `.meta`** (`guid`/`metaHash`/`metaSize`), because `.meta` is where the
 guid and `contentPath_` live and the two must never drift apart.
@@ -439,16 +437,16 @@ from inside another file (`.efkmodel` and textures under `.efkefc`, `<name>.fbm/
 `Tree_VS.vso`/`Tree_PS.pso`, `.mat`/`.mtl`). They ship with an empty `guid`/`metaHash`, identified by
 path. Exclusion is a denylist of dev-only things (`Assets/Scripts/`, **any `_Source/` directory at any
 depth**, `*.fbx`, `*.blend`, `*.blend1`, `*.efkproj`, `*.h`, `*.cpp`, `*.bak`, `desktop.ini`) - see
-`tools/dist/manifest.py`. `.blend` files embed the author's Windows user name and full paths (one used to
+`Dist/DistExclusion.cpp` (`GameBuilder` mirrors it). `.blend` files embed the author's Windows user name and full paths (one used to
 slip through); after loosening any rule, re-scan the shipped set for them (UTF-8/UTF-16LE/CP932, `.mv1`
 decoded). `ProjectConfig/` and `LocalPrefs/` are intentionally **not** distributed.
 
-`build` **refuses** (exit 1, no manifest written) when a shipped `.efkefc`/`.mv1` references a file that exists
+Build **refuses** (fails, no manifest written) when a shipped `.efkefc`/`.mv1` references a file that exists
 on this PC but won't ship (outside `Assets/`, or excluded) - it would render here and be missing on players' PCs
-(`tools/dist/refs.py`; 2026-09-18: 8 effects pointed at `Desktop\Effekseer素材`, recompiled to use the identical
+(`Dist/DistReferences.cpp`; 2026-09-18: 8 effects pointed at `Desktop\Effekseer素材`, recompiled to use the identical
 copies next to them). Fix the reference; don't loosen the check. References that exist nowhere are not reported.
 
-`upload` **refuses** a release that changes or removes an existing font (`.ttf`/`.otf`/`.ttc`) relative to the live
+Upload **refuses** a release that changes or removes an existing font (`.ttf`/`.otf`/`.ttc`) relative to the live
 `manifest.json` unless `requiredClientVersion` is raised above the live one: the client applies updates on the title
 screen while the game runs, and `TtfFontFile` keeps fonts registered via `AddFontResourceEx` until exit, so every
 player's apply would fail. Ship font changes in a new zip. `requiredClientVersion` defaults to Build Settings' *Client Version* (the game's own version, compared as dot-separated numbers). The client side (`Packages/AssetUpdater`: check ->
@@ -461,9 +459,9 @@ Hashing is cached by mtime+size, and the `.efkefc`/`.mv1` reference lists by con
 `<repo>/.manifest_hash_cache.json` (gitignored, ~22s cold / ~4s warm).
 `manifest.json` itself is a release artifact and is gitignored. Standing caveats: **74 asset paths are
 non-ASCII** (harmless for download URLs, but the client must convert the UTF-8 `path` to UTF-16 before
-touching the filesystem), **71 `.meta` are still CP932** (pre-`/execution-charset:utf-8`; `read_guid` falls
+touching the filesystem), **71 `.meta` are still CP932** (pre-`/execution-charset:utf-8`; `ReadMetaGuid` falls
 back to CP932), Python's default `urllib` User-Agent gets **403 from r2.dev**, and rclone's `--immutable` is
-**ignored by `copyto`** (so `upload.py` checks versioned manifests itself). See **`tools/dist/README.md`**.
+**ignored by `copyto`** (so `Dist/Rclone` checks versioned manifests itself). See **`Packages/AssetUpdater/README.md`**.
 
 ## AutoMCP (Claude Code <-> running editor)
 

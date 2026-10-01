@@ -14,10 +14,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の上に吊った木札の見出し1枚。選ばれた札は明るくして少し下へ垂らす。
-     * 未読があれば右肩に封蝋の数字を出す。
-     */
+    /** @brief 掲示板の上に吊った木札の見出し1枚 (選択表示と未読バッジ) */
     class EventBoardTab final : public Component::ComponentBase,
                                 public LifeCycleCallback::IAwakable
     {

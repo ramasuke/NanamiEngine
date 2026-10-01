@@ -1,5 +1,5 @@
 {
-  "generated_from": "b89e68c5974bc32bd43afef618de9a7e18461828",
+  "generated_from": "8b67a628a628a3eb811426d312285ac6b99ac74b",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -800,7 +800,7 @@
       "class": "FallIsland",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::FallIsland",
       "leaf": "FallIsland",
-      "version": 1,
+      "version": 2,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/FallIsland/Enemy_Behaviour_Action_FallIsland.h",
       "params": [
         {
@@ -811,10 +811,11 @@
           "type": "IGameObject"
         },
         {
-          "key": "pivot_",
-          "member": "pivot_",
+          "key": "pivotPos_",
+          "member": "pivotPos_",
           "named": true,
-          "shape": "vec3"
+          "shape": "field",
+          "type": "IGameObject"
         },
         {
           "key": "tiltAxis_",

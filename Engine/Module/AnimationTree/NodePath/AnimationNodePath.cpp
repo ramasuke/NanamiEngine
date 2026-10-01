@@ -131,7 +131,9 @@ void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend(const float ti
 
 const Guid& AnimationTree::AnimationNodePath::GetGuid() const
 {
-    return {};
+    // NOTE: 遷移は GUID を持たないので空を返す。{} を返すと一時オブジェクトへの参照になる
+    static const Guid EMPTY_GUID{};
+    return EMPTY_GUID;
 }
 
 void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()

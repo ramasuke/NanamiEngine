@@ -266,8 +266,7 @@ namespace NanamiEngine::Core::MainWindow
     {
         UpdateAsyncSceneLoad();
 
-        // 非同期ロード中はメインシーンが居ないのが正常。ここで別シーンに差し替えると
-        // ResetPhysics と SkipNextFrame(60) がロード 1 回につき二重に走る
+        // NOTE: 非同期ロード中はメインシーンが無いのが正常 (差し替えると ResetPhysics が二重に走る)
         if (!mainScene_.lock() && !IsSceneLoading())
         {
             if (!Scenes().empty())

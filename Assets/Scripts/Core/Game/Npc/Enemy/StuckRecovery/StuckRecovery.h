@@ -25,9 +25,8 @@ namespace NanamiEngine::Module::BlackBoard
 namespace GameCore::Npc::Enemy
 {
     /**
-     * @brief 地形にはまった敵を段階的に脱出させる
-     * @details 進めない状態が続いたら開けた方向へ押し出し、それでも抜けなければ最後に自由に動けていた地点へワープする。
-     *          BT の Tick の後に権威側だけで呼ぶ (ワープ後の位置は NetworkTransform が同期する)
+     * @brief 地形にはまった敵を開けた方向へ押し出し、抜けなければ最後に自由だった地点へワープさせる
+     * @note  権威側だけで呼ぶ
      */
     class StuckRecovery final
     {

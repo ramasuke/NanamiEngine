@@ -15,6 +15,7 @@ namespace NanamiEngine::CineMachine::Behaviour
                                        public IVirtualCameraBehaviour
     {
     public:
+        /** @brief 振幅は intensity^2 に比例する。1 を超えた分は trauma を 1 に保ったまま振幅だけ上乗せする */
         void Shake(float intensity, float duration);
         void Shake();
 
@@ -31,14 +32,13 @@ namespace NanamiEngine::CineMachine::Behaviour
         void OnUpdate() override;
         void MainCameraCallback() override;
 
-        // 「アクティブなVirtualCameraが持つ実体だけ」に揺れが乗る仕様のため、複数のVirtualCamera
-        // (通常追従カメラ/ロックオンカメラ等)に付けても正しく機能するよう、生存中の全インスタンスに
-        // Shake()をブロードキャストする。各インスタンスのtrauma_はそれぞれ独立して減衰する。
+        // Shake() は生存中の全インスタンスへ送る (揺れはアクティブなカメラの実体にだけ乗る)
         static std::vector<ShakeCameraBehaviour*> instances_;
 
         LibCore::Tween::TweenPlayer<float> trauma_;
         float sustain_        = 0.0f;
         float sustainRequest_ = 0.0f;
+        float overdrive_      = 1.0f;
 
         glm::vec3 posAmplitude_   = glm::vec3(0.4f, 0.4f, 0.25f);
         glm::vec3 angleAmplitude_ = glm::vec3(2.0f, 2.0f, 3.0f); 

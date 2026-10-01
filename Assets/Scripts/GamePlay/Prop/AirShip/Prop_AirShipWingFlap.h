@@ -4,8 +4,7 @@
 
 namespace GamePlay::Prop
 {
-    // 飛空艇の翼帆をゆっくり羽ばたかせる。モデルの原点 = 付け根の蝶番なので、Transform を回すだけで動く。
-    // 開始時のローカル回転を基準に、rotateAxis_ まわりへ baseAngleDeg_ + amplitudeDeg_ * sin(...) だけ回す。
+    // 翼帆を開始時のローカル回転から rotateAxis_ まわりに sin で羽ばたかせる (モデル原点 = 蝶番)
     class AirShipWingFlap final : public Component::ComponentBase,
                                   public LifeCycleCallback::IAwakable,
                                   public LifeCycleCallback::IUpdatable

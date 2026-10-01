@@ -16,15 +16,13 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         
         FIELD(Asset::EnemyFactory)         enemyFactory_;
         Enemy::EnemyKind                   enemyKind_ = Enemy::EnemyKind::NormalBoss;
-        glm::vec3                          appearFirstEventDragonPosition_;
-        
+
 #pragma region Serialization Function
     public:
         void DoDrawGui() override;
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ActionBase>(this));
-            archive(CEREAL_NVP(appearFirstEventDragonPosition_));
             archive(CEREAL_NVP(enemyFactory_));
             archive(CEREAL_NVP(enemyKind_));
         }
@@ -35,7 +33,9 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             // v0 はドラゴンのプレハブを直接持っていた。今は EnemyFactory 側にあるので読み捨てる
             [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) firstEventDragonPrefab_;
             if (version == 0) archive(CEREAL_NVP(firstEventDragonPrefab_));
-            if (version >= 0) archive(CEREAL_NVP(appearFirstEventDragonPosition_));
+            // v1 までは出現位置をワールド座標で持っていた。今はシーンコンテキストのマーカーを使うので読み捨てる
+            [[serialize(0)]] glm::vec3 appearFirstEventDragonPosition_;
+            if (version <= 1) archive(CEREAL_NVP(appearFirstEventDragonPosition_));
             if (version >= 1) archive(CEREAL_NVP(enemyFactory_));
             if (version >= 1) archive(CEREAL_NVP(enemyKind_));
         }
@@ -44,4 +44,4 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     REGISTER_FRIENDLY_ACTION_WITH_NAME(SampleFirstEventDragonChat, "Other::SummonFirstEventDragon")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat, 1)
+CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat, 2)

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
+#include <string>
 #include <unordered_set>
 
 #include "GraphEditor.h"
@@ -11,9 +12,8 @@ namespace NanamiEngine::Module::Gui::Graph
     class GraphEditorHost;
 
     /**
-     * @brief GraphEditorHost に載せるグラフエディタの共通部分（AnimationTree / BehaviourTree）。
-     * @note  選択（Guid で保持）、右クリックメニューの遅延オープン、Delete キー、CustomDraw 用の座標計算を持つ。
-     *        派生クラスは Rebuild でデータモデルからノード列・リンク列を作り、各メニューの中身を描く。
+     * @brief GraphEditorHost に載せるグラフエディタの共通部分
+     * @note  派生クラスは Rebuild でデータモデルからノード列・リンク列を作る
      */
     class NANAMI_API GraphDelegateBase : public GraphEditor::Delegate
     {
@@ -41,6 +41,8 @@ namespace NanamiEngine::Module::Gui::Graph
         virtual void OnRightClickNode(GraphEditor::NodeIndex) {}
         virtual void OnRightClickLink(GraphEditor::LinkIndex) {}
         virtual void DrawBackgroundMenu() {}
+        /** @brief ツールバーの右端に足すもの（readOnly では呼ばれない） */
+        virtual void DrawToolbarItems() {}
         virtual void DrawNodeMenu() {}
         virtual void DrawLinkMenu() {}
         virtual void DeleteSelection() {}
@@ -49,10 +51,17 @@ namespace NanamiEngine::Module::Gui::Graph
         void ClearNodeSelection() { selectedNodes_.clear(); }
         void DrawFitAllMenuItem() const;
 
-        /** @brief CustomDraw の本文矩形から拡大率を逆算する（CustomDraw には拡大率が渡らないため） */
-        [[nodiscard]] float ZoomOf(const ImRect& body, float nodeWidth) const;
+        [[nodiscard]] float Zoom() const;
         /** @brief CustomDraw の本文矩形から、ヘッダーを含むノード全体の矩形を求める */
         [[nodiscard]] ImRect NodeFrame(const ImRect& body, float zoom) const;
+
+        /** @brief 見出しと本文が切れずに収まるノードの大きさ（拡大率 1） */
+        [[nodiscard]] ImVec2 MeasureNodeSize(const std::string& title, const std::string& detail, bool hasBadge) const;
+
+        /** @brief 本文を描く（遠景では描かない） */
+        void DrawNodeDetail(ImDrawList* drawList, const ImRect& body, const std::string& detail, ImU32 color) const;
+        [[nodiscard]] float DetailFontSize() const;
+        [[nodiscard]] bool DetailVisible() const;
 
         GraphEditorHost*                   host_              = nullptr;
         bool                               readOnly_          = false;

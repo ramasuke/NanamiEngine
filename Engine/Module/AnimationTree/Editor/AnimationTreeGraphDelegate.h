@@ -78,6 +78,7 @@ namespace NanamiEngine::Module::AnimationTree
 
         std::vector<std::shared_ptr<IAnimationNode>>             nodes_;
         std::vector<std::string>                                 names_;
+        std::vector<ImVec2>                                      sizes_;
         std::unordered_map<const IAnimationNode*, GraphEditor::NodeIndex> indexOf_;
         std::vector<LinkEntry>                                   links_;
 

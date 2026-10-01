@@ -17,21 +17,15 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 店の画面の見た目のまとめ役。左の黒板に品書きの行を並べ、右の勘定書きと財布の札に値を書く。
-     * 行は自分の prefab を持ち、表示窓の分だけここで生やす。
-     */
     class ShopUi final : public Component::ComponentBase
     {
     public:
-        /** @brief 行を作る。2回目以降は何もしない */
         void BuildRows(size_t count);
         void SubscribeOnClickRow(const std::function<void(size_t)>& onClick) const;
         [[nodiscard]] size_t MaxVisibleRows() const { return static_cast<size_t>(maxVisibleRows_); }
 
         void SetTitle(const std::string& title) const;
         void SetMoney(int balance) const;
-        /** @brief 表示窓に入っている品を行へ書き、選んだ品を勘定書きへ書く */
         void Bind(const ShopModel& model) const;
         void PlayPaidStamp() const;
 
@@ -48,7 +42,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(ShopReceipt) receipt_;
 
         EventBoardRowPool<ShopRow> rows_;
-        // 「入荷待ち」は prefab で置いた行内の位置を保ったまま、空いた行へずらす
         float restockOffsetY_ = 0.0f;
 
 #pragma region Serialization Function

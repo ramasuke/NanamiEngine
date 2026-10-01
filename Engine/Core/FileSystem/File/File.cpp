@@ -153,8 +153,7 @@ namespace NanamiEngine::Core::FileSystem
         }
         catch (const Module::Exception::NanamiException& exception)
         {
-            // OnSaveCallback は「元ファイルを読み直して保存」するため、壊れたファイルはここで止まる（空データで上書きしない）。
-            // Toolbar の Save（Directory::OnSave 経由）と Rename の両方の経路をここで受ける
+            // 壊れたファイルは空データで上書きせずここで止める
             Module::LogError("File: 保存に失敗しました: " + std::string(exception.what()));
         }
     }

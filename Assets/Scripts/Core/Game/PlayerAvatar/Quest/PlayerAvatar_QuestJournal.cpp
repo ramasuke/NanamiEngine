@@ -59,8 +59,7 @@ namespace GameCore::PlayerAvatar::Quest
         if (!quest)
             return;
 
-        // 依頼は何度でも受けられるので、達成のたびに報酬を出し、達成済みとしては残さない。
-        // メインストーリーは職業をまたいで初回だけ報酬を出す
+        // 依頼は達成のたびに報酬、メインストーリーは職業をまたいで初回だけ
         const auto rewards    = quest->Rewards();
         const bool rewardsNow = quest->IsRepeatable() || MarkCompleted(completeQuest);
         takingQuests_.Remove(completeQuest);

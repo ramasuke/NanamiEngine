@@ -25,9 +25,7 @@ namespace GamePlay::Ui
 {
     class SpellSlot;
 
-    // 画面左下の魔法陣。1ページ目を上下左右、2ページ目を斜めに置き、LT+RB（右クリック）で入れ替える。
-    // 外周の弧が MP。置き場所は子の Anchor オブジェクト、枠は slotPrefab_ から slotsRoot_ の子へ生成する。
-    // 画像と配置の数値は tools/art/spell_palette.py / spell_palette_prefab.py が作る
+    // 画面左下の魔法陣。2ページを LT+RB（右クリック）で入れ替え、外周の弧が MP
     class SpellPalette final : public Component::ComponentBase,
                                public LifeCycleCallback::IUpdatable
     {

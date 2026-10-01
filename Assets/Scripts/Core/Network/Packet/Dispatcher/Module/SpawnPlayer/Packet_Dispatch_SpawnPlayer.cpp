@@ -73,8 +73,7 @@ namespace GameCore::Network
         packet.Data().Write(rotation);
         packet.Data().Write(networkObjectIds);
 
-        // PlayerStatus()は参照しか返さないため、cerealのポリモーフィックシリアライズに渡すために
-        // 所有権を持たないshared_ptrでラップする(deleterは何もしない)。
+        // NOTE: cereal のポリモーフィック書き込み用に、所有権を持たない shared_ptr で包む
         GameCore::PlayerAvatar::IPlayerAvatarStatus* statusPtr = &playerAvatar->PlayerStatus();
         auto statusNoopDeleter = [](GameCore::PlayerAvatar::IPlayerAvatarStatus*) {};
         const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus> status(statusPtr, statusNoopDeleter);

@@ -5,8 +5,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * ステージ選択画面のModel。どのステージが選択されているかという状態だけを持つ、
-     * プレーンなランタイムクラス(アセットでもコンポーネントでもない)。
+     * ステージ選択画面のModel。選択中のステージだけを持つ
      */
     class StageSelectModel final
     {

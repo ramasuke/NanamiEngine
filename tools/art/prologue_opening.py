@@ -3,7 +3,7 @@
     python tools/art/prologue_opening.py       # 何度流してもよい (前に置いたカットは置き直す)
 
 - AbordAirShipMovie/OpeningShots: 子の VirtualCamera を上から順に映す (AboardAirShipMovie::AirShipMovieOpeningShotsAsync)。
-  各カメラの子 End が動いていく先。位置と向きは AutoMCP で見て決めた (船は (40, 26, -500) で +z の島へ向かう)。
+  各カメラの子 End (VirtualCamera) が動いていく先で、Brain の補間で動かす。最後のカットの End は合流の経由点。位置と向きは AutoMCP で見て決めた (船は (40, 26, -500) で +z の島へ向かう)。
     1. WideShot: 雲海の近くから、島々の手前を進む船を斜め後ろから見上げ、上がりながら寄る。タイトルロゴはここ
     2. HullShot: 船腹と翼に沿って船首の方へ抜ける
     3. BowShot: 船首の先に拠点の島。島へ寄る
@@ -126,11 +126,11 @@ def build_scene():
         assert q_normalize(floats(node.transform.local_rot)) == IDENTITY, node.name
     movie_pos = floats(movie.transform.local_pos)
 
-    # カット: 甲板のカメラから Follow を外した写し。End は動いていく先
+    # カット: 甲板のカメラから Follow を外した写し。End は動いていく先で、最後以外は Brain の補間の行き先のカメラ
     deck_camera = find(scene, 'AbordAirShipMovie', 'SecondMove', 'VirtualCamera')
     target_template = find(scene, 'AbordAirShipMovie', 'FirstMove', 'VirtualCameraTargetPos')
     shots_root = empty_node(target_template, 'OpeningShots')
-    for name, _, start_pos, start_rot, end_pos, end_rot in SHOTS:
+    for i, (name, _, start_pos, start_rot, end_pos, end_rot) in enumerate(SHOTS):
         shot = copy.deepcopy(deck_camera)
         shot.components = [c for c in shot.components if c.fqn.endswith('::CineMachineVirtualCamera')]
         shot.transform.children = []
@@ -142,6 +142,10 @@ def build_scene():
         end = empty_node(target_template, 'End')
         end_local_pos, end_local_rot = to_local(start_pos, start_rot, 1.0, end_pos, end_rot)
         set_local(end, end_local_pos, end_local_rot)
+        # NOTE: 最後のカットは End を経由点にして追従カメラへ合流するので、カメラを載せない
+        if i + 1 < len(SHOTS):
+            end.components = copy.deepcopy(shot.components)
+            edits._remint_guids(end, {})
         shot.transform.children.append(end)
         shots_root.transform.children.append(shot)
     movie.transform.children.append(shots_root)

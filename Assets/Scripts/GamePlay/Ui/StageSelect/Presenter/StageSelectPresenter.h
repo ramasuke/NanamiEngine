@@ -4,6 +4,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Packages/UiFlow/UiFlow.h"
 #include "../Model/StageSelectModel.h"
 #include "../../../Network/Relay/RelayRoom.h"
 #include "../../../Sound/UiSoundBank.h"
@@ -21,54 +22,31 @@ namespace GamePlay::Ui
                                        public LifeCycleCallback::IUpdatable
     {
     private:
-        /** @brief 押した瞬間だけを拾うための、このフレームの入力 */
-        struct RoomInput
-        {
-            bool previousMode = false;
-            bool nextMode     = false;
-            bool cursorLeft   = false;
-            bool cursorRight  = false;
-            bool digitUp      = false;
-            bool digitDown    = false;
-            bool erase        = false;
-            bool stageUp      = false;
-            bool stageDown    = false;
-            int  typedDigit   = -1; // キーボードの 0〜9
-        };
-
         void OnStart() override;
         void OnUpdate() override;
         void TryEnterWorld();
-        /** @brief 出発せずに閉じて、プレイヤーの操作に戻す */
         void Close();
-        [[nodiscard]] static bool IsCancelDown();
 
         void CycleMode(int delta);
-        /** @brief 選んでいるステージを上下に動かす。未選択なら先頭を選ぶ */
         void MoveStage(int delta);
-        void UpdateRoomInput(const RoomInput& input);
-        /** @brief cursor の桁を digit にする。まだ入れていない桁なら末尾に足す */
+        void UpdateRoomInput();
+        void ApplyInputMap() const;
         void SetDigit(int digit);
         void MoveCursor(int delta);
         void Erase();
         void ApplyRoomToView() const;
-        /** @brief 番号の桁数。部屋の行が無い prefab では 0 */
         [[nodiscard]] int CodeLength() const;
-        [[nodiscard]] RoomInput ReadRoomInput() const;
         [[nodiscard]] bool IsRoomReady() const;
         [[nodiscard]] bool IsSelectedStageLocked() const;
 
         std::shared_ptr<StageSelectUi> view_;
         std::unique_ptr<StageSelectModel> model_;
-        bool wasConfirmPressed_ = false;
-        bool wasCancelPressed_  = false;
-        RoomInput previousInput_{};
+        std::shared_ptr<UiFlow::UiScreen> screen_;
 
         Network::RelayRoom::Mode roomMode_ = Network::RelayRoom::Mode::Public;
         std::string roomCode_;
         int cursor_ = 0;
 
-        // スティックを倒したと見なす傾き(XInput の -32768〜32767)
         [[serialize(1)]] int stickThreshold_ = 12000;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 

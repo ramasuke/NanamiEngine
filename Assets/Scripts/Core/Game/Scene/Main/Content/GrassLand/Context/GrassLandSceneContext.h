@@ -30,10 +30,7 @@ namespace GameCore::Scene
         /** enemySpawnPointsRoot_ の子孫のうち EnemySpawnPoint を持つもの。湧かせる種別は各地点が持つ */
         [[nodiscard]] std::vector<std::shared_ptr<Npc::Enemy::EnemySpawnPoint>> EnemySpawnPoints() const;
 
-        /**
-         * 到着演出のあいだだけ優先度を上げるVirtualCamera
-         * @note Follow/LookAtのtargetはPlayerSpawn Posのマーカーにしておくこと。演出はそこからのオフセットで動かす
-         */
+        /** @note Follow/LookAt の target は PlayerSpawn Pos のマーカーにしておくこと */
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalCamera() const { return arrivalCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CinemachineCameraBrain>   CameraBrain  () const { return cameraBrain_  .get(); }
         /** 到着演出でスポーン地点に立てるポータル。プレハブのルートのスケールが開ききったときの大きさになる */
@@ -65,11 +62,11 @@ namespace GameCore::Scene
         [[nodiscard]] int ArrivalOverview_msecs       () const { return arrivalOverview_msecs_;        }
         /** 空撮の終点からポータルのショットの始点まで降りてくる尺 */
         [[nodiscard]] int ArrivalOverviewDescend_msecs() const { return arrivalOverviewDescend_msecs_; }
-        /** 空撮のカメラの始点と終点 (ワールド座標) */
-        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraStart() const { return arrivalOverviewCameraStart_; }
-        [[nodiscard]] const glm::vec3& ArrivalOverviewCameraEnd  () const { return arrivalOverviewCameraEnd_;   }
-        /** 空撮で注視する島の中心 (ワールド座標) */
-        [[nodiscard]] const glm::vec3& ArrivalOverviewLookAt     () const { return arrivalOverviewLookAt_;      }
+        /** 空撮のカメラが2台とも置かれているか */
+        [[nodiscard]] bool HasArrivalOverviewCamera() const { return arrivalOverviewStartCamera_ && arrivalOverviewEndCamera_; }
+        /** 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く */
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewStartCamera() const { return arrivalOverviewStartCamera_.get(); }
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewEndCamera  () const { return arrivalOverviewEndCamera_  .get(); }
         /** 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない */
         [[nodiscard]] const std::string& ArrivalIslandTitle   () const { return arrivalIslandTitle_;    }
         [[nodiscard]] const std::string& ArrivalIslandSubtitle() const { return arrivalIslandSubtitle_; }
@@ -108,13 +105,12 @@ namespace GameCore::Scene
         [[serialize(14)]] FIELD(GamePlay::Prop::FloatingStone) floatingStone_;
         [[serialize(15)]] int       arrivalOverview_msecs_        = 0;
         [[serialize(15)]] int       arrivalOverviewDescend_msecs_ = 3500;
-        [[serialize(15)]] glm::vec3 arrivalOverviewCameraStart_   = glm::vec3(0.0f);
-        [[serialize(15)]] glm::vec3 arrivalOverviewCameraEnd_     = glm::vec3(0.0f);
-        [[serialize(15)]] glm::vec3 arrivalOverviewLookAt_        = glm::vec3(0.0f);
         [[serialize(16)]] std::string arrivalIslandTitle_;
         [[serialize(16)]] std::string arrivalIslandSubtitle_;
         [[serialize(16)]] std::vector<GrassLand::StageArrivalTourShot> arrivalTourShots_;
         [[serialize(16)]] FIELD(Asset::PrefabGameObjectFile) arrivalCaptionPrefab_;
+        [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewStartCamera_;
+        [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewEndCamera_;
 
 #pragma region Serialization Function
     public:
@@ -146,13 +142,12 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(floatingStone_));
             archive(CEREAL_NVP(arrivalOverview_msecs_));
             archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
-            archive(CEREAL_NVP(arrivalOverviewCameraStart_));
-            archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
-            archive(CEREAL_NVP(arrivalOverviewLookAt_));
             archive(CEREAL_NVP(arrivalIslandTitle_));
             archive(CEREAL_NVP(arrivalIslandSubtitle_));
             archive(CEREAL_NVP(arrivalTourShots_));
             archive(CEREAL_NVP(arrivalCaptionPrefab_));
+            archive(CEREAL_NVP(arrivalOverviewStartCamera_));
+            archive(CEREAL_NVP(arrivalOverviewEndCamera_));
         }
 
         template<class Archive>
@@ -229,6 +224,13 @@ namespace GameCore::Scene
             {
                 archive(CEREAL_NVP(arrivalOverview_msecs_));
                 archive(CEREAL_NVP(arrivalOverviewDescend_msecs_));
+            }
+            if (version >= 15 && version <= 16)
+            {
+                // v15〜v16 は空撮の位置をワールド座標で持っていた。今はマーカーを置くので読み捨てる
+                [[serialize(15)]] glm::vec3 arrivalOverviewCameraStart_ = glm::vec3(0.0f);
+                [[serialize(15)]] glm::vec3 arrivalOverviewCameraEnd_   = glm::vec3(0.0f);
+                [[serialize(15)]] glm::vec3 arrivalOverviewLookAt_      = glm::vec3(0.0f);
                 archive(CEREAL_NVP(arrivalOverviewCameraStart_));
                 archive(CEREAL_NVP(arrivalOverviewCameraEnd_));
                 archive(CEREAL_NVP(arrivalOverviewLookAt_));
@@ -240,11 +242,16 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(arrivalTourShots_));
                 archive(CEREAL_NVP(arrivalCaptionPrefab_));
             }
+            if (version >= 17)
+            {
+                archive(CEREAL_NVP(arrivalOverviewStartCamera_));
+                archive(CEREAL_NVP(arrivalOverviewEndCamera_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 16);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 17);
 #pragma endregion

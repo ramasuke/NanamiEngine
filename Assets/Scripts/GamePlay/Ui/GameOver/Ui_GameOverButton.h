@@ -11,9 +11,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief ゲームオーバー画面の選択肢1枚（釘で打った鉄札）。
-     *        選ばれている札は縁の焼けた絵へ切り替わり、縁の熾火がゆっくり脈打つ。
-     *        時間は GameOverScreenUi が壁時計で Tick して進める
+     * @brief ゲームオーバー画面の選択肢1枚。選ばれると縁の焼けた絵に替わり熾火が脈打つ
      */
     class GameOverButton final : public Component::ComponentBase,
                                  public LifeCycleCallback::IAwakable

@@ -17,6 +17,10 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (duration <= 0.0f)
             return;
 
+        // NOTE: 上乗せは揺れが収まるまで持続し、より強い要求があれば引き上げる
+        const float overdrive = std::max(intensity * intensity, 1.0f);
+        overdrive_ = trauma_.Value() > 0.0f ? std::max(overdrive_, overdrive) : overdrive;
+
         // NOTE: 重ねた揺れも 1 あたり duration 秒の速さで 0 へ減らす
         const float trauma = std::clamp(trauma_.Value() + intensity, 0.0f, 1.0f);
         trauma_.Play(tweeny::from(trauma).to(0.0f).during(LibCore::Tween::Ms(duration * trauma)));
@@ -80,7 +84,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (trauma <= 0.0f && sustain_ <= 0.0f)
             return;
 
-        const float shake        = trauma * trauma;
+        const float shake        = trauma * trauma * overdrive_;
         const float sustainShake = sustain_ * sustain_;
         const float t            = Time::CurrentTime() * frequency_;
         const float sustainT     = Time::CurrentTime() * sustainFrequency_;

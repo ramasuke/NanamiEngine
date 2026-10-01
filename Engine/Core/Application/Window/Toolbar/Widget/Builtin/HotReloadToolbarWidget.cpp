@@ -143,8 +143,7 @@ namespace NanamiEngine::Core::Toolbar
         logPath_      = logDirectory / L"GameBuild.log";
         errorLogPath_ = logDirectory / L"GameBuild.errors.log";
 
-        // ゲームプロジェクトだけを組む (BuildProjectReferences=false)。ロード中の NanamiEngine.dll は差し替えられないので
-        // エンジンは触らず、NanamiHotReloadBuild で props のコピーを止め、エンジンが別途再ビルドされていればエラーにする
+        // NOTE: ロード中の NanamiEngine.dll は差し替えられないので、ゲームプロジェクトだけを組む
         const std::wstring commandLine = L"\"" + msBuild.wstring() + L"\" \"" + gameProject.wstring() + L"\""
             L" -p:Configuration=" + std::wstring(RunningConfigurationName()) + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
             L" -p:BuildProjectReferences=false -p:NanamiHotReloadBuild=true"

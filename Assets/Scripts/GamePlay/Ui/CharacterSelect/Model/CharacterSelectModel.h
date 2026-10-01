@@ -7,8 +7,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * 酒場のキャラ選択のModel。どのキャラに寄っているかという状態だけを持つ、
-     * プレーンなランタイムクラス(アセットでもコンポーネントでもない)。
+     * 酒場のキャラ選択のModel。どのキャラに寄っているかだけを持つ
      */
     class CharacterSelectModel final
     {

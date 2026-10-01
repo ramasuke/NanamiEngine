@@ -25,8 +25,7 @@ namespace NanamiEngine::Module::Physics
     private:
         std::vector<PendingExit> pending_;
         const JPH::PhysicsSystem& physicsSystem_;
-        // OnContactRemovedはJoltのジョブスレッドから同時に呼ばれ得るため、Add()の書き込みのみ保護する。
-        // Dispatch/RemoveByCollider/Clearはphysics更新完了後にメインスレッドからのみ呼ばれるため不要。
+        // WARNING: Add() は Jolt のジョブスレッドから同時に呼ばれる (他はメインスレッドのみ)
         std::mutex addMutex_;
     };
 }

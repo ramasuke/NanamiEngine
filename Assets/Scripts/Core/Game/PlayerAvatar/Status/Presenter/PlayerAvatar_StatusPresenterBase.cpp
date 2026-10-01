@@ -18,7 +18,6 @@ namespace GamePlay::PlayerAvatar
         const Ui::PlayerStatus& view,
         const GameCore::PlayerAvatar::IPlayerAvatarStatus& model)
     {
-        // OnChangeHealth は購読時に現在値を流さないので、HPの数字とゲージを最初に一度そろえておく
         view.UpdateHealthBar(model.MaxHealth(), model.Health());
         model.OnChangeHealth().Subscribe([&](const GameCore::StatusParameter::Health currentHealth)
             {

@@ -4,7 +4,6 @@
 #include <filesystem>
 #include <string>
 
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Configuration/Build/ApplicationConfiguration_Build.h"
@@ -18,7 +17,6 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        // exe に焼き込まれる。配信先を差し替えるときは tools/dist/dist_config.json と揃えて新しいビルドを出す
         constexpr const char* ASSET_UPDATE_MANIFEST_URL    = "https://pub-10484db77a4e4777b87c30443f6136c0.r2.dev/manifest.json";
         constexpr int         ASSET_UPDATE_HTTP_TIMEOUT_MS = 5000;
 
@@ -39,16 +37,14 @@ namespace GamePlay::Ui
 
     void AssetUpdatePresenter::OnStart()
     {
-        view_ = RequireComponent<AssetUpdateTagUi>();
+        view_   = RequireComponent<AssetUpdateTagUi>();
+        screen_ = RequireComponent<UiFlow::UiScreen>();
         view_->SubscribeHintClicks([this] { Confirm(); }, [this] { Cancel(); });
 
         const std::filesystem::path           gameRoot = std::filesystem::current_path();
         const AssetUpdater::AssetUpdaterPaths paths{gameRoot, gameRoot / "installed.json", gameRoot / ".update"};
         task_ = std::make_unique<AssetUpdater::AssetUpdateTask>(CreateAssetUpdater(paths), paths);
         task_->BeginCheck();
-
-        // タイトルに入った瞬間の押しっぱなしを、札への答えとして拾わない
-        previousKeys_ = ReadKeys();
     }
 
     std::unique_ptr<AssetUpdater::IAssetUpdater> AssetUpdatePresenter::CreateAssetUpdater(const AssetUpdater::AssetUpdaterPaths& paths) const
@@ -57,7 +53,6 @@ namespace GamePlay::Ui
         using NanamiEngine::Core::Application::Configuration::ApplicationMode;
         using NanamiEngine::Core::Application::Configuration::BuildConfiguration;
 
-        // エディタで動かすと、開発中の Assets/ が配信の中身で上書きされ、まだ上げていないファイルが消える
         if constexpr (APPLICATION_MODE == ApplicationMode::Game)
         {
             AssetUpdater::HttpAssetUpdaterSettings settings;
@@ -78,11 +73,6 @@ namespace GamePlay::Ui
         if (!task_ || !view_)
             return;
 
-        const Keys keys = ReadKeys();
-        const bool isConfirmPressed = keys.confirm && !previousKeys_.confirm;
-        const bool isCancelPressed  = keys.cancel && !previousKeys_.cancel;
-        previousKeys_ = keys;
-
         if (preview_ != Preview::None)
         {
             UpdatePreview();
@@ -99,10 +89,22 @@ namespace GamePlay::Ui
                 ShowProgress();
         }
 
-        if (isConfirmPressed)
+        SyncScreen();
+
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
+        if (input.IsPressed(UiAction::Submit))
             Confirm();
-        else if (isCancelPressed)
+        else if (input.IsPressed(UiAction::Cancel))
             Cancel();
+    }
+
+    void AssetUpdatePresenter::SyncScreen()
+    {
+        if (view_->IsShown() && !screen_->IsOpen())
+            screen_->Open();
+        else if (!view_->IsShown() && screen_->IsOpen())
+            screen_->Close();
     }
 
     bool AssetUpdatePresenter::TryStartGame()
@@ -121,9 +123,9 @@ namespace GamePlay::Ui
         case AssetUpdateState::ReadyToRestart:
             if (!view_->IsShown())
                 ShowPromptFor(state);
+            
             return false;
         default:
-            // 確認中・ダウンロード中・適用中は受け付けない
             return false;
         }
     }
@@ -131,16 +133,6 @@ namespace GamePlay::Ui
     bool AssetUpdatePresenter::IsPrompting() const
     {
         return view_ && view_->IsShown();
-    }
-
-    AssetUpdatePresenter::Keys AssetUpdatePresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-
-        return Keys{
-            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
-            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
-        };
     }
 
     void AssetUpdatePresenter::OnStateChanged(const AssetUpdater::AssetUpdateState state)
@@ -239,7 +231,6 @@ namespace GamePlay::Ui
             view_->ShowReceiving();
             return;
         case Preview::Received:
-            // エディタでは終了しない。札を引っ込めるだけ
             preview_ = Preview::None;
             view_->Hide();
             return;
@@ -300,7 +291,6 @@ namespace GamePlay::Ui
         if (preview_ != Preview::Receiving)
             return;
 
-        // 偽の受け取り: 一定の速さで進め、終わったら入れ終えた札に移る
         const bool isFinished = previewDownloadTween_.Tick(Time::DeltaTime());
         const float rate = previewDownloadTween_.Value();
         const auto received = static_cast<std::uint64_t>(static_cast<double>(ASSET_UPDATE_PREVIEW_BYTES) * rate);
@@ -325,9 +315,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("stampSound_", stampSound_);
         ImGuiHelper::OnDrawInputField("confirmSound_", confirmSound_);
 
-        // エディタでは更新を確かめない (NullAssetUpdater) ので、見た目は偽の状態で確かめる
         if (!view_)
             return;
+        
         ImGui::SeparatorText("Preview");
         const auto preview = [this](const Preview next, auto show)
         {

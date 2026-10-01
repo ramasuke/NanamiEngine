@@ -11,9 +11,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 設定画面の一覧の1行。左に項目名、右に値を出す。
-     * 選んでいる行は帯を敷き、値の両脇に左右の矢印を出す。
-     * 行は表示窓の分だけ作って使い回すので、中身は Show で流し込む。
+     * @brief 設定画面の一覧の1行。選択中は帯と左右の矢印を出す
      */
     class SettingsRowUi final : public Component::ComponentBase
     {

@@ -23,9 +23,7 @@ namespace GamePlay
 {
     /**
      * センサーコライダーに入っている AttackTargetT へダメージを与える攻撃範囲。
-     * NetworkComponent として自身の NetworkObjectId を持ち(子オブジェクトでも Spawn 時に自動付与される)、
-     * ダメージは「対象をこのピアが所有している場合」にだけ適用する(被弾側判定)。
-     * ネットワーク生成されていない対象(NetworkGameObject 無し / Invalid)には従来通り常に適用する。
+     * NOTE: ダメージは対象をこのピアが所有しているときだけ (ネットワーク生成でない対象には常に) 入る
      */
     template<typename AttackTargetT>
     class AttackArea : public NanamiEngine::Module::Network::NetworkComponent,

@@ -13,9 +13,8 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 目的が変わったときに上中央へ一度だけ出す字幕(「— 新 た な 目 的 —」と目的文)。出し直しはしない。
-     *        会話中・操作ロック中は、明けるのを待ってから出す。
-     *        帯の絵は tools/art/navigation_hud.py --emit で作る
+     * @brief 目的が変わったときに上中央へ一度だけ出す字幕。
+     * NOTE: 会話中・操作ロック中は明けるのを待ってから出す
      */
     class NavigationBanner final : public Component::ComponentBase,
                                    public LifeCycleCallback::IUpdatable,

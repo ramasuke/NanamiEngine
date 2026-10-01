@@ -34,7 +34,7 @@ namespace NanamiEngine::Module::Component
         virtual void BasedOnDrawgui() { }
         virtual void OnDrawGui() override;
         //NOTE: この関数を何かしらの方法でカプセル化した方が安全
-        //WARNING: エンジン開発者以外使用しないでください。 
+        //WARNING: エンジン開発者以外使用しないでください。
         void ResetGuid();
         void SetEnable(bool enable);
         [[nodiscard]] bool IsEnable() const;
@@ -80,9 +80,7 @@ namespace NanamiEngine::Module::Component
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ComponentBase, 0);
 
-// NOTE: ENGINE_REGISTER_COMPONENT(T) はコンポーネントの .cpp に書き、CEREAL_CLASS_VERSION(T, V) はヘッダに残す
-// WARNING: 旧形式の ENGINE_REGISTER_COMPONENT(T, V) もビルドは通るが、ヘッダに書くと include 先すべてで保存・読み込みコードが生成される
-// NOTE: NANAMI_REGISTER_TYPE は Engine/Module/Serialization/Engine_Module_SerializationRegistration.h にある。
+// NOTE: ENGINE_REGISTER_COMPONENT(T) は .cpp に、CEREAL_CLASS_VERSION(T, V) はヘッダに書く
 #define ENGINE_REGISTER_COMPONENT_TYPE_(TYPE)                                                   \
     NANAMI_REGISTER_TYPE(TYPE, NanamiEngine::Module::Component::ComponentBase);
 #define ENGINE_REGISTER_COMPONENT_WITH_VERSION_(TYPE, VERSION)                                  \

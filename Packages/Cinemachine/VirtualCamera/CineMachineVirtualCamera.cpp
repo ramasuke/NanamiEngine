@@ -53,6 +53,20 @@ void CineMachine::CineMachineVirtualCamera::OnBecameLive() const
     }
 }
 
+std::optional<CineMachine::BlendIn> CineMachine::CineMachineVirtualCamera::CustomBlendIn() const
+{
+    if (!overrideBlendIn_)
+        return std::nullopt;
+    return BlendIn{ blendIn_secs_, blendInEase_ };
+}
+
+void CineMachine::CineMachineVirtualCamera::SetBlendIn(const float duration_secs, const LibCore::EaseType ease)
+{
+    overrideBlendIn_ = true;
+    blendIn_secs_    = duration_secs;
+    blendInEase_     = ease;
+}
+
 bool CineMachine::CineMachineVirtualCamera::WantsImmediateApply() const
 {
     if (isImmediateApply_)
@@ -94,6 +108,17 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
     if (overrideFov_)
         ImGuiHelper::OnDrawInputField("fov_", fov_);
     ImGuiHelper::OnDrawInputField("isImmediateApply_", isImmediateApply_);
+    ImGuiHelper::OnDrawInputField("overrideBlendIn_", overrideBlendIn_);
+    if (overrideBlendIn_)
+    {
+        ImGuiHelper::OnDrawInputField("blendIn_secs_", blendIn_secs_);
+        static constexpr const char* EASE_NAMES[] = {
+            "Linear", "OutQuad", "InQuad", "InOutQuad", "OutBack", "InBack",
+            "InOutSine", "OutCubic", "InCubic", "InOutCubic", "SmoothStep" };
+        int ease = static_cast<int>(blendInEase_);
+        if (ImGui::Combo("blendInEase_", &ease, EASE_NAMES, IM_ARRAYSIZE(EASE_NAMES)))
+            blendInEase_ = static_cast<LibCore::EaseType>(ease);
+    }
 
     if (ImGui::Button("AddCameraBehaviour"))
     {

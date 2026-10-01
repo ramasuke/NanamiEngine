@@ -12,8 +12,8 @@ namespace GameCore::PlayerAvatar
 
 namespace GamePlay::Ui
 {
-    // ロックオン中の対象に照準を、未ロック時は「今押したら狙う対象」に候補マーカーを画面座標で重ねる。
-    // ローカルプレイヤーの CameraGroup プレハブの子に置き、親の CameraGroup の状態を毎フレーム参照する
+    // ロック中の対象に照準を、未ロック時は次に狙う候補にマーカーを重ねる
+    // NOTE: 親の CameraGroup の状態を毎フレーム参照する
     class LockOnReticle final : public Component::ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IUserInterfaceRenderable,

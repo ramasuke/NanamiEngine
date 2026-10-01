@@ -7,10 +7,7 @@
 
 namespace Editor::Npc::Friendly
 {
-    /**
-     * @note シーン上で実際に動いているFriendlyNpcインスタンスのBehaviourTreeをリアルタイムに覗くPopupWindow。
-     *       FriendlyNpc::OnDrawGui()の「実行中のBehaviourTreeを表示」ボタンから対象がセットされる。
-     */
+    /** @note 実行中の FriendlyNpc の BehaviourTree をリアルタイムに覗く PopupWindow */
     class RunningFriendlyBehaviourTreeWindow final : public Core::PopupWindow::IPopupWindow
     {
     public:

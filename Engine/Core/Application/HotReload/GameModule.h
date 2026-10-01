@@ -5,9 +5,8 @@
 #include <string>
 #include <vector>
 
-// ゲーム DLL (Assets/Scripts) の読み込みと差し替え (docs/HotReload.md §5)。エディタ専用。
-// Host exe が Run の前に LoadInitial し、以後は RequestReload -> 次のフレームの切れ目 (OnFrameEnd) で差し替える。
-// DLL は HotReload/<世代>/ にコピーしてから読むので、リンカは元のファイルを上書きできる。
+// ゲーム DLL の読み込みと差し替え (エディタ専用)
+// NOTE: DLL は HotReload/<世代>/ にコピーしてから読む (リンカが元を上書きできるように)
 namespace NanamiEngine::Core::Application::HotReload
 {
     class NANAMI_API GameModule final

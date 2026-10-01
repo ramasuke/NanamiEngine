@@ -17,20 +17,12 @@ namespace GamePlay::Ui
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 設定画面の入力と開け閉め。タイトルとステージの貼り紙から prefab を生成して開く。
-     *
-     * 値は切り替えた時点で GameSettings に入れ、閉じるときに保存する。閉じたら自分の GameObject ごと消えるので、
-     * 開いた側は IsOpen() が false になったことで閉じたと分かる。
-     */
     class SettingsScreenPresenter final : public Component::ComponentBase,
                                           public LifeCycleCallback::IStartable,
                                           public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief prefab を生成して開く。既に開いていれば何もせず空を返す */
         static std::weak_ptr<SettingsScreenPresenter> Open(Asset::PrefabGameObjectFile& prefab);
-        /** @brief 設定画面が開いている (閉じた瞬間に false になる。GameObject の破棄を待たない) */
         [[nodiscard]] static bool IsOpen() { return isOpen_; }
 
     private:

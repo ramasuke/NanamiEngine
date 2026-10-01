@@ -82,20 +82,31 @@ screen_->OnRevealed().Subscribe([this](R4::Unit) { view_->Open(); }).AddTo(this)
 | `Cancel` | Esc | B |
 | `TabPrev` / `TabNext` | Q / E | LB / RB |
 | `Menu` | Esc | Start |
+| `Erase` | Back | X |
+| `ValueUp` / `ValueDown` | なし | なし |
+
+`ValueUp` / `ValueDown` は、上下の移動と別に値を上げ下げする 2 組目の上下。使う画面が割り当てる。
 
 画面ごとの違いは、開いた後に足す:
 
 ```cpp
 screen_->Input().Map()
     .AddKey   (UiAction::Submit, Key::Space)
-    .AddButton(UiAction::Cancel, GamepadButton::Start);
+    .AddButton(UiAction::Cancel, GamepadButton::Start)
+    .AddStick (UiAction::Up,     StickDirection::RightStickUp)
+    .Set      (UiAction::Left,   { {}, { GamepadButton::DPadLeft }, { StickDirection::Left } });
 ```
+
+スティックは `StickDirection` の `Up` / `Down` / `Left` / `Right`（左）と `RightStickUp` など（右）。1 つのアクションに複数付けられる。
+画面の中で割り当てを変えるときは `Set` で置き換える（`StageSelectPresenter::ApplyInputMap`）。
 
 | 問い合わせ | 返すもの |
 |---|---|
 | `IsPressed` | 押した瞬間 |
 | `IsHeld` | 押している間 |
 | `IsRepeated` | 押した瞬間と、押し続けて delay を過ぎてからは interval ごと |
+| `IsAnyPressed` | キー・マウス・パッドのどれかを押した瞬間（「ボタンを押してください」） |
+| `PressedDigit` | 押した瞬間の数字キー 0〜9。無ければ -1 |
 
 - 問い合わせたときに 1 フレームに 1 回だけ読み直す。`Update` を呼ぶ必要はない。
 - **`OnUpdate` から使う。** `OnFixedUpdate` は 1 フレームに 0 回のことも複数回のこともある。
@@ -134,14 +145,16 @@ screen_->Input().Map()
 
 後から開く画面ほど大きい帯にする。
 
-## まだ移行していない画面
+## 移行した画面
 
-タイトル・ゲームオーバー・ステージ選択・アセット更新は、自前で入力を読んでいる。`UiScreen` を持たないので重なりには
-入らない。ステージ選択は操作ロックを `ControlLock` で取っているので、`ControlLock::Service::IsLocked()` で開いているかが
-分かる。
-
-移すときは、prefab に `UiScreen` を足し、Presenter の `ReadKeys()` / `previousKeys_` / `IsAnotherOpen()` /
-`isOpen_` / スティックのしきい値を消して、上の形に替える。
+| 画面 | `screenId_` | ロック | 閉じたら破棄 | 開く / 閉じる |
+|---|---|---|---|---|
+| タイトル | Title | しない | しない | `OnStart` で開いたまま。設定・荷札が上に重なる |
+| アセット更新 | AssetUpdate | しない | しない | 荷札が出ている間だけ開く（`SyncScreen`） |
+| ゲームオーバー | GameOver | しない | しない | 全員倒れたら開き、遷移を頼んだら閉じる |
+| ステージ選択 | StageSelect | する | する | 台座が prefab を生成して開く |
+| 店 / 掲示板 / 設定 / キャラ選択 | Shop など | する | する | prefab を生成して開く |
+| ステージから帰る | StageReturn | する | しない | 常駐。閉じている間は別の `UiInputReader` で開くキーを読む |
 
 ## ホットリロード
 

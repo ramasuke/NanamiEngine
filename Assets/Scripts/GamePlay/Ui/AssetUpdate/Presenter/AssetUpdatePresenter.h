@@ -9,42 +9,21 @@
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Packages/AssetUpdater/Task/AssetUpdateTask.h"
+#include "Packages/UiFlow/UiFlow.h"
 #include "../Ui_AssetUpdateTag.h"
 #include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief タイトル画面のアセット更新の進行役。起動と同時に配信の更新を確かめ、状態に合わせて荷札を出す。
-     * A (Enter) / B (Esc) か、ヒントの札のクリックで答える。
-     *   更新あり      A 受け取る → 落として入れる / B あとで → 札を引っ込める (ゲームはまだ始められない)
-     *   失敗          A もう一度 / B あとで
-     *   本体が古い    B 閉じる
-     *   入れ終えた    A 閉じる (ゲームを終了し、起動し直してもらう)
-     * 確認中・最新・未インストール (エディタ)・オフラインでは何も出さない。
-     * 実装を差し替えるときは CreateAssetUpdater だけを変える。
-     */
     class AssetUpdatePresenter final : public Component::ComponentBase,
                                        public LifeCycleCallback::IStartable,
                                        public LifeCycleCallback::IUpdatable
     {
     public:
-        /**
-         * @brief ゲームを始めてよいか。だめなら、今の状態の荷札を出し直して false を返す。
-         * 確認中やダウンロード中の押下は黙って受け流す
-         */
         [[nodiscard]] bool TryStartGame();
-        /** @brief 札が出ていて、答えを待っているか (その間はタイトルの入力を止める) */
         [[nodiscard]] bool IsPrompting() const;
 
     private:
-        struct Keys
-        {
-            bool confirm = false;
-            bool cancel  = false;
-        };
-
-        /** @brief エディタで見た目を確かめるための、偽の状態 */
         enum class Preview
         {
             None,
@@ -59,9 +38,8 @@ namespace GamePlay::Ui
         void OnUpdate() override;
 
         [[nodiscard]] std::unique_ptr<AssetUpdater::IAssetUpdater> CreateAssetUpdater(const AssetUpdater::AssetUpdaterPaths& paths) const;
-        [[nodiscard]] static Keys ReadKeys();
+        void SyncScreen();
         void OnStateChanged(AssetUpdater::AssetUpdateState state);
-        /** @brief 答えを待つ状態 (更新あり・失敗・本体が古い・入れ終えた) の札を出す */
         void ShowPromptFor(AssetUpdater::AssetUpdateState state);
         void ShowProgress();
         void Confirm();
@@ -77,12 +55,11 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<AssetUpdateTagUi> view_;
+        std::shared_ptr<UiFlow::UiScreen> screen_;
         std::unique_ptr<AssetUpdater::AssetUpdateTask> task_;
         AssetUpdater::AssetUpdateState shownState_ = AssetUpdater::AssetUpdateState::Idle;
-        Keys previousKeys_;
 
         Preview preview_ = Preview::None;
-        /** 偽の受け取りの進み 0..1 */
         LibCore::Tween::TweenPlayer<float> previewDownloadTween_;
 
 #pragma region Serialization Function

@@ -41,7 +41,8 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<Asset::SoundFile>                                BGM() const { return bgm_.get(); }
         [[nodiscard]] const GameObject::IGameObject&                                   BoundryAirShipCollider() const { return *boundryAirshipCollider_.get(); }
         [[nodiscard]] const std::weak_ptr<Asset::PrefabGameObjectFile>&                FirstEventDragonPrefab() const { return firstEventDragonPrefab_.get(); }
-        [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos () const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
+        [[nodiscard]] bool                                                             HasFirstEventDragonSpawnPos() const { return static_cast<bool>(firstEventDragonSpawnPos_); }
+        [[nodiscard]] glm::vec3                                                        FirstEventDragonSpawnPos () const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
         [[nodiscard]] GamePlay::Prop::Canon&                                           PlayerControllabeCanon   () const { return *playerControllabeCanon_.get(); }
         [[nodiscard]] bool                                                             HasPlayerControllabeCanon() const { return playerControllabeCanon_.get() != nullptr; }
         [[nodiscard]] Asset::PrefabGameObjectFile&                                     SwordManCameraGroupPrefab() const { return *swordManCameraGroupPrefab_.get(); }

@@ -85,7 +85,6 @@ namespace GamePlay::Ui
         if (!row)
             return;
 
-        // NOTE: 空いた行も罫線は残したいので、GameObject ごとではなく中身だけを消す
         row->Show(label, value);
         row->SetSelected(isSelected && !label.empty());
     }

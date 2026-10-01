@@ -23,10 +23,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto ENEMY_FACTORY_EXTENSION_LABEL = ".enemyFactory";
 
-    /**
-     * 敵の生成口。どの種別がどのプレハブになるかと、生成後に付く見た目(ボスHPゲージ)を
-     * まとめて持つ。敵コンポーネント側はUIのプレハブを一切持たない。
-     */
+    /** 敵の種別ごとのプレハブと、生成後に付けるボスHPゲージを持つ */
     class EnemyFactory final : public ScriptableObject
     {
     public:

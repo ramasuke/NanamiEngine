@@ -261,8 +261,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         const glm::vec3 playerPos     = Transform().GetWorldPos();
         const glm::vec3 attackAreaPos = attackArea.Transform().GetWorldPos();
-        // 武器が通る高さで水平に飛ばす。足元から攻撃判定の中心へ斜めに飛ばすと、
-        // 目の前の壁ではなく庇のような頭上の出っ張りを拾って火花が宙に浮く
+        // 武器の高さで水平に飛ばす (斜めだと頭上の出っ張りを拾う)
         const glm::vec3 origin(playerPos.x, attackAreaPos.y, playerPos.z);
         const glm::vec3 direction(attackAreaPos.x - playerPos.x, 0.0f, attackAreaPos.z - playerPos.z);
 

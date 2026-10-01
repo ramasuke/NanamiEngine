@@ -20,10 +20,8 @@ struct _ENetPeer;
 namespace GamePlay::Network
 {
     /**
-     * 中継サーバー(EnviroHunter-Server)経由の INetworkSystem。
-     * ホストもクライアントも中継サーバーへ外向きにつなぎ、どちらになるかは中継サーバーの返事(Hosted / Joined)で決まる。
-     * ホストになったら EnetUDPNetworkSystem のサーバーと同じく PlayerId を割り当て、参加と離脱を通知する。
-     * 非公開部屋(RelayRoom::Create / Join)では、部屋のコードと断られた理由を status に書く
+     * 中継サーバー経由の INetworkSystem。ホストかクライアントかは中継サーバーの返事 (Hosted / Joined) で決まる。
+     * 非公開部屋では、部屋のコードと断られた理由を status に書く
      */
     class EnetRelayNetworkSystem final : public NanamiEngine::Core::Network::INetworkSystem
     {

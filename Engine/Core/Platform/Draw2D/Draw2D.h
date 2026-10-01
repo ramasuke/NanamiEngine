@@ -7,8 +7,7 @@
 #include "../../../Module/Color/Color32.h"
 #include "../../../../Libs/LibCore/DxLib/BlendMode.h"
 
-// 2D 描画の DxLib を出さない入口 (docs/HotReload.md §2)。座標はピクセル、色は Color32、画像・フォントは int ハンドル
-// (SpriteFile::GetDxLibHandle / TtfFontFile::DxLibHandle)。文字列は UTF-8 で受け取り中で Shift-JIS に変換する
+// DxLib を出さない 2D 描画の入口。文字列は UTF-8 で受け取り中で Shift-JIS に変換する
 namespace NanamiEngine::Platform::Draw2D
 {
     /** 画像の拡大縮小フィルタ (DxLib の DX_DRAWMODE_*) */

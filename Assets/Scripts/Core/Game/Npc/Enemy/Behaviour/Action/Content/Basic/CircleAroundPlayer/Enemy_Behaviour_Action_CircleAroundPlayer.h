@@ -8,13 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** 一番近いプレイヤーを中心に、desiredRadius_ を保ちながら円弧に沿って進行方向を向いて歩く。
-     * NOTE:
-     * - 回る向きと時間は開始ごとにランダムに決める。時間が経ったら Success。
-     * - 壁などで進めないときは一度だけ向きを反転し、それでも進めなければ Success で終える。
-     * - radiusGain_ は半径のずれ(desiredRadius_ に対する割合)を寄せる強さ。
-     * - radiusShrinkPerSec_ > 0 なら狙う半径を minRadius_ まで毎秒縮めて渦を巻くように詰め寄り、
-     *   距離が minRadius_ 以下になったら時間前でも Success。
+    /** 一番近いプレイヤーの周りを desiredRadius_ を保って回る。向きと時間は毎回ランダム
+     * NOTE: 進めなければ一度だけ反転し、それでも駄目なら Success。radiusShrinkPerSec_ > 0 なら minRadius_ まで詰め寄る
      */
     class CircleAroundPlayer final : public ActionBase
     {

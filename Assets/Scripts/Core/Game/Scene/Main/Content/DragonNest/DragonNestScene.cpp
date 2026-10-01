@@ -81,10 +81,9 @@ namespace GameCore::Scene::Main
         playerAvatar_ = networkRunner.SpawnPlayerAvatar(
             PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
-            glm::quat());
+            Context()->PlayerSpawnRotation());
 
-        // 敵はホスト側だけがスポーンする。クライアント側は
-        // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
+        // NOTE: 敵はホストだけがスポーンする
         if (networkRunner.IsServer())
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
@@ -141,8 +140,7 @@ namespace GameCore::Scene::Main
         }
 
         /**
-         * @brief 古竜が倒れた後、巣に積まれていた心臓が空へ散り散りに飛んでいく (docs/Story.md 終章の結末)。
-         *        終わったら拠点の島へ戻る。カメラが破棄されたら (シーンを抜けたら) 止まる
+         * @brief 巣の心臓が空へ散る演出を流して拠点の島へ戻る。カメラが破棄されたら止まる
          */
         Coroutine::Task<void> PlayHeartScatterAsync(
             std::shared_ptr<DragonNestSceneContext> context, std::weak_ptr<IPlayerAvatar> playerAvatar)

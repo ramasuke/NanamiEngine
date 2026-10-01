@@ -16,11 +16,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 namespace NanamiEngine::Core::MainWindow
 {
     /**
-     * @brief .mv1 をダブルクリックで開き、ModelRenderer に設定した GameObject として表示するビューア
-     *
-     * @details
-     *  PrefabViewWindow と同じくバックバッファへ 3D 描画し、ImGui の "ModelView" パネルを上に重ねる。
-     *  プレビュー用 GameObject は ModelPreviewStage が 1 つだけ持ち、一覧で選択したモデルを差し替える。
+     * @brief .mv1 を ModelRenderer 付きの GameObject として表示するビューア
      */
     class NANAMI_API ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {

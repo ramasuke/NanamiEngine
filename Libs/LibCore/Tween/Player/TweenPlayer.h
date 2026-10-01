@@ -10,14 +10,13 @@
 namespace LibCore::Tween
 {
     // 秒を tweeny の区間長(uint16_t の ms)に変換する
-    // NOTE: 0ms の区間は 0/0 で NaN になるので最小 1ms、uint16_t に収まるよう最大 65535ms(約65秒)
+    // NOTE: 0ms は NaN になるので最小 1ms
     inline uint16_t Ms(const float secs)
     {
         return static_cast<uint16_t>(std::clamp(secs * 1000.0f, 1.0f, 65535.0f));
     }
 
-    // OnUpdate から毎フレーム Tick して使う tween の再生器。コンポーネントのメンバとして持つ
-    // tween の組み立ては tweeny::from(...).to(...).during(Ms(...)).via(Ease(...)) のまま
+    // 毎フレーム Tick して使う tween の再生器
     template <typename T>
     class TweenPlayer
     {

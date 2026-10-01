@@ -22,13 +22,6 @@ namespace GamePlay::Ui
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ステージで ESC (パッドは Start) を押したら「帰 還」の貼り紙を出し、島へ帰るかを尋ねる。
-     *
-     * 帰るのは自分だけで、仲間へは何も送らない。ホストが帰ると部屋ごと閉じるので、そのときは断り書きを出す。
-     * 開いている間もゲームは止めず、手元のアバターの State だけを止める。
-     * 「設定」を選ぶと貼り紙を隠して設定画面を開き、閉じたら貼り紙へ戻る。
-     */
     class StageReturnPresenter final : public Component::ComponentBase,
                                        public LifeCycleCallback::IStartable,
                                        public LifeCycleCallback::IUpdatable
@@ -44,7 +37,6 @@ namespace GamePlay::Ui
         void OpenSettings();
 
         [[nodiscard]] static bool CanOpen(const GameCore::IPlayerAvatar& avatar);
-        /** @brief ホストで、ほかのプレイヤーが部屋にいる */
         [[nodiscard]] static bool IsHostLeavingOthers();
 
         [[serialize(0)]] FIELD(Asset::UiSoundBankData) uiSounds_;
@@ -52,10 +44,8 @@ namespace GamePlay::Ui
 
         std::shared_ptr<UiFlow::UiScreen> screen_;
         std::shared_ptr<StageReturnNoticeUi> view_;
-        // 閉じている間に開くキーを読む。開いている間の入力は screen_ から読む
         UiFlow::UiInputReader toggleInput_;
         int   selection_ = 0;
-        // 帰ると決めた。シーンが切り替わるまで何も受け付けない
         bool  isLeaving_ = false;
 
 #pragma region Serialization Function

@@ -8,8 +8,7 @@
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * @brief 怯み耐性を超える怯み値の攻撃を受けたら flinch_secs_ の間 Running を返し続ける。
-     *        Selector で攻撃・移動の枝より前に置くと、その間は下位の枝(実行中の攻撃も)が止まる
+     * @brief 怯み耐性を超える攻撃を受けたら flinch_secs_ の間 Running を返し続ける
      */
     class Flinch final : public ActionBase
     {

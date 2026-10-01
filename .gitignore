@@ -34,7 +34,7 @@ EngineLog.txt
 # Model sources (only the converted .mv1 is tracked)
 *.fbx
 
-# Asset distribution (tools/dist) - release artifacts, not sources
+# Asset distribution (Asset Dist, Packages/AssetUpdater/Dist) - release artifacts, not sources
 /manifest.json
 /manifest-*.json
 /installed.json

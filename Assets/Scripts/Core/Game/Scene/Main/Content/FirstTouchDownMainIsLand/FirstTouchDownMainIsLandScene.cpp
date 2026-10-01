@@ -46,7 +46,6 @@ namespace GameCore::Scene::Main
             context.AirShip()->Entity().lock(),
             true,
             std::make_shared<PlayerAvatar::NullPlayerAvatarStatus>());
-        playerAvatar_.lock()->PlayerTransform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
         
         // 船を降りるまでのMovie開始
         aboardAirShipMovie_ = std::make_shared<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());

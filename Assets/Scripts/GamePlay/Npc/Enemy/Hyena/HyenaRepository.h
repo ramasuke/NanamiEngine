@@ -6,10 +6,7 @@ namespace GamePlay::Npc::Enemy
 {
     class Hyena;
 
-    /**
-     * EnemyFactory が生成した Hyena を貯めておく入れ物。
-     * GameObject の所有者はシーン側なので weak_ptr で持ち、読むたびに死んだ分を落とす。
-     */
+    /** 生成した Hyena の weak_ptr の入れ物。読むたびに死んだ分を落とす */
     class HyenaRepository final
     {
     public:

@@ -55,7 +55,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if (version >= 3) archive(CEREAL_NVP(lowHealthScreenEffect_));
             if (version >= 2) archive(CEREAL_NVP(controlGuidePrefab_));
             if (version >= 4) archive(CEREAL_NVP(itemBarPrefab_));
-            // NOTE: v5 だけにあった冒険者の手帳の prefab。手帳は消したので読み捨てる
             if (version == 5)
             {
                 FIELD(Asset::PrefabGameObjectFile) pauseMenuPrefab_;

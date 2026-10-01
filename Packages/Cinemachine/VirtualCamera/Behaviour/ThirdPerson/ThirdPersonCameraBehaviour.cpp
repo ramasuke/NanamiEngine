@@ -181,8 +181,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
         Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
 
-        // 太さ0のRayだと横壁や地面すれすれでNear平面がめり込むため、半径を持った球で位置を決める。
-        // これでカメラ周囲に最低collisionRadius_の空きが保証され、Brainの動的Nearが極端に小さくならない
+        // Ray だと壁際で Near 平面がめり込むので、collisionRadius_ の球で位置を決める
         Module::Physics::RaycastHit hit = Module::Physics::SphereCast(origin, collisionRadius_, direction, distance, mask);
         if (hit.Hit() && hit.Distance() <= 0.0f)
         {

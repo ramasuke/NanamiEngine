@@ -33,8 +33,7 @@ namespace GamePlay::Network
         [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
         /**
-         * 中継サーバー経由で sessionKey の部屋に入る。公開部屋なら空きが無ければホストになる。結果は GetConnectionState() で見る
-         * @note 非公開部屋のコードと断られた理由は RelayRoomCode() / RelayFailure() で読める
+         * 中継サーバー経由で sessionKey の部屋に入る。公開部屋なら空きが無ければホストになる
          */
         void StartRelay(const std::string& sessionKey, const RelayServerSettings& relay, const RelayRoom& room = {});
 

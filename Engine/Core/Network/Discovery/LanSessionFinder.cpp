@@ -17,8 +17,8 @@ namespace NanamiEngine::Core::Network
         constexpr enet_uint32 LAN_SESSION_QUERY_INTERVAL_MS = 250;
 
         /**
-         * 稼働中の各 IPv4 アダプタのサブネットブロードキャスト(ネットワークバイト順)。
-         * Windows は 255.255.255.255 を 1 つの NIC にしか出さないことがあり、仮想 NIC がある PC で LAN 側へ届かないため
+         * 稼働中の各 IPv4 アダプタのサブネットブロードキャスト(ネットワークバイト順)
+         * NOTE: 255.255.255.255 は 1 つの NIC にしか出ないことがあり、仮想 NIC があると LAN に届かない
          */
         std::vector<enet_uint32> CollectLanSubnetBroadcastHosts()
         {

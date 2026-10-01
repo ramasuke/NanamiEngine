@@ -9934,7 +9934,7 @@
       "class": "CineMachineVirtualCamera",
       "fqn": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
       "leaf": "CineMachineVirtualCamera",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -9964,6 +9964,38 @@
           "member": "fov_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "overrideBlendIn_",
+          "member": "overrideBlendIn_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "blendIn_secs_",
+          "member": "blendIn_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "blendInEase_",
+          "member": "blendInEase_",
+          "named": true,
+          "shape": "int",
+          "enum": "EaseType",
+          "values": {
+            "Linear": 0,
+            "OutQuad": 1,
+            "InQuad": 2,
+            "InOutQuad": 3,
+            "OutBack": 4,
+            "InBack": 5,
+            "InOutSine": 6,
+            "OutCubic": 7,
+            "InCubic": 8,
+            "InOutCubic": 9,
+            "SmoothStep": 10
+          }
         }
       ]
     },

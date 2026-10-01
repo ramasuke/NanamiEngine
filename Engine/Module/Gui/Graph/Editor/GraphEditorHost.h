@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include <functional>
 #include <memory>
 
 #include "GraphEditor.h"
@@ -9,9 +10,7 @@ namespace NanamiEngine::Module::Gui::Graph
 {
     /**
      * @brief ImGuizmo の GraphEditor を 1 枚のキャンバスとして描画するホスト。
-     * @note  ツールバー（Fit / Grid / Minimap / 曲線）と ViewState（パン・ズーム）を持ち、
-     *        ノードの中身は GraphEditor::Delegate 側が提供する。ViewState はセッション中だけ保持し、保存しない。
-     *        操作: 中ボタンドラッグ = パン / ホイール = ズーム / 左ドラッグ = 範囲選択 / F = 全体表示
+     * @note  ViewState (パン・ズーム) はセッション中だけ保持し、保存しない
      */
     class NANAMI_API GraphEditorHost final
     {
@@ -35,8 +34,13 @@ namespace NanamiEngine::Module::Gui::Graph
 
         [[nodiscard]] GraphEditor::Options& Options() { return options_; }
 
+        [[nodiscard]] float Zoom() const { return viewState_.mFactor; }
+
+        /** @brief 次の Draw だけ、ツールバーの右端に描くもの（readOnly では描かない） */
+        void SetToolbarExtra(std::function<void()> drawExtra) { toolbarExtra_ = std::move(drawExtra); }
+
     private:
-        void DrawToolbar();
+        void DrawToolbar(bool readOnly);
 
         GraphEditor::Options     options_;
         GraphEditor::ViewState   viewState_;
@@ -44,10 +48,14 @@ namespace NanamiEngine::Module::Gui::Graph
         ImVec2                   canvasOrigin_ = ImVec2(0, 0);
         bool                     showMinimap_  = true;
         bool                     isFocused_    = false;
+        std::function<void()>    toolbarExtra_;
     };
 
     /** @brief ノードの見た目テンプレートを作る（入出力スロット名は持たない） */
     [[nodiscard]] NANAMI_API GraphEditor::Template MakeNodeTemplate(ImU32 headerColor, ImU8 inputCount, ImU8 outputCount);
+
+    /** @brief その大きさで描く文字のフォント（既定フォントより大きければ大きいフォント） */
+    [[nodiscard]] NANAMI_API ImFont* FontForSize(float pixelSize);
 
     /** @brief 開いている全 InspectorWindow に対象を表示させる */
     NANAMI_API void ShowInInspector(const std::weak_ptr<Object::IObject>& object);

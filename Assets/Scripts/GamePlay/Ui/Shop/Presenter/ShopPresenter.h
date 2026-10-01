@@ -24,17 +24,12 @@ namespace GamePlay::Prop
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 店の画面の開閉と入力。品揃えはこのプレハブが持つ .shopData から読む。
-     * ↑↓で品、←→で個数(押し続けると連続)、A で買ってその場で保存、B で閉じる。
-     * 開いている間はアバターを止め、露店があればそのカメラへ寄せる。
-     */
     class ShopPresenter final : public Component::ComponentBase,
                                 public LifeCycleCallback::IStartable,
                                 public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief OnStart より前に呼ぶ */
+        /** @warning OnStart より前に呼んでください */
         void Bind(const std::weak_ptr<Prop::MerchantStall>& stall);
 
     private:

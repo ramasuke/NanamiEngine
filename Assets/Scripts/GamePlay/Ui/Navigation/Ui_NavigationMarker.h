@@ -12,11 +12,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 目的地の目印。画面内なら目的地の上に光の玉と「教官 32m」の添え書き、
-     *        画面外(背後も)なら目的地の方向の画面端に蛍の列と添え書きを出す。
-     *        会話中・操作ロック中と、目的地のすぐ近くでは出さない
-     */
+    /** @brief 目的地の目印。画面内なら光の玉、画面外なら画面端に蛍の列を出す */
     class NavigationMarker final : public Component::ComponentBase,
                                    public LifeCycleCallback::IUpdatable,
                                    public LifeCycleCallback::IUserInterfaceRenderable

@@ -64,11 +64,27 @@
                             "value0": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "cereal_class_version": 0,
-                                    "rewardMoney_": {
-                                        "cereal_class_version": 0,
-                                        "value_": 600
-                                    }
+                                    "cereal_class_version": 1,
+                                    "rewards_": [
+                                        {
+                                            "polymorphic_id": 2147483651,
+                                            "polymorphic_name": "GameCore::Reward::MoneyReward",
+                                            "ptr_wrapper": {
+                                                "id": 2147483653,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "conditions_": []
+                                                    },
+                                                    "amount_": {
+                                                        "cereal_class_version": 0,
+                                                        "value_": 600
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
                                 },
                                 "questType_": 9,
                                 "requiredCount_": 6,
@@ -82,10 +98,10 @@
                 },
                 "unlockConditions_": [
                     {
-                        "polymorphic_id": 2147483651,
+                        "polymorphic_id": 2147483652,
                         "polymorphic_name": "GameCore::Condition::StoryFlagCondition",
                         "ptr_wrapper": {
-                            "id": 2147483653,
+                            "id": 2147483654,
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {

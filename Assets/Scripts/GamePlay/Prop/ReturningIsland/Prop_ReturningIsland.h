@@ -16,10 +16,7 @@ namespace GameCore
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 浮遊石の力で雲の下から戻ってくる島と、そこへ上る階段。シーン上の位置が戻った位置。
-     *        戻るまでは Sink で雲の下へ退避させておく。演出はシーンが抜けたら (この島が破棄されたら) 止まる
-     */
+    /** @brief 雲の下から戻ってくる島と階段。シーン上の位置が戻った位置 */
     class ReturningIsland final : public Component::ComponentBase
     {
     public:

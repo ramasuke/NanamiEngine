@@ -158,43 +158,6 @@
                         }
                     }
                 },
-                "name_": "Bite1",
-                "position_": {
-                    "value0": 540.0,
-                    "value1": 210.0
-                },
-                "guid_": {
-                    "value_": "541BE417-024B-4620-97DA-D679110F9F12"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": false,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_3": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483659,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483660,
-                            "data": {
-                                "value0": {
-                                    "value_": "EB456F4C-78DE-485F-BEAD-47BB1E7BB7ED"
-                                }
-                            }
-                        }
-                    }
-                },
                 "name_": "Idle2",
                 "position_": {
                     "value0": 340.0,
@@ -213,17 +176,17 @@
             }
         }
     },
-    "nodes_4": {
+    "nodes_3": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483661,
+            "id": 2147483659,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483662,
+                            "id": 2147483660,
                             "data": {
                                 "value0": {
                                     "value_": "EB456F4C-78DE-485F-BEAD-47BB1E7BB7ED"
@@ -250,6 +213,43 @@
             }
         }
     },
+    "nodes_4": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483661,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483662,
+                            "data": {
+                                "value0": {
+                                    "value_": "EB456F4C-78DE-485F-BEAD-47BB1E7BB7ED"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Bite2",
+                "position_": {
+                    "value0": 540.0,
+                    "value1": 300.0
+                },
+                "guid_": {
+                    "value_": "41D589C8-C001-47C7-B2A0-E87C6678C6BA"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
     "nodes_5": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
@@ -269,13 +269,13 @@
                         }
                     }
                 },
-                "name_": "Bite2",
+                "name_": "Bite1",
                 "position_": {
                     "value0": 540.0,
-                    "value1": 300.0
+                    "value1": 210.0
                 },
                 "guid_": {
-                    "value_": "41D589C8-C001-47C7-B2A0-E87C6678C6BA"
+                    "value_": "541BE417-024B-4620-97DA-D679110F9F12"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000.0,

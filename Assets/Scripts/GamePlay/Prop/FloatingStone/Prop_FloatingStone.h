@@ -18,8 +18,7 @@ namespace GameCore
 namespace GamePlay::Prop
 {
     /**
-     * @brief 島の心臓の浮遊石(子にオーラの ParticleSystem)。ステージでは飛び去り、拠点の島では空から戻ってはまる。
-     *        演出はシーンが抜けたら (この石が破棄されたら) 止まる
+     * @brief 島の心臓の浮遊石。飛び去る/空から戻ってはまる演出を持つ
      */
     class FloatingStone final : public Component::ComponentBase
     {

@@ -12,10 +12,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 酒場のキャラ選択画面の見た目。手配書の行は prefab から並べ、右の帳面に選択中の詳細を出す。
-     * キャラの3Dは画面に描かず、展示台(Prop::CharacterPodium)の実モデルが担当する。
-     */
+    /** @brief キャラ選択画面の見た目。キャラの3Dは描かない (展示台のモデルが担当) */
     class CharacterSelectUi final : public Component::ComponentBase
     {
     public:

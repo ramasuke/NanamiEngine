@@ -8,8 +8,7 @@
 namespace NanamiEngine::Module::NanamiUi
 {
     /**
-     * 画像を 12 時から時計回りに扇形で削って描く（DxLib DrawCircleGaugeF）。
-     * startPercent_ から spanPercent_ * fillRate だけ描き、100% をまたぐ弧は2回に分けて描く
+     * 画像を 12 時から時計回りに扇形で削って描く。100% をまたぐ弧は2回に分けて描く
      */
     class NANAMI_API CircleGaugeRenderer final : public Component::ComponentBase,
                                       public LifeCycleCallback::IInitRenderable,

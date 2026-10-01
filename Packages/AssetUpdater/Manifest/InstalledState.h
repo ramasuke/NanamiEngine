@@ -15,10 +15,6 @@ namespace NanamiEngine::AssetUpdater
         std::size_t entryCount = 0;
     };
 
-    /**
-     * gameRoot/Assets/ の中身を実際にハッシュして、それを表す installed.json を書く。
-     * 書き出したゲームは、これで配信中の manifest.json との差分だけを更新する
-     */
     class NANAMI_API InstalledStateWriter final
     {
     public:

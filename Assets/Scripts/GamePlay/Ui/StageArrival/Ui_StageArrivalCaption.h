@@ -10,9 +10,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 狩り場に初めて着いたときの空撮 (StageArrivalMovie) の字幕。
-     * 島の名前は画面の中央に大きく (周りを少し暗くし、上下に墨の罫)、見どころの名前は下の中央に小さく出す。
-     * 出し入れはフェードだけ。見た目は tools/art/stage_arrival_caption.py、プレハブは stage_arrival_caption_prefab.py
+     * @brief 狩り場初到着の空撮の字幕。島の名前は中央に大きく、見どころの名前は下に小さく出す
      */
     class StageArrivalCaption final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable

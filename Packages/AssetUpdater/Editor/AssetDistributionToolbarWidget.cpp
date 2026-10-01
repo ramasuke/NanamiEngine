@@ -1,11 +1,11 @@
 ﻿#include "AssetDistributionToolbarWidget.h"
 
-#include <algorithm>
+#include <utility>
 #include <cstring>
 #include <filesystem>
 
 #include "ImGuiHelper.h"
-#include "../Text/Utf8.h"
+#include "../Text/VersionString.h"
 #include "../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../Engine/Core/Application/Configuration/Build/ApplicationConfiguration_Build.h"
 #include "../../../Engine/Core/Application/Window/Toolbar/Widget/EditorToolbarWidgetRegistry.h"
@@ -20,22 +20,15 @@ namespace NanamiEngine::AssetUpdater::Editor
         constexpr auto ASSET_DIST_CONFIG_PATH                 = "Build/AssetDistribution/";
         constexpr auto ASSET_DIST_VERSION_KEY                 = "Version";
         constexpr auto ASSET_DIST_REQUIRED_CLIENT_VERSION_KEY = "RequiredClientVersion";
-        constexpr auto ASSET_DIST_PYTHON_KEY                  = "Python";
-        constexpr auto ASSET_DIST_DEFAULT_PYTHON              = "python";
+        constexpr auto ASSET_DIST_REMOTE_KEY                  = "Remote";
+        constexpr auto ASSET_DIST_PUBLIC_BASE_URL_KEY         = "PublicBaseUrl";
+        constexpr auto ASSET_DIST_RCLONE_KEY                  = "Rclone";
+        constexpr auto ASSET_DIST_DEFAULT_RCLONE              = "rclone";
 
-        constexpr auto ASSET_DIST_TOOL_ENTRY  = "tools/dist/__main__.py";
-        constexpr auto ASSET_DIST_POPUP       = "AssetDistributionPopup";
-        constexpr auto ASSET_DIST_CONFIRM     = "Release assets?##AssetDistribution";
-        constexpr size_t ASSET_DIST_MAX_LINES = 5000;
-
-        // tools/dist/upload.py の VERSION_RE と揃える
-        bool AssetDistIsValidVersion(const std::string& version)
-        {
-            return !version.empty() && std::ranges::all_of(version, [](const char c)
-            {
-                return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-';
-            });
-        }
+        constexpr auto ASSET_DIST_CONFIG_DIRECTORY = "ProjectConfig/Build/AssetDistribution";
+        constexpr auto ASSET_DIST_POPUP            = "AssetDistributionPopup";
+        constexpr auto ASSET_DIST_CONFIRM          = "Release assets?##AssetDistribution";
+        constexpr size_t ASSET_DIST_MAX_LINES      = 5000;
 
         template <size_t N>
         void AssetDistCopyToBuffer(char (&buffer)[N], const std::string& value)
@@ -52,12 +45,12 @@ namespace NanamiEngine::AssetUpdater::Editor
         }
         else
         {
-            if (!toolsAvailable_)
+            if (!configAvailable_)
             {
                 std::error_code ec;
-                toolsAvailable_ = std::filesystem::is_regular_file(ASSET_DIST_TOOL_ENTRY, ec);
+                configAvailable_ = std::filesystem::is_directory(ASSET_DIST_CONFIG_DIRECTORY, ec);
             }
-            return *toolsAvailable_;
+            return *configAvailable_;
         }
     }
 
@@ -73,14 +66,14 @@ namespace NanamiEngine::AssetUpdater::Editor
         }
 
         // ポップアップを閉じていても進み具合が分かるよう、実行中はツールバーにも出す
-        if (process_.IsRunning())
+        if (job_.IsRunning())
         {
             ImGui::SameLine();
-            ImGui::Text("Dist: %s %s", StepLabel(runningStep_), process_.ElapsedLabel().c_str());
+            ImGui::Text("Dist: %s %s", StepLabel(runningStep_), job_.ElapsedLabel().c_str());
             ImGui::SameLine();
             if (ImGui::Button("Cancel Dist"))
             {
-                process_.Cancel();
+                job_.Cancel();
             }
         }
 
@@ -96,7 +89,9 @@ namespace NanamiEngine::AssetUpdater::Editor
         using namespace Module::ProjectConfig;
         AssetDistCopyToBuffer(version_,               LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_VERSION_KEY,                 std::string()));
         AssetDistCopyToBuffer(requiredClientVersion_, LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_REQUIRED_CLIENT_VERSION_KEY, std::string()));
-        AssetDistCopyToBuffer(python_,                LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_PYTHON_KEY,                  std::string(ASSET_DIST_DEFAULT_PYTHON)));
+        AssetDistCopyToBuffer(remote_,                LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_REMOTE_KEY,                  std::string()));
+        AssetDistCopyToBuffer(publicBaseUrl_,         LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_PUBLIC_BASE_URL_KEY,         std::string()));
+        AssetDistCopyToBuffer(rclone_,                LoadOrDefaultWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_RCLONE_KEY,                  std::string(ASSET_DIST_DEFAULT_RCLONE)));
         settingsLoaded_ = true;
     }
 
@@ -107,7 +102,9 @@ namespace NanamiEngine::AssetUpdater::Editor
             using namespace Module::ProjectConfig;
             SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_VERSION_KEY,                 version_);
             SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_REQUIRED_CLIENT_VERSION_KEY, requiredClientVersion_);
-            SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_PYTHON_KEY,                  python_);
+            SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_REMOTE_KEY,                  remote_);
+            SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_PUBLIC_BASE_URL_KEY,         publicBaseUrl_);
+            SaveWithPath<std::string>(ASSET_DIST_CONFIG_PATH, ASSET_DIST_RCLONE_KEY,                  rclone_);
         }
         catch (const Module::Exception::NanamiException& exception)
         {
@@ -117,28 +114,13 @@ namespace NanamiEngine::AssetUpdater::Editor
 
     void AssetDistributionToolbarWidget::OnDrawPopup()
     {
-        const bool running = process_.IsRunning();
+        const bool running = job_.IsRunning();
 
-        ImGui::TextUnformatted("Asset Distribution (tools/dist -> Cloudflare R2)");
+        ImGui::TextUnformatted("Asset Distribution (manifest.json -> Cloudflare R2 via rclone)");
         ImGui::Separator();
 
         ImGui::BeginDisabled(running);
-        ImGui::SetNextItemWidth(200);
-        ImGui::InputText("Version", version_, sizeof(version_));
-        if (ImGui::IsItemDeactivatedAfterEdit())
-            SaveSettings();
-        ImGui::SetNextItemWidth(200);
-        // NOTE: 空なら tools/dist が Build Settings の Client Version を使う
-        const std::string clientVersionHint = "Build Settings: " + Core::Application::Configuration::BuildConfiguration::ClientVersion();
-        ImGui::InputTextWithHint("Required Client Version", clientVersionHint.c_str(), requiredClientVersion_, sizeof(requiredClientVersion_));
-        if (ImGui::IsItemDeactivatedAfterEdit())
-            SaveSettings();
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("Games older than this skip the update. Raise it only when shipping a new exe (e.g. font changes)");
-        ImGui::SetNextItemWidth(400);
-        ImGui::InputText("Python", python_, sizeof(python_));
-        if (ImGui::IsItemDeactivatedAfterEdit())
-            SaveSettings();
+        OnDrawSettings();
         ImGui::EndDisabled();
 
         const std::string inputError = ValidateInputs();
@@ -148,10 +130,10 @@ namespace NanamiEngine::AssetUpdater::Editor
         ImGui::Spacing();
         if (running)
         {
-            ImGui::Text("Running: %s %s", StepLabel(runningStep_), process_.ElapsedLabel().c_str());
+            ImGui::Text("Running: %s %s", StepLabel(runningStep_), job_.ElapsedLabel().c_str());
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
-                process_.Cancel();
+                job_.Cancel();
         }
         else
         {
@@ -169,7 +151,15 @@ namespace NanamiEngine::AssetUpdater::Editor
             ImGui::EndDisabled();
             if (!built && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
                 ImGui::SetTooltip("Build Manifest for this version first");
+            ImGui::SameLine();
+            if (ImGui::Button("Diff vs Live"))
+                Begin(Step::DiffLive);
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip("What players would download: the live manifest.json on R2 vs the local one");
             ImGui::EndDisabled();
+            ImGui::SameLine();
+            if (ImGui::Button("Self Test"))
+                Begin(Step::SelfTest);
         }
         OnDrawReleaseConfirm();
 
@@ -185,6 +175,38 @@ namespace NanamiEngine::AssetUpdater::Editor
 
         ImGui::Separator();
         OnDrawLog();
+    }
+
+    void AssetDistributionToolbarWidget::OnDrawSettings()
+    {
+        const auto input = [this](const char* label, char* buffer, const size_t size, const float width)
+        {
+            ImGui::SetNextItemWidth(width);
+            ImGui::InputText(label, buffer, size);
+            if (ImGui::IsItemDeactivatedAfterEdit())
+                SaveSettings();
+        };
+
+        input("Version", version_, sizeof(version_), 200);
+        ImGui::SetNextItemWidth(200);
+        const std::string clientVersionHint = "Build Settings: " + Core::Application::Configuration::BuildConfiguration::ClientVersion();
+        ImGui::InputTextWithHint("Required Client Version", clientVersionHint.c_str(), requiredClientVersion_, sizeof(requiredClientVersion_));
+        if (ImGui::IsItemDeactivatedAfterEdit())
+            SaveSettings();
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Games older than this skip the update. Raise it only when shipping a new exe (e.g. font changes)");
+
+        if (ImGui::TreeNode("Destination##AssetDistribution"))
+        {
+            input("Remote", remote_, sizeof(remote_), 400);
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip("rclone remote and bucket (e.g. r2:nanami-assets). Keys stay in rclone.conf");
+            input("Public Base URL", publicBaseUrl_, sizeof(publicBaseUrl_), 400);
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip("URL players read from. baseUrl = <this>/files/, manifest = <this>/manifest.json");
+            input("Rclone", rclone_, sizeof(rclone_), 400);
+            ImGui::TreePop();
+        }
     }
 
     void AssetDistributionToolbarWidget::OnDrawReleaseConfirm()
@@ -208,7 +230,7 @@ namespace NanamiEngine::AssetUpdater::Editor
 
     void AssetDistributionToolbarWidget::OnDrawLog()
     {
-        const size_t total = process_.CopyLines(logLines_, copiedLineCount_);
+        const size_t total = job_.CopyLines(logLines_, copiedLineCount_);
         if (total != copiedLineCount_)
         {
             copiedLineCount_ = total;
@@ -241,55 +263,38 @@ namespace NanamiEngine::AssetUpdater::Editor
 
     void AssetDistributionToolbarWidget::Begin(const Step step)
     {
-        if (process_.IsRunning() || !ValidateInputs().empty())
+        if (job_.IsRunning() || step == Step::None)
+            return;
+        if (step != Step::SelfTest && !ValidateInputs().empty())
             return;
         SaveSettings();
 
-        std::wstring commandLine = L"\"" + Utf8ToWide(python_) + L"\" -X utf8 -u -m tools.dist ";
-        switch (step)
-        {
-        case Step::Build:
-            commandLine += L"build --version " + Utf8ToWide(version_);
-            if (requiredClientVersion_[0] != '\0')
-                commandLine += L" --required-client-version " + Utf8ToWide(requiredClientVersion_);
-            break;
-        case Step::DryRun:
-            commandLine += L"upload --dry-run";
-            break;
-        case Step::Release:
-            commandLine += L"upload";
-            break;
-        case Step::None:
-            return;
-        }
+        Dist::DistRequest request;
+        request.step                  = step;
+        request.version               = version_;
+        request.requiredClientVersion = RequiredClientVersion();
+        request.config.remote         = remote_;
+        request.config.publicBaseUrl  = publicBaseUrl_;
+        request.config.rclone         = rclone_;
+        request.repoRoot              = std::filesystem::current_path();
 
         logLines_.clear();
         copiedLineCount_ = 0;
         runningVersion_  = version_;
         runningStep_     = step;
-        if (!process_.Start(commandLine, std::filesystem::current_path()))
-        {
-            // NOTE: 起動の失敗理由は process_ の出力に入っている
-            lastStep_     = step;
-            lastExitCode_.reset();
-            lastCanceled_ = false;
-            lastElapsed_  = process_.ElapsedLabel();
-            runningStep_  = Step::None;
-            Module::LogError(std::string("AssetDistribution: ") + StepLabel(step) + " を起動できませんでした");
-            return;
-        }
+        job_.Start(std::move(request));
         Module::Log(std::string("AssetDistribution: ") + StepLabel(step) + " を始めました (" + runningVersion_ + ")");
     }
 
     void AssetDistributionToolbarWidget::PollFinished()
     {
-        if (runningStep_ == Step::None || process_.IsRunning())
+        if (runningStep_ == Step::None || job_.IsRunning())
             return;
 
         lastStep_     = runningStep_;
-        lastExitCode_ = process_.ExitCode();
-        lastCanceled_ = process_.WasCanceled();
-        lastElapsed_  = process_.ElapsedLabel();
+        lastExitCode_ = job_.ExitCode();
+        lastCanceled_ = job_.WasCanceled();
+        lastElapsed_  = job_.ElapsedLabel();
         runningStep_  = Step::None;
 
         const std::string label = std::string("AssetDistribution: ") + StepLabel(lastStep_);
@@ -305,29 +310,37 @@ namespace NanamiEngine::AssetUpdater::Editor
         }
         else
         {
-            Module::LogError(label + " に失敗しました (exit " + std::to_string(lastExitCode_.value_or(-1)) + ")。Asset Dist のログを確認してください");
+            Module::LogError(label + " に失敗しました。Asset Dist のログを確認してください");
         }
     }
 
     std::string AssetDistributionToolbarWidget::ValidateInputs() const
     {
-        if (!AssetDistIsValidVersion(version_))
+        if (!IsValidVersionString(version_))
             return "Version must be [0-9A-Za-z._-]+";
-        if (requiredClientVersion_[0] != '\0' && !AssetDistIsValidVersion(requiredClientVersion_))
+        if (!IsValidVersionString(RequiredClientVersion()))
             return "Required Client Version must be [0-9A-Za-z._-]+";
-        if (python_[0] == '\0' || std::strchr(python_, '"'))
-            return "Python must be a path without \"";
+        if (rclone_[0] == '\0')
+            return "Rclone must be a path (or rclone on PATH)";
         return {};
+    }
+
+    std::string AssetDistributionToolbarWidget::RequiredClientVersion() const
+    {
+        // NOTE: 空なら Build Settings の Client Version
+        return requiredClientVersion_[0] != '\0' ? std::string(requiredClientVersion_) : Core::Application::Configuration::BuildConfiguration::ClientVersion();
     }
 
     const char* AssetDistributionToolbarWidget::StepLabel(const Step step)
     {
         switch (step)
         {
-        case Step::Build:   return "build";
-        case Step::DryRun:  return "dry run";
-        case Step::Release: return "release";
-        case Step::None:    break;
+        case Step::Build:    return "build";
+        case Step::DryRun:   return "dry run";
+        case Step::Release:  return "release";
+        case Step::DiffLive: return "diff vs live";
+        case Step::SelfTest: return "self test";
+        case Step::None:     break;
         }
         return "";
     }

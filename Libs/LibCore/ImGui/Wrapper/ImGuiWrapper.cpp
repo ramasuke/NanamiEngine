@@ -35,6 +35,12 @@ void ImGuiWrapper::Init()
 		nullptr,
 		io.Fonts->GetGlyphRangesJapanese()
 	);
+	largeFont_ = io.Fonts->AddFontFromFileTTF(
+		"C:/Windows/Fonts/msgothic.ttc",
+		LARGE_FONT_SIZE,
+		nullptr,
+		io.Fonts->GetGlyphRangesJapanese()
+	);
 
 	ImGui_ImplWin32_Init(GetMainWindowHandle());
 	ImGui_ImplDX11_Init(

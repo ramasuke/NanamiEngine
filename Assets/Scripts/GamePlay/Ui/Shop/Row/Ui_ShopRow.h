@@ -22,10 +22,7 @@ namespace GamePlay::Ui
         bool isAffordable = true;
     };
 
-    /**
-     * @brief 品書きの黒板の1行。紙片に貼ったアイコン・品名・手持ち・値段をチョークで書き、選ばれた行だけ丸で囲む。
-     * 行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える。
-     */
+    /** @brief 品書きの黒板の1行。表示窓の分だけ作って使い回し、中身は Bind で差し替える */
     class ShopRow final : public Component::ComponentBase
     {
     public:

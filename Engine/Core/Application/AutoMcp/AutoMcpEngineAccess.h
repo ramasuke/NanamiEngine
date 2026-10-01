@@ -46,10 +46,7 @@ namespace NanamiEngine::Core::PopupWindow
 
 namespace NanamiEngine::Core::Application::AutoMcp
 {
-    /**
-     * @brief AutoMCP のコマンド実装だけが、エンジン側クラスの非公開部分のうち必要なものに触れるための窓口 (Attorney-Client)。
-     * エンジン側クラスはこのクラスだけを friend にし、MCP のために public を増やさない。
-     */
+    /** @brief AutoMCP のコマンド実装がエンジン側クラスの非公開部分に触れるための窓口 (Attorney-Client) */
     class NANAMI_API AutoMcpEngineAccess final
     {
         friend class AutoMcpCommandHandlers;

@@ -9,8 +9,8 @@
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * @brief 鳴っている BGM を fadeOut_secs_ かけて下げて止め、bgm_ があれば fadeIn_secs_ かけて上げながら流す
-     * NOTE: bgm_ が空なら無音にするだけ。毎 Tick 呼ぶとやり直すので OnceExecute か ActionTimeline の Cue に置く
+     * @brief 今の BGM をフェードアウトして止め、bgm_ があればフェードインで流す (空なら無音にするだけ)
+     * NOTE: 毎 Tick 呼ぶとやり直すので OnceExecute か ActionTimeline の Cue に置く
      */
     class FadeBGM final : public ActionBase
     {

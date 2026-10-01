@@ -5,7 +5,7 @@
 
 - 報酬は **島の飾り**（見た目だけ。持っているかは手元の PC にだけ保存し、マルチプレイでは共有しない）とお金。
 - **誰でも参加できる**。イベントの依頼には、期間のほかに物語の進み具合の条件を付けない。
-- 毎週の運営は **データだけ** で回す（exe の更新なし。`tools.dist` で R2 に上げれば届く）。
+- 毎週の運営は **データだけ** で回す（exe の更新なし。エディタの *Asset Dist* で R2 に上げれば届く）。
 
 ## 1. 開催時間
 
@@ -60,5 +60,5 @@
 5. **お知らせ**: `.announcement` を作り、掲示板の `announcements_` に足す。
 6. **確認**: エディタで掲示板を開き、期間内だけ依頼が出ること・報酬欄が「1,500 G ＋ 飾りの名前」になることを見る。
    DebugSheet の「ストーリー/島の飾り」で飾りを付け外しして、島の見た目が切り替わることを見る。
-7. **配信**: `python -m tools.dist build --version <v>` → `python -m tools.dist diff` で差分がイベントのデータだけか確かめる →
-   `python -m tools.dist upload`（CLAUDE.md「Asset distribution」）。
+7. **配信**: ツールバーの *Asset Dist* で Version を上げて *Build Manifest* → *Diff vs Live* で差分がイベントのデータだけか確かめる →
+   *Upload (Dry Run)* → *Upload (Release)*（`Packages/AssetUpdater/README.md`）。

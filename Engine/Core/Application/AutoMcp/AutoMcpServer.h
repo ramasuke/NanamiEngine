@@ -22,10 +22,8 @@ namespace NanamiEngine::Core::Application::Configuration
 namespace NanamiEngine::Core::Application::AutoMcp
 {
     /**
-     * @brief tools/automcp (MCP ブリッジ) からの要求を 127.0.0.1 の TCP で受ける。
-     * 1 行 1 JSON の要求 {"id","cmd","args"} に {"id","ok","result"|"error"} を 1 行で返す。
-     * スレッドは使わず、メインループのフックから毎フレームポーリングする。
-     * フックを呼ぶ EditorApplication と、設定画面の AutoMcpConfiguration からだけ触れる。
+     * @brief 127.0.0.1 の TCP で 1 行 1 JSON の {"id","cmd","args"} を受け {"id","ok","result"|"error"} を返す
+     * NOTE: スレッドは使わず毎フレームポーリングする
      */
     class NANAMI_API AutoMcpServer final
     {

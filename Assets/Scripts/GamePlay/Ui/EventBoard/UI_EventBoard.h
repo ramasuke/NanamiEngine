@@ -37,8 +37,7 @@ namespace GamePlay::Ui
     [[nodiscard]] std::string_view ToEventBoardTabLabel(EventBoardTabType type);
 
     /**
-     * @brief 掲示板の見た目のまとめ役。上に木札の見出しを吊り、下に選んだ見出しの頁(依頼 / 催し / お知らせ / 復興)だけを出す。
-     * 見出しと頁はそれぞれ自分の prefab を持ち、ここで生成する。
+     * @brief 掲示板の見出しと頁を prefab から生成し、選んだ見出しの頁だけを出す
      */
     class EventBoardUi final : public Component::ComponentBase
     {
@@ -53,8 +52,8 @@ namespace GamePlay::Ui
         [[nodiscard]] std::shared_ptr<EventBoardTab>        Tab(EventBoardTabType type) const;
 
         /**
-         * @brief 選んだ見出しを垂らし、その頁だけを出す。復興の頁では島を見せるため暗幕を外す。
-         * 頁を出し直すと子の部品が全部有効に戻るので、呼んだ側はこのあと頁を Bind し直すこと
+         * @brief 選んだ見出しの頁だけを出す。復興の頁では暗幕を外す
+         * WARNING: 子の部品が全部有効に戻るので、このあと頁を Bind し直すこと
          */
         void ShowTab(EventBoardTabType type) const;
         /** @brief 操作ガイドに「A 受注する」「A 直す」のどちらかを出すか、A を出さないか */

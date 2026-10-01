@@ -22,6 +22,11 @@ namespace GamePlay::Ui
     class StageArrivalCaption;
 }
 
+namespace NanamiEngine::CineMachine
+{
+    class CineMachineVirtualCamera;
+}
+
 namespace NanamiEngine::CineMachine::Behaviour
 {
     class VirtualCameraFollowBehaviour;
@@ -49,18 +54,6 @@ namespace GameCore::Scene::GrassLand
         static Coroutine::Task<void> PlayAsync(std::shared_ptr<StageArrivalMovie> self);
 
     private:
-        /** @brief カメラを from から to へ動かす1ショット。注視点も lookFrom から lookTo へ動かす */
-        struct CameraMove
-        {
-            glm::vec3 from;
-            glm::vec3 to;
-            glm::vec3 lookFrom;
-            glm::vec3 lookTo;
-            int  duration_msecs = 0;
-            // 高さだけ遅らせて、上空で寄ってから最後に潜り込む
-            bool lagsHeight     = false;
-        };
-
         /** @param rate 0で膜の奥の歩き出す位置、1で立ち止まる位置 */
         [[nodiscard]] glm::vec3 WalkPos(float rate) const;
         [[nodiscard]] glm::vec3 PortalCenter() const;
@@ -68,8 +61,19 @@ namespace GameCore::Scene::GrassLand
         void SetAvatarVisible(bool isVisible) const;
         /** @return スキップされたか。空撮しない設定か、もう見ていれば何もせず false */
         static Coroutine::Task<bool> PlayOverviewAsync(std::shared_ptr<StageArrivalMovie> self);
+        /**
+         * @brief start へ切ってから、end へ尺をかけて Brain の補間で動く1ショット。終わったら2台とも下ろす
+         * @return スキップされたか
+         */
+        static Coroutine::Task<bool> PlayShotAsync(
+              std::shared_ptr<StageArrivalMovie> self
+            , std::shared_ptr<NanamiEngine::CineMachine::CineMachineVirtualCamera> start
+            , std::shared_ptr<NanamiEngine::CineMachine::CineMachineVirtualCamera> end
+            , int duration_msecs);
         /** @return スキップされたか */
-        static Coroutine::Task<bool> MoveCameraAsync(std::shared_ptr<StageArrivalMovie> self, CameraMove move);
+        static Coroutine::Task<bool> WaitShotAsync(std::shared_ptr<StageArrivalMovie> self, int duration_msecs);
+        /** @brief 空撮と見どころのカメラを下ろす */
+        void DisableShotCameras() const;
         /** @brief 補間せずにカメラを pos に置き、lookAt を向かせる (ショットの切り替え) */
         void SnapCamera(const glm::vec3& pos, const glm::vec3& lookAt) const;
         void MarkOverviewSeen() const;

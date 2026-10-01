@@ -14,6 +14,10 @@ void GameCore::Scene::GrassLandSceneContext::Init()
     cameraBrain_.Init();
     arrivalPortalPrefab_.Init();
     arrivalCaptionPrefab_.Init();
+    arrivalOverviewStartCamera_.Init();
+    arrivalOverviewEndCamera_.Init();
+    for (auto& shot : arrivalTourShots_)
+        shot.Init();
     floatingStone_.Init();
 }
 
@@ -77,9 +81,8 @@ void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalLookAtHeight_", arrivalLookAtHeight_);
     ImGuiHelper::OnDrawInputField("arrivalOverview_msecs_", arrivalOverview_msecs_);
     ImGuiHelper::OnDrawInputField("arrivalOverviewDescend_msecs_", arrivalOverviewDescend_msecs_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraStart_", arrivalOverviewCameraStart_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewCameraEnd_", arrivalOverviewCameraEnd_);
-    ImGuiHelper::OnDrawInputField("arrivalOverviewLookAt_", arrivalOverviewLookAt_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewStartCamera_", arrivalOverviewStartCamera_);
+    ImGuiHelper::OnDrawInputField("arrivalOverviewEndCamera_", arrivalOverviewEndCamera_);
     ImGuiHelper::OnDrawInputField("arrivalIslandTitle_", arrivalIslandTitle_);
     ImGuiHelper::OnDrawInputField("arrivalIslandSubtitle_", arrivalIslandSubtitle_);
     ImGuiHelper::OnDrawInputField("arrivalTourShots_", arrivalTourShots_, [this]

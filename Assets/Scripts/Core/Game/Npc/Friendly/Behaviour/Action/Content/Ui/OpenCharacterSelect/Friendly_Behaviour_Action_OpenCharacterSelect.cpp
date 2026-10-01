@@ -11,8 +11,7 @@ namespace
 {
     /**
      * @brief 今動いているシーンから、名簿の揃った展示台を探す
-     * @details podium_ は BehaviourTree(アセット)からシーンを指す参照なので、エディタの Play 中は
-     *          コピー元(編集側)の展示台を掴んでしまい、そちらは OnStart を通らず名簿が空のまま
+     * NOTE: Play 中の podium_ は編集側の展示台を指し、名簿が空のまま
      */
     std::shared_ptr<GamePlay::Prop::CharacterPodium> FindActivePodium(const std::shared_ptr<GamePlay::Prop::CharacterPodium>& assigned)
     {

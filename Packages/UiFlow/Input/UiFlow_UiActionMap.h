@@ -13,16 +13,13 @@ namespace NanamiEngine::UiFlow
     public:
         static constexpr std::int16_t DEFAULT_STICK_THRESHOLD = 12000;
 
-        /**
-         * @brief 標準の割り当て
-         * @note  方向 = 矢印 / WASD / 十字 / 左スティック、Submit = Enter / A、Cancel = Esc / B、
-         *        TabPrev / TabNext = Q / E / LB / RB、Menu = Esc / Start
-         */
+        /** @brief 標準の割り当て */
         [[nodiscard]] static UiActionMap Default();
 
         UiActionMap& Set      (UiAction action, UiBinding binding);
         UiActionMap& AddKey   (UiAction action, Platform::Input::Key key);
         UiActionMap& AddButton(UiAction action, Platform::Input::GamepadButton button);
+        UiActionMap& AddStick (UiAction action, StickDirection stick);
         UiActionMap& Clear    (UiAction action);
         UiActionMap& SetStickThreshold(std::int16_t threshold);
 

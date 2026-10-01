@@ -40,9 +40,7 @@ namespace NanamiEngine::Scene
 
         /**
          * @brief .scene を読むだけで InitGameObject は呼ばない。ワーカースレッドから呼べる
-         * @warning 例外が出ても outContent には途中まで積まれた GameObject が残る。
-         *          GameObject の破棄はメインスレッドで行う必要があるため、
-         *          メインスレッドが所有する変数を渡すこと
+         * @warning 例外時も outContent に GameObject が残るので、メインスレッドが所有する変数を渡すこと
          */
         static void Deserialize(const std::string& filePath, DeserializedContent& outContent, DeserializeProgress* progress);
 

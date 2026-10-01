@@ -4,8 +4,7 @@
 
 namespace
 {
-    // 敵の攻撃発火を、宛先 AttackArea(子オブジェクト上の NetworkComponent)自身で再現する。
-    // 被弾側判定(AttackArea::PhysicsAttack 内の所有者フィルタ)により、自分が所有するアバターにだけダメージが入る。
+    // 敵の攻撃発火を宛先 AttackArea で再現する。ダメージは自分が所有するアバターにだけ入る
     struct AttackAreaFireRpcRegistration
     {
         AttackAreaFireRpcRegistration()

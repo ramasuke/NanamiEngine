@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::Component
     private:
         void OnDrawGui  () override;
         void OnDebugDraw() const override;
-        [[nodiscard]] const glm::vec3& CalcColliderWorldPos() const;
+        [[nodiscard]] glm::vec3 CalcColliderWorldPos() const;
         [[nodiscard]] JPH::RefConst<JPH::Shape> CreateColliderShape() const override;
         [[nodiscard]] Physics::ColliderShapeKind ShapeKind() const override { return Physics::ColliderShapeKind::Cylinder; }
 

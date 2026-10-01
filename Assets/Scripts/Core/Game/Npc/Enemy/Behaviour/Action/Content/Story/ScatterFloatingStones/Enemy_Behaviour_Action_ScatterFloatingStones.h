@@ -10,8 +10,8 @@
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * @brief 序章で島の心臓が砕けたとき、地面に埋めた3つの浮遊石 (stonesRoot_ の子) をせり上がらせて三方へ飛ばす。
-     *        動かすのはコルーチンなので、始めたらすぐ Success を返す。OnceExecute で包むこと
+     * @brief stonesRoot_ の子の浮遊石をせり上がらせて三方へ飛ばす
+     * NOTE: 始めたらすぐ Success を返すので OnceExecute で包むこと
      */
     class ScatterFloatingStones final : public ActionBase
     {
@@ -29,9 +29,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         };
 
         /**
-         * @brief stonesRoot の子(地面に埋めた浮遊石)をせり上がらせ、少し浮かせてから、根元から見た向きへそれぞれ飛ばす。
-         *        石の子の ParticleSystem (光の尾。PlayMode は Manual にしておく) は飛び立つときに出す。飛び終えた石は隠す
-         * @note BT より長生きしうるので static。値は DoTick で写して渡す
+         * @brief 石をせり上がらせてから根元から見た向きへ飛ばし、飛び終えたら隠す
+         * @note BT より長生きしうるので static。石の子の ParticleSystem は PlayMode を Manual にしておく
          */
         static Coroutine::Task<void> PlayScatterAsync(std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> stonesRoot, ScatterShot shot);
 

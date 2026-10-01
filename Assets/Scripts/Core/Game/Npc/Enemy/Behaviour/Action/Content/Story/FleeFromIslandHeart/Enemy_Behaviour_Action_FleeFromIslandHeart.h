@@ -9,8 +9,7 @@
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     /**
-     * @brief 島の心臓が抜けたら (Story::IslandHeartDeparture)、心臓のあった方を振り向いてから反対へ走り去り、プレイヤーから離れたら消える。
-     *        心臓が抜けるまでは Failure。ルートの Selector の先頭に置く
+     * @brief 島の心臓が抜けたら心臓の方を振り向いてから反対へ走り去り、離れたら消える。抜けるまでは Failure
      */
     class FleeFromIslandHeart final : public ActionBase
     {

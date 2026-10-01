@@ -12,9 +12,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 非公開の部屋にいる間、画面の隅に部屋番号を出す。
-     * 番号は中継サーバーが決めて CustomNetworkRunner が持っているので、変わったときだけ書き直す。
-     * 公開部屋・LAN・通信していないときは何も出さない
+     * @brief 非公開の部屋にいる間、画面の隅に部屋番号を出す (変わったときだけ書き直す)
      */
     class RoomCodeHud final : public Component::ComponentBase,
                               public LifeCycleCallback::IStartable,

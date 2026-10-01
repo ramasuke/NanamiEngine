@@ -12,8 +12,7 @@
 namespace GameCore::PlayerAvatar::Quest::Request
 {
     /**
-     * @brief 汎用の依頼(討伐・収集)の土台。職業を問わず受けられ、何度でも受け直せて達成のたびに報酬が出る。
-     * 受注した時点の記録帳の数を覚えておき、そこから requiredCount_ 増えたら達成
+     * @brief 繰り返し受けられる汎用依頼の土台。受注時の記録帳の数から requiredCount_ 増えたら達成
      */
     class RequestQuestBase : public ITakeableQuest
     {

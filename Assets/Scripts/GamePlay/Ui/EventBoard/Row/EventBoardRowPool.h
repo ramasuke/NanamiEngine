@@ -14,8 +14,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 掲示板・店の一覧の行。行の prefab を root の下へ縦に並べて持つ。
-     * スクロール部品は無いので、行は表示窓の分だけ作り、窓がずれたら中身を貼り替えて使い回す。
+     * @brief 一覧の行を表示窓の分だけ縦に並べ、窓がずれたら中身を貼り替えて使い回す
      */
     template<typename RowT>
     class EventBoardRowPool final

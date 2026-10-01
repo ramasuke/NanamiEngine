@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "Assets/Scripts/Core/Input/InputAliases.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
@@ -17,15 +16,27 @@
 
 namespace GamePlay::Ui
 {
-    namespace
-    {
-        // 左スティックしきい値
-        constexpr short TITLE_STICK_DEADZONE = 12000;
-    }
-
     void TitleScreenPresenter::OnStart()
     {
         view_ = RequireComponent<TitleScreenUi>();
+
+        using UiFlow::UiAction;
+        using Platform::Input::GamepadButton;
+        using Platform::Input::Key;
+        screen_ = RequireComponent<UiFlow::UiScreen>();
+        screen_->Open();
+        screen_->Input().Map()
+            .AddKey   (UiAction::Submit, Key::Space)
+            .AddButton(UiAction::Submit, GamepadButton::Start)
+            .AddKey   (UiAction::Cancel, Key::Back);
+        screen_->OnRevealed().Subscribe([this](R4::Unit)
+        {
+            if (phase_ != Phase::Settings)
+                return;
+            view_->SetCovered(false);
+            phase_ = Phase::Menu;
+        }).AddTo(this);
+
         view_->SetStartLabel(GameCore::LoadGameProgression() == GameCore::GameProgresion::FirstTouchDownMainIsLand
             ? "はじめから" : "つづきから");
         view_->SetSelection(selection_);
@@ -38,22 +49,19 @@ namespace GamePlay::Ui
 
             button->OnHover().Subscribe([this, index](R4::Unit)
             {
-                if (phase_ == Phase::Menu && view_->IsMenuReady() && !IsAssetUpdatePrompting())
+                if (phase_ == Phase::Menu && view_->IsMenuReady())
                 {
                     Select(index);
                 }
             }).AddTo(this);
             button->OnClick().Subscribe([this, index](NanamiUi::MouseState)
             {
-                if (phase_ == Phase::Menu && view_->IsMenuReady() && !IsAssetUpdatePrompting())
+                if (phase_ == Phase::Menu && view_->IsMenuReady())
                 {
                     Decide(index);
                 }
             }).AddTo(this);
         }
-
-        // 起動前から押しっぱなしのキーでメニューを開かない
-        previousKeys_ = ReadKeys();
 
         const auto prefab = assetUpdatePrefab_.get();
         if (!prefab)
@@ -68,26 +76,18 @@ namespace GamePlay::Ui
 
     void TitleScreenPresenter::OnUpdate()
     {
-        const Keys keys = ReadKeys();
-        const Keys pressed{
-            keys.any     && !previousKeys_.any,
-            keys.up      && !previousKeys_.up,
-            keys.down    && !previousKeys_.down,
-            keys.confirm && !previousKeys_.confirm,
-            keys.cancel  && !previousKeys_.cancel,
-        };
-        previousKeys_ = keys;
-
-        if (!view_ || IsAssetUpdatePrompting())
+        if (!view_)
             return;
+
+        using UiFlow::UiAction;
+        auto& input = screen_->Input();
 
         switch (phase_)
         {
         case Phase::Press:
-            if (!pressed.any)
+            if (!input.IsAnyPressed())
                 break;
             
-            // 出だしの途中で押されたら、まず出し切るだけにする
             if (!view_->IsIntroFinished())
             {
                 view_->SkipIntro();
@@ -101,13 +101,13 @@ namespace GamePlay::Ui
         case Phase::Menu:
             if (!view_->IsMenuReady())
                 break;
-            if (pressed.up)
+            if (input.IsPressed(UiAction::Up))
                 Select(selection_ - 1);
-            else if (pressed.down)
+            else if (input.IsPressed(UiAction::Down))
                 Select(selection_ + 1);
-            else if (pressed.confirm)
+            else if (input.IsPressed(UiAction::Submit))
                 Decide(selection_);
-            else if (pressed.cancel)
+            else if (input.IsPressed(UiAction::Cancel))
             {
                 Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cancel);
                 view_->HideMenu();
@@ -116,39 +116,9 @@ namespace GamePlay::Ui
             break;
 
         case Phase::Settings:
-            // NOTE: 設定を閉じた ESC / B でメニューまで畳まないよう、戻ったフレームは入力を見ない
-            if (!SettingsScreenPresenter::IsOpen() || settings_.expired())
-            {
-                view_->SetCovered(false);
-                phase_ = Phase::Menu;
-            }
-            break;
-
         case Phase::Leaving:
             break;
         }
-    }
-
-    TitleScreenPresenter::Keys TitleScreenPresenter::ReadKeys()
-    {
-        const auto xInput = Gamepad::Get();
-        Keys keys;
-        keys.any = NanamiEngine::Platform::Input::IsAnyDeviceDown() || xInput.IsAnyDown();
-        keys.up = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
-            || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > TITLE_STICK_DEADZONE;
-        keys.down = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
-            || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -TITLE_STICK_DEADZONE;
-        keys.confirm = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space)
-            || xInput.IsDown(GamepadButton::A) || xInput.IsDown(GamepadButton::Start);
-        keys.cancel = Keyboard::IsDown(Key::Escape) || Keyboard::IsDown(Key::Back)
-            || xInput.IsDown(GamepadButton::B);
-        return keys;
-    }
-
-    bool TitleScreenPresenter::IsAssetUpdatePrompting() const
-    {
-        const auto assetUpdate = assetUpdate_.lock();
-        return assetUpdate && assetUpdate->IsPrompting();
     }
 
     void TitleScreenPresenter::Select(const int index)
@@ -186,8 +156,7 @@ namespace GamePlay::Ui
             return;
         }
 
-        settings_ = SettingsScreenPresenter::Open(*prefab);
-        if (settings_.expired())
+        if (SettingsScreenPresenter::Open(*prefab).expired())
             return;
 
         phase_ = Phase::Settings;
@@ -196,7 +165,6 @@ namespace GamePlay::Ui
 
     void TitleScreenPresenter::StartGame()
     {
-        // 更新が済んでいなければ荷札を出し直す。確認中・受け取り中の押下は受け流す
         if (const auto assetUpdate = assetUpdate_.lock(); assetUpdate && !assetUpdate->TryStartGame())
             return;
 

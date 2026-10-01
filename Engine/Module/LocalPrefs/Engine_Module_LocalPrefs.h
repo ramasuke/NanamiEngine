@@ -74,8 +74,7 @@ namespace NanamiEngine::Module::LocalPrefs
                const std::string& key)
     {
         T value;
-        // ファイルが無い → FileNotFoundException、破損 → DeserializeException。
-        // 呼び出し側が種類ごとに扱えるよう、型付き例外でそのまま通知する
+        // ファイルが無い → FileNotFoundException、破損 → DeserializeException
         Serialization::LoadJsonFile(fullPath, [&](cereal::JSONInputArchive& archive)
         {
             // SaveImpl と同じキー名を指定することで、JSON上のフィールドと型を対応付ける

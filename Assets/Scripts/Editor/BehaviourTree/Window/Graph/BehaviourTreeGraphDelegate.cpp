@@ -10,6 +10,7 @@
 #include "Engine/Module/Gui/Graph/Editor/GraphEditorHost.h"
 #include "../DrawNodeHelper.h"
 #include "../Node/Npc_Behaviour_NodeFactory.h"
+#include "../Node/Sequence/Npc_Behaviour_SequenceNode.h"
 
 namespace Editor::Npc::Behaviour
 {
@@ -21,10 +22,12 @@ namespace Editor::Npc::Behaviour
         constexpr ImU32 K_ORDER_BADGE_COLOR   = IM_COL32(255, 255, 255, 200);
         constexpr ImU32 K_DETACHED_SHADE      = IM_COL32(20 , 20 , 24 , 120);
         constexpr ImU32 K_DETACHED_TEXT_COLOR = IM_COL32(170, 170, 180, 255);
+        constexpr ImU32 K_ROW_HOVER_COLOR     = IM_COL32(255, 255, 255, 24);
+        constexpr ImU32 K_ROW_STATUS_ALPHA    = 0x60;
 
-        /** @brief 子ノードを親の下に並べるときの間隔 */
-        constexpr float K_CHILD_OFFSET_Y = 100.0f;
-        constexpr float K_CHILD_SPACING_X = 20.0f;
+        // NOTE: tools/bt/layout.py と同じ値にする
+        constexpr float K_LAYOUT_GAP_X = 40.0f;
+        constexpr float K_LAYOUT_GAP_Y = 16.0f;
 
         void CollectSubtree(const std::shared_ptr<NodeBase>& root,
                             std::vector<std::shared_ptr<NodeBase>>& out,
@@ -45,6 +48,12 @@ namespace Editor::Npc::Behaviour
             CollectSubtree(root, subtree, visited);
             for (const auto& node : subtree)
                 node->PositionRef() += delta;
+        }
+
+        std::string TitleOf(const NodeBase& node)
+        {
+            std::string title = node.GraphNodeTitle();
+            return title.empty() ? node.GraphNodeDetail() : title;
         }
 
         std::vector<std::string> SortedCreatableNodeNames()
@@ -72,10 +81,10 @@ namespace Editor::Npc::Behaviour
     {
         std::vector<std::shared_ptr<NodeBase>> all;
         std::unordered_set<const NodeBase*>    visited;
-        CollectSubtree(entryNode_, all, visited);
+        CollectVisible(entryNode_, all, visited);
         std::erase(*detachedNodes_, nullptr);
         for (const auto& root : *detachedNodes_)
-            CollectSubtree(root, all, visited);
+            CollectVisible(root, all, visited);
 
         for (const auto& node : all)
         {
@@ -101,10 +110,74 @@ namespace Editor::Npc::Behaviour
             // 名前の無いアクションは型名を見出しにする
             if (entry.title.empty())
                 std::swap(entry.title, entry.detail);
+
+            if (IsFolded(*node) && IsListSequence(*node))
+            {
+                entry.rows = node->Children();
+                entry.detail.clear();
+                for (std::size_t i = 0; i < entry.rows.size(); ++i)
+                    entry.detail += (i == 0 ? "" : "\n") + std::to_string(i + 1) + ". " + TitleOf(*entry.rows[i]);
+            }
+            else if (IsFolded(*node))
+            {
+                std::vector<std::shared_ptr<NodeBase>> subtree;
+                std::unordered_set<const NodeBase*>    subtreeVisited;
+                CollectSubtree(node, subtree, subtreeVisited);
+                entry.title += " (+" + std::to_string(subtree.size() - 1) + ")";
+            }
             nodes_.push_back(std::move(entry));
         }
 
         RebuildLinks();
+
+        if (pendingLayout_)
+        {
+            pendingLayout_ = false;
+            AutoLayout();
+        }
+    }
+
+    bool BehaviourTreeGraphDelegate::IsListSequence(const NodeBase& node)
+    {
+        if (!dynamic_cast<const SequenceNode*>(&node))
+            return false;
+
+        const auto children = node.Children();
+        return !children.empty() && std::ranges::all_of(children, [](const auto& child)
+        {
+            return child && child->MaxChildren() == 0;
+        });
+    }
+
+    bool BehaviourTreeGraphDelegate::IsFolded(const NodeBase& node) const
+    {
+        if (node.Children().empty())
+            return false;
+        return IsListSequence(node) != toggled_.contains(node.GetGuid());
+    }
+
+    void BehaviourTreeGraphDelegate::ToggleFold(const NodeBase& node)
+    {
+        if (node.Children().empty())
+            return;
+
+        if (!toggled_.erase(node.GetGuid()))
+            toggled_.insert(node.GetGuid());
+        pendingLayout_ = !readOnly_;
+    }
+
+    void BehaviourTreeGraphDelegate::CollectVisible(const std::shared_ptr<NodeBase>& root,
+                                                    std::vector<std::shared_ptr<NodeBase>>& out,
+                                                    std::unordered_set<const NodeBase*>& visited) const
+    {
+        if (!root || !visited.insert(root.get()).second)
+            return;
+
+        out.push_back(root);
+        if (IsFolded(*root))
+            return;
+        for (const auto& child : root->Children())
+            CollectVisible(child, out, visited);
     }
 
     void BehaviourTreeGraphDelegate::RebuildLinks()
@@ -133,6 +206,9 @@ namespace Editor::Npc::Behaviour
                 links_.push_back(LinkEntry{ i, childIndex });
             }
         }
+
+        for (auto& entry : nodes_)
+            entry.size = MeasureNodeSize(entry.title, entry.detail, entry.siblingCount > 1);
 
         // Entry まで辿り着けないノードは浮きノード（実行されない）
         for (auto& entry : nodes_)
@@ -271,9 +347,13 @@ namespace Editor::Npc::Behaviour
         if (!parent || !child)
             return;
 
-        // 既存の子の右隣に置く（子を 1 つしか持てない親は置き換えるので真下）
-        const std::size_t column = parent->MaxChildren() == 1 ? 0 : parent->Children().size();
-        const glm::vec2 target = parent->PositionRef() + glm::vec2(static_cast<float>(column) * (NODE_SIZE.x + K_CHILD_SPACING_X), K_CHILD_OFFSET_Y);
+        if (IsFolded(*parent) && !IsListSequence(*parent))
+            ToggleFold(*parent);
+
+        // 親の右、既存の子の下に置く（子を 1 つしか持てない親は置き換えるので親の右隣）
+        glm::vec2 target = parent->PositionRef() + glm::vec2(NodeSize(parent.get()).x + K_LAYOUT_GAP_X, 0.0f);
+        if (parent->MaxChildren() != 1 && !parent->Children().empty())
+            target.y = SubtreeBottom(parent->Children().back()) + K_LAYOUT_GAP_Y;
         TranslateSubtree(child, target - child->PositionRef());
 
         detachedNodes_->push_back(child);
@@ -289,6 +369,69 @@ namespace Editor::Npc::Behaviour
         detachedNodes_->push_back(node);
     }
 
+    void BehaviourTreeGraphDelegate::AutoLayout()
+    {
+        if (!entryNode_)
+            return;
+
+        std::unordered_set<const NodeBase*> visited;
+        const glm::vec2 origin = entryNode_->PositionRef();
+        float y = LayoutSubtree(entryNode_, origin.x, origin.y, visited);
+        for (const auto& root : *detachedNodes_)
+        {
+            if (root && !visited.contains(root.get()))
+                y = LayoutSubtree(root, origin.x, y + K_LAYOUT_GAP_Y * 4.0f, visited);
+        }
+    }
+
+    float BehaviourTreeGraphDelegate::LayoutSubtree(const std::shared_ptr<NodeBase>& node, const float x, const float y,
+                                                    std::unordered_set<const NodeBase*>& visited)
+    {
+        if (!node || !visited.insert(node.get()).second)
+            return y;
+
+        const ImVec2 size = NodeSize(node.get());
+        node->PositionRef() = glm::vec2(x, y);
+        const float childX = x + size.x + K_LAYOUT_GAP_X;
+        float       nextY  = y;
+        for (const auto& child : node->Children())
+            nextY = LayoutSubtree(child, childX, nextY, visited);
+
+        // 畳んだノードの子は展開したときの位置だけ決め、縦の場所は取らない
+        if (IsFolded(*node))
+            return y + size.y + K_LAYOUT_GAP_Y;
+        return std::max(nextY, y + size.y + K_LAYOUT_GAP_Y);
+    }
+
+    ImVec2 BehaviourTreeGraphDelegate::NodeSize(const NodeBase* node) const
+    {
+        const GraphEditor::NodeIndex index = IndexOf(node);
+        return index != INVALID_INDEX ? nodes_[index].size : NODE_SIZE;
+    }
+
+    float BehaviourTreeGraphDelegate::SubtreeBottom(const std::shared_ptr<NodeBase>& root) const
+    {
+        std::vector<std::shared_ptr<NodeBase>> subtree;
+        std::unordered_set<const NodeBase*>    visited;
+        CollectSubtree(root, subtree, visited);
+
+        float bottom = -FLT_MAX;
+        for (const auto& node : subtree)
+            bottom = std::max(bottom, node->PositionRef().y + NodeSize(node.get()).y);
+        return bottom;
+    }
+
+    void BehaviourTreeGraphDelegate::DrawToolbarItems()
+    {
+        if (ImGui::SmallButton("整列"))
+        {
+            AutoLayout();
+            host_->RequestFit();
+        }
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("左から右へのツリーに並べ直す");
+    }
+
     void BehaviourTreeGraphDelegate::CustomDraw(ImDrawList* drawList, const ImRect rectangle, const GraphEditor::NodeIndex nodeIndex)
     {
         if (nodeIndex >= nodes_.size())
@@ -296,32 +439,46 @@ namespace Editor::Npc::Behaviour
 
         const auto&  entry    = nodes_[nodeIndex];
         const auto&  options  = host_->Options();
-        const float  zoom     = ZoomOf(rectangle, NODE_SIZE.x);
-        const float  fontSize = ImGui::GetFontSize() * 0.85f * zoom;
+        const float  zoom     = Zoom();
+        const float  fontSize = DetailFontSize();
+        ImFont*      font     = Graph::FontForSize(fontSize);
         const ImRect frame    = NodeFrame(rectangle, zoom);
         const bool   canText  = fontSize >= 6.0f;
 
-        if (!entry.detail.empty() && canText)
+        if (!entry.rows.empty() && DetailVisible())
         {
-            drawList->PushClipRect(rectangle.Min, rectangle.Max, true);
-            drawList->AddText(ImGui::GetFont(), fontSize, rectangle.Min, K_DETAIL_TEXT_COLOR, entry.detail.c_str());
-            drawList->PopClipRect();
+            const ImVec2 mouse   = ImGui::GetIO().MousePos;
+            const bool   hovered = rectangle.Contains(mouse) && ImGui::IsWindowHovered();
+            for (std::size_t i = 0; i < entry.rows.size(); ++i)
+            {
+                const ImRect row(ImVec2(rectangle.Min.x, rectangle.Min.y + fontSize * static_cast<float>(i)),
+                                 ImVec2(rectangle.Max.x, rectangle.Min.y + fontSize * static_cast<float>(i + 1)));
+                if (const auto statusColor = DrawGraphEditorGuiHelper::RuntimeStatusColor(*entry.rows[i]))
+                    drawList->AddRectFilled(row.Min, row.Max, (*statusColor & ~IM_COL32_A_MASK) | (K_ROW_STATUS_ALPHA << IM_COL32_A_SHIFT));
+                if (hovered && row.Contains(mouse))
+                {
+                    drawList->AddRectFilled(row.Min, row.Max, K_ROW_HOVER_COLOR);
+                    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                        Graph::ShowInInspector(entry.rows[i]);
+                }
+            }
         }
+        DrawNodeDetail(drawList, rectangle, entry.detail, K_DETAIL_TEXT_COLOR);
 
         // 兄弟が複数あるときは実行順をヘッダー右端に出す
         if (entry.siblingCount > 1 && canText)
         {
             const std::string badge = "#" + std::to_string(entry.childOrder + 1);
-            const ImVec2 size = ImGui::GetFont()->CalcTextSizeA(fontSize, FLT_MAX, 0.0f, badge.c_str());
+            const ImVec2 size = font->CalcTextSizeA(fontSize, FLT_MAX, 0.0f, badge.c_str());
             const ImVec2 position(frame.Max.x - size.x - 6.0f * zoom, frame.Min.y + (options.mHeaderHeight * zoom - size.y) * 0.5f);
-            drawList->AddText(ImGui::GetFont(), fontSize, position, K_ORDER_BADGE_COLOR, badge.c_str());
+            drawList->AddText(font, fontSize, position, K_ORDER_BADGE_COLOR, badge.c_str());
         }
 
         if (entry.isDetached)
         {
             drawList->AddRectFilled(frame.Min, frame.Max, K_DETACHED_SHADE, options.mRounding * zoom);
             if (canText)
-                drawList->AddText(ImGui::GetFont(), fontSize, ImVec2(frame.Min.x, frame.Max.y + 3.0f * zoom), K_DETACHED_TEXT_COLOR, "未接続（実行されません）");
+                drawList->AddText(font, fontSize, ImVec2(frame.Min.x, frame.Max.y + 3.0f * zoom), K_DETACHED_TEXT_COLOR, "未接続（実行されません）");
         }
 
         // 実行中ツリーのビューアでは、直近の Tick 結果で枠を色分けする
@@ -363,9 +520,15 @@ namespace Editor::Npc::Behaviour
         {
             nodes_[index].title.c_str(),
             index,
-            ImRect(min, min + NODE_SIZE),
+            ImRect(min, min + nodes_[index].size),
             IsSelected(index)
         };
+    }
+
+    void BehaviourTreeGraphDelegate::NodeDoubleClicked(const GraphEditor::NodeIndex nodeIndex)
+    {
+        if (nodeIndex < nodes_.size())
+            ToggleFold(*nodes_[nodeIndex].node);
     }
 
     const size_t BehaviourTreeGraphDelegate::GetLinkCount()
@@ -433,6 +596,8 @@ namespace Editor::Npc::Behaviour
             Graph::ShowInInspector(node);
         if (ImGui::MenuItem("Copy"))
             DrawGraphEditorGuiHelper::CopyNode(node);
+        if (!node->Children().empty() && ImGui::MenuItem(IsFolded(*node) ? "展開" : "折りたたむ", "ダブルクリック"))
+            ToggleFold(*node);
 
         if (readOnly_)
             return;

@@ -1,12 +1,5 @@
-// Grass 用 頂点シェーダー (DxLib Direct3D 11 / GrassRenderer の頂点バッファ用)
-//
-// DxLib が頂点シェーダーへ渡す定数バッファ (DxShader_VS_D3D11.h / VertexShader.h):
-//   b0 : DX_D3D11_CONST_BUFFER_COMMON              (ライト・マテリアル・フォグ)
-//   b1 : DX_D3D11_VS_CONST_BUFFER_BASE             (射影・ビュー・ローカル→ワールド行列)
-//   b2 : DX_D3D11_VS_CONST_BUFFER_OTHERMATRIX      (シャドウマップ行列・テクスチャ行列)
-//   b3 : DX_D3D11_VS_CONST_BUFFER_LOCALWORLDMATRIX (スキニング用ボーン行列)
-//   b4 : ユーザー定数バッファ (GrassRenderer::CUSTOM_SHADER_CB_SLOT)
-// 行列は float4 の行配列として格納されているため、dot() で各成分を求める。
+// Grass 用 頂点シェーダー。ユーザー定数バッファは b4 (b0〜b3 は DxLib が使う)
+// NOTE: 行列は float4 の行配列なので dot() で各成分を求める
 
 struct DX_D3D11_VS_CONST_BUFFER_BASE
 {
@@ -37,7 +30,6 @@ cbuffer GrassBuffer : register(b4)
     float4 lightColor;     // w=ambient
 };
 
-// VERTEX3DSHADER (DxLib.h) の頂点入力。
 // SubPosition.xyz=葉の根元のワールド座標 w=揺れの位相(0..1)
 // TexCoords0.x=根元からの高さ比率(0..1) y=葉の高さ
 struct VS_INPUT

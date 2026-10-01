@@ -79,6 +79,7 @@ struct Options
     bool mReadOnly{ false }; // nodes can be selected but not moved, links can't be edited
     bool mAllowMultipleInputLinks{ false }; // connecting to an input keeps the links already plugged into it
     float mHeaderHeight{ 20.f }; // node title bar height in pixels when zoom value is 1
+    ImFont* (*mFontForSize)(float pixelSize){ nullptr }; // font for text drawn at that size, nullptr = ImGui::GetFont()
 };
 
 // View state: scroll position and zoom factor

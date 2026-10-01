@@ -48,8 +48,7 @@ namespace NanamiEngine::Module::Serialization
 
     namespace Detail
     {
-        /** NANAMI_REGISTER_* マクロから呼ばれる。呼び出し元のモジュールでこの関数が実体化されるので、
-         *  中の static のアドレスから登録元モジュールが分かる */
+        /** 呼び出し元のモジュールで実体化されるので、static のアドレスで登録元モジュールが分かる */
         template <typename T, typename Base, bool IsType>
         bool RecordPolymorphicRegistration()
         {

@@ -29,8 +29,7 @@ namespace GamePlay::Ui
     };
 
     /**
-     * @brief 黒板の右に紐で吊るした勘定書き。選んだ品の説明・単価・個数・合計を書き、買えないときは朱で理由を出す。
-     * 「お勘定」「単価」などの見出しと罫線は紙の絵に焼いてあり、ここでは書き込む値だけを差し替える。
+     * @brief 店の勘定書き。選んだ品の値を書き、買えないときは朱で理由を出す
      */
     class ShopReceipt final : public Component::ComponentBase,
                               public LifeCycleCallback::IUpdatable

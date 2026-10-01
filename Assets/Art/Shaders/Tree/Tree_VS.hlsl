@@ -1,12 +1,5 @@
-// Tree 用 頂点シェーダー (葉のマテリアル専用 / DxLib Direct3D 11 / ModelRenderer の MV1 剛体メッシュ)
-//
-// DxLib が頂点シェーダーへ渡す定数バッファ (DxShader_VS_D3D11.h / VertexShader.h):
-//   b0 : DX_D3D11_CONST_BUFFER_COMMON              (ライト・マテリアル・フォグ)
-//   b1 : DX_D3D11_VS_CONST_BUFFER_BASE             (射影・ビュー・ローカル→ワールド行列)
-//   b2 : DX_D3D11_VS_CONST_BUFFER_OTHERMATRIX      (シャドウマップ行列・テクスチャ行列)
-//   b3 : DX_D3D11_VS_CONST_BUFFER_LOCALWORLDMATRIX (スキニング用ボーン行列)
-//   b4 : ユーザー定数バッファ (Component::CUSTOM_SHADER_CB_SLOT)
-// 行列は float4 の行配列として格納されているため、dot() で各成分を求める。
+// Tree 用頂点シェーダー (葉マテリアル専用 / MV1 剛体メッシュ)
+// ユーザー定数バッファは b4 (b0〜b3 は DxLib が使う)。行列は float4 の行配列なので dot() で成分を求める
 
 struct DX_D3D11_VS_CONST_BUFFER_BASE
 {
@@ -35,9 +28,7 @@ cbuffer TreeWindBuffer : register(b4)
     float4 lightColor;     // w=ambient
 };
 
-// MV1 モデルの頂点入力 (剛体メッシュ)。
-// TexCoords1 には Blender でベイクした揺れマスクが入っている
-// (x=揺れの重み 0..1 / 樹皮は0、y=葉カードごとのランダム位相 0..1)。
+// TexCoords1 は揺れマスク (x=揺れの重み 0..1 / 樹皮は0、y=葉カードごとのランダム位相 0..1)
 struct VS_INPUT
 {
     float3 Position   : POSITION;

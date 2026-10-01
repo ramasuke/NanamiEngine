@@ -22,7 +22,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 from tools.common.cereal_json import Num, OrderedObj, dumps, loads, read_text, to_file_bytes  # noqa: E402
-from tools.dist.manifest import read_guid  # noqa: E402
+from tools.common.meta_base import read_guid  # noqa: E402
 
 BT_DIR = REPO / 'Assets/Data/EnemyBehaviour'
 ACTION_NS = 'GameCore::Npc::Enemy::Behaviour::Action::'

@@ -89,6 +89,43 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
+                                    "value_": "C6AD25E7-BA69-4E5D-8737-905C20126881"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Run",
+                "position_": {
+                    "value0": 680.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "value_": "E776D58C-0729-4C09-83AF-307DA6AB3C95"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_1": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483656,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483657,
+                            "data": {
+                                "value0": {
                                     "value_": "D5EEBA42-C6E3-42A7-8410-9A48C24DC679"
                                 }
                             }
@@ -113,17 +150,17 @@
             }
         }
     },
-    "nodes_1": {
+    "nodes_2": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483656,
+            "id": 2147483658,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483657,
+                            "id": 2147483659,
                             "data": {
                                 "value0": {
                                     "value_": "265DEB47-76EB-4E78-9FCB-ADF1C46DE114"
@@ -139,43 +176,6 @@
                 },
                 "guid_": {
                     "value_": "8DE4BCC4-955D-4AB9-9A97-8DBC0045A675"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 100.0,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_2": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483658,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483659,
-                            "data": {
-                                "value0": {
-                                    "value_": "C6AD25E7-BA69-4E5D-8737-905C20126881"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Run",
-                "position_": {
-                    "value0": 680.0,
-                    "value1": 40.0
-                },
-                "guid_": {
-                    "value_": "E776D58C-0729-4C09-83AF-307DA6AB3C95"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100.0,
@@ -459,25 +459,25 @@
                             "id": 2147483675,
                             "data": {
                                 "value0": {
-                                    "value_": "11C095FC-AB2D-4A49-95E4-F4899413D014"
+                                    "value_": "2BCEE68E-DF14-4C55-943A-AF9862D2A7EF"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "CastRaiseHand",
+                "name_": "ItemPlace",
                 "position_": {
-                    "value0": 1240.0,
-                    "value1": 260.0
+                    "value0": 720.0,
+                    "value1": 340.0
                 },
                 "guid_": {
-                    "value_": "E28888FE-7D34-46EE-AA4A-2BB93305A667"
+                    "value_": "EB6744CA-7F51-47C4-9F94-0A2B0C41DB3D"
                 },
-                "speed_": 36.0,
+                "speed_": 66.0,
                 "blendAnimationOffset_secs_": 100.0,
                 "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
+                "clipStartTime_": 60.0,
+                "clipEndTime_": 250.0,
                 "isLoop_": false,
                 "nameCheck_": false
             }
@@ -533,25 +533,25 @@
                             "id": 2147483679,
                             "data": {
                                 "value0": {
-                                    "value_": "2BCEE68E-DF14-4C55-943A-AF9862D2A7EF"
+                                    "value_": "11C095FC-AB2D-4A49-95E4-F4899413D014"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "ItemPlace",
+                "name_": "CastRaiseHand",
                 "position_": {
-                    "value0": 720.0,
-                    "value1": 340.0
+                    "value0": 1240.0,
+                    "value1": 260.0
                 },
                 "guid_": {
-                    "value_": "EB6744CA-7F51-47C4-9F94-0A2B0C41DB3D"
+                    "value_": "E28888FE-7D34-46EE-AA4A-2BB93305A667"
                 },
-                "speed_": 66.0,
+                "speed_": 36.0,
                 "blendAnimationOffset_secs_": 100.0,
                 "modelAnimationIndex_": 0,
-                "clipStartTime_": 60.0,
-                "clipEndTime_": 250.0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
                 "isLoop_": false,
                 "nameCheck_": false
             }
@@ -681,22 +681,22 @@
                             "id": 2147483687,
                             "data": {
                                 "value0": {
-                                    "value_": "234F9AB0-DF6A-4F26-889F-AB26E09929BC"
+                                    "value_": "B1E59684-E38F-48AA-B525-786B47D6855B"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "CastPushHold",
+                "name_": "CastSwingPush",
                 "position_": {
-                    "value0": 1380.0,
+                    "value0": 1100.0,
                     "value1": 350.0
                 },
                 "guid_": {
-                    "value_": "4E25BF79-8661-43CC-BE78-EC0EE7643FB0"
+                    "value_": "372425E1-27EB-4D5E-AA3B-ADF2007799BA"
                 },
-                "speed_": 36.0,
-                "blendAnimationOffset_secs_": 1000.0,
+                "speed_": 40.0,
+                "blendAnimationOffset_secs_": 100.0,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -718,22 +718,22 @@
                             "id": 2147483689,
                             "data": {
                                 "value0": {
-                                    "value_": "B1E59684-E38F-48AA-B525-786B47D6855B"
+                                    "value_": "234F9AB0-DF6A-4F26-889F-AB26E09929BC"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "CastSwingPush",
+                "name_": "CastPushHold",
                 "position_": {
-                    "value0": 1100.0,
+                    "value0": 1380.0,
                     "value1": 350.0
                 },
                 "guid_": {
-                    "value_": "372425E1-27EB-4D5E-AA3B-ADF2007799BA"
+                    "value_": "4E25BF79-8661-43CC-BE78-EC0EE7643FB0"
                 },
-                "speed_": 40.0,
-                "blendAnimationOffset_secs_": 100.0,
+                "speed_": 36.0,
+                "blendAnimationOffset_secs_": 1000.0,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -2295,7 +2295,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.08,
+                "transitionDuration_secs_": 0.07999999821186066,
                 "fromNodeGuid_": {
                     "value_": "2A29598A-A8DD-4AFA-B2DD-3CBA2A223CB5"
                 },

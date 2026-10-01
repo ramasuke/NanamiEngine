@@ -11,8 +11,7 @@
 namespace GamePlay::Pickup
 {
     /**
-     * @brief 落ちているアイテム。プレイヤーの PickupArea に拾われると、拾った人のポーチへ入る。
-     *        ポーチに入りきらない間は地面に残る
+     * @brief 落ちているアイテム。ポーチに入りきらない間は地面に残る
      */
     class ItemPickup final : public PickupItemBase
     {

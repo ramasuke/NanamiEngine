@@ -9,6 +9,7 @@
 #include "../../../../Module/Exception/Engine_Module_Exception.h"
 #include "../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
+#include "../../../../../Packages/AssetUpdater/Text/VersionString.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {
@@ -33,7 +34,7 @@ namespace NanamiEngine::Core::Application::Configuration
     // RuntimeConfigDirectory() と揃える
     constexpr auto BUILD_RUNTIME_CONFIG_PATH  = "Build/Runtime/";
     constexpr auto BUILD_PRODUCT_NAME_KEY     = "ProductName";
-    // NOTE: tools/dist/__main__.py (CLIENT_VERSION_PATH) も読む
+    // NOTE: Asset Dist は空の Required Client Version をこれで埋める
     constexpr auto BUILD_CLIENT_VERSION_KEY   = "ClientVersion";
     constexpr auto BUILD_START_SCENE_GUID_KEY = "StartSceneGuid";
     constexpr auto BUILD_CONFIGURATION_KEY    = "Configuration";
@@ -187,10 +188,9 @@ namespace NanamiEngine::Core::Application::Configuration
 
     std::string BuildConfiguration::ValidateClientVersion(const std::string& clientVersion)
     {
-        // NOTE: tools/dist/upload.py の VERSION_RE と揃える
         if (clientVersion.empty())
             return "Client version is empty";
-        if (!std::ranges::all_of(clientVersion, [](const char c) { return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-'; }))
+        if (!AssetUpdater::IsValidVersionString(clientVersion))
             return "Client version must be [0-9A-Za-z._-]+ (compared as dot-separated numbers, e.g. 1.2.0)";
         return {};
     }

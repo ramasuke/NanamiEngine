@@ -97,8 +97,7 @@ namespace Coroutine
             pendingCoroutines_.clear();
         }
 
-        // Future resume
-        // resume 中に別スレッドから RegisterFuture され得るので、取り出してからロックを外す
+        // WARNING: resume 中に別スレッドから RegisterFuture され得るので、取り出してからロックを外す
         std::vector<std::coroutine_handle<>> resumeTargets;
         {
             std::lock_guard lock(pendingResumeMutex_);
@@ -112,8 +111,7 @@ namespace Coroutine
 
     void CoroutineScheduler::InvokeFixed(const float fixedDeltaTime)
     {
-        // 前回からの登録分はこのステップから進める。
-        // resume 中に登録されたもの(連結した次の tween など)は pending に入り、次のステップから進む(同じ時間を二重に進めない)
+        // NOTE: resume 中の登録分は pending に入り次のステップから進む (同じ時間を二重に進めない)
         if (!pendingFixedTickables_.empty())
         {
             fixedTickables_.insert(fixedTickables_.end(),

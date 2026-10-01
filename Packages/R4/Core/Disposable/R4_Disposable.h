@@ -12,13 +12,11 @@ namespace NanamiEngine::R4
 
     namespace Detail
     {
-        //NOTE: child を parent に積む。rxcpp の add は child が先に解除されても parent から外さないので、
-        //      外す処理も child 側に積んでおく（Take(1) などで終わった購読が溜まり続けないように）
+        //NOTE: child を parent に積み、child 解除時に parent から外す処理も積む (rxcpp の add は外さない)
         NANAMI_API void Attach(const rxcpp::composite_subscription& parent, const rxcpp::composite_subscription& child);
     }
 
     ///NOTE: 購読の寿命。Dispose() で購読解除。コピーしても同じ購読を指す
-    ///      Subscribe の戻り値は必ず AddTo / RegisterTo するか、メンバに持って自分で Dispose() する
     class NANAMI_API Disposable final
     {
     public:
@@ -80,8 +78,7 @@ namespace NanamiEngine::R4
         rxcpp::composite_subscription subscription_;
     };
 
-    ///NOTE: 持っている Disposable を差し替えると古い方を Dispose する（購読の張り替え用）
-    ///      持ち主の寿命に合わせて、破棄時にも Dispose する。コピーは空から始まり、ムーブは中身を引き継ぐ
+    ///NOTE: 差し替えると古い方を Dispose する。破棄時にも Dispose し、コピーは空から始まる
     class NANAMI_API SerialDisposable final
     {
     public:

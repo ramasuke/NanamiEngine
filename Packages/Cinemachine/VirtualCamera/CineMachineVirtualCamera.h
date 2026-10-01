@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include <optional>
+
 #include "Engine/Core/Api/NanamiApi.h"
+#include "../../../Libs/LibCore/Tween/Ease/Type/EaseType.h"
 #include "../../../Engine/Module/Component/ComponentBase.h"
 #include "../../R4/R4.h"
 #include "Behaviour/IVirtualCameraBehaviour.h"
@@ -8,6 +11,13 @@ namespace NanamiEngine::CineMachine
 {
     constexpr auto SAMPLE_CAMERA_FOV = 90.0f;
     constexpr auto DISABLE_PRIORITY = -1;
+
+    /** @brief このカメラへ切り替わるときのBrainの補間 */
+    struct NANAMI_API BlendIn
+    {
+        float            duration_secs = 0.5f;
+        LibCore::EaseType ease         = LibCore::EaseType::SmoothStep;
+    };
     
     class NANAMI_API CineMachineVirtualCamera final : public Component::ComponentBase,
                                            public LifeCycleCallback::IAwakable,
@@ -20,6 +30,10 @@ namespace NanamiEngine::CineMachine
         // このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
         [[nodiscard]] float Fov() const;
         void SetImmediateApply(const bool enable) { isImmediateApply_ = enable; }
+        // このカメラへ切り替わるときの補間。上書きしていなければBrainの既定の補間を使う
+        [[nodiscard]] std::optional<BlendIn> CustomBlendIn() const;
+        void SetBlendIn(float duration_secs, LibCore::EaseType ease);
+        void ClearBlendIn() { overrideBlendIn_ = false; }
 
         void OnDisable() { priority_.Value(DISABLE_PRIORITY); }
         // BrainがLateUpdateで毎フレーム呼ぶ。BehaviourをStage()の順に更新する
@@ -39,6 +53,9 @@ namespace NanamiEngine::CineMachine
         // Brainの既定FOVではなく、このカメラ独自のFOVを使うか
         bool  overrideFov_ = false;
         float fov_         = 60.0f;
+        bool              overrideBlendIn_ = false;
+        float             blendIn_secs_    = 0.5f;
+        LibCore::EaseType blendInEase_     = LibCore::EaseType::SmoothStep;
         // Behaviourに関係なくBrainの追従補間をスキップする(非シリアライズ)
         bool  isImmediateApply_ = false;
         std::vector<std::weak_ptr<IVirtualCameraBehaviour>> cameraBehaviours_;
@@ -51,6 +68,9 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(priority_));
     archive(CEREAL_NVP(overrideFov_));
     archive(CEREAL_NVP(fov_));
+    archive(CEREAL_NVP(overrideBlendIn_));
+    archive(CEREAL_NVP(blendIn_secs_));
+    archive(CEREAL_NVP(blendInEase_));
 }
 
 template<class Archive>
@@ -62,9 +82,15 @@ void load(Archive& archive, const std::uint32_t version) {
         archive(CEREAL_NVP(overrideFov_));
         archive(CEREAL_NVP(fov_));
     }
+    if (version >= 2)
+    {
+        archive(CEREAL_NVP(overrideBlendIn_));
+        archive(CEREAL_NVP(blendIn_secs_));
+        archive(CEREAL_NVP(blendInEase_));
+    }
 }
 #pragma endregion
 };
 }
 
-CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::CineMachineVirtualCamera, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::CineMachineVirtualCamera, 2);

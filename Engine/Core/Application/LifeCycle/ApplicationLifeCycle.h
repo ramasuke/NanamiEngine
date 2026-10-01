@@ -32,11 +32,8 @@ namespace NanamiEngine::Core::Application
     };
 
     /**
-     * @brief このスレッドで積まれた FIELD の初期化待ちを、共有キューではなく staging に貯める。
-     *        ワーカースレッドで .scene をデシリアライズする間だけ使う。
-     *        共有キューに直接積むと、まだ ObjectRegistry に登録されていない GameObject を
-     *        メインスレッドが解決しようとして、参照が null のまま確定してしまう
-     *        （LifeCycleOnceCallbackGroup は 1 度しか Invoke しない）
+     * @brief このスレッドで積まれた FIELD の初期化待ちを、共有キューではなく staging に貯める
+     * WARNING: 共有キューに直接積むと、未登録の GameObject を解決して参照が null のまま確定する
      */
     class NANAMI_API FieldInitStagingScope final
     {

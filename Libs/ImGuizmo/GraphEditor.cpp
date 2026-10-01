@@ -32,6 +32,9 @@
 //  - wheel zoom only while the host window is hovered, canvas child has no scrollbars
 //  - right click on a node body reports the node (it used to need a hovered slot)
 //  - link view clipping uses the region instead of the screen origin
+//  - Options::mFontForSize picks the title font per pixel size, slot circles scale with the zoom factor,
+//    minimap nodes are filled with their header color
+//  - canvas child is NoMove (a left drag on empty space used to move the host window)
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
@@ -459,6 +462,8 @@ static bool HandleConnections(ImDrawList* drawList,
         ImVec2 closestTextPos;
         ImVec2 closestPos;
         const size_t slotCount[2] = {InputsCount, OutputsCount};
+        // NanamiEngine patch: slot circles scale with the zoom factor
+        const float slotRadius = ImMax(options.mNodeSlotRadius * factor, 3.f);
 
         for (SlotIndex slotIndex = 0; slotIndex < slotCount[i]; slotIndex++)
         {
@@ -500,8 +505,8 @@ static bool HandleConnections(ImDrawList* drawList,
             {
                const ImU32* slotColorSource = i ? nodeTemplate.mOutputColors : nodeTemplate.mInputColors;
                const ImU32 slotColor = slotColorSource ? slotColorSource[slotIndex] : options.mDefaultSlotColor;
-               drawList->AddCircleFilled(p, options.mNodeSlotRadius, IM_COL32(0, 0, 0, 200));
-               drawList->AddCircleFilled(p, options.mNodeSlotRadius * 0.75f, slotColor);
+               drawList->AddCircleFilled(p, slotRadius, IM_COL32(0, 0, 0, 200));
+               drawList->AddCircleFilled(p, slotRadius * 0.75f, slotColor);
                if (!options.mDrawIONameOnHover)
                {
                     drawList->AddText(io.FontDefault, 14, textPos + ImVec2(2, 2), IM_COL32(0, 0, 0, 255), conText);
@@ -517,8 +522,8 @@ static bool HandleConnections(ImDrawList* drawList,
             const ImU32* slotColorSource = i ? nodeTemplate.mOutputColors : nodeTemplate.mInputColors;
             const ImU32 slotColor = slotColorSource ? slotColorSource[closestConn] : options.mDefaultSlotColor;
             hoverSlot = true;
-            drawList->AddCircleFilled(closestPos, options.mNodeSlotRadius * options.mNodeSlotHoverFactor * 0.75f, IM_COL32(0, 0, 0, 200));
-            drawList->AddCircleFilled(closestPos, options.mNodeSlotRadius * options.mNodeSlotHoverFactor, slotColor);
+            drawList->AddCircleFilled(closestPos, slotRadius * options.mNodeSlotHoverFactor * 0.75f, IM_COL32(0, 0, 0, 200));
+            drawList->AddCircleFilled(closestPos, slotRadius * options.mNodeSlotHoverFactor, slotColor);
             drawList->AddText(io.FontDefault, 16, closestTextPos + ImVec2(1, 1), IM_COL32(0, 0, 0, 255), conText);
             drawList->AddText(io.FontDefault, 16, closestTextPos, IM_COL32(250, 250, 250, 255), conText);
             bool inputToOutput = (!gState->editingInput && !i) || (gState->editingInput && i);
@@ -776,8 +781,9 @@ static bool DrawNode(ImDrawList* drawList,
     {
         drawList->PushClipRect(nodeRectangleMin, ImVec2(nodeRectangleMax.x, nodeRectangleMin.y + headerHeight), true);
         const ImVec2 titlePos = nodeRectangleMin + ImVec2(6.f * factor, (headerHeight - titleFontSize) * 0.5f);
-        drawList->AddText(ImGui::GetFont(), titleFontSize, titlePos + ImVec2(1, 1), IM_COL32(0, 0, 0, 160), node.mName);
-        drawList->AddText(ImGui::GetFont(), titleFontSize, titlePos, IM_COL32(255, 255, 255, 255), node.mName);
+        ImFont* titleFont = options.mFontForSize ? options.mFontForSize(titleFontSize) : ImGui::GetFont(); // NanamiEngine patch
+        drawList->AddText(titleFont, titleFontSize, titlePos + ImVec2(1, 1), IM_COL32(0, 0, 0, 160), node.mName);
+        drawList->AddText(titleFont, titleFontSize, titlePos, IM_COL32(255, 255, 255, 255), node.mName);
         drawList->PopClipRect();
     }
 
@@ -878,7 +884,7 @@ bool DrawMiniMap(ImDrawList* drawList, Delegate& delegate, ViewState& viewState,
         rect.Max *= factor;
         rect.Max += middleScreen;
 
-        drawList->AddRectFilled(rect.Min, rect.Max, nodeTemplate.mBackgroundColor, 1, ImDrawFlags_RoundCornersAll);
+        drawList->AddRectFilled(rect.Min, rect.Max, nodeTemplate.mHeaderColor, 1, ImDrawFlags_RoundCornersAll); // NanamiEngine patch: header color
         if (node.mSelected)
         {
             drawList->AddRect(rect.Min, rect.Max, options.mSelectedNodeBorderColor, 1, ImDrawFlags_RoundCornersAll);
@@ -946,7 +952,8 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
 
     //ImGui::InvisibleButton("GraphEditorButton", canvasSize);
     // NanamiEngine patch: no scrollbars / wheel scrolling, the wheel zooms.
-    ImGui::BeginChild(71711, canvasSize, true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+    // NoMove: a left drag on the empty canvas would otherwise move the host window, stealing quad selection / link drags.
+    ImGui::BeginChild(71711, canvasSize, true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMove);
 
     ImGui::SetCursorPos(windowPos);
     ImGui::BeginGroup();

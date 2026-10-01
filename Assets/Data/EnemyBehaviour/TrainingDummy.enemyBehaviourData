@@ -15,8 +15,8 @@
                         "value_": "41E5149B-D111-4795-9BDF-E6B6B01EAD4E"
                     },
                     "position_": {
-                        "value0": 234.0,
-                        "value1": -325.0
+                        "value0": 120.0,
+                        "value1": 40.0
                     }
                 },
                 "nextNode_": {
@@ -32,8 +32,8 @@
                                     "value_": "1115196A-338F-4607-AAC4-971605D5470D"
                                 },
                                 "position_": {
-                                    "value0": 235.0,
-                                    "value1": -230.0
+                                    "value0": 280.0,
+                                    "value1": 40.0
                                 }
                             },
                             "children_": [
@@ -50,8 +50,8 @@
                                                     "value_": "2C342B13-F8E1-43B0-9824-EB70D1524E11"
                                                 },
                                                 "position_": {
-                                                    "value0": 159.0,
-                                                    "value1": -130.0
+                                                    "value0": 440.0,
+                                                    "value1": 40.0
                                                 }
                                             },
                                             "name_": "OnDamage",
@@ -105,8 +105,8 @@
                                                     "value_": "B0789AD4-6723-400E-B525-261090EE4FCB"
                                                 },
                                                 "position_": {
-                                                    "value0": 348.0,
-                                                    "value1": -130.0
+                                                    "value0": 440.0,
+                                                    "value1": 116.0
                                                 }
                                             },
                                             "name_": "Idle Animation",
@@ -116,7 +116,7 @@
                                                 "ptr_wrapper": {
                                                     "valid": 1,
                                                     "data": {
-                                                        "cereal_class_version": 2,
+                                                        "cereal_class_version": 3,
                                                         "value0": {},
                                                         "animatorSetParamNumber_": 0,
                                                         "waitAnimationSound_secs_": {
@@ -142,7 +142,8 @@
                                                                     }
                                                                 }
                                                             }
-                                                        }
+                                                        },
+                                                        "holdSeconds_": 0.0
                                                     }
                                                 }
                                             }

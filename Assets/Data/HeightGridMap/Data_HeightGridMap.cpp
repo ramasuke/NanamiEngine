@@ -97,13 +97,11 @@ namespace NanamiEngine::Module::Asset
         if (displayDivisions < 1)
             return;
 
-        // 分割数を変更して未再ベイクの場合、map_ のサイズが現在の分割数と食い違うため
-        // サイズ一致まで確認する（不一致なら未ベイク扱いで samplingHeight_ 平面を描く）。
+        // NOTE: 分割数を変えて未再ベイクだとサイズが食い違うので、不一致も未ベイク扱い
         const size_t expectedCells = static_cast<size_t>(divisionsX_) * static_cast<size_t>(divisionsZ_);
         const bool baked = !map_.empty() && map_.size() == expectedCells;
 
-        // 表示格子点のYを求める。未ベイク時は samplingHeight_、
-        // ベイク済みなら最も近い実セルの高さをサンプリングする。
+        // 表示格子点のY。ベイク済みなら最も近いセルの高さ
         const auto sampleHeight = [&](float worldX, float worldZ) -> float
         {
             if (!baked)

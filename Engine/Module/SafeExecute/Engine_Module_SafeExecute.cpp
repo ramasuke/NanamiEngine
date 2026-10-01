@@ -16,8 +16,7 @@ namespace NanamiEngine::Module
 {
     namespace
     {
-        // MSVCがC++のthrowをSEH上に実装する際に使う既知のコード。
-        // このコードのときは中身がC++例外なので、ここでは触らず外側のtry/catchへ素通りさせる。
+        // MSVC の C++ 例外の SEH コード。外側の try/catch へ素通りさせる
         constexpr unsigned long kCxxExceptionCode = 0xE06D7363;
 
         std::string DescribeSehCode(const unsigned long code)
@@ -175,8 +174,7 @@ namespace NanamiEngine::Module
         bool sehOk;
         try
         {
-            // ここで NanamiException/std::exception が起きた場合、InvokeGuardedSEH内の
-            // __except は上のフィルタで素通しするので、例外はそのままここまで伝播してくる。
+            // NOTE: C++ 例外は __except のフィルタが素通しし、下の catch で受ける
             sehOk = InvokeGuardedSEH(func, sehCode, stackTrace);
         }
         catch (const Exception::NanamiException& e)

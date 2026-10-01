@@ -58,7 +58,7 @@
                     "ptr_wrapper": {
                         "id": 2147483652,
                         "data": {
-                            "cereal_class_version": 0,
+                            "cereal_class_version": 1,
                             "value0": {
                                 "cereal_class_version": 0
                             },
@@ -83,7 +83,8 @@
                                 "flinchPower_": 60
                             },
                             "delay_secs_": 0.44999998807907107,
-                            "range_": 150.0
+                            "range_": 150.0,
+                            "centerOnCaster_": false
                         }
                     }
                 },

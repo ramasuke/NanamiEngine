@@ -7,11 +7,7 @@
 namespace GamePlay::Weather
 {
     /**
-     * @brief シーンにいる間ずっと線形フォグを掛ける (遠景の霞)。
-     *
-     * 空のドームは SkyDome3D がフォグを切って描くので、霞むのは島や船だけ。
-     * 抜けるときにフォグを切り、次のシーンへ持ち越さない。嵐のフォグは WeatherService / Sandstorm が受け持つ。
-     * WeatherService から参照されているときは自分では掛けず、WeatherService が晴れのフォグとしてこの値から嵐へ補間する
+     * @brief シーンにいる間ずっと線形フォグを掛け、抜けるときに切る
      */
     class SceneFog final : public Component::ComponentBase,
                            public LifeCycleCallback::IStartable,

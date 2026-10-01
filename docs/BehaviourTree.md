@@ -237,7 +237,10 @@ purely an addressing scheme for `set-params`, not a new node shape.
 `--node`/`--parent` on the next command.
 
 **Node positions.** `add-node` / `move-node` / `remove-node` / `apply` re-run a
-top-down auto-layout so nodes never overlap in the graph editor; pass `--no-layout`
+left-to-right auto-layout (same as the editor's 整列 button: children to the right of their parent,
+siblings stacked top to bottom in execution order, node widths fitted to their labels) so nodes never overlap
+(a Sequence whose children are all actions is folded into one list node; double-click a node in the
+editor to fold / unfold it) in the graph editor; pass `--no-layout`
 (or an explicit `--pos X,Y` on `add-node`) to keep the positions you already have.
 `set-params` / `set-weight` / the blackboard verbs never move nodes. `layout`
 re-arranges an existing tree on demand.

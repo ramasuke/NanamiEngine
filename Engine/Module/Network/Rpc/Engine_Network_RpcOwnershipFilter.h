@@ -2,10 +2,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    /**
-     * 対象NetworkObjectIdの所有者を基準に、ハンドラを呼ぶかどうかを決める。
-     * RPCごとに向きが異なるため必須パラメータとして明示させる。
-     */
+    /** 対象NetworkObjectIdの所有者を基準に、ハンドラを呼ぶかどうかを決める */
     enum class RpcOwnershipFilter
     {
         None,        // 所有者判定を行わず、常に呼ぶ(全クライアントへの通知)

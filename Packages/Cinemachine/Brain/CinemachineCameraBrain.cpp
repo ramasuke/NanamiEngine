@@ -10,6 +10,7 @@
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "../../../Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 CineMachine::CinemachineCameraBrain* CineMachine::CinemachineCameraBrain::cameraBrain_ = nullptr;
@@ -34,8 +35,7 @@ void CineMachine::CinemachineCameraBrain::OnStart()
 
 void CineMachine::CinemachineCameraBrain::OnLateUpdate()
 {
-    // アクティブでないカメラも姿勢を更新しておく。切り替えた瞬間の補間の行き先が古い姿勢にならないように
-    // virtualCameras_はシリアライズもされるため、同じカメラが重複していても1フレームに1回だけ回す
+    // 切り替え時の補間先が古くならないよう、非アクティブなカメラも更新する (重複は1回だけ)
     std::vector<const CineMachineVirtualCamera*> updatedCameras;
     updatedCameras.reserve(virtualCameras_.size());
     for (const auto& virtualCamera : virtualCameras_)
@@ -65,12 +65,13 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
 
     const float dt = Time::DeltaTime();
 
-    // アクティブなVirtualCameraが切り替わったら、その時点の姿勢から新しいカメラへ補間を始める。
-    // 最初のカメラ(シーン開始時)は補間しない
+    // カメラが切り替わったら今の姿勢から補間する (最初のカメラは補間しない)
     const CineMachineVirtualCamera* targetCamera = currentVirtualCamera_.get().get();
     if (targetCamera != blendTargetCamera_)
     {
-        if (blendTargetCamera_ != nullptr && cameraBlendDuration_secs_ > 0.0f)
+        // 切り替え先のカメラが補間を指定していればそちらを使う
+        blend_ = targetCamera->CustomBlendIn().value_or(BlendIn{ cameraBlendDuration_secs_, LibCore::EaseType::SmoothStep });
+        if (blendTargetCamera_ != nullptr && blend_.duration_secs > 0.0f)
         {
             isBlending_   = true;
             blendElapsed_ = 0.0f;
@@ -84,8 +85,8 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
     if (isBlending_)
     {
         blendElapsed_ += dt;
-        const float rate = std::clamp(blendElapsed_ / cameraBlendDuration_secs_, 0.0f, 1.0f);
-        const float t    = rate * rate * (3.0f - 2.0f * rate);
+        const float rate = std::clamp(blendElapsed_ / blend_.duration_secs, 0.0f, 1.0f);
+        const float t    = LibCore::Tween::Ease(blend_.ease).Ease(rate);
         // 行き先は毎フレームのtargetなので、移動中のカメラにも追従したまま合流する
         smoothedPos_ = glm::mix(blendFromPos_, targetPos, t);
         smoothedRot_ = glm::slerp(blendFromRot_, targetRot, t);
@@ -177,10 +178,7 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
 
 void CineMachine::CinemachineCameraBrain::OnDestroy()
 {
-    // cameraBrain_はload()で無条件に上書きされるstaticなシングルトンポインタなので、
-    // 破棄されても自動的にはクリアされない。ここでクリアしないと、このBrainを持たない
-    // シーン(TitleScene等)に遷移した際にInstance()がダングリングポインタを返し、
-    // 呼び出し側(ShakeCameraBehaviour等)がそれを解放済みメモリとして参照してクラッシュする。
+    // WARNING: static な cameraBrain_ は自動でクリアされないので、ここで外さないとダングリングになる
     if (cameraBrain_ == this)
         cameraBrain_ = nullptr;
 }

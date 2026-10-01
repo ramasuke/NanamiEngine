@@ -20,10 +20,7 @@ namespace GamePlay::Ui
         std::string dateTimeText;
     };
 
-    /**
-     * お知らせの一覧のModel。掲載時刻を過ぎたものだけを新しい順に並べる。
-     * 選ばれたお知らせはその場で既読にする(右に本文が出た時点で読んだとみなす)。
-     */
+    /** お知らせ一覧のModel。掲載時刻を過ぎたものを新しい順に並べ、選んだら既読にする */
     class NoticeBoardModel final
     {
     public:

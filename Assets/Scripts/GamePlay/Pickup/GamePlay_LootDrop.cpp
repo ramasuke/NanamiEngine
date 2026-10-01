@@ -27,10 +27,7 @@ namespace GamePlay::Pickup
             return glm::vec3(std::cos(angle), 0.0f, std::sin(angle));
         }
 
-        /**
-         * @brief total を count 枚のコインに分け、origin から周りへ飛び散らせる。
-         *        1枚あたりの額が 1 を下回らないよう、枚数は total までに抑える
-         */
+        /** @brief total を count 枚 (最大 total 枚) のコインに分け、origin から周りへ飛び散らせる */
         void DropMoney(Asset::PrefabGameObjectFile& prefab,
                        const GameCore::StatusParameter::Money total,
                        const int count,

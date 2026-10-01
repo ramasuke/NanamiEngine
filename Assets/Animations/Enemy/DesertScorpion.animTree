@@ -84,17 +84,17 @@
                         }
                     }
                 },
-                "name_": "Walk",
+                "name_": "Idle",
                 "position_": {
                     "value0": 340.0,
-                    "value1": 120.0
+                    "value1": 210.0
                 },
                 "guid_": {
-                    "value_": "0DCFF53A-FFE3-4836-B096-A3B8A0BD5873"
+                    "value_": "CDA8B2D3-D38D-4DE9-9F10-91CCBA5761BB"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 4,
+                "modelAnimationIndex_": 3,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
@@ -121,17 +121,17 @@
                         }
                     }
                 },
-                "name_": "Idle",
+                "name_": "Walk",
                 "position_": {
                     "value0": 340.0,
-                    "value1": 210.0
+                    "value1": 120.0
                 },
                 "guid_": {
-                    "value_": "CDA8B2D3-D38D-4DE9-9F10-91CCBA5761BB"
+                    "value_": "0DCFF53A-FFE3-4836-B096-A3B8A0BD5873"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 3,
+                "modelAnimationIndex_": 4,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
@@ -158,20 +158,20 @@
                         }
                     }
                 },
-                "name_": "Sniff",
+                "name_": "Die",
                 "position_": {
-                    "value0": 340.0,
-                    "value1": 300.0
+                    "value0": 540.0,
+                    "value1": 120.0
                 },
                 "guid_": {
-                    "value_": "91918E7B-C3DB-4DCB-A62B-06DB42881A1F"
+                    "value_": "81940BBA-6DD0-4FA6-BFBB-23AFC24FAEF8"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 3,
+                "modelAnimationIndex_": 1,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true,
+                "isLoop_": false,
                 "nameCheck_": false
             }
         }
@@ -195,20 +195,20 @@
                         }
                     }
                 },
-                "name_": "Die",
+                "name_": "Sniff",
                 "position_": {
-                    "value0": 540.0,
-                    "value1": 120.0
+                    "value0": 340.0,
+                    "value1": 300.0
                 },
                 "guid_": {
-                    "value_": "81940BBA-6DD0-4FA6-BFBB-23AFC24FAEF8"
+                    "value_": "91918E7B-C3DB-4DCB-A62B-06DB42881A1F"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000.0,
-                "modelAnimationIndex_": 1,
+                "modelAnimationIndex_": 3,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": false,
+                "isLoop_": true,
                 "nameCheck_": false
             }
         }

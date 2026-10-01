@@ -20,8 +20,7 @@
 namespace GamePlay::Ui
 {
     /**
-     * @brief 掲示板の「依頼」の頁。左に依頼書の札を並べ、右に選んだ依頼書を広げる。
-     * 右下の受注印は、受付中なら点線の枠、受けたら朱の印に替わる。
+     * @brief 掲示板の「依頼」の頁。左に依頼書の札を並べ、右に選んだ依頼書を広げる
      */
     class EventBoardQuestPage final : public Component::ComponentBase
     {

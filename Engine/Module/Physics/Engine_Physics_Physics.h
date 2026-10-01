@@ -16,11 +16,9 @@ namespace NanamiEngine::Module::Physics
     [[nodiscard]] NANAMI_API std::shared_ptr<GameObject::IGameObject> FindBodyOwner(const std::shared_ptr<GameObject::IGameObject>& gameObject);
 
     NANAMI_API RaycastHit Raycast          (const glm::vec3  & origin, const glm::vec3& direction, float maxDistance, LayerMask layerMask);
-    // 半径radiusの球をdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す。
-    // Distance()は球の中心が止まる位置までの距離。開始時点で既に重なっている場合はDistance()==0。
+    // NOTE: Distance() は中心が止まる位置までの距離。開始時点で重なっていれば 0
     NANAMI_API RaycastHit SphereCast       (const glm::vec3  & origin, float radius, const glm::vec3& direction, float maxDistance, LayerMask layerMask);
-    // 半サイズhalfExtentsの軸平行ボックスをdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す。
-    // Distance()はボックスの中心が止まる位置までの距離。開始時点で既に重なっている場合はDistance()==0。
+    // NOTE: Distance() は中心が止まる位置までの距離。開始時点で重なっていれば 0
     NANAMI_API RaycastHit BoxCast          (const glm::vec3  & origin, const glm::vec3& halfExtents, const glm::vec3& direction, float maxDistance, LayerMask layerMask);
     NANAMI_API void DebugDrawRaycast(const glm::vec3& origin, const glm::vec3& direction, float maxDistance);
 }

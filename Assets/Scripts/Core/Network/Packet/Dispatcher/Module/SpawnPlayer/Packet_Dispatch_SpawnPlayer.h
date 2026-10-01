@@ -54,8 +54,7 @@ namespace GameCore::Network
         Asset::PlayerAvatarFactory& playerAvatarFactory_;
 
     private:
-        // 後入りへ再送するスポーン履歴(ホストのみ保持)。ルートの NetworkObjectId がまだ登録されているものだけ再送する
-        // (離脱してアバターが破棄されたプレイヤーの分は自然に除外される)
+        // 後入りへ再送するスポーン履歴(ホストのみ)。ルートの NetworkObjectId が登録済みのものだけ再送する
         struct HistoryEntry
         {
             Core::Network::NetworkObjectId rootId;

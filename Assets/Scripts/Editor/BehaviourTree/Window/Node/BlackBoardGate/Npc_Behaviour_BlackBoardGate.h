@@ -36,11 +36,7 @@ namespace Editor::Npc::Behaviour
         }
     };
 
-    /**
-     * @brief ブラックボードの条件がすべて一致したときだけ子を実行するデコレータ
-     *
-     * Seq[ReadBlackBoard, 子, WriteBlackBoard] をまとめたもの。子が無ければ条件判定だけで Success を返す。
-     */
+    /** @brief ブラックボードの条件がすべて一致したときだけ子を実行する。子が無ければ判定だけで Success */
     class BlackBoardGate final : public NodeBase
     {
     public:
@@ -69,7 +65,7 @@ namespace Editor::Npc::Behaviour
         std::vector<BlackBoardIntEntry> conditions_;
         /**
          * @brief 子を実行し始めるときに書く
-         * NOTE: 条件は Sequence と同じく毎 Tick 判定するので、条件のキーをここで書き換えると次の Tick で外れる
+         * NOTE: 条件は毎 Tick 判定するので、条件のキーを書き換えると次の Tick で外れる
          */
         std::vector<BlackBoardIntEntry> writesOnStart_;
         /** @brief 子が Success を返したときに書く */

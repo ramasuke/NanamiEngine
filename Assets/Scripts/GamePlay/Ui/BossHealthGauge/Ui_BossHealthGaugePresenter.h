@@ -13,9 +13,7 @@ namespace GameCore::Npc
 namespace GamePlay::Ui
 {
     class BossHealthGauge;
-
-    // ボスのHPとゲージUIをつなぐPresenter。EnemyFactory がゲージUIと一緒に生成する。
-    // HPの購読と、ボスが消えた後のゲージ破棄はここが持ち、ボス側には残さない
+    
     class BossHealthGaugePresenter final : public Component::ComponentBase
     {
     public:

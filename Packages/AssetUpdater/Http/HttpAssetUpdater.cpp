@@ -9,6 +9,7 @@
 #include "WinHttpClient.h"
 #include "../Hash/Sha256.h"
 #include "../Text/Utf8.h"
+#include "../Text/VersionString.h"
 
 namespace NanamiEngine::AssetUpdater
 {
@@ -17,42 +18,6 @@ namespace NanamiEngine::AssetUpdater
         constexpr wchar_t HTTP_ASSET_UPDATER_USER_AGENT[]     = L"NanamiEngine AssetUpdater";
         constexpr int     HTTP_ASSET_UPDATER_ATTEMPTS         = 3;
         constexpr int     HTTP_ASSET_UPDATER_RETRY_WAIT_MSEC  = 500;
-
-        std::vector<unsigned long long> HttpAssetUpdaterSplitVersion(const std::string& version)
-        {
-            std::vector<unsigned long long> parts;
-            unsigned long long value = 0;
-            for (const char character : version)
-            {
-                if (character == '.')
-                {
-                    parts.push_back(value);
-                    value = 0;
-                    continue;
-                }
-                if (character >= '0' && character <= '9')
-                    value = value * 10 + static_cast<unsigned long long>(character - '0');
-            }
-            parts.push_back(value);
-            return parts;
-        }
-
-        /** "1.9.0" < "1.10.0" を文字列比較で取り違えないよう、ドット区切りの数値として比べる */
-        bool HttpAssetUpdaterIsOlderVersion(const std::string& left, const std::string& right)
-        {
-            const std::vector<unsigned long long> leftParts  = HttpAssetUpdaterSplitVersion(left);
-            const std::vector<unsigned long long> rightParts = HttpAssetUpdaterSplitVersion(right);
-
-            const std::size_t count = (std::max)(leftParts.size(), rightParts.size());
-            for (std::size_t i = 0; i < count; ++i)
-            {
-                const unsigned long long leftValue  = i < leftParts.size()  ? leftParts[i]  : 0;
-                const unsigned long long rightValue = i < rightParts.size() ? rightParts[i] : 0;
-                if (leftValue != rightValue)
-                    return leftValue < rightValue;
-            }
-            return false;
-        }
     }
 
     HttpAssetUpdater::HttpAssetUpdater(HttpAssetUpdaterSettings settings)
@@ -83,7 +48,7 @@ namespace NanamiEngine::AssetUpdater
         result.remoteJson = response.body;
 
         if (!result.remote.requiredClientVersion.empty() &&
-            HttpAssetUpdaterIsOlderVersion(settings_.clientVersion, result.remote.requiredClientVersion))
+            IsOlderVersion(settings_.clientVersion, result.remote.requiredClientVersion))
         {
             result.status = UpdateCheckStatus::ClientTooOld;
             result.error  = "ゲーム本体が古いため更新できません (必要 " + result.remote.requiredClientVersion

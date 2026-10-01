@@ -270,10 +270,10 @@ def register(sub: argparse._SubParsersAction) -> None:
     p.set_defaults(func=cmd_apply)
 
     p = sub.add_parser("layout",
-                       help="re-arrange nodes (selectors branch across, sequences stack down)")
+                       help="re-arrange nodes into a left-to-right tree (children right of the parent, siblings stacked in order)")
     p.add_argument("file")
-    p.add_argument("--dx", type=float, default=DX, help=f"leaf column width (default {DX:g})")
-    p.add_argument("--dy", type=float, default=DY, help=f"row / level step (default {DY:g})")
+    p.add_argument("--dx", type=float, default=DX, help=f"gap between a parent and its children (default {DX:g})")
+    p.add_argument("--dy", type=float, default=DY, help=f"vertical gap between sibling subtrees (default {DY:g})")
     _add_dry(p)
     p.set_defaults(func=cmd_layout)
 

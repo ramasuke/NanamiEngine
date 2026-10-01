@@ -19,8 +19,7 @@ namespace GamePlay::Magic
     {
     public:
         /**
-         * @brief 生成直後に呼ぶ。delay_secs 後に起爆する。
-         *        detonateOnEnter_ のプレハブ（罠）は delay_secs を待たず、敵が入った時点で起爆する
+         * @brief delay_secs 後に起爆する。detonateOnEnter_ なら敵が入った時点で起爆する
          */
         void Arm(const std::weak_ptr<GameObject::IGameObject>& caster,
                  GameCore::Damage::PhysicsPower power,

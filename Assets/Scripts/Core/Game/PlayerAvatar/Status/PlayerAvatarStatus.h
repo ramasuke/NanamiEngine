@@ -13,8 +13,7 @@ namespace GameCore::PlayerAvatar
         LocalPrefs::SaveWithPath(TraitsT::STATUS_SAVE_FILE_PATH, PLAYER_AVATAR_STATUS_FILE_KEY, status);
     }
     
-    // NOTE: 未セーブ(初回プレイ等)でファイルが無い場合は例外を投げず、RequireType::Status<TraitsT>の
-    // 引数無しコンストラクタ(ハードコードされた初期値)にフォールバックする
+    // NOTE: ファイルが無ければ例外を投げず既定コンストラクタの初期値を返す
     template<typename TraitsT>
     std::shared_ptr<RequireType::Status<TraitsT>> LoadStatus()
     {

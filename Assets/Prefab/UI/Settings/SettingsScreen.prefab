@@ -152,7 +152,7 @@
                     "maxVisibleRows_": 6,
                     "scrollTravel_px_": 300.0,
                     "enterSlide_px_": 24.0,
-                    "enterDuration_secs_": 0.18
+                    "enterDuration_secs_": 0.18000000715255738
                 }
             }
         },
@@ -203,8 +203,8 @@
                     "screenId_": "Settings",
                     "locksPlayerControl_": true,
                     "destroysOnClose_": true,
-                    "repeatDelay_secs_": 0.35,
-                    "repeatInterval_secs_": 0.08
+                    "repeatDelay_secs_": 0.3499999940395355,
+                    "repeatInterval_secs_": 0.07999999821186066
                 }
             }
         }
@@ -260,7 +260,7 @@
             "ptr_wrapper": {
                 "id": 2147483662,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -328,20 +328,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.47,
-                            "value1": 0.47,
+                            "value0": 0.4699999988079071,
+                            "value1": 0.4699999988079071,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.47,
+                                "value0": 0.4699999988079071,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.47,
+                                "value1": 0.4699999988079071,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -359,7 +359,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -483,7 +484,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -513,12 +515,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -583,7 +581,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -613,12 +612,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -683,7 +678,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -715,9 +711,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "cereal_class_version": 0,
                                                         "value0": {
@@ -750,7 +744,7 @@
                                     "transform_": {
                                         "localPos_": {
                                             "value0": 1224.0,
-                                            "value1": 146.4,
+                                            "value1": 146.39999389648438,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -760,20 +754,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.5333333333333333,
-                                            "value1": 0.5333333333333333,
+                                            "value0": 0.5333333611488342,
+                                            "value1": 0.5333333611488342,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.5333333333333333,
+                                                "value0": 0.5333333611488342,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.5333333333333333,
+                                                "value1": 0.5333333611488342,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -785,13 +779,14 @@
                                             },
                                             "value3": {
                                                 "value0": 1224.0,
-                                                "value1": 146.4,
+                                                "value1": 146.39999389648438,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -821,9 +816,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -894,7 +887,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -924,12 +918,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -994,7 +984,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1058,7 +1049,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1088,12 +1080,8 @@
                                                         },
                                                         "isEnable_": false
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -1158,7 +1146,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1188,12 +1177,8 @@
                                                         },
                                                         "isEnable_": false
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -1258,7 +1243,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1288,12 +1274,8 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 255,
                                                     "spriteFile_": {
@@ -1358,7 +1340,8 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1388,9 +1371,7 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -1420,7 +1401,7 @@
                                     "transform_": {
                                         "localPos_": {
                                             "value0": 74.0,
-                                            "value1": 946.15,
+                                            "value1": 946.1500244140625,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -1430,20 +1411,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.45,
-                                            "value1": 0.45,
+                                            "value0": 0.44999998807907107,
+                                            "value1": 0.44999998807907107,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.45,
+                                                "value0": 0.44999998807907107,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.45,
+                                                "value1": 0.44999998807907107,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1455,13 +1436,14 @@
                                             },
                                             "value3": {
                                                 "value0": 74.0,
-                                                "value1": 946.15,
+                                                "value1": 946.1500244140625,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -1606,18 +1588,13 @@
                                                                                 "id": 2147483698,
                                                                                 "data": {
                                                                                     "value0": {
-                                                                                        "cereal_class_version": 0,
                                                                                         "guid_": {
                                                                                             "value_": "33E1355D-28BA-44E9-8BBB-7ADDDE6BE8DD"
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
-                                                                                    "value2": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
+                                                                                    "value2": {},
                                                                                     "blendMode_": 1,
                                                                                     "blendRate_": 255,
                                                                                     "spriteFile_": {
@@ -1724,7 +1701,8 @@
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         },
@@ -1754,9 +1732,7 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
                                                                                     "fontFile_": {
                                                                                         "value0": {
                                                                                             "polymorphic_id": 1073741824,
@@ -1773,7 +1749,6 @@
                                                                                     "renderOrder_": 7731,
                                                                                     "text_": "切り替え",
                                                                                     "textColor_": {
-                                                                                        "cereal_class_version": 0,
                                                                                         "r_": 240,
                                                                                         "g_": 226,
                                                                                         "b_": 202
@@ -1787,7 +1762,7 @@
                                                                     "transform_": {
                                                                         "localPos_": {
                                                                             "value0": 1150.0,
-                                                                            "value1": 985.7,
+                                                                            "value1": 985.7000122070313,
                                                                             "value2": 0.0
                                                                         },
                                                                         "localRot_": {
@@ -1797,20 +1772,20 @@
                                                                             "value3": 1.0
                                                                         },
                                                                         "localScale_": {
-                                                                            "value0": 0.43333333333333335,
-                                                                            "value1": 0.43333333333333335,
+                                                                            "value0": 0.4333333373069763,
+                                                                            "value1": 0.4333333373069763,
                                                                             "value2": 1.0
                                                                         },
                                                                         "worldMatrix_": {
                                                                             "value0": {
-                                                                                "value0": 0.43333333333333335,
+                                                                                "value0": 0.4333333373069763,
                                                                                 "value1": 0.0,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
                                                                             "value1": {
                                                                                 "value0": 0.0,
-                                                                                "value1": 0.43333333333333335,
+                                                                                "value1": 0.4333333373069763,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
@@ -1822,17 +1797,19 @@
                                                                             },
                                                                             "value3": {
                                                                                 "value0": 1150.0,
-                                                                                "value1": 985.7,
+                                                                                "value1": 985.7000122070313,
                                                                                 "value2": 0.0,
                                                                                 "value3": 1.0
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "mark_": 0
                                                 }
                                             }
                                         },
@@ -1922,12 +1899,8 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
-                                                                                    "value2": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
+                                                                                    "value2": {},
                                                                                     "blendMode_": 1,
                                                                                     "blendRate_": 255,
                                                                                     "spriteFile_": {
@@ -1992,7 +1965,8 @@
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         },
@@ -2022,9 +1996,7 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
                                                                                     "fontFile_": {
                                                                                         "value0": {
                                                                                             "polymorphic_id": 1073741824,
@@ -2041,7 +2013,6 @@
                                                                                     "renderOrder_": 7731,
                                                                                     "text_": "選ぶ",
                                                                                     "textColor_": {
-                                                                                        "cereal_class_version": 0,
                                                                                         "r_": 240,
                                                                                         "g_": 226,
                                                                                         "b_": 202
@@ -2055,7 +2026,7 @@
                                                                     "transform_": {
                                                                         "localPos_": {
                                                                             "value0": 1368.0,
-                                                                            "value1": 985.7,
+                                                                            "value1": 985.7000122070313,
                                                                             "value2": 0.0
                                                                         },
                                                                         "localRot_": {
@@ -2065,20 +2036,20 @@
                                                                             "value3": 1.0
                                                                         },
                                                                         "localScale_": {
-                                                                            "value0": 0.43333333333333335,
-                                                                            "value1": 0.43333333333333335,
+                                                                            "value0": 0.4333333373069763,
+                                                                            "value1": 0.4333333373069763,
                                                                             "value2": 1.0
                                                                         },
                                                                         "worldMatrix_": {
                                                                             "value0": {
-                                                                                "value0": 0.43333333333333335,
+                                                                                "value0": 0.4333333373069763,
                                                                                 "value1": 0.0,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
                                                                             "value1": {
                                                                                 "value0": 0.0,
-                                                                                "value1": 0.43333333333333335,
+                                                                                "value1": 0.4333333373069763,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
@@ -2090,17 +2061,19 @@
                                                                             },
                                                                             "value3": {
                                                                                 "value0": 1368.0,
-                                                                                "value1": 985.7,
+                                                                                "value1": 985.7000122070313,
                                                                                 "value2": 0.0,
                                                                                 "value3": 1.0
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "mark_": 0
                                                 }
                                             }
                                         },
@@ -2190,12 +2163,8 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
-                                                                                    "value2": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
+                                                                                    "value2": {},
                                                                                     "blendMode_": 1,
                                                                                     "blendRate_": 255,
                                                                                     "spriteFile_": {
@@ -2260,7 +2229,8 @@
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         },
@@ -2290,9 +2260,7 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
                                                                                     "fontFile_": {
                                                                                         "value0": {
                                                                                             "polymorphic_id": 1073741824,
@@ -2309,7 +2277,6 @@
                                                                                     "renderOrder_": 7731,
                                                                                     "text_": "切り替える",
                                                                                     "textColor_": {
-                                                                                        "cereal_class_version": 0,
                                                                                         "r_": 240,
                                                                                         "g_": 226,
                                                                                         "b_": 202
@@ -2323,7 +2290,7 @@
                                                                     "transform_": {
                                                                         "localPos_": {
                                                                             "value0": 1534.0,
-                                                                            "value1": 985.7,
+                                                                            "value1": 985.7000122070313,
                                                                             "value2": 0.0
                                                                         },
                                                                         "localRot_": {
@@ -2333,20 +2300,20 @@
                                                                             "value3": 1.0
                                                                         },
                                                                         "localScale_": {
-                                                                            "value0": 0.43333333333333335,
-                                                                            "value1": 0.43333333333333335,
+                                                                            "value0": 0.4333333373069763,
+                                                                            "value1": 0.4333333373069763,
                                                                             "value2": 1.0
                                                                         },
                                                                         "worldMatrix_": {
                                                                             "value0": {
-                                                                                "value0": 0.43333333333333335,
+                                                                                "value0": 0.4333333373069763,
                                                                                 "value1": 0.0,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
                                                                             "value1": {
                                                                                 "value0": 0.0,
-                                                                                "value1": 0.43333333333333335,
+                                                                                "value1": 0.4333333373069763,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
@@ -2358,17 +2325,19 @@
                                                                             },
                                                                             "value3": {
                                                                                 "value0": 1534.0,
-                                                                                "value1": 985.7,
+                                                                                "value1": 985.7000122070313,
                                                                                 "value2": 0.0,
                                                                                 "value3": 1.0
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "mark_": 0
                                                 }
                                             }
                                         },
@@ -2458,12 +2427,8 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
-                                                                                    "value2": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
+                                                                                    "value2": {},
                                                                                     "blendMode_": 1,
                                                                                     "blendRate_": 255,
                                                                                     "spriteFile_": {
@@ -2568,7 +2533,8 @@
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         },
@@ -2598,9 +2564,7 @@
                                                                                         },
                                                                                         "isEnable_": true
                                                                                     },
-                                                                                    "value1": {
-                                                                                        "cereal_class_version": 0
-                                                                                    },
+                                                                                    "value1": {},
                                                                                     "fontFile_": {
                                                                                         "value0": {
                                                                                             "polymorphic_id": 1073741824,
@@ -2617,7 +2581,6 @@
                                                                                     "renderOrder_": 7731,
                                                                                     "text_": "もどる",
                                                                                     "textColor_": {
-                                                                                        "cereal_class_version": 0,
                                                                                         "r_": 240,
                                                                                         "g_": 226,
                                                                                         "b_": 202
@@ -2631,7 +2594,7 @@
                                                                     "transform_": {
                                                                         "localPos_": {
                                                                             "value0": 1778.0,
-                                                                            "value1": 985.7,
+                                                                            "value1": 985.7000122070313,
                                                                             "value2": 0.0
                                                                         },
                                                                         "localRot_": {
@@ -2641,20 +2604,20 @@
                                                                             "value3": 1.0
                                                                         },
                                                                         "localScale_": {
-                                                                            "value0": 0.43333333333333335,
-                                                                            "value1": 0.43333333333333335,
+                                                                            "value0": 0.4333333373069763,
+                                                                            "value1": 0.4333333373069763,
                                                                             "value2": 1.0
                                                                         },
                                                                         "worldMatrix_": {
                                                                             "value0": {
-                                                                                "value0": 0.43333333333333335,
+                                                                                "value0": 0.4333333373069763,
                                                                                 "value1": 0.0,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
                                                                             "value1": {
                                                                                 "value0": 0.0,
-                                                                                "value1": 0.43333333333333335,
+                                                                                "value1": 0.4333333373069763,
                                                                                 "value2": 0.0,
                                                                                 "value3": 0.0
                                                                             },
@@ -2666,28 +2629,33 @@
                                                                             },
                                                                             "value3": {
                                                                                 "value0": 1778.0,
-                                                                                "value1": 985.7,
+                                                                                "value1": 985.7000122070313,
                                                                                 "value2": 0.0,
                                                                                 "value3": 1.0
                                                                             }
                                                                         },
                                                                         "childCount": 0
-                                                                    }
+                                                                    },
+                                                                    "mark_": 0
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
+                                                    "mark_": 0
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

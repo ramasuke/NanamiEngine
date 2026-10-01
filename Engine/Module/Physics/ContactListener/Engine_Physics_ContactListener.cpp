@@ -132,8 +132,8 @@ namespace NanamiEngine::Module::Physics
         if (body1.IsSensor() || body2.IsSensor())
             return;
 
-        // 壁に押し付けた時に張り付かないよう、床と斜面の接触だけを対象にする
-        //NOTE: mWorldSpaceNormal は body2 を押し出す向きで、どちらが地面側かは決まっていないので絶対値で見る
+        // 壁に張り付かないよう、床と斜面の接触だけを対象にする
+        //NOTE: どちらが地面側かは決まっていないので法線は絶対値で見る
         const JPH::Vec3 normal = manifold.mWorldSpaceNormal;
         if (std::abs(normal.GetY()) < cosMaxSlope_)
             return;

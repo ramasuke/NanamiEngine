@@ -20,8 +20,7 @@ namespace NanamiEngine::Module::GameObject
 namespace GamePlay::Spawn
 {
     /**
-     * プレハブを生成し、lifeTime_secs 秒後に破棄する(lifeTime_secs <= 0 なら時限破棄しない)。
-     * 権威側(BehaviourTree アクション)と RPC 受信側の両方から同じ見た目を出すための共通処理。
+     * プレハブを生成し、lifeTime_secs 秒後に破棄する(<= 0 なら破棄しない)
      */
     std::weak_ptr<GameObject::IGameObject> SpawnPrefab(
         Asset::PrefabGameObjectFile& prefab,
@@ -29,16 +28,16 @@ namespace GamePlay::Spawn
         float lifeTime_secs);
 
     /**
-     * プレハブを target の位置に生成し、どちらかが消えるまで target の位置へ付いて行かせる。
-     * 親子にしないのは、プレハブの scale が target の scale で縮まないようにするため。破棄はプレハブ側(ParticleSystem の Destroy など)に任せる。
+     * プレハブを target の位置に生成して追従させる。破棄はプレハブ側に任せる
+     * NOTE: target の scale を受けないよう親子にはしない
      */
     std::weak_ptr<GameObject::IGameObject> SpawnFollowingPrefab(
         Asset::PrefabGameObjectFile& prefab,
         const std::shared_ptr<GameObject::IGameObject>& target);
 
     /**
-     * プレハブを owner のボーン boneName の位置(ボーン空間の localOffset)に生成し、どちらかが消えるまでそのボーンに付いて行かせる。
-     * owner の BoneSync でボーンを引くので、BoneSync が無い・ボーンが無いときは owner の位置に付いて行く。破棄はプレハブ側に任せる。
+     * プレハブを owner のボーン boneName に追従させる。破棄はプレハブ側に任せる
+     * NOTE: BoneSync かボーンが無ければ owner の位置に追従する
      */
     std::weak_ptr<GameObject::IGameObject> SpawnBoneFollowingPrefab(
         Asset::PrefabGameObjectFile& prefab,
@@ -47,8 +46,7 @@ namespace GamePlay::Spawn
         const glm::vec3& localOffset);
 
     /**
-     * プレハブを position に生成し、target に対するその位置を保ったまま付いて行かせる(target が傾けばそれに沿って回り込む)。
-     * 向きは変えない。lifeTime_secs <= 0 なら時限破棄しない。
+     * プレハブを position に生成し、target からの相対位置を保って追従させる(向きは変えない)
      */
     std::weak_ptr<GameObject::IGameObject> SpawnAttachedPrefab(
         Asset::PrefabGameObjectFile& prefab,

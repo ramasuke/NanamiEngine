@@ -3,8 +3,7 @@
 
 namespace
 {
-    // 権威側で減った敵の HP を、他ピアの同じ NetworkObjectId の個体へ反映する。
-    // 他ピアの攻撃はホストへ送られるので、非権威側の BT にはダメージが入らない。
+    // 権威側の敵 HP を他ピアの同じ個体へ反映する (非権威側の BT にはダメージが入らないため)
     struct EnemyHealthRpcRegistration
     {
         EnemyHealthRpcRegistration()

@@ -52,7 +52,6 @@ namespace GamePlay::Ui
                 });
             });
 
-        // 品が窓より少ないときだけ、最後の品の下に「入荷待ち」を書き足す
         if (const auto restock = restockText_.get())
         {
             const bool hasRoom = shownRows < static_cast<size_t>(maxVisibleRows_);

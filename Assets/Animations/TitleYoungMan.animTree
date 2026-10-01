@@ -63,43 +63,6 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Listen",
-                "position_": {
-                    "value0": 400.0,
-                    "value1": 40.0
-                },
-                "guid_": {
-                    "value_": "E46986A5-2FFD-46B2-8F3E-AB2CCF207001"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.699999988079071,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": false
-            }
-        }
-    },
-    "nodes_1": {
-        "polymorphic_id": 1,
-        "ptr_wrapper": {
-            "id": 2147483654,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483655,
-                            "data": {
-                                "value0": {
                                     "value_": "11B64F7A-C8B5-4B72-8732-3EF0D4541040"
                                 }
                             }
@@ -124,6 +87,43 @@
             }
         }
     },
+    "nodes_1": {
+        "polymorphic_id": 1,
+        "ptr_wrapper": {
+            "id": 2147483654,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483655,
+                            "data": {
+                                "value0": {
+                                    "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Listen",
+                "position_": {
+                    "value0": 400.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "value_": "E46986A5-2FFD-46B2-8F3E-AB2CCF207001"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 0.699999988079071,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
     "nodes_2": {
         "polymorphic_id": 1,
         "ptr_wrapper": {
@@ -135,43 +135,6 @@
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
                             "id": 2147483657,
-                            "data": {
-                                "value0": {
-                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Agree",
-                "position_": {
-                    "value0": 580.0,
-                    "value1": 130.0
-                },
-                "guid_": {
-                    "value_": "D6F7FF80-9FCA-4F46-AEFD-931D2C68EE3B"
-                },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.699999988079071,
-                "modelAnimationIndex_": 0,
-                "clipStartTime_": 0.0,
-                "clipEndTime_": 0.0,
-                "isLoop_": true,
-                "nameCheck_": true
-            }
-        }
-    },
-    "nodes_3": {
-        "polymorphic_id": 1,
-        "ptr_wrapper": {
-            "id": 2147483658,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483659,
                             "data": {
                                 "value0": {
                                     "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
@@ -198,32 +161,32 @@
             }
         }
     },
-    "nodes_4": {
+    "nodes_3": {
         "polymorphic_id": 1,
         "ptr_wrapper": {
-            "id": 2147483660,
+            "id": 2147483658,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483661,
+                            "id": 2147483659,
                             "data": {
                                 "value0": {
-                                    "value_": "26E951BF-0372-46EF-B7B1-CA2435828A55"
+                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Funny",
+                "name_": "Agree",
                 "position_": {
-                    "value0": 760.0,
-                    "value1": 40.0
+                    "value0": 580.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "8C7E307E-7B9D-4296-880B-F8011ABB4B68"
+                    "value_": "D6F7FF80-9FCA-4F46-AEFD-931D2C68EE3B"
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 0.699999988079071,
@@ -235,17 +198,17 @@
             }
         }
     },
-    "nodes_5": {
+    "nodes_4": {
         "polymorphic_id": 1,
         "ptr_wrapper": {
-            "id": 2147483662,
+            "id": 2147483660,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483663,
+                            "id": 2147483661,
                             "data": {
                                 "value0": {
                                     "value_": "A5D636D6-F437-4E02-8100-5AE36A4F6B91"
@@ -269,6 +232,43 @@
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
                 "nameCheck_": false
+            }
+        }
+    },
+    "nodes_5": {
+        "polymorphic_id": 1,
+        "ptr_wrapper": {
+            "id": 2147483662,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483663,
+                            "data": {
+                                "value0": {
+                                    "value_": "26E951BF-0372-46EF-B7B1-CA2435828A55"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Funny",
+                "position_": {
+                    "value0": 760.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "value_": "8C7E307E-7B9D-4296-880B-F8011ABB4B68"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 0.699999988079071,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": true
             }
         }
     },

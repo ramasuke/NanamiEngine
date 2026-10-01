@@ -13,10 +13,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto ENEMY_ATTACK_WARNING_EXTENSION_LABEL = ".enemyAttackWarning";
 
-    /**
-     * @brief 敵の攻撃予兆 (ボーンに付いて行く閃光 + SE)。金 (通常攻撃) / 赤 (強攻撃) のように種類ごとに1つ作り、
-     * PhysicsAttack / ChargeRush の warning_ から共有する
-     */
+    /** @brief 敵の攻撃予兆 (ボーンに付いて行く閃光 + SE)。種類ごとに1つ作って共有する */
     class EnemyAttackWarning final : public ScriptableObject,
                                      public GameCore::Npc::Enemy::IEnemyWarningEffectProvider
     {

@@ -217,7 +217,9 @@ namespace GamePlay::Ui
         }
     }
 
-    void AssetUpdateTagUi::Open(const std::string& headline, const Body body)
+    void AssetUpdateTagUi::Open(
+        const std::string& headline,
+        const Body body)
     {
         EnsureStarted();
         if (const auto root = visualRoot_.get())
@@ -230,6 +232,7 @@ namespace GamePlay::Ui
             root->SetEnable(body == Body::Progress);
         if (const auto root = failureRoot_.get())
             root->SetEnable(body == Body::Failure);
+        
         HideStamps();
 
         // 出ている札の中身だけを書き換えるときは降ろし直さない
@@ -243,7 +246,9 @@ namespace GamePlay::Ui
         }
     }
 
-    void AssetUpdateTagUi::SetHints(const std::string& confirmLabel, const std::string& cancelLabel)
+    void AssetUpdateTagUi::SetHints(
+        const std::string& confirmLabel, 
+        const std::string& cancelLabel)
     {
         hasConfirm_ = !confirmLabel.empty();
         hasCancel_ = !cancelLabel.empty();
@@ -374,7 +379,6 @@ namespace GamePlay::Ui
         if (const auto root = progressRoot_.get(); !root || !root->IsEnable())
             return;
 
-        // 実際の進みへ指数的に寄せ、後戻りはさせない (ロード画面と同じ)
         const float follow = 1.0f - std::exp(-std::max(progressFollowRate_, 0.01f) * deltaSecs);
         displayedProgress_ = std::max(displayedProgress_, displayedProgress_ + (targetProgress_ - displayedProgress_) * follow);
         if (targetProgress_ >= 1.0f && targetProgress_ - displayedProgress_ < 0.002f)
@@ -397,7 +401,6 @@ namespace GamePlay::Ui
                     .during(Ms(hoofPopDuration_secs_)).via(Ease(EaseType::OutCubic)));
             }
         }
-        // 一度に何個灯っても蹄の音は 1 回
         if (lit > litHoofCount_)
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HoofTick);
         litHoofCount_ = std::max(litHoofCount_, lit);
@@ -409,7 +412,6 @@ namespace GamePlay::Ui
         if (!stamp || !stampScaleTween_.IsPlaying())
             return;
 
-        // 降りてくる途中では押さない。札が止まってから押す
         if (phase_ == Phase::Entering)
             return;
 

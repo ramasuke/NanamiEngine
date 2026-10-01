@@ -79,10 +79,9 @@ namespace GameCore::Scene::Main
         playerAvatar_ = networkRunner.SpawnPlayerAvatar(
             PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
-            glm::quat());
+            Context()->PlayerSpawnRotation());
 
-        // 敵はホスト側だけがスポーンする。クライアント側は
-        // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
+        // 敵はホストだけがスポーンし、クライアントは EnemySpawnDispatcher が再現する
         if (networkRunner.IsServer())
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())

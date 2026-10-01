@@ -9,8 +9,8 @@
 
 namespace GamePlay::Ui
 {
-    // 同じ GameObject の Slider に HP ゲージの演出（トレイル・回復の光・満タンの光・ゲージ画像のクロスフェード・パルス・目盛り・先端の光）を重ねて描く。
-    // Slider より上に描くので renderOrder_ は Slider より大きく、上に来る枠などより小さくする
+    // 同じ GameObject の Slider に HP ゲージの演出を重ねて描く
+    // NOTE: renderOrder_ は Slider より大きく、上に来る枠より小さくする
     class GaugeEffects final : public Component::ComponentBase,
                                public LifeCycleCallback::IUserInterfaceRenderable,
                                public LifeCycleCallback::IUpdatable

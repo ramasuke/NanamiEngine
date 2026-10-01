@@ -1,6 +1,7 @@
 """GameManage.scene の SceneContexts に DragonNestSceneContext (古竜の巣) を足す / 作り直す。
 
     python tools/art/nest_context.py        # nest_scene.py でシーンを作り直したら、続けて流す (GameObject の GUID が変わるので)
+    python tools/art/movie_markers.py       # 続けて流す (心臓の山の中心などのマーカー)
 
 - 砂漠の DrySandSceneContext を写し、型名を DragonNestSceneContext に替えて、SceneContexts の最後の component に足す
   (やり方は desert_context.py と同じ。浮遊石 floatingStone_ は巣に無いので外す)。
@@ -41,7 +42,7 @@ PARTICLE_DIR = REPO / 'Assets' / 'Prefab' / 'Particle'
 # 心臓の色ごとの光の尾と、山の閃光 (DragonNestSceneContext の版 1)
 ENDING_PREFABS = {'greenHeartTrail_': 'GreenStoneFlight', 'lightHeartTrail_': 'LightStoneFlight',
                   'fireHeartTrail_': 'FireStoneFlight', 'heartBurst_': 'HeartShardScatter'}
-ENDING_VALUES = {'heartMoundCenter_': (750.0, 124.0, 720.0), 'endingDelay_secs_': 1.0, 'heartRise_secs_': 1.8,
+ENDING_VALUES = {'endingDelay_secs_': 1.0, 'heartRise_secs_': 1.8,
                  'heartFly_secs_': 3.2, 'heartStagger_secs_': 2.4, 'endingHold_secs_': 3.0, 'heartRiseHeight_': 60.0,
                  'heartFlyDistance_': 3000.0}
 

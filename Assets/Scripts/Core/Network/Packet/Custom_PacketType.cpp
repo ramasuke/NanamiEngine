@@ -3,8 +3,7 @@
 
 namespace
 {
-    // ゲーム独自PacketType(GameCore::Network::EPacketType)の名前をEngineの
-    // PacketTypeNameRegistryへ登録する（Engine側はAssets/Scriptsに依存できないため）。
+    // ゲーム独自 EPacketType の名前を PacketTypeNameRegistry へ登録する
     struct CustomPacketTypeNameRegistration
     {
         CustomPacketTypeNameRegistration()

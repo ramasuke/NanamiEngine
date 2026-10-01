@@ -11,8 +11,7 @@ namespace GameCore::PlayerAvatar::Item
 namespace GamePlay::Magic
 {
     /**
-     * @brief center から radius 以内のアバターのうち、この画面が持っているものに apply を呼ぶ。
-     *        魔法は全員の画面で実行されるので、近くの仲間にはその仲間の画面で効く
+     * @brief center から radius 以内のアバターのうち、このピアが所有するものに apply を呼ぶ
      */
     void ForEachSupportTarget(const glm::vec3& center,
                               float radius,

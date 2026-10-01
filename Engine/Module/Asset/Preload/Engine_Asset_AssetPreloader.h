@@ -7,8 +7,7 @@
 namespace NanamiEngine::Module::Asset
 {
     /**
-     * @brief シーンファイルから GUID でたどれるアセットを先読みし、開いているどのシーンからも
-     *        参照されないアセットを解放する。対象は IPreloadableAsset を実装したアセットだけ
+     * @brief シーンから GUID でたどれる IPreloadableAsset を先読みし、どのシーンからも届かないものを解放する
      */
     class NANAMI_API AssetPreloader final
     {
@@ -19,8 +18,7 @@ namespace NanamiEngine::Module::Asset
         /** @brief 登録済みの全アセットの表を作る。メインスレッド専用 */
         [[nodiscard]] static Index BuildIndex();
         /**
-         * @brief sceneFilePath から参照をたどって届くアセットの GUID を集める。
-         *        ファイルを読むだけなのでワーカースレッドからも呼べる。ほかの .scene の先へはたどらない
+         * @brief sceneFilePath から届くアセットの GUID を集める。ワーカースレッド可。ほかの .scene はたどらない
          */
         [[nodiscard]] static std::vector<std::string> CollectDependencies(const Index& index, const std::string& sceneFilePath);
         /** @brief 非同期で読み込みを要求する。メインスレッド専用 */

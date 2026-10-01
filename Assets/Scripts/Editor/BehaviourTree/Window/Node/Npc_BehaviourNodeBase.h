@@ -66,8 +66,7 @@ namespace Editor::Npc::Behaviour
         /** @brief 自身と子孫すべての guid を振り直す（貼り付けたノードが元のノードと同じ guid にならないように） */
         void ResetGuidRecursive();
 
-        // このノードがGraphEditor上で直接ぶら下げている子ノード。
-        // 親ノードをドラッグ移動したときに子孫を追従させるために使用する。
+        // GraphEditor 上で直接ぶら下げている子ノード
         [[nodiscard]] virtual std::vector<std::shared_ptr<NodeBase>> Children() const { return {}; }
 
         // 自身と子孫の実行時状態（WaitSeconds の経過時間など）を初期化する。

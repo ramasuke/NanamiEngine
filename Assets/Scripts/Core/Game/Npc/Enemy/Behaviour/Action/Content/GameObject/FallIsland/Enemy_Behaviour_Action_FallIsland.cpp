@@ -80,13 +80,13 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!target_)
             return TickStatus::Failure;
 
+        const glm::vec3 pivot = pivotPos_ ? pivotPos_->Transform().GetWorldPos() : target_->Transform().GetWorldPos();
         const glm::vec3 axis = glm::length(tiltAxis_) > 0.0001f ? glm::normalize(tiltAxis_) : glm::vec3(0.0f, 0.0f, 1.0f);
         const FallMotion motion
         {
-            pivot_, axis, tiltAngleDeg_, glm::max(tiltSecs_, 0.01f), fallAngleDeg_, fallDistance_, glm::max(fallSecs_, 0.01f), tiltSinkDistance_
+            pivot, axis, tiltAngleDeg_, glm::max(tiltSecs_, 0.01f), fallAngleDeg_, fallDistance_, glm::max(fallSecs_, 0.01f), tiltSinkDistance_
         };
 
-        // NOTE: 落下は同期しない。序章(シングルプレイ)の演出用
         Coroutine::StartCoroutine(FallAsync(target_.get(), motion));
         return TickStatus::Success;
     }
@@ -94,7 +94,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     void Action::FallIsland::DoDrawGui()
     {
         ImGuiHelper::OnDrawInputField("target_", target_);
-        ImGuiHelper::OnDrawInputField("pivot_", pivot_);
+        ImGuiHelper::OnDrawInputField("pivotPos_", pivotPos_);
         ImGuiHelper::OnDrawInputField("tiltAxis_", tiltAxis_);
         ImGuiHelper::OnDrawInputField("tiltAngleDeg_", tiltAngleDeg_);
         ImGuiHelper::OnDrawInputField("tiltSecs_", tiltSecs_);
