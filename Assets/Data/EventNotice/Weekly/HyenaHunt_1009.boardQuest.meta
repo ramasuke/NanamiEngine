@@ -1,0 +1,133 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 2,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice\\Weekly/HyenaHunt_1009.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "05BDA8EC-487C-4EF6-B119-E6A96DE09CEA"
+                    }
+                },
+                "title_": "群狼の討伐",
+                "clientName_": "酒場の仲介人",
+                "goalText_": "草原のハイエナを15匹倒す",
+                "descriptionLines_": [
+                    "草原にハイエナの群れが増えてる。",
+                    "15匹片づけてきな。旗もつけてやる。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A369FA3C-6941-4FE4-834C-0CDD861837F9"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "41547865-3FBE-44B3-8E4F-A6CE02CD9CFF"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 1,
+                                "value0": {
+                                    "cereal_class_version": 1,
+                                    "rewards_": [
+                                        {
+                                            "polymorphic_id": 2147483651,
+                                            "polymorphic_name": "GameCore::Reward::MoneyReward",
+                                            "ptr_wrapper": {
+                                                "id": 2147483653,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "conditions_": []
+                                                    },
+                                                    "amount_": {
+                                                        "cereal_class_version": 0,
+                                                        "value_": 1500
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "polymorphic_id": 2147483652,
+                                            "polymorphic_name": "GameCore::Reward::DecorationReward",
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "conditions_": []
+                                                    },
+                                                    "decoration_": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483655,
+                                                                "data": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "value_": "5407C126-C528-4E7C-95BC-967A5B3FB530"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "questType_": 1,
+                                "requiredCount_": 15,
+                                "startRecord_": {
+                                    "nullopt": true
+                                },
+                                "repeatable_": false
+                            },
+                            "enemyKind_": 2
+                        }
+                    }
+                },
+                "unlockConditions_": [],
+                "lockedText_": ""
+            }
+        }
+    }
+}

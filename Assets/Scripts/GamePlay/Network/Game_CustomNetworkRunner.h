@@ -47,8 +47,10 @@ namespace GamePlay::Network
             glm::vec3 position,
             glm::quat rotation);
 
+        /** @param prefab nullptr なら EnemyFactory の kind の prefab */
         std::shared_ptr<Module::GameObject::IGameObject> SpawnEnemy(
             GameCore::Npc::Enemy::EnemyKind kind,
+            const std::shared_ptr<Asset::PrefabGameObjectFile>& prefab,
             glm::vec3 position,
             glm::quat rotation);
 

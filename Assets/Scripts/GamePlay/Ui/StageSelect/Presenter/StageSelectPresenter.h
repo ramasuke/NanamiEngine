@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <vector>
 
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
@@ -46,6 +47,8 @@ namespace GamePlay::Ui
         Network::RelayRoom::Mode roomMode_ = Network::RelayRoom::Mode::Public;
         std::string roomCode_;
         int cursor_ = 0;
+        // NOTE: 解放前に隠す行 (StageData::HidesWhenLocked)。行の並びは view と揃えたまま、カーソルで飛ばす
+        std::vector<bool> isHidden_;
 
         [[serialize(1)]] int stickThreshold_ = 12000;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;

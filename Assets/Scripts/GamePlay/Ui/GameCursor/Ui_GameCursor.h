@@ -8,7 +8,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief OS カーソルの代わりのカーソル。ゲームビルドで、ボタンが出ている間だけ表示する */
+    /** @brief OS カーソルの代わりのカーソル。ゲームビルドで、UiFlow の最前面の画面にボタンが出ている間だけ表示する */
     class GameCursor final : public Component::ComponentBase,
                              public LifeCycleCallback::IStartable,
                              public LifeCycleCallback::IUpdatable

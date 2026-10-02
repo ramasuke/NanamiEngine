@@ -73,11 +73,13 @@ namespace GamePlay::Network
 
     std::shared_ptr<Module::GameObject::IGameObject> CustomNetworkRunner::SpawnEnemy(
         const GameCore::Npc::Enemy::EnemyKind kind,
+        const std::shared_ptr<Asset::PrefabGameObjectFile>& prefab,
         const glm::vec3 position,
         const glm::quat rotation)
     {
         return customDispatcherGroup_->SpawnEnemy().DispatchSendPacket(
             kind,
+            prefab,
             position,
             rotation);
     }

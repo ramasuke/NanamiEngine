@@ -88,10 +88,9 @@ namespace GameCore::Scene::Main
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
             {
-                if (!spawnPoint->ShouldSpawn())
-                    continue;
                 networkRunner.SpawnEnemy(
                     spawnPoint->Kind(),
+                    spawnPoint->Prefab(),
                     spawnPoint->Transform().GetWorldPos(),
                     spawnPoint->Transform().GetWorldRot());
             }

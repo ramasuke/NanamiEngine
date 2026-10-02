@@ -1,4 +1,4 @@
-# UiFlow — メニュー画面の開閉と入力
+﻿# UiFlow — メニュー画面の開閉と入力
 
 `namespace NanamiEngine::UiFlow`。使う側は `Packages/UiFlow/UiFlow.h` だけ include する。
 
@@ -117,6 +117,7 @@ screen_->Input().Map()
 
 `NanamiUi::Button` は、`UiScreen` の下（同じ GameObject か子孫）にあるとき、その画面が最前面の間だけ反応する。
 `UiScreen` の下に無い Button は今までどおり常に反応する。
+`ScreenStack::WantsCursor()` は最前面の画面の Button が動いている間だけ true で、ゲームのカーソル (`GameCursor`) はこれで出し入れする（画面外の HUD の Button では出ない）。
 
 ## 入力機器とヒント
 

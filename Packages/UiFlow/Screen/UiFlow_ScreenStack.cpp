@@ -5,12 +5,18 @@
 #include "UiFlow_UiScreen.h"
 #include "../../../Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../../../Engine/Core/Application/Time/Time.h"
 #include "../../../Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 
 namespace NanamiEngine::UiFlow
 {
     namespace
     {
+        // NOTE: 更新順に依存しないよう、数フレーム分はカーソルを出したままにする
+        constexpr int CURSOR_HOLD_MS = 100;
+
+        int lastFocusedButtonMs = -CURSOR_HOLD_MS * 100;
+
         // UiScreen の下にある Button は、その画面が最前面のときだけ押せる。UiScreen の下に無い Button は常に押せる
         bool IsButtonOnFocusedScreen(const Module::NanamiUi::Button& button)
         {
@@ -18,7 +24,13 @@ namespace NanamiEngine::UiFlow
             while (gameObject)
             {
                 if (const auto screen = gameObject->Components().Catch<UiScreen>().lock())
-                    return screen->IsFocused();
+                {
+                    if (!screen->IsFocused())
+                        return false;
+
+                    lastFocusedButtonMs = Time::NowMilliseconds();
+                    return true;
+                }
                 gameObject = gameObject->Transform().GetParent();
             }
             return true;
@@ -50,6 +62,11 @@ namespace NanamiEngine::UiFlow
         });
     }
 
+    bool ScreenStack::WantsCursor() const
+    {
+        return Time::NowMilliseconds() - lastFocusedButtonMs < CURSOR_HOLD_MS;
+    }
+
     std::vector<std::string> ScreenStack::ScreenIds() const
     {
         std::vector<std::string> ids;
@@ -64,6 +81,7 @@ namespace NanamiEngine::UiFlow
     void ScreenStack::Clear()
     {
         screens_.clear();
+        lastFocusedButtonMs = -CURSOR_HOLD_MS * 100;
     }
 
     void ScreenStack::Push(UiScreen& screen)

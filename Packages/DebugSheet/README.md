@@ -42,7 +42,9 @@ void Game::OnUserInterfaceRender()
 デバッグのためにゲーム側の既存コードを変えない。ページは既存の公開 API だけで作る（例: ストーリーは LocalPrefs の
 保存ファイルを書いて `StoryProgress::Reload()`）。どうしても口が要るときは、追加するもの（include・基底クラス・
 メンバ・定義・呼び出し）を全部 `#if NANAMI_DEBUG_SHEET_ENABLED` で囲う。今あるのは `Game` の
-`OnUserInterfaceRender` / `GetRenderOrder` と `OnUpdate` 内の `SaveDataReset::Update()`、`RecordBook::Reload()` だけ。
+`OnUserInterfaceRender` / `GetRenderOrder` と `OnUpdate` 内の `SaveDataReset::Update()` / `HealthCheat::Update()`、
+`RecordBook::Reload()`、開催時刻のずらし（`Condition::Clock` の `SetDebugNow` など、`ConditionalObject` と
+`NavigationPresenter` の `OnDebugNowChanged()` の購読）だけ。
 
 ## ページの追加
 
@@ -79,9 +81,16 @@ REGISTER_DEBUG_SHEET_PAGE(GodMode, "チート/無敵", 40, GamePlay::Debug::Draw
 `Assets/Scripts/GamePlay/Debug/DebugSheet/`:
 
 - セーブ/全初期化（`SaveDataReset`。`LocalPrefs/` の `.json` から `Display/` `Network/` `Settings/` を除いて消す）
+- セーブ/クエスト（`QuestJournal` の依頼を達成済みにする）
 - ストーリー/フラグ
+- ストーリー/依頼の既読（メインストーリーの依頼書の既読）
+- ストーリー/島の飾り（`DecorationCollection` の所持）
 - シーン/移動
 - シーン/ステージへ出発（部屋の入り方 公開 / 作成 / 参加+コード を決めて `Matchmaker().SetNextRoom` → ステージへ移動）
 - チート/所持金・アイテム（手元のアバターは `GameCore::PlayerAvatar::Owner()`）
+- チート/体力（体力を満タンに保つ `HealthCheat`・全回復・復活）
 - チート/職業（拠点でだけ。`MainIslandScene::SwitchPlayerAvatar` でその場で作り直す）
+- 天候/砂嵐
 - 時間/タイムスケール（`NanamiEngine::Time::SetTimeScale`。0 で停止）
+- 時間/開催日時（開催判定の時刻 `GameCore::Condition::Clock::Now()` をずらす。告知の期間に合わせるボタン付き）
+- 情報/ネットワーク・プレイヤー・ナビ

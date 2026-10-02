@@ -1,6 +1,6 @@
 {
     "name": "MainIslandScene",
-    "gameObjectCount": 24,
+    "gameObjectCount": 25,
     "gameObject_0": {
         "polymorphic_id": 2147483649,
         "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -68085,6 +68085,595 @@
                                             "value0": -18.0,
                                             "value1": 22.0,
                                             "value2": 72.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    }
+                },
+                "mark_": 0
+            }
+        }
+    },
+    "gameObject_24": {
+        "polymorphic_id": 1,
+        "ptr_wrapper": {
+            "id": 2147485667,
+            "data": {
+                "value0": {
+                    "value0": {}
+                },
+                "isActive_": true,
+                "name_": "IslandDecorations",
+                "guid_": {
+                    "value_": "89C77C07-0038-40D7-AED7-E3F5DFAECA36"
+                },
+                "components_": {
+                    "componentCount": 0
+                },
+                "transform_": {
+                    "localPos_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0
+                    },
+                    "localRot_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 1.0
+                    },
+                    "localScale_": {
+                        "value0": 1.0,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 4,
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147485668,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Decoration_WolfPackBanner",
+                                "guid_": {
+                                    "value_": "75952070-0F63-4210-A94F-38BFBDDFAFCF"
+                                },
+                                "components_": {
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 2147483695,
+                                        "polymorphic_name": "GamePlay::Prop::ConditionalObject",
+                                        "ptr_wrapper": {
+                                            "id": 2147485669,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "8DF3AFE5-EA09-4F1A-A5D4-FD44ECD98899"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "conditions_": [
+                                                    {
+                                                        "polymorphic_id": 2147483696,
+                                                        "polymorphic_name": "GameCore::Condition::DecorationOwnedCondition",
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485670,
+                                                            "data": {
+                                                                "cereal_class_version": 0,
+                                                                "value0": {
+                                                                    "cereal_class_version": 0
+                                                                },
+                                                                "decoration_": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
+                                                                        "ptr_wrapper": {
+                                                                            "id": 2147485671,
+                                                                            "data": {
+                                                                                "cereal_class_version": 0,
+                                                                                "value0": {
+                                                                                    "value_": "5407C126-C528-4E7C-95BC-967A5B3FB530"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485672,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "prefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485673,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "B0333896-7839-4641-92F4-15CEDAAE039F"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 64.0,
+                                        "value1": 21.9,
+                                        "value2": 124.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": -0.9611644462363386,
+                                        "value2": 0.0,
+                                        "value3": 0.27597628030537824
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.8476741909980774,
+                                            "value1": 0.0,
+                                            "value2": 0.5305171608924866,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.5305171608924866,
+                                            "value1": -0.0,
+                                            "value2": -0.8476741909980774,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 64.0,
+                                            "value1": 21.899999618530273,
+                                            "value2": 124.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147485674,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Decoration_HerbBasket",
+                                "guid_": {
+                                    "value_": "E1F9EA12-0152-4191-9B6C-8DE35452AAF4"
+                                },
+                                "components_": {
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 47,
+                                        "ptr_wrapper": {
+                                            "id": 2147485675,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "4EE95866-8B40-4169-946A-675D68C4552E"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "conditions_": [
+                                                    {
+                                                        "polymorphic_id": 48,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485676,
+                                                            "data": {
+                                                                "value0": {},
+                                                                "decoration_": {
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
+                                                                        "ptr_wrapper": {
+                                                                            "id": 2147485677,
+                                                                            "data": {
+                                                                                "value0": {
+                                                                                    "value_": "1F530215-3817-4B3B-BA65-03947E820C99"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485678,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "prefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485679,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "98138512-010D-4535-A20B-261F619B52D1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 68.0,
+                                        "value1": 21.9,
+                                        "value2": 110.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": -0.7255880007552322,
+                                        "value2": 0.0,
+                                        "value3": 0.6881293869324469
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.05295589193701744,
+                                            "value1": 0.0,
+                                            "value2": 0.9985968470573425,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": -0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": -0.9985968470573425,
+                                            "value1": -0.0,
+                                            "value2": -0.05295589193701744,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 68.0,
+                                            "value1": 21.899999618530273,
+                                            "value2": 110.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147485680,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Decoration_TyrantTotem",
+                                "guid_": {
+                                    "value_": "EDC395AF-1FC9-4BD1-9AFA-23D01B12F52B"
+                                },
+                                "components_": {
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 47,
+                                        "ptr_wrapper": {
+                                            "id": 2147485681,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "AD457F64-1053-4952-8D1E-20948068A450"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "conditions_": [
+                                                    {
+                                                        "polymorphic_id": 48,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485682,
+                                                            "data": {
+                                                                "value0": {},
+                                                                "decoration_": {
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
+                                                                        "ptr_wrapper": {
+                                                                            "id": 2147485683,
+                                                                            "data": {
+                                                                                "value0": {
+                                                                                    "value_": "886DFEE3-E1B3-4A8E-A4FC-A5E814B9162C"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485684,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "prefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485685,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "E39D37C9-8213-4C04-BC49-6C2195E7521E"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 40.0,
+                                        "value1": 21.9,
+                                        "value2": 128.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.9444921505510661,
+                                        "value2": 0.0,
+                                        "value3": 0.3285339823327602
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.784130871295929,
+                                            "value1": 0.0,
+                                            "value2": -0.6205955147743225,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.6205955147743225,
+                                            "value1": 0.0,
+                                            "value2": -0.784130871295929,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 40.0,
+                                            "value1": 21.899999618530273,
+                                            "value2": 128.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                },
+                                "mark_": 0
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147485686,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": true,
+                                "name_": "Decoration_HideDryingRack",
+                                "guid_": {
+                                    "value_": "D6381D28-17BB-4243-A0F5-5DFD97860C53"
+                                },
+                                "components_": {
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 47,
+                                        "ptr_wrapper": {
+                                            "id": 2147485687,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "E293C16B-B4DA-4003-8CAE-ED9AC7CC12EB"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "conditions_": [
+                                                    {
+                                                        "polymorphic_id": 48,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485688,
+                                                            "data": {
+                                                                "value0": {},
+                                                                "decoration_": {
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
+                                                                        "ptr_wrapper": {
+                                                                            "id": 2147485689,
+                                                                            "data": {
+                                                                                "value0": {
+                                                                                    "value_": "C3074268-1EDA-48F5-AF48-55212A7FCEF9"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "target_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485690,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "prefab_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147485691,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "06A91B0D-A700-43A9-8AF2-44677A2F24F9"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 44.0,
+                                        "value1": 21.9,
+                                        "value2": 140.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.9857307454785583,
+                                        "value2": 0.0,
+                                        "value3": 0.16832972826653533
+                                    },
+                                    "localScale_": {
+                                        "value0": 1.0,
+                                        "value1": 1.0,
+                                        "value2": 1.0
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": -0.9433302283287048,
+                                            "value1": 0.0,
+                                            "value2": -0.33185556530952454,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 1.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.33185556530952454,
+                                            "value1": 0.0,
+                                            "value2": -0.9433302283287048,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 44.0,
+                                            "value1": 21.899999618530273,
+                                            "value2": 140.0,
                                             "value3": 1.0
                                         }
                                     },

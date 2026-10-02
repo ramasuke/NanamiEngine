@@ -1,7 +1,6 @@
 ﻿#include "Prop_ConditionalObject.h"
 
-#include <chrono>
-
+#include "../../../Core/Game/Condition/Condition_Clock.h"
 #include "../../../Core/Game/Decoration/Decoration_DecorationCollection.h"
 #include "../../../Core/Game/Condition/Condition_ConditionList.h"
 #include "../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestJournal.h"
@@ -25,6 +24,13 @@ namespace GamePlay::Prop
         {
             Apply();
         }).AddTo(this);
+#if NANAMI_DEBUG_SHEET_ENABLED
+        GameCore::Condition::Clock::OnDebugNowChanged().Subscribe(
+            [this](NanamiEngine::R4::Unit)
+        {
+            Apply();
+        }).AddTo(this);
+#endif
     }
 
     void ConditionalObject::Apply()
@@ -32,7 +38,7 @@ namespace GamePlay::Prop
         const GameCore::Condition::ConditionContext context{
             GameCore::Story::StoryProgress::Instance(),
             &GameCore::PlayerAvatar::Quest::QuestJournal::Instance(),
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+            GameCore::Condition::Clock::Now(),
             GameCore::Decoration::DecorationCollection::Instance() };
         const bool isShown = GameCore::Condition::ConditionList::AreAllSatisfied(conditions_, context);
 

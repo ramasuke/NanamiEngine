@@ -40,6 +40,11 @@ namespace GameCore::Scene::Main
         requires std::derived_from<T, SceneContextBase>
         std::shared_ptr<T> CatchContext();
 
+        /** @brief 同じ型の context が複数あるとき、matches を満たす最初のもの */
+        template<typename T, typename Predicate>
+        requires std::derived_from<T, SceneContextBase>
+        std::shared_ptr<T> CatchContext(Predicate matches);
+
         template<typename T>
         requires std::derived_from<T, IGameScene>
         std::shared_ptr<T> Catch(SceneType type) const;
@@ -91,11 +96,18 @@ namespace GameCore::Scene::Main
     requires std::derived_from<T, SceneContextBase>
     std::shared_ptr<T> GameSceneGroup::CatchContext()
     {
+        return CatchContext<T>([](const T&) { return true; });
+    }
+
+    template <typename T, typename Predicate>
+    requires std::derived_from<T, SceneContextBase>
+    std::shared_ptr<T> GameSceneGroup::CatchContext(Predicate matches)
+    {
         for (const auto& context : sceneContexts_)
         {
             if (auto locked = context.lock())
             {
-                if (auto typed = std::dynamic_pointer_cast<T>(locked))
+                if (auto typed = std::dynamic_pointer_cast<T>(locked); typed && matches(*typed))
                 {
                     return typed;
                 }

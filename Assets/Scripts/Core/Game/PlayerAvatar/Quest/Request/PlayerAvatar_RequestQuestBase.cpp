@@ -46,8 +46,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
 
         // WARNING: CompleteQuest の中で this が破棄されるので、以降 this に触れない
         subscription_.Dispose();
-        const auto type = questType_;
-        completedQuests.CompleteQuest(type);
+        completedQuests.CompleteTakenQuest(*this);
     }
 
     void RequestQuestBase::OnDrawGui()
@@ -56,6 +55,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
         LibCore::ImGuiHelper::OnDrawEnumField("questType_", questType_, QUEST_TYPE_NAMES, PlayerAvatar::ToString);
         LibCore::ImGuiHelper::OnDrawInputField("requiredCount_", requiredCount_);
         requiredCount_ = (std::max)(requiredCount_, 1);
+        LibCore::ImGuiHelper::OnDrawInputField("repeatable_", repeatable_);
         DoDrawGui();
 
         if (startRecord_)

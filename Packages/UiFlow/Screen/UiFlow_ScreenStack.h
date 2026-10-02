@@ -24,6 +24,8 @@ namespace NanamiEngine::UiFlow
         [[nodiscard]] UiScreen* Top() const;
         [[nodiscard]] bool IsOpen(std::string_view screenId) const;
         [[nodiscard]] std::vector<std::string> ScreenIds() const;
+        /** @brief 最前面の画面のボタンが出ている (マウスで操作できる) */
+        [[nodiscard]] bool WantsCursor() const;
 
         void Clear();
 

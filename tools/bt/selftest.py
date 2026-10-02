@@ -17,6 +17,7 @@
   8. copy-node が独立したディープコピーを作り、ドット区切りキーの set-params が
      shape='nested' パラメータの内側に届く。どちらもきれいに元に戻せる。
   9. 浮きノード（detachedNodes_）の書き出し -> 読み込み -> 書き出しが一致する。
+ 11. 版を持つ初出のノードを消すと、入れ子の構造体 / Field<T> の次の出現に版が付く。
 """
 
 from __future__ import annotations
@@ -535,6 +536,57 @@ def stage_compose(r: Reporter) -> None:
         r.fail(p.name, traceback.format_exc())
 
 
+def _first_struct(node, keys):
+    """文書順で keys のどれかに入っている最初のオブジェクト。"""
+    if isinstance(node, cereal_json.OrderedObj):
+        for k, v in node.items():
+            if k in keys and isinstance(v, cereal_json.OrderedObj):
+                return v
+            found = _first_struct(v, keys)
+            if found is not None:
+                return found
+    elif isinstance(node, list):
+        for v in node:
+            found = _first_struct(v, keys)
+            if found is not None:
+                return found
+    return None
+
+
+def stage_version_moves(r: Reporter) -> None:
+    """版を持つ初出のノードを消したら、次の出現に cereal_class_version が付く。"""
+    from tools.bt import catalog as catalog_mod, edits, reader, writer
+
+    r.section("stage 11: first-occurrence version moves to the next occurrence")
+    p = BT_DIR / "FirstEventDragon.enemyBehaviourData"
+    # (型, その型が入るキー)。Field<IGameObject> はポインタの中身にも版が要る
+    groups = [("PhysicsPower", {"attackPower_", "physicsDamage_"}),
+              ("Position", {"spawnPosition_", "targetPosition_"}),
+              ("Field<IGameObject>", {"stonesRoot_", "targetObject_", "target_", "pivotPos_", "enableGameObject_"})]
+    try:
+        cat = catalog_mod.load(kind="enemy")
+        tree = reader.read_tree(cereal_json.read_text(p), cat=cat, kind="enemy")
+        for _name, keys in groups:
+            owner = next((n for n, *_ in tree.walk()
+                          if hasattr(n, "type_fqn") and any(k in keys for k in n.params.keys())), None)
+            if owner is not None:
+                edits.remove_node(tree, owner.guid)
+        out = cereal_json.loads(writer.write_tree(tree))
+        for name, keys in groups:
+            first = _first_struct(out, keys)
+            if first is None:
+                raise AssertionError(f"{name}: no occurrence left in the fixture")
+            ok = first.keys()[0] == "cereal_class_version"
+            if name.startswith("Field<"):
+                data = first["value0"]["ptr_wrapper"]["data"]
+                ok = ok and data.keys()[0] == "cereal_class_version"
+            if not ok:
+                raise AssertionError(f"{name}: first occurrence after removal has no cereal_class_version")
+        r.ok(f"{p.name} PhysicsPower / Position / Field<IGameObject> versions move")
+    except Exception:  # noqa: BLE001
+        r.fail(p.name, traceback.format_exc())
+
+
 def main() -> int:
     r = Reporter()
     stage_ordered_obj_dup_keys(r)
@@ -548,6 +600,7 @@ def main() -> int:
     stage_copy_and_nested(r)
     stage_detached(r)
     stage_compose(r)
+    stage_version_moves(r)
     return r.finish()
 
 

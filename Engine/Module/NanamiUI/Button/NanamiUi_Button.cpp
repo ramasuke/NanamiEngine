@@ -7,21 +7,11 @@
 
 namespace
 {
-    // NOTE: 更新順に依存しないよう、数フレーム分は有効扱いを保つ
-    constexpr int ACTIVE_HOLD_MS = 100;
-
-    int lastActiveMs = -ACTIVE_HOLD_MS * 100;
-
     NanamiEngine::Module::NanamiUi::Button::InputGate buttonInputGate = nullptr;
 }
 
 namespace NanamiEngine::Module
 {
-    bool NanamiUi::Button::IsAnyActive()
-    {
-        return GetNowCount() - lastActiveMs < ACTIVE_HOLD_MS;
-    }
-
     void NanamiUi::Button::OnAwake()
     {
         renderer_ = Components().Catch<IInteractivableRenderer>();  
@@ -51,8 +41,6 @@ namespace NanamiEngine::Module
             ReleaseInput();
             return;
         }
-
-        lastActiveMs = GetNowCount();
 
         TryHover();
         TryClick();

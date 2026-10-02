@@ -18,14 +18,18 @@ namespace GameCore::PlayerAvatar::Quest
     {
     public:
         void StartAll(const QuestContext& context) const;
-        /** @return 同じ QuestType を受注中なら受けずに false */
+        /** @return 同じ依頼(ITakeableQuest::IsSameQuest)を受注中なら受けずに false */
         bool Add(const std::shared_ptr<ITakeableQuest>& quest, const QuestContext& context);
         void Remove(const QuestType& type);
-        /** @brief 受注中の QuestType は足さない。始めるのは StartAll で */
+        void Remove(const ITakeableQuest* quest);
+        /** @brief 受注中の依頼と同じものは足さない。始めるのは StartAll で */
         void Merge(const std::vector<std::shared_ptr<ITakeableQuest>>& quests);
         [[nodiscard]] std::vector<std::shared_ptr<ITakeableQuest>> Release();
 
         [[nodiscard]] bool Contains(const QuestType& type) const;
+        [[nodiscard]] bool ContainsSame(const ITakeableQuest& quest) const;
+        /** @brief guid が同じ依頼か、guid を持たない同じ QuestType の依頼(古いセーブ)を受注中なら true */
+        [[nodiscard]] bool ContainsBoardQuest(const std::string& boardQuestGuid, const QuestType& type) const;
         /** @return 受注していなければ nullptr */
         [[nodiscard]] const ITakeableQuest* Find(const QuestType& type) const;
 

@@ -1,0 +1,47 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EventNotice",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice\\Weekly/HerbGathering_1016.eventNotice",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "8DDCD731-323A-4ABC-BF81-DCE1CAECB0C3"
+                    }
+                },
+                "title_": "草原の薬草あつめ",
+                "tagText_": "採集イベント",
+                "startAt_": "2026-10-16 12:00",
+                "endAt_": "2026-10-23 04:59",
+                "descriptionLines_": [
+                    "よろず屋が薬草を買い集めている。",
+                    "草原で10個摘むと、礼の品が出る。"
+                ],
+                "bannerSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "08C7DF5B-B749-4A7C-A20C-634112836E7C"
+                                }
+                            }
+                        }
+                    }
+                },
+                "unlockConditions_": []
+            }
+        }
+    }
+}

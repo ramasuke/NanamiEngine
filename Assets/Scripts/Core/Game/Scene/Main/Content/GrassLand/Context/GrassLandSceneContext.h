@@ -16,6 +16,7 @@
 #include "../../../../../../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
 #include "../ArrivalMovie/StageArrivalTourShot.h"
 #include "../../../Context/Main_SceneContextBase.h"
+#include "../../../Type/MainSceneType.h"
 
 namespace GameCore::Scene
 {
@@ -77,6 +78,11 @@ namespace GameCore::Scene
         /** このステージのクリア条件。どちらかが -1 なら無し */
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
+        /** この context を使う SceneType。同じ草原のシーンをイベント用のステージ (GrassLandEvent) でも使う */
+        [[nodiscard]] Main::SceneType SceneType() const { return static_cast<Main::SceneType>(sceneType_); }
+        /** @return kind の敵を湧かせるときに使う prefab。差し替えがなければ nullptr (EnemyFactory の kind の prefab) */
+        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> EnemyPrefabOverride(Npc::Enemy::EnemyKind kind) const;
+
         /** 村の跡に落ちている緑の浮遊石。大顎を倒すと飛び去り、それ以降は出さない */
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> FloatingStone() const { return floatingStone_.get(); }
 
@@ -111,6 +117,11 @@ namespace GameCore::Scene
         [[serialize(16)]] FIELD(Asset::PrefabGameObjectFile) arrivalCaptionPrefab_;
         [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewStartCamera_;
         [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewEndCamera_;
+        // NOTE: tools.scene で設定できるよう SceneType / EnemyKind を int で持つ
+        [[serialize(18)]] int sceneType_ = static_cast<int>(Main::SceneType::GrassLand);
+        /** この種別の敵を enemyOverridePrefab_ で湧かせる (イベントの強い個体)。-1 なら差し替えない */
+        [[serialize(18)]] int enemyOverrideKind_ = -1;
+        [[serialize(18)]] FIELD(Asset::PrefabGameObjectFile) enemyOverridePrefab_;
 
 #pragma region Serialization Function
     public:
@@ -148,6 +159,9 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(arrivalCaptionPrefab_));
             archive(CEREAL_NVP(arrivalOverviewStartCamera_));
             archive(CEREAL_NVP(arrivalOverviewEndCamera_));
+            archive(CEREAL_NVP(sceneType_));
+            archive(CEREAL_NVP(enemyOverrideKind_));
+            archive(CEREAL_NVP(enemyOverridePrefab_));
         }
 
         template<class Archive>
@@ -247,11 +261,17 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(arrivalOverviewStartCamera_));
                 archive(CEREAL_NVP(arrivalOverviewEndCamera_));
             }
+            if (version >= 18)
+            {
+                archive(CEREAL_NVP(sceneType_));
+                archive(CEREAL_NVP(enemyOverrideKind_));
+                archive(CEREAL_NVP(enemyOverridePrefab_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 17);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 18);
 #pragma endregion

@@ -21,7 +21,7 @@ namespace GamePlay::Npc::Enemy
             std::optional<float> prevHeight;
         };
 
-        [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus; }
+        [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return recordKind_; }
         void DoUpdate() override;
         /** @brief 足が着地した瞬間にローカルプレイヤーとの距離で減衰させたカメラシェイクを掛ける */
         void TryEmitFootQuake();
@@ -39,6 +39,8 @@ namespace GamePlay::Npc::Enemy
         [[serialize(5)]] FIELD(Asset::SoundFile) footstepSound_;
         std::vector<FootLatch> footLatches_;
         [[serialize(6)]] GameCore::Npc::Enemy::StuckRecovery stuckRecovery_;
+        // NOTE: 討伐の記録に使う種別。イベントの強い個体の prefab では EnragedTyrannosaurus にして、本編の大顎と数えを分ける
+        [[serialize(7)]] GameCore::Npc::Enemy::EnemyKind recordKind_ = GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus;
 
 #pragma region Serialization Function
     public:
@@ -53,6 +55,7 @@ namespace GamePlay::Npc::Enemy
             archive(CEREAL_NVP(footQuakeOuterRadius_));
             archive(CEREAL_NVP(footstepSound_));
             archive(CEREAL_NVP(stuckRecovery_));
+            archive(CEREAL_NVP(recordKind_));
         }
 
         template<class Archive>
@@ -78,6 +81,7 @@ namespace GamePlay::Npc::Enemy
                 archive(CEREAL_NVP(footstepSound_));
             }
             if (version >= 6) archive(CEREAL_NVP(stuckRecovery_));
+            if (version >= 7) archive(CEREAL_NVP(recordKind_));
         }
 
         void BasedOnDrawgui() override;
@@ -85,5 +89,5 @@ namespace GamePlay::Npc::Enemy
     };
 }
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::Tyrannosaurus, 6);
+CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::Tyrannosaurus, 7);
 #pragma endregion

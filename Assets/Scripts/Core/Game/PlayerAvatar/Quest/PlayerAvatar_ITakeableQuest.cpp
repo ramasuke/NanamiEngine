@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "PlayerAvatar_QuestType.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/types/memory.hpp"
 #include "cereal/types/polymorphic.hpp"
@@ -26,5 +27,12 @@ namespace GameCore::PlayerAvatar::Quest
             inputArchive(cereal::make_nvp("quest", copy));
         }
         return copy;
+    }
+
+    bool ITakeableQuest::IsSameQuest(const ITakeableQuest& other) const
+    {
+        if (!boardQuestGuid_.empty() && !other.boardQuestGuid_.empty())
+            return boardQuestGuid_ == other.boardQuestGuid_;
+        return QuestType() == other.QuestType();
     }
 }

@@ -34,6 +34,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::vector<std::string>&  DescriptionLines () const { return descriptionLines_; }
         [[nodiscard]] const std::vector<std::string>&  LockedDescriptionLines() const { return lockedDescriptionLines_; }
         [[nodiscard]] bool IsUnlocked(const GameCore::Condition::ConditionContext& context) const;
+        /** @brief 解放されていないあいだ、ステージ選択に行ごと出さない (イベントの期間限定のステージ) */
+        [[nodiscard]] bool HidesWhenLocked() const { return hideWhenLocked_; }
 
     private:
         [[serialize(0)]] std::string                              displayName_;
@@ -47,6 +49,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(2)]] std::vector<std::string>                 descriptionLines_;
         [[serialize(3)]] GameCore::Condition::Conditions unlockConditions_;
         [[serialize(3)]] std::vector<std::string>                 lockedDescriptionLines_;
+        [[serialize(4)]] bool                                     hideWhenLocked_ = false;
 
 #pragma region Serialization Function
     public:
@@ -67,6 +70,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(descriptionLines_));
             archive(CEREAL_NVP(unlockConditions_));
             archive(CEREAL_NVP(lockedDescriptionLines_));
+            archive(CEREAL_NVP(hideWhenLocked_));
         }
 
         template<class Archive>
@@ -84,11 +88,12 @@ namespace NanamiEngine::Module::Asset
             if (version >= 2) archive(CEREAL_NVP(descriptionLines_));
             if (version >= 3) archive(CEREAL_NVP(unlockConditions_));
             if (version >= 3) archive(CEREAL_NVP(lockedDescriptionLines_));
+            if (version >= 4) archive(CEREAL_NVP(hideWhenLocked_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::StageData, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::StageData, 4);
 #pragma endregion

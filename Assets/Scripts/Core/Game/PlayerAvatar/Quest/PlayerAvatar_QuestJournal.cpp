@@ -53,16 +53,27 @@ namespace GameCore::PlayerAvatar::Quest
         return takingQuests_.Contains(quest);
     }
 
+    bool QuestJournal::IsTakingBoardQuest(const std::string& boardQuestGuid, const QuestType& type) const
+    {
+        return takingQuests_.ContainsBoardQuest(boardQuestGuid, type);
+    }
+
     void QuestJournal::CompleteQuest(const QuestType& completeQuest)
     {
-        const auto* quest = takingQuests_.Find(completeQuest);
-        if (!quest)
-            return;
+        if (const auto* quest = takingQuests_.Find(completeQuest))
+            CompleteTakenQuest(*quest);
+    }
 
-        // 依頼は達成のたびに報酬、メインストーリーは職業をまたいで初回だけ
-        const auto rewards    = quest->Rewards();
-        const bool rewardsNow = quest->IsRepeatable() || MarkCompleted(completeQuest);
-        takingQuests_.Remove(completeQuest);
+    void QuestJournal::CompleteTakenQuest(const ITakeableQuest& quest)
+    {
+        // 繰り返せる依頼は達成のたびに報酬。それ以外は初回だけで、メインストーリーは職業をまたいで QuestType で残す
+        const auto rewards    = quest.Rewards();
+        const auto& guid      = quest.BoardQuestGuid();
+        const bool byType     = quest.RecordsCompletionByType() || guid.empty();
+        const bool rewardsNow = quest.IsRepeatable()
+            || (byType ? MarkCompleted(quest.QuestType()) : MarkBoardQuestCompleted(guid));
+        // WARNING: Remove で quest が破棄されるので、以降 quest に触れない
+        takingQuests_.Remove(&quest);
         onChanged_.OnNext(NanamiEngine::R4::Unit{});
 
         if (rewardsNow)
@@ -74,12 +85,27 @@ namespace GameCore::PlayerAvatar::Quest
         return completedQuests_.CheckCompleted(quest);
     }
 
+    bool QuestJournal::IsBoardQuestCompleted(const std::string& boardQuestGuid) const
+    {
+        return completedQuests_.CheckBoardQuestCompleted(boardQuestGuid);
+    }
+
     bool QuestJournal::MarkCompleted(const QuestType& quest)
     {
         if (completedQuests_.CheckCompleted(quest))
             return false;
 
         completedQuests_.Subscribe(quest);
+        onChanged_.OnNext(NanamiEngine::R4::Unit{});
+        return true;
+    }
+
+    bool QuestJournal::MarkBoardQuestCompleted(const std::string& boardQuestGuid)
+    {
+        if (completedQuests_.CheckBoardQuestCompleted(boardQuestGuid))
+            return false;
+
+        completedQuests_.SubscribeBoardQuest(boardQuestGuid);
         onChanged_.OnNext(NanamiEngine::R4::Unit{});
         return true;
     }

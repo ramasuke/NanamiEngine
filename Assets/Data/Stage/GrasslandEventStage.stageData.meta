@@ -1,0 +1,85 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::StageData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 4,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Stage/GrasslandEventStage.stageData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "67FEAD61-286A-4D60-83AD-17AE9F987B3A"
+                    }
+                },
+                "displayName_": "怒れる大顎",
+                "sceneType_": 6,
+                "mapMarkerPosition_": {
+                    "value0": 480.0,
+                    "value1": 620.0
+                },
+                "isCleared_": false,
+                "thumbnailSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "51AE15FB-F9E2-48B8-864D-CCF439A772D2"
+                                }
+                            }
+                        }
+                    }
+                },
+                "elementSprite_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "E7DAA827-9455-4B29-BC12-750ABB0731BB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "difficulty_": 3,
+                "tagText_": "大物出現 ・ 緑属性",
+                "descriptionLines_": [
+                    "気の立った大顎が草原に現れた。",
+                    "いつもの大顎より、ずっと手強い。"
+                ],
+                "unlockConditions_": [
+                    {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "GameCore::Condition::PeriodCondition",
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "startAt_": "2026-10-23 12:00",
+                                "endAt_": "2026-10-30 04:59"
+                            }
+                        }
+                    }
+                ],
+                "lockedDescriptionLines_": [
+                    "イベントの期間中だけ行ける。"
+                ],
+                "hideWhenLocked_": true
+            }
+        }
+    }
+}

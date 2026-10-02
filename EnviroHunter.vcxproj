@@ -195,6 +195,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_Clock.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Reward\Reward_MoneyReward.cpp" />
@@ -589,6 +590,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\CheatDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\WeatherDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\TimeScaleDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\LiveOpsTimeDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\PlayerTypeDebugPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\HealthCheat.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\HealthDebugPage.cpp" />
@@ -792,6 +794,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_AnyOfCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_NotCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_BoardTime.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_Clock.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Condition\Condition_PeriodCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_RewardContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Reward\Reward_IReward.h" />

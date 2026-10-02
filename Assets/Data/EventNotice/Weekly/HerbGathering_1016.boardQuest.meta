@@ -1,0 +1,147 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 2,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice\\Weekly/HerbGathering_1016.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "620D8421-F97A-4ABB-8A54-94869757AB91"
+                    }
+                },
+                "title_": "薬草あつめ",
+                "clientName_": "商人",
+                "goalText_": "草原で薬草を10個摘む",
+                "descriptionLines_": [
+                    "薬草が品切れで困ってるんだ。",
+                    "草原で10個摘んできてくれ。礼ははずむよ！"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A369FA3C-6941-4FE4-834C-0CDD861837F9"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "8DDCD731-323A-4ABC-BF81-DCE1CAECB0C3"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::Request::CollectRequestQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 1,
+                                "value0": {
+                                    "cereal_class_version": 1,
+                                    "rewards_": [
+                                        {
+                                            "polymorphic_id": 2147483651,
+                                            "polymorphic_name": "GameCore::Reward::MoneyReward",
+                                            "ptr_wrapper": {
+                                                "id": 2147483653,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "conditions_": []
+                                                    },
+                                                    "amount_": {
+                                                        "cereal_class_version": 0,
+                                                        "value_": 1200
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "polymorphic_id": 2147483652,
+                                            "polymorphic_name": "GameCore::Reward::DecorationReward",
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "conditions_": []
+                                                    },
+                                                    "decoration_": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483655,
+                                                                "data": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "value_": "1F530215-3817-4B3B-BA65-03947E820C99"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "questType_": 1,
+                                "requiredCount_": 10,
+                                "startRecord_": {
+                                    "nullopt": true
+                                },
+                                "repeatable_": false
+                            },
+                            "item_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483656,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "B41ECD33-8590-4692-80FB-EF9C79CCF2C8"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "unlockConditions_": [],
+                "lockedText_": ""
+            }
+        }
+    }
+}

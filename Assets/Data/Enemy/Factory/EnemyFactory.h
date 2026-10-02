@@ -34,6 +34,12 @@ namespace NanamiEngine::Module::Asset
             GameCore::Npc::Enemy::EnemyKind kind,
             const glm::vec3& position,
             const glm::quat& rotation);
+        /** @brief prefab を生成し、kind の後処理まで行う。prefab が nullptr なら kind の prefab */
+        [[nodiscard]] std::weak_ptr<GameObject::IGameObject> Summon(
+            GameCore::Npc::Enemy::EnemyKind kind,
+            const std::shared_ptr<PrefabGameObjectFile>& prefab,
+            const glm::vec3& position,
+            const glm::quat& rotation);
 
         [[nodiscard]] const GamePlay::Npc::Enemy::HyenaRepository& Hyenas() const { return hyenaRepository_; }
         void ClearHyenas() { hyenaRepository_.Clear(); }

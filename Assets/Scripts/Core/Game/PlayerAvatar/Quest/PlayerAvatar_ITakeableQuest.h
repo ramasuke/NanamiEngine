@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <cstdint>
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "cereal/cereal.hpp"
 #include "../../Reward/Reward_IReward.h"
@@ -26,8 +28,16 @@ namespace GameCore::PlayerAvatar::Quest
         [[nodiscard]] virtual const PlayerAvatar::QuestType& QuestType() const = 0;
         /** @brief true なら達成のたびに報酬を出し、達成済みとして残さない(何度でも受けられる) */
         [[nodiscard]] virtual bool IsRepeatable() const { return false; }
+        /** @brief 達成済みを QuestType で残すか。false なら掲示板の BoardQuest の guid で残す(QuestType を週ごとに使い回す依頼) */
+        [[nodiscard]] virtual bool RecordsCompletionByType() const { return true; }
 
         [[nodiscard]] std::shared_ptr<ITakeableQuest> Clone() const;
+
+        /** @brief 掲示板から受けたときの BoardQuest の guid。NPC から受けた依頼と古いセーブは空 */
+        [[nodiscard]] const std::string& BoardQuestGuid() const { return boardQuestGuid_; }
+        void SetBoardQuestGuid(std::string guid) { boardQuestGuid_ = std::move(guid); }
+        /** @brief 両方に guid があれば guid で、どちらかが空なら QuestType で同じ依頼かを見る */
+        [[nodiscard]] bool IsSameQuest(const ITakeableQuest& other) const;
 
         /** @brief 達成時にプレイヤーへ渡すもの */
         [[nodiscard]] const Reward::Rewards& Rewards() const { return rewards_; }
@@ -36,6 +46,7 @@ namespace GameCore::PlayerAvatar::Quest
         void save(Archive& archive, const std::uint32_t version) const
         {
             archive(CEREAL_NVP(rewards_));
+            archive(CEREAL_NVP(boardQuestGuid_));
         }
 
         template<class Archive>
@@ -50,6 +61,7 @@ namespace GameCore::PlayerAvatar::Quest
                 return;
             }
             archive(CEREAL_NVP(rewards_));
+            if (version >= 2) archive(CEREAL_NVP(boardQuestGuid_));
         }
 
     protected:
@@ -57,7 +69,8 @@ namespace GameCore::PlayerAvatar::Quest
 
     private:
         [[serialize(1)]] Reward::Rewards rewards_;
+        [[serialize(2)]] std::string     boardQuestGuid_;
     };
 }
 
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::Quest::ITakeableQuest, 1)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::Quest::ITakeableQuest, 2)

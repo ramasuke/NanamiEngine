@@ -1,9 +1,8 @@
 ﻿#include "Prop_EventNoticeBoard.h"
 
-#include <chrono>
-
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../Core/Game/Condition/Condition_Clock.h"
 #include "../../Ui/EventBoard/Model/QuestBoardModel.h"
 #include "../../Ui/EventBoard/Model/QuestReadLog.h"
 #include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -74,7 +73,7 @@ namespace GamePlay::Prop
 
         const Ui::QuestBoardModel model(
             board->Quests(),
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+            GameCore::Condition::Clock::Now(),
             &owner->PlayerStatus().Quest(),
             &owner->PlayerStatus().CompletedQuest(),
             GameCore::Story::StoryProgress::Instance(),

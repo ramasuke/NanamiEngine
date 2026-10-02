@@ -1,8 +1,7 @@
 ﻿#include "Reward_IReward.h"
 
-#include <chrono>
-
 #include "Reward_RewardFactory.h"
+#include "../Condition/Condition_Clock.h"
 #include "../Condition/Condition_ConditionList.h"
 #include "../Decoration/Decoration_DecorationCollection.h"
 #include "../PlayerAvatar/Quest/PlayerAvatar_QuestJournal.h"
@@ -76,7 +75,7 @@ namespace GameCore::Reward
             Condition::ConditionContext{
                 Story::StoryProgress::Instance(),
                 &PlayerAvatar::Quest::QuestJournal::Instance(),
-                std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+                GameCore::Condition::Clock::Now(),
                 decorations } });
     }
 

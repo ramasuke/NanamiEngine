@@ -1,6 +1,7 @@
 ﻿#include "Ui_NavigationBanner.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "Ui_NavigationMemory.h"
 #include "Ui_NavigationPresenter.h"
@@ -57,12 +58,17 @@ namespace GamePlay::Ui
 
     void NavigationBanner::DrawCenteredText(const std::string& text, const glm::vec2& centre, const float scale, const Color32& color, const float alpha) const
     {
-        const int fontHandle = font_->DxLibHandle();
-        const float width  = static_cast<float>(Platform::Draw2D::StringWidth(scale, text, fontHandle));
-        const float height = static_cast<float>(Platform::Draw2D::FontSize(fontHandle)) * scale;
+        // NOTE: 60px のフォントを縮小描画すると明朝の細い線が欠けて潰れるので、描く大きさで作ったハンドルを原寸で使う
+        const int pixelSize  = std::max(1, static_cast<int>(std::lround(static_cast<float>(font_->Size()) * scale)));
+        const int fontHandle = font_->HandleForPixelSize(pixelSize);
+        const float width  = static_cast<float>(Platform::Draw2D::StringWidth(1.0, text, fontHandle));
+        const float height = static_cast<float>(Platform::Draw2D::FontSize(fontHandle));
+
+        // 端数座標だとバイリニアでにじむので整数に揃える
+        const glm::vec2 position(std::round(centre.x - width * 0.5f), std::round(centre.y - height * 0.5f));
 
         Platform::Draw2D::SetBlendModeAlpha(BlendMode::Alpha, alpha);
-        Platform::Draw2D::DrawString(glm::vec2(centre.x - width * 0.5f, centre.y - height * 0.5f), glm::vec2(scale, scale), text, color, fontHandle, font_->EdgeColor());
+        Platform::Draw2D::DrawString(position, glm::vec2(1.0f, 1.0f), text, color, fontHandle, font_->EdgeColor());
     }
 
     void NavigationBanner::OnUserInterfaceRender()

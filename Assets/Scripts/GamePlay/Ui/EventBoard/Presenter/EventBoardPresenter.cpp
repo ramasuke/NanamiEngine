@@ -1,9 +1,8 @@
 ﻿#include "EventBoardPresenter.h"
 
 #include <algorithm>
-#include <chrono>
 
-
+#include "../../../../Core/Game/Condition/Condition_Clock.h"
 #include "../../../Sound/UiSoundBank.h"
 #include "../../../Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -38,7 +37,7 @@ namespace GamePlay::Ui
         suspendedAvatar_ = owner;
 
         const auto board = board_.get();
-        const auto now   = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+        const auto now   = GameCore::Condition::Clock::Now();
         const auto questPage  = view_->QuestPage();
         const auto eventPage  = view_->EventPage();
         const auto noticePage = view_->NoticePage();
@@ -236,10 +235,13 @@ namespace GamePlay::Ui
         }
 
         const auto owner = suspendedAvatar_.lock();
-        const auto& source = questModel_->Selected()->quest->Quest();
+        const auto& boardQuest = questModel_->Selected()->quest;
+        const auto& source = boardQuest->Quest();
         const auto quest = source ? source->Clone() : nullptr;
         if (!owner || !quest)
             return;
+        // 受注中・達成済みは BoardQuest の guid で見分ける(QuestType は週ごとの依頼で使い回す)
+        quest->SetBoardQuestGuid(boardQuest->GetGuid().Value());
 
         if (!owner->PlayerStatus().Quest().Subscribe(quest))
             return;

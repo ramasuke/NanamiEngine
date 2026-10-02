@@ -1,9 +1,9 @@
 ﻿#include "StageSelectPresenter.h"
 
 #include <algorithm>
-#include <chrono>
 
 #include "Engine/Core/Coroutine/Coroutine.h"
+#include "../../../../Core/Game/Condition/Condition_Clock.h"
 #include "../UI_StageSelect.h"
 #include "../Room/Ui_StageSelect_RoomUi.h"
 #include "../../../../Core/Game/Game.h"
@@ -33,15 +33,23 @@ namespace GamePlay::Ui
         const GameCore::Condition::ConditionContext unlockContext{
             GameCore::Story::StoryProgress::Instance(),
             owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+            GameCore::Condition::Clock::Now(),
             GameCore::Decoration::DecorationCollection::Instance() };
 
         const auto& stages = model_->Stages();
+        isHidden_.assign(stages.size(), false);
         for (size_t i = 0; i < stages.size(); ++i)
         {
             if (const auto stage = stages[i].lock())
             {
-                stage->SetLocked(!stage->Data()->IsUnlocked(unlockContext));
+                const bool isLocked = !stage->Data()->IsUnlocked(unlockContext);
+                if (isLocked && stage->Data()->HidesWhenLocked())
+                {
+                    isHidden_[i] = true;
+                    stage->Entity().lock()->SetEnable(false);
+                    continue;
+                }
+                stage->SetLocked(isLocked);
                 stage->SubscribeOnClickSelectButton([this, i]
                 {
                     model_->SelectStage(i);
@@ -189,9 +197,17 @@ namespace GamePlay::Ui
         if (count == 0)
             return;
 
-        const int next = model_->HasSelection()
-            ? (static_cast<int>(model_->SelectedIndex()) + delta + count) % count
-            : 0;
+        // NOTE: 未選択なら先頭から。隠した行は飛ばす
+        const int step = model_->HasSelection() ? delta : 1;
+        int next = model_->HasSelection() ? static_cast<int>(model_->SelectedIndex()) : -1;
+        for (int tried = 0; tried < count; ++tried)
+        {
+            next = (next + step + count) % count;
+            if (!isHidden_[static_cast<size_t>(next)])
+                break;
+        }
+        if (isHidden_[static_cast<size_t>(next)])
+            return;
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
         model_->SelectStage(static_cast<size_t>(next));
     }

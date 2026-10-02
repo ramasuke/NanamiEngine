@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "PlayerAvatar_QuestList.h"
@@ -26,14 +27,18 @@ namespace GameCore::PlayerAvatar::Quest
         void Reload();
         void Save() const;
 
-        /** @return 同じ QuestType を受注中なら受けずに false */
+        /** @return 同じ依頼(ITakeableQuest::IsSameQuest)を受注中なら受けずに false */
         bool Take(const std::shared_ptr<ITakeableQuest>& quest);
-        /** @brief 以前は職業ごとのステータスにあった受注を引き取る。受注中の QuestType は捨てる */
+        /** @brief 以前は職業ごとのステータスにあった受注を引き取る。受注中の依頼と同じものは捨てる */
         void Adopt(const std::vector<std::shared_ptr<ITakeableQuest>>& quests);
         [[nodiscard]] bool IsTaking(const QuestType& quest) const;
+        /** @brief 掲示板の依頼を受注中か。guid を持たない古い受注は QuestType で見る */
+        [[nodiscard]] bool IsTakingBoardQuest(const std::string& boardQuestGuid, const QuestType& type) const;
 
         void CompleteQuest(const QuestType& completeQuest) override;
+        void CompleteTakenQuest(const ITakeableQuest& quest) override;
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
+        [[nodiscard]] bool IsBoardQuestCompleted(const std::string& boardQuestGuid) const;
         /** @return 初めての達成なら true */
         bool MarkCompleted(const QuestType& quest);
 
@@ -46,6 +51,8 @@ namespace GameCore::PlayerAvatar::Quest
 
     private:
         [[nodiscard]] QuestContext Context();
+        /** @return 初めての達成なら true */
+        bool MarkBoardQuestCompleted(const std::string& boardQuestGuid);
 
         QuestList           takingQuests_;
         CompletedQuestGroup completedQuests_;

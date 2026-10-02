@@ -3,7 +3,7 @@
 #include "Engine/Core/Platform/Input/Input.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Time/Time.h"
-#include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
+#include "Packages/UiFlow/Screen/UiFlow_ScreenStack.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -80,7 +80,7 @@ namespace GamePlay::Ui
         if constexpr (APPLICATION_MODE != ApplicationMode::Game)
             return false;
 
-        if (!NanamiUi::Button::IsAnyActive())
+        if (!NanamiEngine::UiFlow::ScreenStack::Instance().WantsCursor())
             return false;
 
         if (NanamiEngine::CineMachine::Behaviour::ThirdPersonCameraBehaviour::IsMousePinned())

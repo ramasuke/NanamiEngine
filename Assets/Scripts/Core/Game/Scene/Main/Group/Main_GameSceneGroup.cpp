@@ -38,8 +38,14 @@ namespace GameCore::Scene::Main
         AddScene(SceneType::MainIsland, std::make_shared<MainIslandScene>(
             CatchContext<MainIslandSceneContext>(), baseContext));
 
-        AddScene(SceneType::GrassLand, std::make_shared<GrassLandScene>(
-            CatchContext<GrassLandSceneContext>(), baseContext));
+        // NOTE: 草原の context は本編とイベント用のステージで2つあり、sceneType_ で見分ける
+        for (const auto type : { SceneType::GrassLand, SceneType::GrassLandEvent })
+        {
+            const auto context = CatchContext<GrassLandSceneContext>(
+                [type](const GrassLandSceneContext& c) { return c.SceneType() == type; });
+            if (context)
+                AddScene(type, std::make_shared<GrassLandScene>(context, baseContext));
+        }
 
         AddScene(SceneType::Desert, std::make_shared<DrySandScene>(
             CatchContext<DrySandSceneContext>(), baseContext));

@@ -58,13 +58,14 @@ namespace GameCore::Scene::Main
         // Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
         Context()->Init();
 
-        // NOTE: 浮遊石はもう拠点の島へ飛び去っている
-        if (const auto stone = Context()->FloatingStone(); stone && Story::StoryProgress::Instance().IsSet(Story::StoryFlag::GrassLandCleared))
+        // NOTE: 浮遊石はもう拠点の島へ飛び去っている。イベント用のステージには物語の石を出さない
+        if (const auto stone = Context()->FloatingStone();
+            stone && (Story::StoryProgress::Instance().IsSet(Story::StoryFlag::GrassLandCleared) || Context()->SceneType() != SceneType::GrassLand))
             stone->SetVisible(false);
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
         const auto joinFailure = co_await GameCore::Game::Instance().Matchmaker().JoinOrHostAsync(
-            Context()->WeakNetworkRunner(), std::string(ToString(SceneType::GrassLand)));
+            Context()->WeakNetworkRunner(), std::string(ToString(Context()->SceneType())));
         if (token.IsCancellationRequested())
             co_return {};
 
@@ -87,11 +88,10 @@ namespace GameCore::Scene::Main
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
             {
-                // NOTE: 倒したボスなどは、ホストの物語の進み具合で湧かせない
-                if (!spawnPoint->ShouldSpawn())
-                    continue;
+                const auto prefab = spawnPoint->Prefab() ? spawnPoint->Prefab() : Context()->EnemyPrefabOverride(spawnPoint->Kind());
                 networkRunner.SpawnEnemy(
                     spawnPoint->Kind(),
+                    prefab,
                     spawnPoint->Transform().GetWorldPos(),
                     spawnPoint->Transform().GetWorldRot());
             }

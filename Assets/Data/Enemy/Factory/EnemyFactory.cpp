@@ -21,7 +21,16 @@ namespace NanamiEngine::Module::Asset
         const glm::vec3& position,
         const glm::quat& rotation)
     {
-        const auto prefab = PrefabOf(kind);
+        return Summon(kind, nullptr, position, rotation);
+    }
+
+    std::weak_ptr<GameObject::IGameObject> EnemyFactory::Summon(
+        const GameCore::Npc::Enemy::EnemyKind kind,
+        const std::shared_ptr<PrefabGameObjectFile>& prefabOverride,
+        const glm::vec3& position,
+        const glm::quat& rotation)
+    {
+        const auto prefab = prefabOverride ? prefabOverride : PrefabOf(kind);
         if (!prefab)
         {
             LogError(std::string("EnemyFactory: ") + std::string(GameCore::Npc::Enemy::ToString(kind))
@@ -39,6 +48,7 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus:
         case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon:
         case GameCore::Npc::Enemy::EnemyKind::AncientDragon:
+        case GameCore::Npc::Enemy::EnemyKind::EnragedTyrannosaurus:
             {
                 if (const auto boss = enemyObject->Components().Catch<GameCore::Npc::BossEnemyBase>().lock())
                     AttachBossHealthGauge(*boss);
@@ -74,6 +84,8 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::SandWorm:       return sandWormPrefab_      .get();
         case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon: return skeletonDragonPrefab_.get();
         case GameCore::Npc::Enemy::EnemyKind::AncientDragon:  return ancientDragonPrefab_ .get();
+        // NOTE: 強い大顎は湧き地点や context の prefab で差し替えて湧かせる。種別だけでは湧かせない
+        case GameCore::Npc::Enemy::EnemyKind::EnragedTyrannosaurus: return nullptr;
         }
 
         return nullptr;

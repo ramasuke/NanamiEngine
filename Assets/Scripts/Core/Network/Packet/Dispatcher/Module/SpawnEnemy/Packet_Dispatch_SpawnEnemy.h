@@ -1,5 +1,6 @@
 ﻿#pragma once
 #define WIN32_LEAN_AND_MEAN
+#include <memory>
 #include <vector>
 #include "../glm/vec3.hpp"
 #include "../../CustomPacketDispatcherBase.h"
@@ -27,8 +28,10 @@ namespace GameCore::Network
             Asset::EnemyFactory& enemyFactory);
         ~EnemySpawnDispatcher() override;
 
+        /** @param prefab nullptr なら EnemyFactory の kind の prefab */
         std::shared_ptr<Module::GameObject::IGameObject> DispatchSendPacket(
             Npc::Enemy::EnemyKind kind,
+            const std::shared_ptr<Asset::PrefabGameObjectFile>& prefab,
             glm::vec3 position,
             glm::quat rotation);
 

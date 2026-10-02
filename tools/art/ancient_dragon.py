@@ -51,7 +51,6 @@ CLASS = 'GamePlay::Npc::Enemy::AncientDragon'
 BOSS_NAME = '古竜'
 HEALTH = 2400
 KIND_ANCIENT_DRAGON = 7          # EnemyKind::AncientDragon
-FLAG_ANCIENT_DRAGON_DEFEATED = 9  # StoryFlag::AncientDragonDefeated
 DRAGON_CAMERA = 'FirstTouchDownIsland ProductionCamera'
 # FirstEventDragon.animTree の State
 STATE_FLYING_IDLE, STATE_ROAR = 4, 30
@@ -376,7 +375,6 @@ def place():
     spawn.name = 'AncientDragon'
     sp = component(spawn, 'EnemySpawnPoint')
     sp.data['kind_'] = Num.of_int(KIND_ANCIENT_DRAGON)
-    sp.data['skipIfStoryFlag_'] = Num.of_int(FLAG_ANCIENT_DRAGON_DEFEATED)
     set_trs(spawn, pos=SPAWN_POS, yaw=SPAWN_YAW)
     root.transform.children.append(spawn)
 

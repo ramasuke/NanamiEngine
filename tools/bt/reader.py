@@ -60,6 +60,8 @@ class _Ctx:
         self.tree_kind: Optional[str] = None
         #: action fqn -> そのファイルでの CEREAL_CLASS_VERSION（最初のインスタンスにしか書かれない）。
         self.action_versions: dict[str, int] = {}
+        #: 入れ子の構造体のリーフ名 -> そのファイルでの版（最初のインスタンスにしか書かれない）。
+        self.struct_versions: dict[str, int] = {}
 
     # -- ポインタスロット ---------------------------------------------------
     def ptr_slot(self, slot: OrderedObj):
@@ -140,16 +142,22 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
             data=_tag_pointee(ctx, s["data"], s["fqn"]),
         )
 
+    if pinfo and pinfo.get("shape") == "nested":
+        # NOTE: 版の無い 2 回目以降の出現も型付きで持つ。版を持つ初出が編集で消えても、writer が次の出現に付け直せる
+        leaf = pinfo.get("type", "?")
+        sub = ctx.cat.type_by_leaf(leaf)
+        v, body = _strip_ccv(val)
+        if v is None:
+            v = ctx.struct_versions.get(leaf, int((sub or {}).get("version", 0)))
+        ctx.struct_versions.setdefault(leaf, v)
+        return Ver(("type", leaf), v, _tag_struct_body(ctx, body, sub))
+
     if keys and keys[0] == "cereal_class_version":
         v, body = _strip_ccv(val)
         if _is_guid_obj(val):
             key = ("type", "Guid")
             new_body = OrderedObj([("value_", body["value_"])])
             return Ver(key, v or 0, new_body)
-        if pinfo and pinfo.get("shape") == "nested":
-            leaf = pinfo.get("type", "?")
-            sub = ctx.cat.type_by_leaf(leaf)
-            return Ver(("type", leaf), v or 0, _tag_struct_body(ctx, body, sub))
         # フォールバック: カタログに型情報がないので構造フィンガープリントで分類する。
         # fingerprint() はフィールドの *値*（例えば Field<T> 参照の GUID 文字列）を
         # 無視するため、不透明なときに同じ形にシリアライズされる本当は別の C++ 型

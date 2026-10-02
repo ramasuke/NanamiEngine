@@ -15,6 +15,8 @@ namespace GameCore::Npc::Enemy
         SandWorm = 5,
         SkeletonDragon = 6,
         AncientDragon = 7,
+        // NOTE: イベントの強い大顎。湧かせるのは Tyrannosaurus + prefab の差し替えで、討伐の記録だけこの値にする
+        EnragedTyrannosaurus = 8,
     };
 
     constexpr std::array ENEMY_KINDS
@@ -27,6 +29,7 @@ namespace GameCore::Npc::Enemy
         EnemyKind::SandWorm,
         EnemyKind::SkeletonDragon,
         EnemyKind::AncientDragon,
+        EnemyKind::EnragedTyrannosaurus,
     };
 
     constexpr std::string_view ToString(const EnemyKind kind)
@@ -41,6 +44,7 @@ namespace GameCore::Npc::Enemy
         case EnemyKind::SandWorm: return "SandWorm";
         case EnemyKind::SkeletonDragon: return "SkeletonDragon";
         case EnemyKind::AncientDragon: return "AncientDragon";
+        case EnemyKind::EnragedTyrannosaurus: return "EnragedTyrannosaurus";
         }
 
         return "Unknown";

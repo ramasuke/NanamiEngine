@@ -106,6 +106,7 @@ namespace GamePlay::Npc::Enemy
         ImGuiHelper::OnDrawInputField("footQuakeOuterRadius_", footQuakeOuterRadius_);
         ImGuiHelper::OnDrawInputField("footstepSound_", footstepSound_);
         stuckRecovery_.DrawGui();
+        ImGuiHelper::OnDrawEnumField("recordKind_", recordKind_, GameCore::Npc::Enemy::ENEMY_KINDS, GameCore::Npc::Enemy::ToString);
     }
 }
 

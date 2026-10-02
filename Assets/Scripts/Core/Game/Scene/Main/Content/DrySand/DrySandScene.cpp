@@ -86,11 +86,9 @@ namespace GameCore::Scene::Main
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
             {
-                // NOTE: 倒したボスなどは、ホストの物語の進み具合で湧かせない
-                if (!spawnPoint->ShouldSpawn())
-                    continue;
                 networkRunner.SpawnEnemy(
                     spawnPoint->Kind(),
+                    spawnPoint->Prefab(),
                     spawnPoint->Transform().GetWorldPos(),
                     spawnPoint->Transform().GetWorldRot());
             }

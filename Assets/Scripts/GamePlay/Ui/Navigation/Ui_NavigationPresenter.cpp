@@ -1,8 +1,7 @@
 ﻿#include "Ui_NavigationPresenter.h"
 
-#include <chrono>
-
 #include "Ui_NavigationMemory.h"
+#include "../../../Core/Game/Condition/Condition_Clock.h"
 #include "../BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 #include "Packages/ControlLock/ControlLock.h"
 #include "../NpcChatting/Ui_NpcChatting.h"
@@ -42,6 +41,13 @@ namespace GamePlay::Ui
         {
             isDirty_ = true;
         }).AddTo(this);
+#if NANAMI_DEBUG_SHEET_ENABLED
+        GameCore::Condition::Clock::OnDebugNowChanged().Subscribe(
+            [this](NanamiEngine::R4::Unit)
+        {
+            isDirty_ = true;
+        }).AddTo(this);
+#endif
     }
 
     void NavigationPresenter::OnUpdate()
@@ -88,7 +94,7 @@ namespace GamePlay::Ui
         const GameCore::Condition::ConditionContext conditionContext{
             GameCore::Story::StoryProgress::Instance(),
             &GameCore::PlayerAvatar::Quest::QuestJournal::Instance(),
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
+            GameCore::Condition::Clock::Now(),
             GameCore::Decoration::DecorationCollection::Instance(),
             context.get() };
 

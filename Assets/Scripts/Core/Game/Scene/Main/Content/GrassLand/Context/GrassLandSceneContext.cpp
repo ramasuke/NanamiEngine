@@ -42,8 +42,20 @@ std::optional<GameCore::Story::StageClearCondition> GameCore::Scene::GrassLandSc
         static_cast<Story::StoryFlag>(clearStoryFlag_) };
 }
 
+std::shared_ptr<NanamiEngine::Module::Asset::PrefabGameObjectFile>
+GameCore::Scene::GrassLandSceneContext::EnemyPrefabOverride(const Npc::Enemy::EnemyKind kind) const
+{
+    if (enemyOverrideKind_ != static_cast<int>(kind))
+        return nullptr;
+    return enemyOverridePrefab_.get();
+}
+
 void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
 {
+    auto sceneType = SceneType();
+    ImGuiHelper::OnDrawEnumField("sceneType_", sceneType, Main::SCENE_TYPES, Main::ToString);
+    sceneType_ = static_cast<int>(sceneType);
+
     ImGuiHelper::OnDrawInputField("bgm_", bgm_);
     ImGuiHelper::OnDrawInputField("networkRunner_", networkRunner_);
     ImGuiHelper::OnDrawInputField("enemySpawnPointsRoot_", enemySpawnPointsRoot_);
@@ -92,6 +104,17 @@ void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
     });
     ImGuiHelper::OnDrawInputField("arrivalCaptionPrefab_", arrivalCaptionPrefab_);
     ImGuiHelper::OnDrawInputField("floatingStone_", floatingStone_);
+
+    bool hasOverride = enemyOverrideKind_ >= 0;
+    if (ImGui::Checkbox("enemyOverride", &hasOverride))
+        enemyOverrideKind_ = hasOverride ? static_cast<int>(Npc::Enemy::EnemyKind::Tyrannosaurus) : -1;
+    if (hasOverride)
+    {
+        auto kind = static_cast<Npc::Enemy::EnemyKind>(enemyOverrideKind_);
+        ImGuiHelper::OnDrawEnumField("enemyOverrideKind_", kind, Npc::Enemy::ENEMY_KINDS, Npc::Enemy::ToString);
+        enemyOverrideKind_ = static_cast<int>(kind);
+        ImGuiHelper::OnDrawInputField("enemyOverridePrefab_", enemyOverridePrefab_);
+    }
 }
 
 #pragma region SerializationMacro

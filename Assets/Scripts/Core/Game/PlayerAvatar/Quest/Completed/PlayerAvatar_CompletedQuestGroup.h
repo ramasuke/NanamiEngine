@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <functional>
+#include <string>
 #include <unordered_set>
 
 #include "../PlayerAvatar_QuestType.h"
@@ -18,6 +19,7 @@ namespace std {
 namespace GameCore::PlayerAvatar::Quest
 {
     static constexpr auto COMPLETED_QUEST_SAVE_KEY = "CompletedQuests";
+    static constexpr auto COMPLETED_BOARD_QUEST_SAVE_KEY = "CompletedBoardQuests";
     
     class CompletedQuestGroup final
     {
@@ -26,12 +28,16 @@ namespace GameCore::PlayerAvatar::Quest
 
         void Subscribe(const QuestType& completeQuest);
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const;
+        /** @brief 掲示板の依頼は BoardQuest の guid で残す(QuestType は週ごとに使い回すため) */
+        void SubscribeBoardQuest(const std::string& boardQuestGuid);
+        [[nodiscard]] bool CheckBoardQuestCompleted(const std::string& boardQuestGuid) const;
 
         /** @brief 保存されている内容で上書きする。保存していない達成は消える */
         void Reload();
         void Save() const;
 
     private:
-        std::unordered_set<QuestType> completedQuests_;
+        std::unordered_set<QuestType>   completedQuests_;
+        std::unordered_set<std::string> completedBoardQuests_;
     };
 }

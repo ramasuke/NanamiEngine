@@ -335,7 +335,7 @@
       "class": "EnemySpawnPoint",
       "fqn": "GameCore::Npc::Enemy::EnemySpawnPoint",
       "leaf": "EnemySpawnPoint",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -360,14 +360,17 @@
             "Tyrannosaurus": 3,
             "DesertScorpion": 4,
             "SandWorm": 5,
-            "SkeletonDragon": 6
+            "SkeletonDragon": 6,
+            "AncientDragon": 7,
+            "EnragedTyrannosaurus": 8
           }
         },
         {
-          "key": "skipIfStoryFlag_",
-          "member": "skipIfStoryFlag_",
+          "key": "prefab_",
+          "member": "prefab_",
           "named": true,
-          "shape": "int"
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
         }
       ]
     },

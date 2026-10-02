@@ -44,9 +44,8 @@ KEEP_ROOTS = ['CameraBrain', 'Terrain', 'SkyDome', 'NetworkRunner', 'Canvas', 'P
 TERRAIN_ROOT_Y, TERRAIN_ROOT_SCALE = 29.92, 0.5
 M = 8.0
 
-# EnemyKind / StoryFlag (Assets/Scripts/Core/Game/Npc/Enemy/Type/EnemyKind.h, Story/Story_StoryFlag.h)
+# EnemyKind (Assets/Scripts/Core/Game/Npc/Enemy/Type/EnemyKind.h)
 KIND_SCORPION, KIND_WORM, KIND_SKELETON_DRAGON = 4, 5, 6
-FLAG_DESERT_CLEARED = 5
 
 FORTRESS_RADIUS = 175.0
 # 岩のモデルの底面の半径 (m, scale 1)。NanamiAssetsWork/Desert/fbx から測った値。斜面で浮かないよう、この円の中の一番低い所に置く
@@ -228,7 +227,7 @@ def plan(rng, t):
 
 
 def enemy_spawns(rng, t):
-    """(名前, [(x, z)], kind, skip_flag)。骸竜の広場の近くには、骸竜のほかは置かない"""
+    """(名前, [(x, z)], kind)。骸竜の広場の近くには、骸竜のほかは置かない"""
     packs = [
         ('ScorpionPack_Oasis', [(660, 950), (700, 975), (640, 905)]),
         ('ScorpionPack_Dunes', [(820, 830), (860, 810), (790, 800)]),
@@ -241,9 +240,9 @@ def enemy_spawns(rng, t):
     out = []
     for name, spots in packs:
         kind = KIND_WORM if name.startswith('SandWorm') else KIND_SCORPION
-        out.append((name, [(x, t.height(x, z) + 6.0, z) for x, z in spots], kind, -1))
+        out.append((name, [(x, t.height(x, z) + 6.0, z) for x, z in spots], kind))
     px, pz = dt.PLAZA
-    out.append(('SkeletonDragon', [(px, t.height(px, pz - 40) + 6.0, pz - 40)], KIND_SKELETON_DRAGON, FLAG_DESERT_CLEARED))
+    out.append(('SkeletonDragon', [(px, t.height(px, pz - 40) + 6.0, pz - 40)], KIND_SKELETON_DRAGON))
     return out
 
 
@@ -325,7 +324,7 @@ def build(placements, spawns, t, dry_run):
     template = copy.deepcopy(template)
     template.transform.children = []
     root.transform.children = []
-    for name, spots, kind, skip in spawns:
+    for name, spots, kind in spawns:
         group = edits.add_gameobject(scene, parent=root.guid, name=name)
         for i, pos in enumerate(spots):
             node = copy.deepcopy(template)
@@ -333,7 +332,6 @@ def build(placements, spawns, t, dry_run):
             node.name = f'{name.split("_")[0]}{i + 1}' if len(spots) > 1 else name.split('_')[0]
             sp = component(node, 'EnemySpawnPoint')
             sp.data['kind_'] = Num.of_int(kind)
-            sp.data['skipIfStoryFlag_'] = Num.of_int(skip)
             set_trs(node, pos=pos, yaw=0.0)
             group.transform.children.append(node)
 

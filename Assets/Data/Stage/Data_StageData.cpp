@@ -32,6 +32,7 @@ namespace NanamiEngine::Module::Asset
             }
         });
         GameCore::Condition::ConditionList::DrawListGui("unlockConditions_", unlockConditions_);
+        LibCore::ImGuiHelper::OnDrawInputField("hideWhenLocked_", hideWhenLocked_);
         LibCore::ImGuiHelper::OnDrawInputField("lockedDescriptionLines_", lockedDescriptionLines_, [this]
         {
             if (ImGui::Button("Add Locked Line"))

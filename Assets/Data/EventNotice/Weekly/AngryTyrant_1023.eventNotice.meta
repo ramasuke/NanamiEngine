@@ -1,0 +1,47 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EventNotice",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice\\Weekly/AngryTyrant_1023.eventNotice",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "90FEA8FF-16D2-47D2-BB15-0DEB4C7CA92A"
+                    }
+                },
+                "title_": "怒れる大顎",
+                "tagText_": "大物出現",
+                "startAt_": "2026-10-23 12:00",
+                "endAt_": "2026-10-30 04:59",
+                "descriptionLines_": [
+                    "気の立った大顎が草原に現れた。",
+                    "期間中だけ、ステージ選択から行ける。"
+                ],
+                "bannerSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "DA53AFDB-B4A7-44B6-B268-15BFC8B0F058"
+                                }
+                            }
+                        }
+                    }
+                },
+                "unlockConditions_": []
+            }
+        }
+    }
+}

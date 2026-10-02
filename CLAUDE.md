@@ -179,6 +179,8 @@ drives it. Add a page with `REGISTER_DEBUG_SHEET_PAGE` in a game `.cpp` wrapped 
 **Don't change game code for debug features.** Use existing public APIs from the debug files (e.g. write the LocalPrefs
 file and call `Reload()`). When a hook is unavoidable, put every added line - include, base class, member, definition,
 call - inside `#if NANAMI_DEBUG_SHEET_ENABLED` (`Game`'s `OnUserInterfaceRender`, `RecordBook::Reload`).
+Event-period checks (live-ops "is it being held now") read the time from `GameCore::Condition::Clock::Now()`, never
+`system_clock` directly: F1 > 時間/開催日時 shifts it (in memory only; compiled out of the Release game build).
 
 ## Player control lock (ControlLock)
 

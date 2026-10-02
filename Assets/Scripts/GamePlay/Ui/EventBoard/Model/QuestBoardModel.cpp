@@ -5,6 +5,7 @@
 #include "EventBoardFormat.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_MainStoryQuestBase.h"
+#include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestJournal.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/Condition/Condition_ConditionContext.h"
 #include "../../../../Core/Game/Decoration/Decoration_DecorationCollection.h"
@@ -26,10 +27,14 @@ namespace GamePlay::Ui
             const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
             const GameCore::Condition::ConditionContext& unlockContext)
         {
+            // NOTE: 依頼は BoardQuest の guid で見分ける。QuestType で達成済みなのはメインストーリー(依頼は型で残さない)
             const auto& content = quest.Quest();
-            if (content && completedQuests && completedQuests->CheckCompleted(content->QuestType()))
+            const auto& journal = GameCore::PlayerAvatar::Quest::QuestJournal::Instance();
+            const auto guid     = quest.GetGuid().Value();
+            if (content && completedQuests
+                && (journal.IsBoardQuestCompleted(guid) || completedQuests->CheckCompleted(content->QuestType())))
                 return QuestBoardState::Cleared;
-            if (content && takingQuests && takingQuests->IsTaking(content->QuestType()))
+            if (content && takingQuests && journal.IsTakingBoardQuest(guid, content->QuestType()))
                 return QuestBoardState::Taking;
             if (completedQuests && !quest.IsUnlocked(unlockContext))
                 return QuestBoardState::Locked;
