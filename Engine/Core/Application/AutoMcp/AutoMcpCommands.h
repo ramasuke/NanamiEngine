@@ -10,12 +10,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
 {
     class AutoMcpServer;
 
-    /** @brief コマンドを実行するフレーム内のタイミング */
+    /** @brief コマンドを実行するフレームタイミング */
     enum class AutoMcpPhase
     {
-        /** ImGui::NewFrame 直後。ImGui ウィンドウの位置・サイズ変更など */
         FrameBegin,
-        /** ImGui 描画後。受信したフレームでそのまま実行する */
         FrameEnd,
     };
 
@@ -25,7 +23,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         std::function<void(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)> handler;
     };
 
-    /** @brief "screenshot" 以外の全コマンドの表。screenshot は描画タイミングに依存するので AutoMcpServer が直接扱う */
+    /** @brief screenshot以外の全コマンドの表 */
     class NANAMI_API AutoMcpCommandTable final
     {
         friend class AutoMcpServer;

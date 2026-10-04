@@ -107,16 +107,16 @@ namespace GamePlay::Ui
             isHolding_ = false;
             pressRemaining_secs_ = 0.0f;
             animScale_ = 1.0f;
-            SetPressed(false);
         }
+        SetPressed(false);
     }
 
     void GameCursor::SetPressed(const bool pressed)
     {
         if (const auto idle = idle_.get())
-            idle->SetEnable(!pressed);
+            idle->SetEnable(isVisible_ && !pressed);
         if (const auto press = press_.get())
-            press->SetEnable(pressed);
+            press->SetEnable(isVisible_ && pressed);
     }
 
     void GameCursor::OnDrawGui()

@@ -10,9 +10,6 @@
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
-    /**
-     * @brief 魔術師が受けたクエスト。職業を問わないクエスト(メインストーリー・依頼)だけを受け、中身は剣士と共有の QuestJournal にある
-     */
     class QuestGroup final : public IQuestGroup,
                              public Quest::ICompleteQuestGroup
     {
@@ -29,7 +26,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
         void CompleteQuest(const QuestType& completeQuest) override;
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
 
-        // version 0 のセーブだけが持つ受注。今は QuestJournal にあるので引き渡すまで預かる
         Quest::QuestList legacyStoryQuests_;
 
 #pragma region Serialization Function

@@ -16,19 +16,15 @@ namespace NanamiEngine::Core::Application::AutoMcp
     using JsonDocument  = rapidjson::Document;
     using JsonAllocator = rapidjson::Document::AllocatorType;
 
-    /** @brief クライアントへ ok:false として返すエラー */
     class NANAMI_API AutoMcpError final : public std::runtime_error
     {
     public:
         explicit AutoMcpError(const std::string& message) : std::runtime_error(message) {}
     };
 
-    /** @brief UTF-8 として不正なら ACP (CP932) とみなして UTF-8 に直す。文字列リテラル由来のログ等が ACP のため */
     [[nodiscard]] NANAMI_API std::string ToUtf8(const std::string& text);
-    /** @brief UTF-8 のパスを MultiByte ビルドの std::ifstream 等が受け取れる ACP 文字列にする */
     [[nodiscard]] NANAMI_API std::string Utf8PathToNative(const std::string& utf8Path);
     [[nodiscard]] NANAMI_API std::string ToJsonText(const JsonValue& value);
-    /** @brief typeid 名から "class " と名前空間を落とした短い型名 */
     [[nodiscard]] NANAMI_API std::string ShortTypeName(const char* typeidName);
     [[nodiscard]] NANAMI_API std::string FullTypeName(const char* typeidName);
 
@@ -36,13 +32,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
     [[nodiscard]] NANAMI_API JsonValue MakeVec3(const glm::vec3& value, JsonAllocator& allocator);
     [[nodiscard]] NANAMI_API JsonValue MakeQuat(const glm::quat& value, JsonAllocator& allocator);
 
-    /** @brief コマンド引数 (JSON オブジェクト) の読み取り。不正な型は AutoMcpError */
+    /** @brief コマンド引数 の読み取り。不正な型はAutoMcpError */
     class NANAMI_API JsonArgs final
     {
     public:
         explicit JsonArgs(const JsonValue& object) : object_(object) {}
 
-        /** @brief オブジェクトでない・未指定・null なら nullptr */
         [[nodiscard]] const JsonValue* FindMember(const char* name) const;
         [[nodiscard]] std::string RequireString(const char* name) const;
         [[nodiscard]] std::string OptionalString(const char* name, const std::string& fallback) const;

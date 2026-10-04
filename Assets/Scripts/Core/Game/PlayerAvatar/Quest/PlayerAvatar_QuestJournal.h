@@ -12,10 +12,7 @@
 
 namespace GameCore::PlayerAvatar::Quest
 {
-    /**
-     * @brief 職業を問わないクエスト(メインストーリー・依頼)の受注と達成の記録。職業をまたいで1冊
-     * NOTE: Wallet と同時に保存するので、報酬と受注の消滅がずれて残ることはない
-     */
+    /** @brief 職業を問わないクエストの受注と達成記録。職業をまたいで1冊 */
     class QuestJournal final : public SingletonBase<QuestJournal>,
                                public ICompleteQuestGroup
     {
@@ -26,25 +23,21 @@ namespace GameCore::PlayerAvatar::Quest
         /** @brief 保存されている内容で上書きして始め直す。保存していない受注・達成は消える */
         void Reload();
         void Save() const;
-
-        /** @return 同じ依頼(ITakeableQuest::IsSameQuest)を受注中なら受けずに false */
+        
         bool Take(const std::shared_ptr<ITakeableQuest>& quest);
-        /** @brief 以前は職業ごとのステータスにあった受注を引き取る。受注中の依頼と同じものは捨てる */
         void Adopt(const std::vector<std::shared_ptr<ITakeableQuest>>& quests);
         [[nodiscard]] bool IsTaking(const QuestType& quest) const;
-        /** @brief 掲示板の依頼を受注中か。guid を持たない古い受注は QuestType で見る */
         [[nodiscard]] bool IsTakingBoardQuest(const std::string& boardQuestGuid, const QuestType& type) const;
 
         void CompleteQuest(const QuestType& completeQuest) override;
         void CompleteTakenQuest(const ITakeableQuest& quest) override;
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
         [[nodiscard]] bool IsBoardQuestCompleted(const std::string& boardQuestGuid) const;
+        
         /** @return 初めての達成なら true */
         bool MarkCompleted(const QuestType& quest);
-
-        /** @brief 達成して報酬が出たときに流れる。受け取るのは手元のアバターだけ */
+        
         [[nodiscard]] NanamiEngine::R4::Observable<Reward::Rewards> OnRewarded() const { return onRewarded_.AsObservable(); }
-        /** @brief 受注・達成・読み直しで中身が変わったときに流れる */
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnChanged() const { return onChanged_.AsObservable(); }
 
         void OnDrawGui() const;

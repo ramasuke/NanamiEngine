@@ -32,7 +32,6 @@ namespace GameCore::Scene::Main
 
     Coroutine::Task<EnterResult> FirstTouchDownMainIsLandScene::OnEnterAsync(NanamiEngine::R4::CancellationToken)
     {
-        // Context の FIELD(飛行船・カメラ・タイトルロゴ)は読み込んだシーン内を指す
         Context()->Init();
 
         auto& context = *Context();
@@ -60,12 +59,11 @@ namespace GameCore::Scene::Main
 
     void FirstTouchDownMainIsLandScene::DoExit()
     {
-        // ムービーのコルーチンは止められないので、次の区切りで抜けさせる
         if (aboardAirShipMovie_)
             aboardAirShipMovie_->Cancel();
+        
         aboardAirShipMovie_.reset();
 
-        // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
@@ -76,7 +74,6 @@ namespace GameCore::Scene::Main
         }
         playerAvatar_.reset();
 
-        // NOTE: ボスの BT (PlayBGM) が差し替えた BGM も流れているので、シーンの BGM だけでなく全部止める
         GamePlay::Sound::SoundPlayer::StopAllBgm();
     }
     

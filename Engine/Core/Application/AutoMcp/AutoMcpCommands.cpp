@@ -305,12 +305,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 return suffixMatches.front();
 
             if (suffixMatches.empty())
-                throw AutoMcpError("no .mv1 asset matches " + requestedPath + " (find paths with assets.find)");
+                throw AutoMcpError(requestedPath + " に一致する .mv1 アセットがありません(パスは assets.find で探せます)");
 
             std::string candidates;
             for (const auto& file : suffixMatches)
                 candidates += "\n  " + DisplayAssetPath(*file);
-            throw AutoMcpError(requestedPath + " matches several .mv1 assets; pass a longer path:" + candidates);
+            throw AutoMcpError(requestedPath + " に一致する .mv1 アセットが複数あります。もっと長いパスを指定してください:" + candidates);
         }
 
         Mv1FilePtr ResolveMv1(const JsonArgs& args, const char* guidKey, const char* pathKey)
@@ -348,9 +348,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 return partialMatches.front();
 
             if (partialMatches.empty())
-                throw AutoMcpError("no clip named " + requestedName + " among " + std::to_string(count) + " clips (list them with animationview.state includeClips)");
+                throw AutoMcpError(std::to_string(count) + " 個のクリップに " + requestedName + " という名前はありません(一覧は animationview.state の includeClips で取得できます)");
 
-            throw AutoMcpError(requestedName + " matches " + std::to_string(partialMatches.size()) + " clips; use the full name or clipIndex");
+            throw AutoMcpError(requestedName + " に一致するクリップが " + std::to_string(partialMatches.size()) + " 個あります。完全な名前か clipIndex を指定してください");
         }
 
         /** @brief yaw 0 / pitch 0 で +Z 側から -Z 向きに見る。pitch が正なら見下ろす */
@@ -393,7 +393,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 if (match)
                     return {match, scene};
             }
-            throw AutoMcpError("GameObject not found in the loaded scenes: " + guidText);
+            throw AutoMcpError("ロード中のシーンに GameObject が見つかりません: " + guidText);
         }
 
         static FoundGameObject RequireGameObject(const JsonArgs& args)
@@ -541,7 +541,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const auto& factories = PopupWindow::PopupWindowFactory::Instance().GetAll();
             const auto it = factories.find(type);
             if (it == factories.end())
-                throw AutoMcpError("unknown popup window type: " + type + " (see popupTypes in windows.list)");
+                throw AutoMcpError("不明なポップアップウィンドウの種類です: " + type + "(windows.list の popupTypes を参照)");
 
             auto window = it->second();
             const std::string guid = window->Guid().Value();
@@ -564,7 +564,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         {
             const std::string name = args.RequireString("name");
             if (ImGui::FindWindowByName(name.c_str()) == nullptr)
-                throw AutoMcpError("ImGui window not found: " + name + " (use the exact name from windows.list, including ##id)");
+                throw AutoMcpError("ImGui ウィンドウが見つかりません: " + name + "(windows.list の名前を ##id も含めてそのまま指定してください)");
 
             ImVec2 vector;
             if (TryGetVec2(args, "position", vector))
@@ -585,7 +585,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const auto& loaders = MainWindow::MainWindowFactory::Instance().GetLoaders();
             const auto it = loaders.find(name);
             if (it == loaders.end())
-                throw AutoMcpError("unknown main window: " + name + " (see mainWindows in windows.list)");
+                throw AutoMcpError("不明なメインウィンドウです: " + name + "(windows.list の mainWindows を参照)");
 
             ApplicationBase::OnChangeWindow(it->second());
             result.AddMember("currentMainWindow", MakeString(name, allocator), allocator);
@@ -611,7 +611,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const std::filesystem::path filePath(std::u8string(path.begin(), path.end()));
             std::error_code error;
             if (!std::filesystem::is_regular_file(filePath, error))
-                throw AutoMcpError("scene file not found (paths are relative to workingDirectory in status): " + path);
+                throw AutoMcpError("シーンファイルが見つかりません(パスは status の workingDirectory からの相対パスです): " + path);
 
             const auto gameWindow = ActivateGameWindow(result, allocator);
             const auto scene = std::make_shared<NanamiEngine::Scene::Scene>(filePath.string());
@@ -766,10 +766,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
             }
 
             if (!replacement)
-                throw AutoMcpError("json did not contain a GameObject under \"gameObject\"");
+                throw AutoMcpError("json の \"gameObject\" に GameObject が含まれていません");
 
             if (!(replacement->GetGuid() == found.gameObject->GetGuid()))
-                throw AutoMcpError("json guid " + replacement->GetGuid().Value() + " does not match the target " + found.gameObject->GetGuid().Value() + "; keep the guids from gameobject.get_json");
+                throw AutoMcpError("json の guid " + replacement->GetGuid().Value() + " が対象の " + found.gameObject->GetGuid().Value() + " と一致しません。gameobject.get_json の guid をそのまま使ってください");
 
             ActivateGameWindow(result, allocator);
             ReplaceGameObject(found, replacement);
@@ -872,7 +872,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             auto& gameModule = HotReload::GameModule::Instance();
             if (!gameModule.IsLoaded())
             {
-                throw AutoMcpError("game module is not loaded (static build?)");
+                throw AutoMcpError("ゲームモジュールがロードされていません(静的リンクのビルド?)");
             }
             if (args.FindMember("keepOldModules") != nullptr)
             {
@@ -918,7 +918,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         {
             const auto gameWindow = RequireGameWindow();
             if (gameWindow->IsPlayMode())
-                throw AutoMcpError("camera.set only works in edit mode; Cinemachine drives the camera while playing");
+                throw AutoMcpError("camera.set は編集モードでのみ使えます。プレイ中は Cinemachine がカメラを動かします");
 
             glm::vec3 position = gameWindow->GetCameraPosition();
             glm::vec3 vector;
@@ -999,14 +999,14 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 validNames += validNames.empty() ? name : std::string(", ") + name;
 
             if (!member->IsObject())
-                throw AutoMcpError(std::string(key) + " must be true/false (all) or {\"<name>\": bool} with names from: " + validNames);
+                throw AutoMcpError(std::string(key) + " は true/false(全体)か {\"<name>\": bool} で指定してください。name に使える値: " + validNames);
 
             for (auto it = member->MemberBegin(); it != member->MemberEnd(); ++it)
             {
                 const std::string requested = it->name.GetString();
                 const auto match = std::ranges::find_if(names, [&requested](const char* name) { return ToLowerAscii(name) == ToLowerAscii(requested); });
                 if (match == std::ranges::end(names))
-                    throw AutoMcpError(std::string("unknown ") + key + " name: " + requested + " (valid: " + validNames + ")");
+                    throw AutoMcpError(std::string("不明な ") + key + " の名前です: " + requested + "(有効な値: " + validNames + ")");
                 if (!it->value.IsBool())
                     throw AutoMcpError(std::string(key) + "." + requested + " must be true or false");
 
@@ -1257,7 +1257,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const auto       window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
             const auto       models = AutoMcpEngineAccess::ModelViewContents(*window);
             if (std::ranges::none_of(models, [&file](const Mv1FilePtr& model) { return model->GetGuid() == file->GetGuid(); }))
-                throw AutoMcpError(DisplayAssetPath(*file) + " is not open in ModelView; use modelview.open");
+                throw AutoMcpError(DisplayAssetPath(*file) + " は ModelView で開かれていません。modelview.open で開いてください");
 
             window->Select(file->GetGuid());
             DescribeModelViewState(*window, result, allocator);
@@ -1269,7 +1269,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const auto        window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
             const auto        models = AutoMcpEngineAccess::ModelViewContents(*window);
             if (std::ranges::none_of(models, [&guid](const Mv1FilePtr& model) { return model->GetGuid() == ::Guid(guid); }))
-                throw AutoMcpError("model is not open in ModelView: " + guid);
+                throw AutoMcpError("ModelView で開かれていないモデルです: " + guid);
 
             AutoMcpEngineAccess::ModelViewClose(*window, ::Guid(guid));
             DescribeModelViewState(*window, result, allocator);
@@ -1308,7 +1308,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 const int modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
                 const int frameIndex  = args.OptionalInt("rootFrameIndex", -1);
                 if (!IsDxHandleReady(modelHandle) || frameIndex < 0 || frameIndex >= MV1GetFrameNum(modelHandle))
-                    throw AutoMcpError("rootFrameIndex is out of range or the model is not loaded yet");
+                    throw AutoMcpError("rootFrameIndex が範囲外か、モデルがまだロードされていません");
 
                 AutoMcpEngineAccess::AnimationViewRootFrameIndex(*window) = frameIndex;
             }
@@ -1321,7 +1321,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             const auto window      = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
             const int  modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
             if (!IsDxHandleReady(modelHandle))
-                throw AutoMcpError("the AnimationView model is not loaded yet");
+                throw AutoMcpError("AnimationView のモデルがまだロードされていません");
 
             // NOTE: 部分一致(大文字小文字無視)。空なら全フレーム
             const std::string filter = ToLowerAscii(args.OptionalString("nameContains", std::string()));
@@ -1386,7 +1386,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 if (args.FindMember("clipName") != nullptr)
                 {
                     if (sourceHandle == -1)
-                        throw AutoMcpError("clips are not loaded yet (model or animation source still loading); retry when animationview.state shows sourceReady");
+                        throw AutoMcpError("クリップがまだロードされていません(モデルかアニメーションの読み込み中)。animationview.state が sourceReady になってから再実行してください");
 
                     AutoMcpEngineAccess::SelectSlotClip(slot, FindClipIndex(sourceHandle, args.RequireString("clipName")));
                 }
@@ -1422,7 +1422,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             if (const auto animationView = std::dynamic_pointer_cast<MainWindow::AnimationViewWindow>(mainWindow))
                 return AutoMcpEngineAccess::AnimationViewStage(*animationView);
 
-            throw AutoMcpError("preview.camera needs ModelViewWindow or AnimationViewWindow as the current main window (modelview.open / animationview.open)");
+            throw AutoMcpError("preview.camera はメインウィンドウが ModelViewWindow か AnimationViewWindow のときだけ使えます(modelview.open / animationview.open)");
         }
 
         static void CommandPreviewCamera(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
@@ -1439,7 +1439,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             if (hasPosition || hasLookAt)
             {
                 if (!hasPosition || !hasLookAt)
-                    throw AutoMcpError("position and lookAt must be given together");
+                    throw AutoMcpError("position と lookAt は両方指定してください");
                 if (glm::length(lookAt - position) < 1.0e-4f)
                     throw AutoMcpError("lookAt is at the camera position");
 
@@ -1460,7 +1460,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             }
             else
             {
-                throw AutoMcpError("pass frame, yawDegrees/pitchDegrees, or position + lookAt");
+                throw AutoMcpError("frame、yawDegrees/pitchDegrees、position + lookAt のいずれかを指定してください");
             }
 
             AddPreviewCamera(stage, result, allocator);

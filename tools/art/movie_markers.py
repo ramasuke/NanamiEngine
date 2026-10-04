@@ -61,8 +61,9 @@ MARKERS = {
         ('OverviewCameraStart', (1450.0, 500.0, 150.0)),
         ('OverviewCameraEnd', (1300.0, 430.0, 300.0)),
         ('OverviewLookAt', (760.0, 60.0, 820.0)),
-        ('Tour1CameraStart', (960.0, 270.0, 170.0)),
-        ('Tour1CameraEnd', (935.0, 245.0, 215.0)),
+        # NOTE: 北からだと神殿が広場を隠すので、南の門の上から見下ろす
+        ('Tour1CameraStart', (960.0, 250.0, 720.0)),
+        ('Tour1CameraEnd', (928.0, 240.0, 652.0)),
         ('Tour1LookAt', (875.0, 80.0, 440.0)),
         ('Tour2CameraStart', (1240.0, 190.0, 760.0)),
         ('Tour2CameraEnd', (1215.0, 180.0, 790.0)),

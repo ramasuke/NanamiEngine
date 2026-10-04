@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Component
                                           public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        /** @brief ワールド座標の折れ線（始点から流れる） */
+        /** @brief ワールド座標の折れ線 */
         void SetPath(std::span<const glm::vec3> points);
         void ClearPath();
         /** @brief 0〜1。全体のアルファに掛ける */

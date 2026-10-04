@@ -72,6 +72,7 @@ namespace GameCore::PlayerAvatar::Quest
         const bool byType     = quest.RecordsCompletionByType() || guid.empty();
         const bool rewardsNow = quest.IsRepeatable()
             || (byType ? MarkCompleted(quest.QuestType()) : MarkBoardQuestCompleted(guid));
+        
         // WARNING: Remove で quest が破棄されるので、以降 quest に触れない
         takingQuests_.Remove(&quest);
         onChanged_.OnNext(NanamiEngine::R4::Unit{});

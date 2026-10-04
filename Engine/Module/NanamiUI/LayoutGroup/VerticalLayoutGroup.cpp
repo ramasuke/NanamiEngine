@@ -48,7 +48,6 @@ namespace NanamiEngine::Module::NanamiUi
         const float offsetX = ToCrossAlignFactor(childAlignment_) * cellSize_.x;
         const float pitch   = cellSize_.y + spacing_;
 
-        // 割合 r の子は p*r の枠を占め、その枠の中央に置く。全員 r=1 なら i*p に一致する
         std::vector<float> alongs;
         alongs.reserve(children.size());
         float filled = 0.0f;

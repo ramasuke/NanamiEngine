@@ -21,7 +21,7 @@
                         "id": 2147483650,
                         "data": {
                             "value0": {
-                                "value_": 56
+                                "value_": 118
                             }
                         }
                     }
@@ -43,8 +43,9 @@
                 "dashAttack_": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 0,
-                        "value_": 15
+                        "cereal_class_version": 1,
+                        "value_": 15,
+                        "flinchPower_": 20
                     },
                     "value1": {
                         "cereal_class_version": 0,
@@ -95,7 +96,8 @@
                 "chargeAttackMaxHold_secs_": 3.0,
                 "chargeAttack_": {
                     "value0": {
-                        "value_": 35
+                        "value_": 35,
+                        "flinchPower_": 50
                     },
                     "value1": {
                         "value0": 15
@@ -116,7 +118,8 @@
                 "chargeAttackStaminaCost_": 30.0,
                 "jumpAttack_": {
                     "value0": {
-                        "value_": 22
+                        "value_": 22,
+                        "flinchPower_": 40
                     },
                     "value1": {
                         "value0": 12
@@ -132,7 +135,7 @@
                     "value4": 0.2199999988079071,
                     "value5": 0.0
                 },
-                "jumpAttackWindup_secs_": 0.30000001192092898,
+                "jumpAttackWindup_secs_": 0.4000000059604645,
                 "jumpAttackPlungeSpeed_": 120.0,
                 "walkSpeed_": {
                     "cereal_class_version": 0,
@@ -173,7 +176,7 @@
                             "balance_": {
                                 "value": {
                                     "cereal_class_version": 0,
-                                    "value_": 300
+                                    "value_": 3060
                                 }
                             }
                         }
@@ -181,7 +184,60 @@
                 },
                 "pouch_": {
                     "cereal_class_version": 0,
-                    "stacks_": []
+                    "stacks_": [
+                        {
+                            "cereal_class_version": 0,
+                            "item_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483652,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "cereal_class_version": 0,
+                                                "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 7
+                        },
+                        {
+                            "item_": {
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "value0": {
+                                                "value_": "B407D88F-D3CE-439E-8F0F-3D2746A261FE"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 4
+                        },
+                        {
+                            "item_": {
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483654,
+                                        "data": {
+                                            "value0": {
+                                                "value_": "72C0F0C4-F59E-4675-8B10-62416B7B6C0C"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 2
+                        }
+                    ]
                 }
             }
         }

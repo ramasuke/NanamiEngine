@@ -312,7 +312,8 @@ def build(placements, spawns, t, dry_run):
     stone_cam = find(scene, 'GreenStoneCamera')
     stone_cam.name = 'LightStoneCamera'
     px, pz = dt.PLAZA
-    set_trs(stone_cam, pos=(px + 80.0, t.height(px + 80, pz + 140) + 30.0, pz + 140.0))
+    # NOTE: 城塞の壁の輪の外からだと壁に隠れるので、広場の中 (石の南東) から見上げる
+    set_trs(stone_cam, pos=(px + 32.0, t.height(px + 32, pz + 58) + 21.0, pz + 58.0))
     stone_prefab = reader.read_prefab_file(LIGHT_STONE)
     stone = edits.instantiate_prefab(scene, stone_prefab)
     set_trs(stone, pos=(px, t.lowest(px, pz, 12) - 1.0, pz), yaw=0.0)

@@ -8,7 +8,7 @@
   同じキャラで書き出したクリップ2本 (FBX Binary / Without Skin / 30 fps) を <work>/mixamo/<Role>/ に置く。
   T ポーズの FBX はテクスチャを中に持っているので、先に Blender で <Role>.fbm/ へ取り出しておく
   (<work>/mixamo/unpack.py)。<work> は既定で %USERPROFILE%\\NanamiAssetsWork\\Desert。
-- AnimTree は State 0 = 待機 / 1 = 会話 (story_npcs.py の BT と揃える)。
+- AnimTree は State 0 = 待機 / 1 = 会話 (story_npcs.py の BT と揃える)。クリップは骨の名前で当てる (nameCheck_)。
 - 会話と BT は story_npcs.py --only desert が物語の進み具合に合わせて作る (place の前に流す)。
 - place は草原の野営地 (camp_people.place) と同じく、拠点の島の仲介人 (CharacterBrokerNpc) を写して NPC にする。
   クノイチは序章の Kunoichi-Adventure の見た目 (モデル・AnimTree・当たり判定・大きさ) を借りる (story_npcs.place_newcomers と同じ)。
@@ -56,7 +56,7 @@ ROLES = [
     Role('Keeper', 'Arissa', '水守りの娘', 'SadIdle', 'Talking',
          pos=(515.0, 1030.0), face=(600.0, 1040.0)),
     Role('Boy', 'Kaya', '駱駝番の少年', 'HappyIdle', 'Talking',
-         pos=(455.0, 975.0), face=(380.0, 1150.0)),
+         pos=(438.0, 988.0), face=(380.0, 1150.0)),   # NOTE: (455, 975) だとテントにめり込む
     Role('Guard', 'Castle Guard 01', '隊商の護衛', 'SittingDazed', 'SittingFloor',
          pos=(1095.0, 440.0), face=(1180.0, 470.0), capsule=((0.0, 48.0, -15.0), 25.0, 46.0), icon_y=135.0),
 ]
@@ -102,6 +102,8 @@ def anim_tree(r):
         {'op': 'add-transition', 'from': entry, 'next': idle},
     ]
     for node, state in ((idle, 0), (talk, 1)):
+        # NOTE: Kaya (Boy) はクリップの骨の並びがモデルと違い、番号で当てると T ポーズになる。名前で当てる
+        ops.append({'op': 'set-node-params', 'node': node, 'set': {'nameCheck_': 'true'}})
         ops.append({'op': 'add-transition', 'from': any_state, 'next': node, 'any_state': True,
                     'duration_secs': TRANSITION_SECS})
         ops.append({'op': 'add-condition', 'any_state': True, 'from': any_state, 'next': node,

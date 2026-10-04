@@ -12,13 +12,13 @@
 namespace GameCore::PlayerAvatar::Quest
 {
     /**
-     * @brief 受注中の職業を問わないクエスト(メインストーリー・依頼)の入れ物。QuestJournal が1つだけ持つ
+     * @brief 受注中の職業を問わないクエスト
      */
     class QuestList final
     {
     public:
         void StartAll(const QuestContext& context) const;
-        /** @return 同じ依頼(ITakeableQuest::IsSameQuest)を受注中なら受けずに false */
+        /** @return 同じ依頼を受注中なら受けずに false */
         bool Add(const std::shared_ptr<ITakeableQuest>& quest, const QuestContext& context);
         void Remove(const QuestType& type);
         void Remove(const ITakeableQuest* quest);
