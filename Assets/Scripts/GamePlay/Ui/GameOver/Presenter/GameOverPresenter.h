@@ -7,6 +7,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Packages/UiFlow/UiFlow.h"
+#include "../../../../Core/Game/Scene/Main/Transition/Main_SceneTransitionOptions.h"
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "../../../Sound/UiSoundBank.h"
 
@@ -42,7 +43,7 @@ namespace GamePlay::Ui
         void Decide(int index);
         void Retry();
         void ReturnToTitle();
-        void RequestSceneChange(GameCore::Scene::Main::SceneType sceneType);
+        void RequestSceneChange(GameCore::Scene::Main::SceneType sceneType, GameCore::Scene::Main::SceneTransitionOptions options = {});
         void Abort();
 
         [[nodiscard]] static bool AreAllPlayersFallen();

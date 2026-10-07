@@ -17,6 +17,7 @@ namespace GameCore::Scene::Main
         
     private:
         [[nodiscard]] std::vector<Sub::SceneType> SubScenes() const override;
+        void OnInit() override;
         Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void OnEntered() override {}
         void Enter    () override;
@@ -28,5 +29,6 @@ namespace GameCore::Scene::Main
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<FirstTouchDownMainIsLand::AboardAirShipMovie> aboardAirShipMovie_;
         std::weak_ptr<GameObject::IGameObject> playerStatusPresenter_;
+        bool isRetry_ = false;
     };
 }

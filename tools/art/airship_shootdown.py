@@ -5,13 +5,17 @@
 流れ (FirstEventDragon の BT の State0。竜が島を回り込んで船の正面に来てから):
   操作ロック → 船の甲板を空ける (ShootDownAirShip: 乗客の NPC を消し、甲板のプレイヤーを桟橋へ) → 襲撃カメラ (島の上から
   船越しに竜を LookAt) → 咆哮 → 火球 → マストに着弾 (爆発・船に付く炎と黒煙・揺れ・雷) → 墜落カメラ (南西から船を横に見る)
-  → 船が船首から傾いて雲の下へ落ちる (FallIsland) → 竜が落ちる船の横を急降下し、桟橋の下から上がって着地 (既存の State10 へ)
+  → 船が船首から傾いて雲の下へ落ちる (FallIsland) → 竜が落ちる船の横を急降下して島の下へ潜る → 上昇カメラ (桟橋の階段から
+  南の空。縁の向こうから竜がせり上がり、LookAt のカメラへ替えて見上げる) → 着地カメラ (草地の北から桟橋を見る。竜が桟橋の上を
+  越えて手前に降りる) → State10 の咆哮で、竜の子の寄りカメラへゆっくり寄る
 
-- シーン (FirstTouchDownMainIsLandScene): DestroyIslandMovie の下に AirShip Attack Camera / AirShip Fall Camera
-  (Heart Dive Camera の写し。墜落カメラは LookAt を外して向きを固定)、桟橋の上に AirShipEvacuatePoint を置き、
-  AirShip (v2) の evacuatePoint_ に繋ぐ。
+- シーン (FirstTouchDownMainIsLandScene): DestroyIslandMovie の下に演出カメラ (Heart Dive Camera の写し。向きを固定する
+  カメラは LookAt を外す)、桟橋の上に AirShipEvacuatePoint を置き、AirShip (v2) の evacuatePoint_ に繋ぐ。
+  カットで切り替えるため、シーンの CineMachineVirtualCamera を v2 (カメラごとの blendIn) に上げる。
+- プレハブ (FirstEventDragon): 咆哮のカメラの写しを顔へ寄せた所に置く (blendIn で寄る)。
 - ルート: ToDestroyAirShip は船の正面で止まるところまで、急降下は TouchDownIsLand の頭に付ける。
-- BT: State0 の Sequence に "Ship ..." の名前でノードを足す (流し直すと "Ship ..." を外して足し直す)。
+- BT: State0 / State10 の Sequence に "Ship ..." の名前でノードを足す (流し直すと "Ship ..." を外して足し直す)。
+  ToTouchDownIsland は同じ GUID・名前の ActionTimeline にして、ルートを飛んでいる間にカメラを時刻で切り替える。
 カメラの位置と向きは AutoMCP で船を停泊位置に置いて決めた。
 """
 import copy
@@ -24,9 +28,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.common.blob import Ver  # noqa: E402
 from tools.common.cereal_json import Num, OrderedObj, dumps, loads, to_file_bytes  # noqa: E402
-from tools.scene import catalog as catalog_mod, edits, model as scene_model, reader, validate, writer  # noqa: E402
+from tools.scene import catalog as catalog_mod, edits, mathutil, model as scene_model, reader, validate, writer  # noqa: E402
 from tools.bt import catalog as bt_catalog, edits as bt_edits, model as bt_model, reader as bt_reader, writer as bt_writer  # noqa: E402
-from tools.bt import meta as bt_meta  # noqa: E402
+from tools.bt import compose as bt_compose, meta as bt_meta  # noqa: E402
 from tools.bt.layout import auto_layout  # noqa: E402
 from tools.bt.validate import validate as bt_validate  # noqa: E402
 
@@ -35,7 +39,8 @@ from grassland_nature_scatter import StrayVersionStripper, bake_world_matrices, 
 from desert_scene import component, find, set_trs  # noqa: E402
 
 SCENE = REPO / 'Assets' / 'Scene' / 'FirstTouchDownMainIsLandScene.scene'
-TREE = REPO / 'Assets' / 'Data' / 'EnemyBehaviour' / 'FirstEventDragon.enemyBehaviourData'
+PREFAB = REPO / 'Assets' / 'Prefab' / 'Npc' / 'Enemy' / 'FirstEventDragon.prefab'
+TREE =REPO / 'Assets' / 'Data' / 'EnemyBehaviour' / 'FirstEventDragon.enemyBehaviourData'
 ROUTES = REPO / 'Assets' / 'Data' / 'EventNpcWalkingRoute' / 'FirstEventDragon'
 
 # 停泊中の船 (AbordAirShipMovie/SecondMove/AirShipTargetPos)。船首は -X、甲板は y≈41、マストの上は y≈120
@@ -60,9 +65,37 @@ ATTACK_CAMERA_ROT = (-0.0023164, 0.9967552, -0.0741976, -0.0311182)
 # 南西から船を横に見る。下に落ちていく空間を空けておく
 FALL_CAMERA_POS = (-175.0, 55.0, -205.0)
 FALL_CAMERA_ROT = (0.1046198, 0.3997647, -0.0459867, 0.9094658)
+# 桟橋の階段の上から南の空を見上げる。船が消えた桟橋の縁 (2本の街灯の間) の向こうから竜がせり上がる
+RISE_CAMERA_POS = (-2.0, 37.5, 12.0)
+RISE_CAMERA_ROT = (0.0057978, 0.9911869, 0.1239579, -0.0463602)
+# 草地の北から桟橋を見る。竜は北を向いたまま桟橋の上を越えて来て、手前の草地に降りる (奥の桟橋にプレイヤー)
+LANDING_CAMERA_POS = (14.0, 40.0, 130.0)
+LANDING_CAMERA_ROT = (0.0156476, 0.9827174, 0.0986757, -0.1558356)
 CAMERA_SOURCE = 'Heart Dive Camera'
 ATTACK_CAMERA = 'AirShip Attack Camera'
 FALL_CAMERA = 'AirShip Fall Camera'
+RISE_CAMERA = 'Dragon Rise Camera'
+RISE_TRACK_CAMERA = 'Dragon Rise Track Camera'     # 上昇カメラと同じ所から LookAt で竜を追う
+LANDING_CAMERA = 'Dragon Landing Camera'
+STAGING_CAMERAS = (ATTACK_CAMERA, FALL_CAMERA, RISE_CAMERA, RISE_TRACK_CAMERA, LANDING_CAMERA)
+
+# LibCore::EaseType
+EASE_IN_OUT_SINE, EASE_SMOOTH_STEP = 6, 10
+# NOTE: Brain は blendIn が 0 だと追従の補間で寄っていく。1フレームで終わる長さにしてカットにする
+CUT = (0.01, EASE_SMOOTH_STEP)
+TRACK_BLEND = (0.6, EASE_SMOOTH_STEP)
+
+# TouchDownIsLand のルート (11 秒) の中の時刻
+RISE_CUT_AT = 4.4       # 竜が島の下へ潜った所。桟橋の縁から出てくるのは 6.0 秒ごろ
+RISE_TRACK_AT = 6.3
+LANDING_CUT_AT = 7.6    # 上がりきって頭上を越え始めた所
+
+# 竜の子のカメラ (竜のローカル。倍率 0.014、正面は -Z)。咆哮の間に元のカメラの位置から顔へ寄る
+ROAR_CAMERA = 'FirstTouchDownIsland ProductionCamera'
+ROAR_CLOSE_CAMERA = 'FirstTouchDownIsland ProductionCamera Close'
+ROAR_CLOSE_POS = (-1500.0, 1250.0, -1970.0)
+ROAR_PUSH_IN = (4.0, EASE_IN_OUT_SINE)
+
 EVACUATE_POINT = 'AirShipEvacuatePoint'
 EMPTY_SOURCE = 'SampleAppearDragonPos'     # コンポーネントを持たない空の GameObject
 
@@ -96,6 +129,11 @@ TOUCH_DOWN = [
 ]
 
 STATE0 = '04E3F0D6-E481-4609-BA33-F4FC957497E5'
+STATE10 = '9B6195AE-0F4D-4684-A46B-C3F172764970'
+# NOTE: dragon_omen_bt.py / ancient_dragon.py がこの GUID で探すので、ActionTimeline にしても GUID と名前は変えない
+TOUCH_DOWN_ROUTE = '80D57EC7-B83A-465B-AFC9-1EC16ACF4AFF'
+SRC_ROAR_CAMERA_ON = 'B458295D-A737-4766-BCBD-7EEB12662FED'     # Enable TouchDownIsland ProductionCamera
+SRC_ROAR_CAMERA_OFF = '813DAB52-A515-4114-BB57-BC0234BD53B4'    # Disable TouchDownIsland ProductionCamera
 PREFIX = 'Ship '
 # 写し元 (FirstEventDragon の BT の既存ノード)
 SRC_LOCK = 'BC7ED4A3-0E3F-4569-915C-3ACCAC5C9B47'           # Lock PlayerControl
@@ -119,29 +157,58 @@ def vec(v):
 # ---------------------------------------------------------------------------
 # シーン
 
+def upgrade_virtual_cameras(roots):
+    """ファイルの中の CineMachineVirtualCamera を全部 v2 にする (版はファイルごとに型で1つ。足す値は読み込み時の既定値)"""
+    for root in roots:
+        for node in walk(root):
+            for comp in node.components:
+                if not comp.fqn.endswith('::CineMachineVirtualCamera'):
+                    continue
+                comp.class_version = 2
+                for key, value in (('overrideFov_', False), ('fov_', Num.of_float(60.0)), ('overrideBlendIn_', False),
+                                   ('blendIn_secs_', Num.of_float(0.5)), ('blendInEase_', Num.of_int(EASE_SMOOTH_STEP))):
+                    if key not in comp.data:
+                        comp.data[key] = value
+
+
+def set_blend_in(node, secs, ease):
+    data = component(node, 'CineMachineVirtualCamera').data
+    data['overrideBlendIn_'] = True
+    data['blendIn_secs_'] = Num.of_float(secs)
+    data['blendInEase_'] = Num.of_int(ease)
+
+
 def build_scene():
     scene = reader.read_scene_file(SCENE)
     movie = find(scene, 'DestroyIslandMovie')
-    movie.transform.children = [c for c in movie.transform.children if c.name not in (ATTACK_CAMERA, FALL_CAMERA)]
+    movie.transform.children = [c for c in movie.transform.children if c.name not in STAGING_CAMERAS]
     scene.roots = [r for r in scene.roots if r.name != EVACUATE_POINT]
+    upgrade_virtual_cameras(scene.roots)
 
     source = find(scene, 'DestroyIslandMovie', CAMERA_SOURCE)
-    attack = copy.deepcopy(source)
-    edits._remint_guids(attack, {})
-    attack.name = ATTACK_CAMERA
-    set_trs(attack, pos=ATTACK_CAMERA_POS)
-    attack.transform.local_rot = edits._quat_from_floats(ATTACK_CAMERA_ROT)
 
-    fall = copy.deepcopy(source)
-    # NOTE: 向きは Transform で決めるので LookAt は外す (的が空だと ScenePurposeCamera が竜を追わせる)
-    fall.components = [c for c in fall.components if not c.fqn.endswith('::VirtualCameraLookAtBehaviour')]
-    edits._remint_guids(fall, {})
-    fall.name = FALL_CAMERA
-    set_trs(fall, pos=FALL_CAMERA_POS)
-    fall.transform.local_rot = edits._quat_from_floats(FALL_CAMERA_ROT)
+    def staging_camera(name, pos, rot, look_at, blend_in=None):
+        camera = copy.deepcopy(source)
+        if not look_at:
+            # NOTE: 向きは Transform で決めるので LookAt は外す (的が空だと ScenePurposeCamera が竜を追わせる)
+            camera.components = [c for c in camera.components if not c.fqn.endswith('::VirtualCameraLookAtBehaviour')]
+        edits._remint_guids(camera, {})
+        camera.name = name
+        set_trs(camera, pos=pos)
+        camera.transform.local_rot = edits._quat_from_floats(rot)
+        if blend_in:
+            set_blend_in(camera, *blend_in)
+        return camera
 
+    cameras = [
+        staging_camera(ATTACK_CAMERA, ATTACK_CAMERA_POS, ATTACK_CAMERA_ROT, look_at=True),
+        staging_camera(FALL_CAMERA, FALL_CAMERA_POS, FALL_CAMERA_ROT, look_at=False, blend_in=CUT),
+        staging_camera(RISE_CAMERA, RISE_CAMERA_POS, RISE_CAMERA_ROT, look_at=False, blend_in=CUT),
+        staging_camera(RISE_TRACK_CAMERA, RISE_CAMERA_POS, RISE_CAMERA_ROT, look_at=True, blend_in=TRACK_BLEND),
+        staging_camera(LANDING_CAMERA, LANDING_CAMERA_POS, LANDING_CAMERA_ROT, look_at=False, blend_in=CUT),
+    ]
     index = movie.transform.children.index(source)
-    movie.transform.children[index + 1:index + 1] = [attack, fall]
+    movie.transform.children[index + 1:index + 1] = cameras
 
     evacuate = copy.deepcopy(find(scene, EMPTY_SOURCE))
     edits._remint_guids(evacuate, {})
@@ -175,10 +242,42 @@ def build_scene():
 
     scene = reader.read_scene_file(SCENE)
     cvc = lambda name: scene_model.find_component_guid(component(find(scene, 'DestroyIslandMovie', name), 'CineMachineVirtualCamera'))
-    guids = dict(attack=cvc(ATTACK_CAMERA), fall=cvc(FALL_CAMERA), ship=find(scene, 'AirShip').guid,
+    guids = dict(attack=cvc(ATTACK_CAMERA), fall=cvc(FALL_CAMERA), rise=cvc(RISE_CAMERA), rise_track=cvc(RISE_TRACK_CAMERA),
+                 landing=cvc(LANDING_CAMERA), ship=find(scene, 'AirShip').guid,
                  pivot=find(scene, 'MovieMarkers', 'AirShipFallPivot').guid)
-    print(f'placed {ATTACK_CAMERA} {guids["attack"]}, {FALL_CAMERA} {guids["fall"]}, {EVACUATE_POINT} {EVACUATE_POS}')
+    print(f'placed {", ".join(STAGING_CAMERAS)}, {EVACUATE_POINT} {EVACUATE_POS}')
     return guids
+
+
+# ---------------------------------------------------------------------------
+# プレハブ
+
+def build_prefab():
+    prefab = reader.read_prefab_file(PREFAB)
+    root = prefab.root
+    root.transform.children = [c for c in root.transform.children if c.name != ROAR_CLOSE_CAMERA]
+    upgrade_virtual_cameras([root])
+
+    source = next(c for c in root.transform.children if c.name == ROAR_CAMERA)
+    close = copy.deepcopy(source)
+    edits._remint_guids(close, {})
+    close.name = ROAR_CLOSE_CAMERA
+    set_trs(close, pos=ROAR_CLOSE_POS)
+    set_blend_in(close, *ROAR_PUSH_IN)
+    root.transform.children.insert(root.transform.children.index(source) + 1, close)
+
+    for node in walk(root):
+        for c in node.components:
+            let_writer_place_versions(c.data)
+    # NOTE: 他の子の worldMatrix_ は触らない (足したカメラだけ焼く)
+    root_trs = edits._node_local_trs(root)
+    if not any(root_trs.rot):
+        root_trs = mathutil.Trs(root_trs.pos, (0.0, 0.0, 0.0, 1.0), root_trs.scale)
+    bake_world_matrices(close, mathutil.IDENTITY.then(root_trs))
+    text = writer.write_prefab(prefab)
+    check(text, validate.validate_prefab(prefab), PREFAB.name)
+    PREFAB.write_bytes(to_file_bytes(text))
+    print(f'placed {ROAR_CLOSE_CAMERA} in {PREFAB.name}')
 
 
 # ---------------------------------------------------------------------------
@@ -225,6 +324,8 @@ def build_tree(guids):
     tree = bt_reader.read_tree_file(TREE)
     seq = tree.find(STATE0)
     seq.children = [c for c in seq.children if not label(c).startswith(PREFIX)]
+    roar_seq = tree.find(STATE10)
+    roar_seq.children = [c for c in roar_seq.children if not label(c).startswith(PREFIX)]
     by_name = {label(c): c for c in seq.children}
 
     # 前に Once で包んだ ShootDownAirShip は元の Action に戻す
@@ -284,7 +385,30 @@ def build_tree(guids):
         once(clone(SRC_FALL_SOUND, 'Fall Sound')),
         wait('Fall Watch', 2.0),
     ]
-    after_touch_down = [once(camera(SRC_CAMERA_OFF, 'Disable Fall Camera', guids['fall'], -1))]
+
+    # ルートを飛んでいる間のカメラ切替。Cue の action はツリーに無いので set_params を通さずに書く
+    def cue_camera(at_secs, cvc, priority):
+        node = bt_edits._clone_node(tree.find(SRC_CAMERA_ON), bt_meta.mint_guid)
+        bt_edits._set_field_guid(node.params['purposeCamera_'], cvc)
+        node.params['priority_'] = Num.of_int(priority)
+        return bt_compose.cue(at_secs, node)
+
+    def touch_down_timeline(node):
+        route = node
+        if not node.type_fqn.endswith('::MoveEventRoute'):
+            # 前に流した時の ActionTimeline。Cue の中のルートを取り出して組み直す
+            ptr = next(c['action_'] for c in node.params['cues_'] if c['action_'].fqn.endswith('::MoveEventRoute'))
+            route = bt_model.Action(guid=bt_meta.mint_guid(), pos=node.pos, name=node.name, type_fqn=ptr.fqn,
+                                    action_version=int(ptr.data.version), params=ptr.data.body)
+        return bt_compose.timeline(cat, [
+            bt_compose.cue(0.0, route, wait_done=True),
+            cue_camera(RISE_CUT_AT, guids['rise'], 107),
+            cue_camera(RISE_CUT_AT, guids['fall'], -1),
+            cue_camera(RISE_TRACK_AT, guids['rise_track'], 108),
+            cue_camera(LANDING_CUT_AT, guids['landing'], 109),
+            cue_camera(LANDING_CUT_AT, guids['rise'], -1),
+            cue_camera(LANDING_CUT_AT, guids['rise_track'], -1),
+        ], once=True, name=node.name, pos=node.pos, guid=node.guid)
 
     order = []
     for c in seq.children:
@@ -292,12 +416,26 @@ def build_tree(guids):
         if name == 'ShootDownAirShip':
             order += added
             continue
+        if c.guid == TOUCH_DOWN_ROUTE:
+            c = touch_down_timeline(c)
         order.append(c)
         if name == 'AirShip Fall Lightning':
             order += after_lightning
-        elif name == 'ToTouchDownIsland':
-            order += after_touch_down
     seq.children = order
+
+    # State10 (着地の後の咆哮): 着地カメラから竜の子の寄りカメラへ、咆哮の間にゆっくり寄る
+    def roar_camera(src, name, priority):
+        return with_params(clone(src, name), prefabPurposeCamera_=ROAR_CLOSE_CAMERA, priority_=str(priority))
+
+    order = []
+    for c in roar_seq.children:
+        order.append(c)
+        if label(c) == 'Enable TouchDownIsland ProductionCamera':
+            order += [once(roar_camera(SRC_ROAR_CAMERA_ON, 'Enable Roar Close Camera', 101)),
+                      once(camera(SRC_CAMERA_OFF, 'Disable Landing Camera', guids['landing'], -1))]
+        elif c.guid == SRC_ROAR_CAMERA_OFF:
+            order.append(roar_camera(SRC_ROAR_CAMERA_OFF, 'Disable Roar Close Camera', -1))
+    roar_seq.children = order
 
     for node, kv in params:
         bt_edits.set_params(tree, node.guid, kv, cat)
@@ -317,6 +455,7 @@ def build_tree(guids):
 
 def main():
     guids = build_scene()
+    build_prefab()
     write_route('ToDestroyAirShip', TO_AIRSHIP)
     write_route('TouchDownIsLand', TOUCH_DOWN)
     build_tree(guids)

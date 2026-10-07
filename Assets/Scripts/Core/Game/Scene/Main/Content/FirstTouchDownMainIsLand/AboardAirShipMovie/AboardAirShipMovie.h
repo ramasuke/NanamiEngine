@@ -33,6 +33,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
             , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context);
 
         static Coroutine::Task<void> PlayAsync(std::shared_ptr<AboardAirShipMovie> movie);
+        /** @brief 演出を流さず、船が着いた後の状態にする。主人公を出す前に呼ぶ */
+        static void DockImmediately(FirstTouchDownMainIsLandSceneContext& context);
         void Cancel() { isCancelled_ = true; }
 
     private:
@@ -46,7 +48,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         Coroutine::Task<void> AirShipMovieOpeningShotAsync      (std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> shot, float duration_secs);
         Coroutine::Task<void> AirShipMovieJoinPlayerCameraShotAsync(std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> shot, float duration_secs);
         void FadeOutTitleLogo() const;
-        void LoosenDeckProps() const;
+        static void LoosenDeckProps(FirstTouchDownMainIsLandSceneContext& context);
 
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::weak_ptr<FirstTouchDownMainIsLandSceneContext> context_;

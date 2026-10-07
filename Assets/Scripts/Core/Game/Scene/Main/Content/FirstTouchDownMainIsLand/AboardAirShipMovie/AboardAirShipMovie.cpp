@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
@@ -10,7 +11,9 @@
 #include "Engine/Core/Coroutine/Awaitable/WaitForTweenBody/Coroutine_WaitForTweenBody.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
+#include "Engine/Core/Physics/Physics.h"
 #include "Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
+#include "Engine/Module/Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
@@ -49,6 +52,23 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     Coroutine::Task<void> AboardAirShipMovie::StagingAsync(const std::shared_ptr<AboardAirShipMovie> movie)
     {
         co_await movie->AirShipMovieStagingAsync();
+    }
+
+    void AboardAirShipMovie::DockImmediately(FirstTouchDownMainIsLandSceneContext& context)
+    {
+        const auto airShip = context.AirShip()->Entity().lock();
+        if (!airShip)
+            return;
+
+        const auto& docked = context.AirShipSecondMoveFromTarget();
+        airShip->Transform().SetWorldPos(docked.GetWorldPos());
+        airShip->Transform().SetWorldRot(docked.GetWorldRot());
+        // NOTE: Kinematic は Transform の差分を速度にして運ばれるので、物理側も瞬間移動させておく
+        NanamiEngine::Core::Application::ApplicationBase::Physics().Bodies().SyncTransforms(*airShip);
+
+        context.SecondVirtualCamera()->OnDisable();
+        context.BoundryAirShipCollider().OnDestroy();
+        LoosenDeckProps(context);
     }
 
     bool AboardAirShipMovie::ShouldStop() const
@@ -110,12 +130,12 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         playerAvatar_.lock()->PlayerTransform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
         context_.lock()->BoundryAirShipCollider().OnDestroy();
-        LoosenDeckProps();
+        LoosenDeckProps(*Context());
     }
 
-    void AboardAirShipMovie::LoosenDeckProps() const
+    void AboardAirShipMovie::LoosenDeckProps(FirstTouchDownMainIsLandSceneContext& context)
     {
-        const auto deckProps = Context()->AirShipDeckProps();
+        const auto deckProps = context.AirShipDeckProps();
         if (!deckProps)
             return;
 

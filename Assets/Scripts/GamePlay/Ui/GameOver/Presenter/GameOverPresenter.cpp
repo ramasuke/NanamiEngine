@@ -173,7 +173,7 @@ namespace GamePlay::Ui
             return;
         }
 
-        RequestSceneChange(*currentSceneType);
+        RequestSceneChange(*currentSceneType, { .isRetry = true });
     }
 
     void GameOverPresenter::ReturnToTitle()
@@ -181,9 +181,11 @@ namespace GamePlay::Ui
         RequestSceneChange(GameCore::Scene::Main::SceneType::Title);
     }
 
-    void GameOverPresenter::RequestSceneChange(const GameCore::Scene::Main::SceneType sceneType)
+    void GameOverPresenter::RequestSceneChange(
+        const GameCore::Scene::Main::SceneType sceneType,
+        const GameCore::Scene::Main::SceneTransitionOptions options)
     {
-        GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
+        GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType, options);
         screen_->Close();
         phase_ = Phase::LeavingByLoading;
     }

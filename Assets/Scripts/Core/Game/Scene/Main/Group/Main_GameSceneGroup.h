@@ -31,6 +31,8 @@ namespace GameCore::Scene::Main
         void Dispose();
         /** @brief 最後に切り替えたシーン。まだ一度も切り替えていなければ空 */
         [[nodiscard]] std::optional<SceneType> CurrentSceneType() const { return currentSceneType_; }
+        /** @brief 最後の切り替えのオプション。出ていくシーンの Exit からも、入るシーンの Init からも同じものが読める */
+        [[nodiscard]] const SceneTransitionOptions& TransitionOptions() const { return transitionOptions_; }
         /** @brief 切り替えの要求が残っているか、切り替えの途中(ロード画面が覆っている間)か */
         [[nodiscard]] bool HasPendingChange() const { return pendingRequest_.has_value() || phase_ != Phase::Idle; }
         /** @brief 入場を終えた今のシーンのコンテキスト。切り替えの途中や入場前は nullptr */
@@ -78,6 +80,7 @@ namespace GameCore::Scene::Main
         std::shared_ptr<GamePlay::Ui::LoadingScreenUi> loadingScreen_;
         std::optional<ChangeRequest> pendingRequest_;
         std::optional<ChangeRequest> coveringRequest_;
+        SceneTransitionOptions transitionOptions_;
         Phase phase_ = Phase::Idle;
     };
 

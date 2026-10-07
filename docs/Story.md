@@ -160,6 +160,11 @@
    （爆発・船に付く炎と黒煙・揺れ・雷）→ `AirShip Fall Camera`（南西から船を横に見る）で、船が船首から傾いて雲の下へ落ちる
    （`FallIsland`）→ 竜が落ちる船の横を急降下し、桟橋の下から上がって着地する。船は雲の下へ消える（残骸は置かない。
    青年の「墜ちた船を直したい」は造船所と一緒に決める）。配置・ルート・BT は `python tools/art/airship_shootdown.py` で組み直す。
+   着地までのカメラ (2026-10-06。`ToTouchDownIsland` はルートとカメラ切替を時刻で並べた `ActionTimeline`): 墜落カメラのまま竜の急降下を
+   見せる → 島の下へ潜った所で `Dragon Rise Camera`（桟橋の階段から南の空。縁の向こうから竜がせり上がる）→ 同じ位置の
+   `Dragon Rise Track Camera`（LookAt で見上げる）→ 頭上を越え始めたら `Dragon Landing Camera`（草地の北から桟橋を見る。竜は北を
+   向いたまま手前に降り、奥の桟橋にプレイヤーが見える）→ State10 の咆哮で、竜の子の `FirstTouchDownIsland ProductionCamera Close` へ
+   4 秒かけて寄る。カットはカメラの `blendIn_secs_` 0.01（0 だと Brain の追従補間になる）。
    音 (2026-09-29。BT の "Omen ..." ノード、`Sound::FadeBGM`): 竜が呼ばれたら到着時の BGM を下げて嵐の音だけにする → 雲の向こうの
    遠吠え → 島の警鐘（教官の「鐘を鳴らせ！」と対。`ActionInstructure Appear Dragon`）→ 不穏な BGM `Omen_DragonApproach` が上がる →
    火球が船に当たった瞬間に切り、急降下で戻し、着地の前に下げる → 静けさの中で着地 → 咆哮と同時に戦闘 BGM。

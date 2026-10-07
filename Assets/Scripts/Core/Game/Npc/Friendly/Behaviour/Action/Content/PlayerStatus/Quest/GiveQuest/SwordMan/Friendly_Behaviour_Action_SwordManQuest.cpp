@@ -14,7 +14,12 @@ namespace GameCore::Npc::Friendly::Behaviour
     {
         if (const auto swordManAvatar = PlayerAvatar::TryWhetherPlayerT<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>(GetPlayerAvatar()))
         {
-            swordManAvatar->PlayerStatus().Quest().Subscribe(quest_);
+            auto& quests = swordManAvatar->PlayerStatus().Quest();
+            // NOTE: 死んでやり直すと BT は最初から流れるので、終えたクエストは渡し直さない
+            if (quest_ && context.PlayerCompleteQuest().CheckCompleted(quest_->QuestType()))
+                return TickStatus::Success;
+
+            quests.Subscribe(quest_);
             return TickStatus::Success;
         }
         return TickStatus::Failure;

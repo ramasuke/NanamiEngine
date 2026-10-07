@@ -145,6 +145,8 @@ namespace GameCore::Scene::Main
         if (gameWindow->IsSceneLoading())
             gameWindow->CancelSceneLoad();
 
+        transitionOptions_ = request.options;
+
         if (const auto current = currentScene_.lock())
         {
             current->Exit();
