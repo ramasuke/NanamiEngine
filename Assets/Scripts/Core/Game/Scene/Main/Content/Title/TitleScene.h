@@ -7,7 +7,9 @@ namespace GameCore::Scene::Main
     class TitleScene final : public GameMainSceneBase<TitleSceneContext>
     {
     public:
-        explicit TitleScene(const std::weak_ptr<TitleSceneContext>& context, GameSceneBaseContext baseContext);
+        explicit TitleScene(
+            const std::weak_ptr<TitleSceneContext>& context,
+            GameSceneBaseContext baseContext);
 
     private:
         void OnInit() override;

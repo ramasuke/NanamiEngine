@@ -12,7 +12,10 @@ namespace GamePlay::Network
         return customDispatcherGroup_.value();
     }
 
-    void CustomNetworkRunner::StartRelay(const std::string& sessionKey, const RelayServerSettings& relay, const RelayRoom& room)
+    void CustomNetworkRunner::StartRelay(
+        const std::string& sessionKey,
+        const RelayServerSettings& relay,
+        const RelayRoom& room)
     {
         pendingRelayStart_ = RelayStart{ sessionKey, relay, room, std::make_shared<RelayRoomStatus>() };
         Start({});

@@ -82,8 +82,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         /** @return 再生中の移動系クリップ(Idle/Walk/Run...)のブレンド率の合計 [0,1]。AnimationTree が無ければ 1 */
         [[nodiscard]] float LocomotionBlendRate() const;
         void MoveForward(MoveSpeedRamp& ramp, StatusParameter::MoveSpeed maxSpeed, float accelerationTime_secs, float decelerationTime_secs) const;
-        // VisitTransitions で CycleItem / UseItem を宣言したStateだけが呼ぶ（アイテム欄の表示がその宣言を見ている）
-        /** @return 使うモーションのステートへ移ったら true。そのフレームは呼び出し元の遷移を見ない */
         bool UpdateItemPouchInput() const;
         [[nodiscard]] Damage::PhysicsPower BuffedAttackPower(Damage::PhysicsPower base) const;
         bool UpdateTransitions() const;

@@ -51,7 +51,6 @@ namespace GameCore
         [[nodiscard]] Scene::Main::GameSceneGroup& Scenes() const { return *sceneGroup_; }
         [[nodiscard]] Scene::Sub:: GameSceneGroup& SubScenes() const;
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return *loadingScreen_; }
-        /** @brief ステージ選択で決めた部屋を、シーンを跨いでステージの入室まで持つ */
         [[nodiscard]] GamePlay::Network::StageMatchmaker& Matchmaker() { return matchmaker_; }
 
     private:

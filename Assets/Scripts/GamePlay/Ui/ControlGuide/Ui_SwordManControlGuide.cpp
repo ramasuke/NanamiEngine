@@ -252,7 +252,8 @@ namespace GamePlay::Ui
     }
 
     void SwordManControlGuide::ReportFocusAnchor(
-        const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar, const Row focusedRow) const
+        const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar,
+        const Row focusedRow) const
     {
         if (!swordManAvatar)
             return;

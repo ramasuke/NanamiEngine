@@ -15,9 +15,6 @@ using GameCore::Scene::Main::SceneLoadStep;
 
 namespace
 {
-    /**
-     * @brief 段階ごとの進捗の取り分 (合計 1.0)
-     */
     float LoadingScreenStepWeight(const SceneLoadStep step, const bool hasNetworkStep)
     {
         switch (step)
@@ -333,9 +330,9 @@ namespace GamePlay::Ui
         if (const auto visualRoot = visualRoot_.get())
             visualRoot->SetEnable(isEnabled);
 
-        // 親の SetEnable で一律に書き換わった子の出し分けを付け直す
         if (const auto routeMap = routeMap_.get())
             routeMap->SetShown(isEnabled);
+        
         if (const auto percentText = percentText_.get())
             percentText->SetEnable(isEnabled && step_ != SceneLoadStep::Failed);
     }

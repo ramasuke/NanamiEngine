@@ -22,11 +22,10 @@
 
 namespace GameCore::Scene::Main
 {
-    /** @brief OnEnterAsync の結果。既定値は失敗なので、コルーチン内の例外で既定値が返っても成功扱いにならない */
+    /** @brief OnEnterAsync の結果 */
     struct EnterResult final
     {
         bool        succeeded = false;
-        /** 失敗したときにロード画面へ出す文言。空なら汎用の文言 */
         std::string failure;
 
         [[nodiscard]] static EnterResult Ok() { return { true, {} }; }
@@ -87,7 +86,6 @@ namespace GameCore::Scene::Main
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
         /** @brief GameManage.scene と一緒に常駐しているロード画面 */
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return baseContext_.LoadingScreen(); }
-        /** @brief 入場で読み込んだシーン。Exit / Dispose で自動的に外す */
         [[nodiscard]] std::weak_ptr<NanamiEngine::Scene::Scene> MainScene() const { return mainScene_; }
     };
 

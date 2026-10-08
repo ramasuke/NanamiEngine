@@ -10,7 +10,6 @@ namespace NanamiEngine::Platform::Input
     {
         constexpr int KeyCode(const Key key) { return static_cast<int>(key); }
 
-        // 列挙の値が DxLib と一致していること (代表値だけ。他は同じ表から写している)
         static_assert(KeyCode(Key::Escape)   == KEY_INPUT_ESCAPE);
         static_assert(KeyCode(Key::Num1)     == KEY_INPUT_1);
         static_assert(KeyCode(Key::Num0)     == KEY_INPUT_0);

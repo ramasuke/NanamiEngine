@@ -25,7 +25,6 @@ namespace GameCore::Scene::Main
         : sceneContexts_(std::move(sceneContexts))
         , loadingScreen_(loadingScreen)
     {
-        // シーンは Game と同じだけ生きるので、this を捕まえてよい
         const auto baseContext = GameSceneBaseContext(subSceneStack, loadingScreen,
             [this](const SceneType type, const SceneTransitionOptions options) { RequestChangeScene(type, options); });
 
@@ -38,7 +37,7 @@ namespace GameCore::Scene::Main
         AddScene(SceneType::MainIsland, std::make_shared<MainIslandScene>(
             CatchContext<MainIslandSceneContext>(), baseContext));
 
-        // NOTE: 草原の context は本編とイベント用のステージで2つあり、sceneType_ で見分ける
+        // NOTE: 草原の context は本編とイベント用のステージで2つあるため分岐
         for (const auto type : { SceneType::GrassLand, SceneType::GrassLandEvent })
         {
             const auto context = CatchContext<GrassLandSceneContext>(
@@ -78,6 +77,7 @@ namespace GameCore::Scene::Main
 
             if (loadingScreen_)
                 loadingScreen_->BeginHide();
+            
             phase_ = Phase::Idle;
         }
     }
@@ -137,10 +137,10 @@ namespace GameCore::Scene::Main
 
     void GameSceneGroup::SwitchScene(const ChangeRequest& request)
     {
+        //WARNING: 処理としては消した方が良いが、実行タイミング敵に物理でエラーがはっせいしていたため残す。
         Time::SkipNextFrame();
         Time::SkipNextFrame();
 
-        // 前の入場がまだ読み込み中なら捨てる。残すと、読み終えたときにメインシーンへ差し込まれてしまう
         const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
         if (gameWindow->IsSceneLoading())
             gameWindow->CancelSceneLoad();
@@ -164,7 +164,6 @@ namespace GameCore::Scene::Main
         catch (const std::exception& exception)
         {
             NanamiEngine::Module::LogError("GameSceneGroup: シーン遷移に失敗しました: " + std::string(exception.what()));
-            // 入場が終わる見込みが無いので、ロード画面を明けられるように手放す
             currentScene_.reset();
         }
     }

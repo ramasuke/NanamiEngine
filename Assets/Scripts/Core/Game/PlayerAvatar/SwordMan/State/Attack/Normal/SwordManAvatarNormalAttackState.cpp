@@ -65,7 +65,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
         visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());

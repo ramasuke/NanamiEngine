@@ -40,7 +40,6 @@ namespace GameCore::Scene::GrassLand
         constexpr float ARRIVAL_GROUND_PROBE_HEIGHT   = 20.0f;
         constexpr float ARRIVAL_GROUND_PROBE_DISTANCE = 120.0f;
 
-        /** @brief tweenyは尺0の区間で0/0になりNaNを返すので、最短でも1msにする */
         int ArrivalDuring_msecs(const int msecs) { return (std::max)(msecs, 1); }
 
         float ArrivalGroundY(const glm::vec3& pos, const float referenceY)
@@ -509,9 +508,9 @@ namespace GameCore::Scene::GrassLand
             }
         }
 
-        // 歩き終えていればもうIdleで立ち止まっている。途中で打ち切ったときだけ、立ち止まる位置へ送ってから操作を返す
         if (isWalkFinished_)
             return;
+        
         isWalkFinished_ = true;
         controlLock_.Release();
 

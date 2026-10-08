@@ -59,6 +59,7 @@ namespace GamePlay::Ui
     {
         if (isPartsCaught_)
             return;
+        
         isPartsCaught_ = true;
 
         appearFade_.Set(TutorialFadeTween(appearDuration_secs_));

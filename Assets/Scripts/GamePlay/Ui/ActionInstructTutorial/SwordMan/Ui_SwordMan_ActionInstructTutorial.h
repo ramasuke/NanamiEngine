@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
 namespace GamePlay::Ui
 {
-    // 戦闘訓練クエストの課題カード。操作ガイドの注目行の右に吸い付く
+    // 戦闘訓練クエストの課題カード
     class SwordManActionInstructTutorial final : public Component::ComponentBase,
                                                  public LifeCycleCallback::IUpdatable
     {

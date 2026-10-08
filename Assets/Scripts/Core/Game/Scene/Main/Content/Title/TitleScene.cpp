@@ -7,7 +7,9 @@
 
 namespace GameCore::Scene::Main
 {
-    TitleScene::TitleScene(const std::weak_ptr<TitleSceneContext>& context, const GameSceneBaseContext baseContext)
+    TitleScene::TitleScene(
+        const std::weak_ptr<TitleSceneContext>& context,
+        const GameSceneBaseContext baseContext)
         : GameMainSceneBase(context, std::move(baseContext))
     {
     }

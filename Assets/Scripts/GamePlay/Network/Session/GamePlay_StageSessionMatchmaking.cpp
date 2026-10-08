@@ -20,12 +20,15 @@ namespace GamePlay::Network
         constexpr int STAGE_SESSION_CONNECT_TIMEOUT_MSECS = 5000;
     }
 
-    void StageMatchmaker::SetNextRoom(RelayRoom room)
+    void StageMatchmaker::SetNextRoom(
+        RelayRoom room)
     {
         nextRoom_ = std::move(room);
     }
 
-    Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(std::weak_ptr<CustomNetworkRunner> runner, std::string stageKey)
+    Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(
+        std::weak_ptr<CustomNetworkRunner> runner,
+        std::string stageKey)
     {
         return JoinOrHostAsync(std::move(runner), std::move(stageKey), std::exchange(nextRoom_, RelayRoom{}));
     }
@@ -52,6 +55,7 @@ namespace GamePlay::Network
                 const auto locked = runner.lock();
                 if (!locked)
                     co_return std::nullopt;
+                
                 locked->StartRelay(stageKey, relay, room);
             }
 
@@ -87,6 +91,7 @@ namespace GamePlay::Network
                 finder.Update();
                 if (finder.Found() || Time::NowMilliseconds() - startedMs >= searchMsecs)
                     break;
+                
                 co_await Coroutine::WaitYield();
             }
             host = finder.Found();
@@ -117,6 +122,7 @@ namespace GamePlay::Network
 
         if (const auto locked = runner.lock())
             locked->StartHost(stageKey);
+        
         co_return std::nullopt;
     }
 }

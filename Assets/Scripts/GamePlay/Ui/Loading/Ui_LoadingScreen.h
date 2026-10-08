@@ -28,8 +28,6 @@ namespace GamePlay::Ui
 {
     /**
      * @brief シーン遷移中に出す全画面ロード画面
-     * NOTE: ロード開始より前から常駐していないと動かない
-     * NOTE: ChangeMainScene の間は Time::DeltaTime() が 0 なので、時間は壁時計で進める
      */
     class LoadingScreenUi final : public Component::ComponentBase,
                                   public LifeCycleCallback::IStartable,
@@ -38,7 +36,6 @@ namespace GamePlay::Ui
     public:
         /**
          * @brief 表示を始める。既に出ているときは幕を下ろさずに航路だけ差し替える
-         * @param from まだどのシーンにも居ない(起動直後)なら空
          */
         void Show(
             std::optional<GameCore::Scene::Main::SceneType> from,

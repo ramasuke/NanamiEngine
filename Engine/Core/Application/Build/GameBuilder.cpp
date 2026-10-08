@@ -6,7 +6,7 @@
 #include <cwctype>
 #include <fstream>
 #include <iterator>
-#include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string_view>
 #include <system_error>
@@ -34,13 +34,10 @@ namespace NanamiEngine::Core::Application::Build
         // AssetUpdatePresenter が作業ディレクトリ直下から読む
         constexpr wchar_t GAME_BUILD_INSTALLED_STATE_FILE[] = L"installed.json";
 
-        constexpr size_t GAME_BUILD_MAX_LOGGED_ERRORS = 50;
+        constexpr wchar_t GAME_BUILD_LOG_FILE[]       = L"GameBuild.log";
+        constexpr wchar_t GAME_BUILD_ERROR_LOG_FILE[] = L"GameBuild.errors.log";
 
-        struct GameBuildHandleCloser
-        {
-            void operator()(const HANDLE handle) const { CloseHandle(handle); }
-        };
-        using GameBuildHandle = std::unique_ptr<void, GameBuildHandleCloser>;
+        constexpr size_t GAME_BUILD_MAX_LOGGED_ERRORS = 50;
 
         std::wstring GameBuildToLower(std::wstring text)
         {
@@ -67,22 +64,12 @@ namespace NanamiEngine::Core::Application::Build
         return instance;
     }
 
-    GameBuilder::~GameBuilder()
-    {
-        Stop();
-    }
-
     bool GameBuilder::Begin(const BuildAction action)
     {
         if (IsBusy())
             return false;
-        if (worker_.joinable())
-            worker_.join();
 
-        {
-            std::lock_guard lock(reportMutex_);
-            report_ = BuildReport();
-        }
+        report_    = BuildReport();
         startTime_ = std::chrono::steady_clock::now();
 
         try
@@ -100,11 +87,13 @@ namespace NanamiEngine::Core::Application::Build
             const std::string& productName = BuildConfiguration::ProductName();
             if (const std::string reason = BuildConfiguration::ValidateProductName(productName); !reason.empty())
                 return RejectBegin("GameBuilder: 製品名を exe の名前に使えません (" + reason + ")");
+
             paths.exeFileName = std::filesystem::path(std::u8string(productName.begin(), productName.end()) + u8".exe");
 
             std::error_code ec;
             if (!BuildConfiguration::StartSceneGuid().empty() && !BuildConfiguration::FindStartSceneFile())
                 return RejectBegin("GameBuilder: 起動シーンが見つかりません。Build Settings で選び直してください (guid " + BuildConfiguration::StartSceneGuid() + ")");
+
             const std::string startScenePath = BuildConfiguration::StartScenePath();
             if (!std::filesystem::is_regular_file(paths.projectRoot / std::filesystem::path(std::u8string(startScenePath.begin(), startScenePath.end())), ec))
                 return RejectBegin("GameBuilder: 起動シーンのファイルがありません: " + startScenePath);
@@ -114,52 +103,56 @@ namespace NanamiEngine::Core::Application::Build
                 return RejectBegin("GameBuilder: 作業ディレクトリに .sln がちょうど 1 つある必要があります: " + PathToUtf8(paths.projectRoot));
             if (!std::filesystem::is_regular_file(paths.msBuild, ec))
                 return RejectBegin("GameBuilder: MSBuild が見つかりません。Build Settings で設定してください: " + PathToUtf8(paths.msBuild));
+
             // WARNING: 同期は出力先の古いファイルを消すので、プロジェクトと重なる出力先は受け付けない
             if (IsSameOrInside(paths.projectRoot, paths.outputRoot)
                 || IsSameOrInside(paths.outputRoot, paths.projectRoot / L"Assets")
                 || IsSameOrInside(paths.outputRoot, paths.projectRoot / L"ProjectConfig"))
                 return RejectBegin("GameBuilder: 出力先にはプロジェクト・Assets・ProjectConfig と重ならないフォルダを指定してください: " + PathToUtf8(paths.outputRoot));
 
-            cancelRequested_ = false;
-            phase_           = Phase::Compiling;
+            const std::filesystem::path logDirectory = BuildLogDirectory(paths);
+            std::filesystem::create_directories(logDirectory);
+
+            // コンソール出力は CP932 なので受け取らず、UTF-8 のファイルログから読む
+            const std::wstring commandLine = L"\"" + paths.msBuild.wstring() + L"\" \"" + paths.solution.wstring() + L"\""
+                L" -p:Configuration=" + paths.configuration + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
+                L" -p:NanamiApplicationMode=Game"
+                L" -m -nologo -nodeReuse:false -noConsoleLogger"
+                L" \"-flp:LogFile=" + (logDirectory / GAME_BUILD_LOG_FILE).wstring() + L";Verbosity=minimal;Encoding=UTF-8\""
+                L" \"-flp1:LogFile=" + (logDirectory / GAME_BUILD_ERROR_LOG_FILE).wstring() + L";ErrorsOnly;Encoding=UTF-8\"";
+
+            if (!msBuild_.Start(commandLine, paths.projectRoot))
+            {
+                std::vector<std::string> lines;
+                msBuild_.CopyLines(lines, 0);
+                return RejectBegin("GameBuilder: MSBuild を起動できませんでした: " + (lines.empty() ? std::string() : lines.back()));
+            }
+
+            paths_ = paths;
+            busy_  = true;
             Module::Log("GameBuilder: Game 版 (" + PathToUtf8(paths.configuration) + ") のビルドを開始しました: " + PathToUtf8(paths.solution));
-            worker_ = std::thread([this, paths]() { Run(paths); });
             return true;
         }
         catch (const std::exception& exception)
         {
-            phase_ = Phase::Idle;
             return RejectBegin("GameBuilder: ビルドを開始できませんでした: " + std::string(exception.what()));
         }
     }
 
-    void GameBuilder::Cancel()
+    void GameBuilder::Update()
     {
-        if (IsBusy())
-            cancelRequested_ = true;
+        if (busy_ && !msBuild_.IsRunning())
+            OnMsBuildFinished();
     }
 
-    void GameBuilder::Stop()
+    void GameBuilder::Cancel()
     {
-        cancelRequested_ = true;
-        if (worker_.joinable())
-            worker_.join();
+        msBuild_.Cancel();
     }
 
     bool GameBuilder::IsBusy() const
     {
-        return phase_ != Phase::Idle;
-    }
-
-    const char* GameBuilder::PhaseLabel() const
-    {
-        switch (phase_.load())
-        {
-        case Phase::Idle:      return "Idle";
-        case Phase::Compiling: return "Compiling";
-        case Phase::Packaging: return "Packaging";
-        }
-        return "Idle";
+        return busy_;
     }
 
     std::string GameBuilder::ElapsedLabel() const
@@ -170,78 +163,78 @@ namespace NanamiEngine::Core::Application::Build
         return buffer;
     }
 
-    BuildReport GameBuilder::LastReport() const
+    const BuildReport& GameBuilder::LastReport() const
     {
-        std::lock_guard lock(reportMutex_);
         return report_;
     }
 
     void GameBuilder::ReportError(const std::string& message)
     {
         Module::LogError(message);
-        std::lock_guard lock(reportMutex_);
         report_.errors.push_back(message);
     }
 
     bool GameBuilder::RejectBegin(const std::string& message)
     {
         ReportError(message);
-        std::lock_guard lock(reportMutex_);
         report_.outcome = BuildOutcome::Failed;
         report_.elapsed = ElapsedLabel();
         return false;
     }
 
-    void GameBuilder::Run(const Paths& paths)
+    void GameBuilder::OnMsBuildFinished()
     {
-        StepResult result = StepResult::Failed;
+        if (msBuild_.WasCanceled())
+        {
+            Module::Log("GameBuilder: ビルドを中止しました");
+            Finish(BuildOutcome::Canceled);
+            return;
+        }
+
+        const std::optional<int> exitCode = msBuild_.ExitCode();
+        if (exitCode != 0)
+        {
+            const std::filesystem::path logDirectory = BuildLogDirectory(paths_);
+            LogBuildErrors(logDirectory / GAME_BUILD_ERROR_LOG_FILE);
+            ReportError("GameBuilder: ビルドに失敗しました (exit code " + (exitCode ? std::to_string(*exitCode) : std::string("?")) + ")。全体のログ: "
+                        + PathToUtf8(logDirectory / GAME_BUILD_LOG_FILE));
+            Finish(BuildOutcome::Failed);
+            return;
+        }
+
+        bool packaged = false;
         try
         {
-            phase_ = Phase::Compiling;
-            result = RunMsBuild(paths);
-            if (result == StepResult::Succeeded)
-            {
-                phase_ = Phase::Packaging;
-                result = Package(paths);
-            }
+            packaged = Package();
         }
         catch (const std::exception& exception)
         {
             ReportError("GameBuilder: " + std::string(exception.what()));
-            result = StepResult::Failed;
+        }
+        if (!packaged)
+        {
+            Finish(BuildOutcome::Failed);
+            return;
         }
 
-        const std::filesystem::path exePath = paths.outputRoot / paths.exeFileName;
-        const std::string           elapsed = ElapsedLabel();
-        if (result == StepResult::Succeeded)
-        {
-            Module::Log("GameBuilder: ゲームのビルドが完了しました: " + PathToUtf8(exePath) + " (" + elapsed + ")");
-            if (paths.runAfterBuild)
-                LaunchGame(paths);
-        }
-        else if (result == StepResult::Canceled)
-        {
-            Module::Log("GameBuilder: ビルドを中止しました");
-        }
-
-        {
-            std::lock_guard lock(reportMutex_);
-            report_.elapsed = elapsed;
-            report_.exePath = result == StepResult::Succeeded ? PathToUtf8(exePath) : std::string();
-            switch (result)
-            {
-            case StepResult::Succeeded: report_.outcome = BuildOutcome::Succeeded; break;
-            case StepResult::Failed:    report_.outcome = BuildOutcome::Failed;    break;
-            case StepResult::Canceled:  report_.outcome = BuildOutcome::Canceled;  break;
-            }
-        }
-        phase_ = Phase::Idle;
+        Module::Log("GameBuilder: ゲームのビルドが完了しました: " + PathToUtf8(paths_.outputRoot / paths_.exeFileName) + " (" + ElapsedLabel() + ")");
+        if (paths_.runAfterBuild)
+            LaunchGame();
+        Finish(BuildOutcome::Succeeded);
     }
 
-    void GameBuilder::LaunchGame(const Paths& paths)
+    void GameBuilder::Finish(const BuildOutcome outcome)
     {
-        const std::filesystem::path exePath          = paths.outputRoot / paths.exeFileName;
-        const std::wstring          workingDirectory = paths.outputRoot.wstring();
+        report_.outcome = outcome;
+        report_.elapsed = ElapsedLabel();
+        report_.exePath = outcome == BuildOutcome::Succeeded ? PathToUtf8(paths_.outputRoot / paths_.exeFileName) : std::string();
+        busy_ = false;
+    }
+
+    void GameBuilder::LaunchGame()
+    {
+        const std::filesystem::path exePath          = paths_.outputRoot / paths_.exeFileName;
+        const std::wstring          workingDirectory = paths_.outputRoot.wstring();
         std::wstring                commandLine      = L"\"" + exePath.wstring() + L"\"";
 
         // ゲームは Assets/ と ProjectConfig/ を作業ディレクトリから読む
@@ -259,159 +252,82 @@ namespace NanamiEngine::Core::Application::Build
         Module::Log("GameBuilder: ビルドしたゲームを起動しました: " + PathToUtf8(exePath));
     }
 
-    GameBuilder::StepResult GameBuilder::RunMsBuild(const Paths& paths)
+    bool GameBuilder::Package()
     {
-        const std::filesystem::path logDirectory = BuildLogDirectory(paths);
-        const std::filesystem::path logPath      = logDirectory / L"GameBuild.log";
-        const std::filesystem::path errorLogPath = logDirectory / L"GameBuild.errors.log";
-        std::filesystem::create_directories(logDirectory);
-
-        // コンソール出力は CP932 なので受け取らず、UTF-8 のファイルログから読む
-        std::wstring commandLine = L"\"" + paths.msBuild.wstring() + L"\" \"" + paths.solution.wstring() + L"\""
-            L" -p:Configuration=" + paths.configuration + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
-            L" -p:NanamiApplicationMode=Game"
-            L" -m -nologo -nodeReuse:false -noConsoleLogger"
-            L" \"-flp:LogFile=" + logPath.wstring() + L";Verbosity=minimal;Encoding=UTF-8\""
-            L" \"-flp1:LogFile=" + errorLogPath.wstring() + L";ErrorsOnly;Encoding=UTF-8\"";
-
-        // エディタが落ちても MSBuild と cl.exe が残らないよう、Job に入れておく
-        const GameBuildHandle job(CreateJobObjectW(nullptr, nullptr));
-        if (!job)
-        {
-            ReportError("GameBuilder: Job Object を作れませんでした (GetLastError " + std::to_string(GetLastError()) + ")");
-            return StepResult::Failed;
-        }
-        JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit = {};
-        limit.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
-        SetInformationJobObject(job.get(), JobObjectExtendedLimitInformation, &limit, sizeof(limit));
-
-        STARTUPINFOW        startupInfo = {};
-        PROCESS_INFORMATION processInfo = {};
-        startupInfo.cb = sizeof(startupInfo);
-        const std::wstring workingDirectory = paths.projectRoot.wstring();
-        if (!CreateProcessW(nullptr, commandLine.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW | CREATE_SUSPENDED,
-                            nullptr, workingDirectory.c_str(), &startupInfo, &processInfo))
-        {
-            ReportError("GameBuilder: MSBuild を起動できませんでした (GetLastError " + std::to_string(GetLastError()) + ")");
-            return StepResult::Failed;
-        }
-        const GameBuildHandle process(processInfo.hProcess);
-        const GameBuildHandle thread (processInfo.hThread);
-
-        if (!AssignProcessToJobObject(job.get(), process.get()))
-        {
-            TerminateProcess(process.get(), 1);
-            ReportError("GameBuilder: MSBuild を Job に入れられませんでした (GetLastError " + std::to_string(GetLastError()) + ")");
-            return StepResult::Failed;
-        }
-        ResumeThread(thread.get());
-
-        while (WaitForSingleObject(process.get(), 100) == WAIT_TIMEOUT)
-        {
-            if (cancelRequested_)
-            {
-                TerminateJobObject(job.get(), 1);
-                WaitForSingleObject(process.get(), INFINITE);
-                return StepResult::Canceled;
-            }
-        }
-
-        // 正常に終わった後は、cl.exe が起動した mspdbsrv.exe などを Job を閉じるときに巻き込まない
-        limit.BasicLimitInformation.LimitFlags = 0;
-        SetInformationJobObject(job.get(), JobObjectExtendedLimitInformation, &limit, sizeof(limit));
-
-        DWORD exitCode = 1;
-        GetExitCodeProcess(process.get(), &exitCode);
-        if (exitCode != 0)
-        {
-            LogBuildErrors(errorLogPath, paths);
-            ReportError("GameBuilder: ビルドに失敗しました (exit code " + std::to_string(exitCode) + ")。全体のログ: " + PathToUtf8(logPath));
-            return StepResult::Failed;
-        }
-        return StepResult::Succeeded;
-    }
-
-    GameBuilder::StepResult GameBuilder::Package(const Paths& paths)
-    {
-        const std::filesystem::path builtExe = FindBuiltExe(paths);
+        const std::filesystem::path builtExe = FindBuiltExe(paths_);
         if (builtExe.empty())
         {
-            ReportError("GameBuilder: ビルドした exe が見つかりません: " + PathToUtf8(paths.projectRoot / L"x64" / L"Game" / paths.configuration));
-            return StepResult::Failed;
+            ReportError("GameBuilder: ビルドした exe が見つかりません: " + PathToUtf8(paths_.projectRoot / L"x64" / L"Game" / paths_.configuration));
+            return false;
         }
 
-        std::filesystem::create_directories(paths.outputRoot);
+        std::filesystem::create_directories(paths_.outputRoot);
         try
         {
-            CopyIfChanged(builtExe, paths.outputRoot / paths.exeFileName);
-            // exe の隣の DLL も持っていく (/MD のときの VC++ ランタイム DLL。NanamiEngine.Game.props の NanamiCopyCrtRedist が置く)
+            CopyIfChanged(builtExe, paths_.outputRoot / paths_.exeFileName);
+            // exe の隣の DLL も持っていく
             for (const auto& entry : std::filesystem::directory_iterator(builtExe.parent_path()))
             {
                 if (entry.is_regular_file() && entry.path().extension() == L".dll")
-                    CopyIfChanged(entry.path(), paths.outputRoot / entry.path().filename());
+                    CopyIfChanged(entry.path(), paths_.outputRoot / entry.path().filename());
             }
         }
         catch (const std::filesystem::filesystem_error& exception)
         {
             ReportError("GameBuilder: exe をコピーできませんでした。前回ビルドしたゲームが起動中なら閉じてください: " + std::string(exception.what()));
-            return StepResult::Failed;
+            return false;
         }
 
+        const auto copyAll = [](const std::wstring&) { return true; };
         MirrorStats stats;
-        if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, L"Assets", IsPackagedAsset, stats); result != StepResult::Succeeded)
-            return result;
+        MirrorDirectory(paths_.projectRoot, paths_.outputRoot, L"Assets", IsPackagedAsset, stats);
         for (const auto directory : GAME_BUILD_PACKAGED_PROJECT_CONFIGS)
-        {
-            if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, directory, [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
-                return result;
-        }
+            MirrorDirectory(paths_.projectRoot, paths_.outputRoot, directory, copyAll, stats);
         // 製品名と起動シーン。ProjectConfig/Build/ 直下の MSBuild のパスなどはエディタ専用なので配らない
-        if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, Configuration::BuildConfiguration::RuntimeConfigDirectory(), [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
-            return result;
+        MirrorDirectory(paths_.projectRoot, paths_.outputRoot, Configuration::BuildConfiguration::RuntimeConfigDirectory(), copyAll, stats);
 
         Module::Log("GameBuilder: アセットと設定を同期しました (コピー " + std::to_string(stats.copied) + " 件 / 削除 " + std::to_string(stats.removed) + " 件)");
-        return WriteAssetUpdateState(paths);
+        return WriteAssetUpdateState();
     }
 
-    GameBuilder::StepResult GameBuilder::WriteAssetUpdateState(const Paths& paths)
+    bool GameBuilder::WriteAssetUpdateState()
     {
-        const std::filesystem::path installedState = paths.outputRoot / GAME_BUILD_INSTALLED_STATE_FILE;
-        if (!paths.assetUpdates)
+        const std::filesystem::path installedState = paths_.outputRoot / GAME_BUILD_INSTALLED_STATE_FILE;
+        if (!paths_.assetUpdates)
         {
             // 前回のビルドの installed.json が残っていると、無効にしたはずの更新が走る
             std::filesystem::remove(installedState);
-            return StepResult::Succeeded;
+            return true;
         }
 
-        const AssetUpdater::InstalledStateResult result = AssetUpdater::InstalledStateWriter(paths.outputRoot, installedState)
-            .Write([this] { return cancelRequested_.load(); });
-        if (result.canceled)
-            return StepResult::Canceled;
+        const AssetUpdater::InstalledStateResult result = AssetUpdater::InstalledStateWriter(paths_.outputRoot, installedState)
+            .Write([] { return false; });
         if (!result.ok)
         {
             ReportError("GameBuilder: installed.json を書けませんでした: " + result.error);
-            return StepResult::Failed;
+            return false;
         }
         Module::Log("GameBuilder: installed.json を書きました (" + std::to_string(result.entryCount) + " 件)");
-        return StepResult::Succeeded;
+        return true;
     }
 
-    GameBuilder::StepResult GameBuilder::MirrorDirectory(const std::filesystem::path& sourceRoot, const std::filesystem::path& destinationRoot,
-                                                         const std::filesystem::path& relativeDirectory, const MirrorFilter& filter, MirrorStats& stats) const
+    void GameBuilder::MirrorDirectory(
+        const std::filesystem::path& sourceRoot,
+        const std::filesystem::path& destinationRoot,
+        const std::filesystem::path& relativeDirectory, 
+        const MirrorFilter& filter,
+        MirrorStats& stats)
     {
         const std::filesystem::path source      = sourceRoot      / relativeDirectory;
         const std::filesystem::path destination = destinationRoot / relativeDirectory;
 
         std::error_code ec;
         if (!std::filesystem::is_directory(source, ec))
-            return StepResult::Succeeded;
+            return;
 
         std::unordered_set<std::wstring> keptKeys;
         for (const auto& file : CollectRegularFiles(source))
         {
-            if (cancelRequested_)
-                return StepResult::Canceled;
-
             const std::filesystem::path relative = relativeDirectory / file.lexically_relative(source);
             const std::wstring          key      = relative.generic_wstring();
             if (!filter(key))
@@ -424,13 +340,10 @@ namespace NanamiEngine::Core::Application::Build
         }
 
         if (!std::filesystem::is_directory(destination, ec))
-            return StepResult::Succeeded;
+            return;
 
         for (const auto& file : CollectRegularFiles(destination))
         {
-            if (cancelRequested_)
-                return StepResult::Canceled;
-
             const std::wstring key = (relativeDirectory / file.lexically_relative(destination)).generic_wstring();
             if (filter(key) && !keptKeys.contains(GameBuildToLower(key)))
             {
@@ -438,10 +351,10 @@ namespace NanamiEngine::Core::Application::Build
                 ++stats.removed;
             }
         }
-        return StepResult::Succeeded;
     }
 
-    std::vector<std::filesystem::path> GameBuilder::CollectRegularFiles(const std::filesystem::path& root)
+    std::vector<std::filesystem::path> GameBuilder::CollectRegularFiles(
+        const std::filesystem::path& root)
     {
         std::vector<std::filesystem::path> files;
         for (auto it = std::filesystem::recursive_directory_iterator(root); it != std::filesystem::recursive_directory_iterator(); ++it)
@@ -472,6 +385,7 @@ namespace NanamiEngine::Core::Application::Build
 
         std::filesystem::create_directories(destination.parent_path());
         std::filesystem::copy_file(source, destination, std::filesystem::copy_options::overwrite_existing);
+        
         // MSBuild の差分ビルドは更新日時で判断するので、元のファイルに揃える
         std::filesystem::last_write_time(destination, sourceTime);
         return true;
@@ -485,8 +399,10 @@ namespace NanamiEngine::Core::Application::Build
 
         if (std::ranges::any_of(GAME_BUILD_EXCLUDED_ASSET_NAMES, [&name](const std::wstring_view excluded) { return name == excluded; }))
             return false;
+        
         if (std::ranges::any_of(GAME_BUILD_EXCLUDED_ASSET_EXTENSIONS, [&lowered](const std::wstring_view extension) { return lowered.ends_with(extension); }))
             return false;
+        
         for (size_t begin = 0, end = lowered.find(L'/'); end != std::wstring::npos; begin = end + 1, end = lowered.find(L'/', begin))
         {
             const std::wstring_view directoryName = std::wstring_view(lowered).substr(begin, end - begin);
@@ -499,7 +415,9 @@ namespace NanamiEngine::Core::Application::Build
         });
     }
 
-    bool GameBuilder::IsSameOrInside(const std::filesystem::path& path, const std::filesystem::path& base)
+    bool GameBuilder::IsSameOrInside(
+        const std::filesystem::path& path,
+        const std::filesystem::path& base)
     {
         const auto normalize = [](const std::filesystem::path& target)
         {
@@ -507,6 +425,7 @@ namespace NanamiEngine::Core::Application::Build
             // "Build/Game/" のような末尾の区切りが空の要素として残ると、比較が素通りしてしまう
             if (!normalized.has_filename() && normalized.has_relative_path())
                 normalized = normalized.parent_path();
+            
             return normalized;
         };
 
@@ -566,7 +485,7 @@ namespace NanamiEngine::Core::Application::Build
         return std::string(utf8.begin(), utf8.end());
     }
 
-    void GameBuilder::LogBuildErrors(const std::filesystem::path& errorLogPath, const Paths& paths)
+    void GameBuilder::LogBuildErrors(const std::filesystem::path& errorLogPath)
     {
         std::error_code ec;
         if (!std::filesystem::is_regular_file(errorLogPath, ec))
@@ -588,6 +507,7 @@ namespace NanamiEngine::Core::Application::Build
             begin = end + 1;
             if (!line.empty() && line.back() == '\r')
                 line.pop_back();
+            
             if (line.empty())
                 continue;
 
@@ -597,7 +517,6 @@ namespace NanamiEngine::Core::Application::Build
         if (lineCount > GAME_BUILD_MAX_LOGGED_ERRORS)
         {
             Module::LogError("[Build] ...ほか " + std::to_string(lineCount - GAME_BUILD_MAX_LOGGED_ERRORS) + " 行: " + PathToUtf8(errorLogPath));
-            std::lock_guard lock(reportMutex_);
             report_.omittedErrorCount = lineCount - GAME_BUILD_MAX_LOGGED_ERRORS;
         }
     }

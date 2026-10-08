@@ -248,7 +248,7 @@ namespace NanamiEngine::Core::PopupWindow
             }
             ImGui::SameLine();
             ImGui::AlignTextToFramePadding();
-            ImGui::Text("Building: %s %s", gameBuilder.PhaseLabel(), gameBuilder.ElapsedLabel().c_str());
+            ImGui::Text("Building %s", gameBuilder.ElapsedLabel().c_str());
             return;
         }
 

@@ -16,7 +16,7 @@ namespace GamePlay::Ui
 {
     class ControlGuideRow;
 
-    // 操作ガイドの表示。行は rowPrefab_ から rows_ の子に生成し、VerticalLayoutGroup で積む
+    // 操作ガイドの表示
     class ControlGuide final : public Component::ComponentBase
     {
     public:
@@ -28,11 +28,9 @@ namespace GamePlay::Ui
             std::string_view label;
         };
 
-        /// 生成順を行の添字として使う
         void SpawnRows(std::size_t count);
         /// @param focusedRow チュートリアルが指している行
         void Present(bool isShown, std::span<const RowRequest> requests, std::optional<std::size_t> focusedRow, bool isFocusCleared);
-        /// 吹き出しを出す側が行の位置を知れるように、表示中の行の画面座標を返す
         [[nodiscard]] std::optional<glm::vec2> RowAnchor(std::size_t row) const;
 
     private:

@@ -35,6 +35,7 @@ void Core::Application::EditorApplication::OnFrame()
     ImGuiWrapper::Instance().Update();
     ImGuizmo::BeginFrame();
     AutoMcp::AutoMcpServer::Instance().OnFrameBegin();
+    Build::GameBuilder::Instance().Update();
     
     std::string frameErrorMessage;
     if (!Module::SafeExecutor::Execute([this]()
@@ -59,7 +60,7 @@ void Core::Application::EditorApplication::OnFrame()
 void Core::Application::EditorApplication::OnExit()
 {
     AutoMcp::AutoMcpServer::Instance().Stop();
-    Build::GameBuilder::Instance().Stop();
+    Build::GameBuilder::Instance().Cancel();
 }
 
 void Core::Application::EditorApplication::OnDrawGui()

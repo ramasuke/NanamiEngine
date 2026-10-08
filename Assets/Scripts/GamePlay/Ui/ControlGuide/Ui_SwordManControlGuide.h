@@ -17,7 +17,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GamePlay::Ui
 {
-    // State が宣言する遷移と操作から、どの行に何を出すかを決める。見せ方は controlGuide_ が行う
     class SwordManControlGuide final : public Component::ComponentBase,
                                        public LifeCycleCallback::IUpdatable
     {

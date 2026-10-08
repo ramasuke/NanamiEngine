@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Toolbar
         if (auto& gameBuilder = Application::Build::GameBuilder::Instance(); gameBuilder.IsBusy())
         {
             ImGui::SameLine();
-            ImGui::Text("Building: %s %s", gameBuilder.PhaseLabel(), gameBuilder.ElapsedLabel().c_str());
+            ImGui::Text("Building %s", gameBuilder.ElapsedLabel().c_str());
             ImGui::SameLine();
             if (ImGui::Button("Cancel Build"))
             {
