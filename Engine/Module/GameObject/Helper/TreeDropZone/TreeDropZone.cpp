@@ -17,14 +17,14 @@ namespace NanamiEngine::Module::GameObject
         ImGui::PushID("SiblingDropZone");
 
         constexpr float dropZoneHeight   = 6.0f;
-        const ImVec2 originalCursorPos   = ImGui::GetCursorPos();       // ウィンドウローカル座標。関数末尾で復元しレイアウトへの影響をゼロにする
-        const ImVec2 boundaryScreenPos   = ImGui::GetCursorScreenPos(); // 2行の境界点（今までと同じ点）
+        const ImVec2 originalCursorPos   = ImGui::GetCursorPos();       // ウィンドウローカル座標。関数末尾で復元する
+        const ImVec2 boundaryScreenPos   = ImGui::GetCursorScreenPos(); // 2 行の境界点
         const float windowPosX           = ImGui::GetWindowPos().x;
         const float windowContentRegionX = ImGui::GetWindowContentRegionMax().x;
         const float windowRight          = windowPosX + windowContentRegionX;
         const ImVec2 zoneSize(windowRight - boundaryScreenPos.x, dropZoneHeight);
 
-        // 新規アイテムとして下に追加するのではなく、既存の行間の隙間に重ねて描画する
+        // NOTE: 新規アイテムとして下に追加するのではなく、既存の行間の隙間に重ねて描画する
         ImGui::SetCursorScreenPos(ImVec2(boundaryScreenPos.x, boundaryScreenPos.y - zoneSize.y * 0.5f));
         ImGui::Dummy(zoneSize);
 
@@ -58,7 +58,7 @@ namespace NanamiEngine::Module::GameObject
         ImGui::PopID();
         ImGui::PopID();
 
-        // ItemSpacing によるレイアウトのずれを打ち消し、ドロップゾーンをゼロコストのオーバーレイにする
+        // NOTE: ItemSpacing によるレイアウトのずれを打ち消す
         // WARNING: SetCursorPos が CursorMaxPos を更新しない ImGui 1.89.8 の実装に依存している
         ImGui::SetCursorPos(originalCursorPos);
     }

@@ -27,7 +27,7 @@ GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
         archive(CEREAL_NVP(guid_        ));
         archive(CEREAL_NVP(components_  ));
         archive(CEREAL_NVP(transform_   ));
-        // .prefab のルートにはクラスバージョンが無いので、mark_ 追加前のファイルはキーの有無で判別する
+        // NOTE: .prefab のルートにはクラスバージョンが無いので、mark_ 追加前のファイルはキーの有無で判別する
         if (const char* nextName = archive.getNodeName(); nextName != nullptr && std::string_view(nextName) == "mark_")
         {
             archive(CEREAL_NVP(mark_));
@@ -66,7 +66,7 @@ void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObje
 
 void GameObject::PrefabGameObject::InvokeInitAwakeCallbacks()
 {
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    // NOTE: ライフサイクルに積まれた分を取り出してから呼び、同じコールバックが二重に呼ばれないようにする
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
     {
@@ -86,7 +86,7 @@ void GameObject::PrefabGameObject::InvokeInitAwakeCallbacks()
 
 void GameObject::PrefabGameObject::InvokeInitStartCallbacks()
 {
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    // NOTE: ライフサイクルに積まれた分を取り出してから呼び、同じコールバックが二重に呼ばれないようにする
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
     {
@@ -132,7 +132,6 @@ void GameObject::PrefabGameObject::OnDrawGui()
     transform_ .OnDrawGui();
     components_.OnDrawGui();
 
-    //CopiedObjectGuidListを表示
     if (ImGui::TreeNodeEx("Copied Prefab Instances", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (copiedObjectGuidList_.empty())
@@ -154,7 +153,6 @@ void GameObject::PrefabGameObject::OnDrawGui()
                     ImGui::TreePop();
                 }
 
-                // 右クリックメニュー
                 if (ImGui::BeginPopupContextItem(nodeLabel.c_str()))
                 {
                     if (ImGui::MenuItem("erase"))
@@ -310,24 +308,22 @@ std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::CopyForEd
 std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::
 CopyForInstantiate()
 {
-    // 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
+    // NOTE: 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
 
-    // 1. this をバイナリアーカイブに保存
+    // NOTE: バイナリアーカイブ経由で深いコピーを作る
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);
         outputArchive(*this);
     }
 
-    // 2. 新しい Prefab を生成し、stringStream からロード
     const auto copiedPrefab = std::make_shared<PrefabGameObject>();
     {
         cereal::PortableBinaryInputArchive inputArchive(stringStream);
         inputArchive(*copiedPrefab);
     }
 
-    // 3. PrefabExtractArchive を使って抽出
     LibCore::PrefabExtractArchive extractOriginal;
     LibCore::PrefabExtractArchive extractCopied;
 
@@ -357,7 +353,7 @@ CopyForInstantiate()
 
 std::shared_ptr<GameObject::PrefabGameObject> GameObject::PrefabGameObject::CreateWorkingCopy() const
 {
-    // 同じファイルへ保存する編集用コピーなので guid_ / copiedObjectGuidList_ は引き継ぐ
+    // NOTE: 同じファイルへ保存する編集用コピーなので guid_ / copiedObjectGuidList_ は引き継ぐ
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);

@@ -14,7 +14,7 @@ namespace NanamiEngine::Core::PopupWindow
         PopupWindowState OnDraw(PopupWindowDrawGuiContext context) override;
 
     private:
-        //NOTE: ImGUIのラベル情報のために現在開いているNetworkLoggerWindowの数をカウントする
+        // NOTE: ImGui のウィンドウ ID を重複させないための通し番号
         static int counter_;
         int id_;
         ::Guid guid_;

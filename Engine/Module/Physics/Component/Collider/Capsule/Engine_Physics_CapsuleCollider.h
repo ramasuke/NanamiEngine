@@ -33,7 +33,7 @@ namespace NanamiEngine::Module::Component
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
-            // v2 以前はベースクラスのフィールドをここで保存していたため移行
+            // NOTE: 旧版はベースクラスの項目をここで保存していたので読み分ける
             if (version >= 3)
                 archive(cereal::base_class<ColliderBase>(this));
             else
@@ -44,7 +44,7 @@ namespace NanamiEngine::Module::Component
             archive(CEREAL_NVP(radius_));
             archive(CEREAL_NVP(height_));
             if (version < 3) {
-                // motion 系は RigidBody に移ったので一時変数に読む
+                // NOTE: motion 系は RigidBody に移ったので一時変数に読む
                 Physics::MotionType  legacyMotionType  = Physics::MotionType::Static;
                 Physics::Constraints legacyConstraints = Physics::Constraints::None;
                 archive(CEREAL_NVP(offset_));

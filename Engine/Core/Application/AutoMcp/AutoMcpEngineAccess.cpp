@@ -39,7 +39,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         const std::shared_ptr<NanamiEngine::Scene::Scene> oldScene = it->second;
         const bool isMainScene = gameWindow.mainScene_.lock() == oldScene;
 
-        // 読み込みに失敗したら例外で抜け、元のシーンは残す
+        // NOTE: 読み込みに失敗したら例外で抜け、元のシーンは残す
         const auto newScene = std::make_shared<NanamiEngine::Scene::Scene>(oldScene->filePath_);
 
         oldScene->RemoveImplementAllGameObject();
@@ -190,7 +190,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
     bool AutoMcpEngineAccess::IsSlotAttached(const MainWindow::AnimationPreviewSlot& slot)
     {
-        // 切り替え要求が Sync に反映されるまでは、前のクリップ・アニメ元のアタッチを「アタッチ済み」と見なさない
+        // NOTE: 切り替え要求が Sync に反映されるまでは、前のクリップ・アニメ元のアタッチを「アタッチ済み」と見なさない
         return slot.attachIndex_ != -1
             && slot.attachedClipIndex_ == slot.clipIndex_
             && IsSlotSourceReady(slot)
@@ -230,7 +230,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
     void AutoMcpEngineAccess::SetSlotTime(MainWindow::AnimationPreviewSlot& slot, const float time)
     {
         slot.time_ = time;
-        // 別クリップへの切り替え待ちの間は totalTime_ が古いので、ここではクランプしない
+        // NOTE: 別クリップへの切り替え待ちの間は totalTime_ が古いので、ここではクランプしない
         if (slot.attachIndex_ != -1 && slot.attachedClipIndex_ == slot.clipIndex_)
             slot.Seek(time);
     }
@@ -255,7 +255,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
     {
         stage.camera_.SetPosition(position);
         stage.camera_.SetRotation(rotation);
-        // ロード完了待ちの自動フレーミングで上書きされないようにする
+        // NOTE: ロード完了待ちの自動フレーミングで上書きされないようにする
         stage.pendingFrame_ = false;
     }
 

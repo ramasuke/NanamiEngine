@@ -11,9 +11,7 @@
 
 namespace NanamiEngine::Scene
 {
-    /**
-     * @brief .scene のデシリアライズと GameObject の生成をワーカースレッドで行う (InitGameObject 以降はメイン)
-     */
+    // NOTE: .scene のデシリアライズと GameObject の生成をワーカースレッドで行う (InitGameObject 以降はメイン)
     class NANAMI_API AsyncSceneLoader final
     {
     public:
@@ -22,18 +20,18 @@ namespace NanamiEngine::Scene
         AsyncSceneLoader(const AsyncSceneLoader&)            = delete;
         AsyncSceneLoader& operator=(const AsyncSceneLoader&) = delete;
 
-        /** @brief 読み込みを開始する。既に読み込み中なら何もせず false を返す */
+        // NOTE: 読み込みを開始する。既に読み込み中なら何もせず false を返す
         bool Begin(const std::string& filePath);
-        /** @brief メインスレッドから毎フレーム呼ぶ。失敗をログに出して Idle へ戻す */
+        // NOTE: メインスレッドから毎フレーム呼ぶ。失敗をログに出して Idle へ戻す
         void Step();
-        /** @brief 実行中の読み込みを捨てる。ワーカーの完了は待つ */
+        // NOTE: 実行中の読み込みを捨てる。ワーカーの完了は待つ
         void Cancel();
         [[nodiscard]] bool IsBusy() const;
-        /** @brief デシリアライズ済みのルート GameObject の割合。まだ総数が読めていなければ 0 */
+        // NOTE: デシリアライズ済みのルート GameObject の割合。まだ総数が読めていなければ 0
         [[nodiscard]] float DeserializeProgress01() const;
-        /** @brief 直近の Begin 以降に読み込みが失敗したか。Step が Failed を捌いた後も残る */
+        // NOTE: 直近の Begin 以降に読み込みが失敗したか。Step が Failed を捌いた後も残る
         [[nodiscard]] bool HasFailedSinceLastBegin() const;
-        /** @brief シーンが参照するアセットまで読み終えていれば Scene を組み立てて返す。まだなら nullptr */
+        // NOTE: シーンが参照するアセットまで読み終えていれば Scene を組み立てて返す。まだなら nullptr
         [[nodiscard]] std::shared_ptr<Scene> TryTakeLoadedScene();
 
     private:
@@ -42,13 +40,13 @@ namespace NanamiEngine::Scene
             Idle,
             Deserializing,
             Ready,
-            /** シーンが参照する画像・モデルの読み込み待ち */
+            // NOTE: シーンが参照する画像・モデルの読み込み待ち
             Preloading,
             Failed,
         };
 
         void JoinWorker();
-        /** @brief ワーカーが作った GameObject をメインスレッドで破棄する */
+        // NOTE: ワーカーが作った GameObject をメインスレッドで破棄する
         void DiscardContent();
 
         std::thread                 worker_;
@@ -56,9 +54,9 @@ namespace NanamiEngine::Scene
         std::string                 filePath_;
         Scene::DeserializedContent  content_;
         Scene::DeserializeProgress  progress_;
-        /** Begin でメインスレッドが作り、ワーカーが読む */
+        // NOTE: Begin でメインスレッドが作り、ワーカーが読む
         Module::Asset::AssetPreloader::Index assetIndex_;
-        /** ワーカーが集め、Ready になってからメインスレッドが読む */
+        // NOTE: ワーカーが集め、Ready になってからメインスレッドが読む
         std::vector<std::string>    dependencyGuids_;
         std::atomic<bool>           hasFailedSinceLastBegin_ = false;
         std::string                 errorMessage_;

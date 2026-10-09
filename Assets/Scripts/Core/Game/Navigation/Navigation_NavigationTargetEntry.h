@@ -8,14 +8,14 @@
 
 namespace GameCore::Navigation
 {
-    /** @brief シーンのコンテキストに並べる目的地。id はガイドの targetId_ と突き合わせる */
+    // NOTE: シーンのコンテキストに並べる目的地。id でガイドの手順と突き合わせる
     struct NavigationTargetEntry
     {
         [[serialize(0)]] std::string                                              id_;
         [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject)     object_;
         [[serialize(0)]] float                                                    markerHeight_ = 2.0f;
 
-        /** @return 消すボタンが押されたら true */
+        // NOTE: 消すボタンが押されたら true を返す
         bool OnDrawGui();
 
         template<class Archive>

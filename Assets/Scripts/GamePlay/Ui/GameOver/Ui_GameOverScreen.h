@@ -16,10 +16,8 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 力尽きたときに出す石版と選択肢の見た目
-     * NOTE: ChangeMainScene の間は Time::DeltaTime() が 0 なので、時間は壁時計で進める
-     */
+    // NOTE: 力尽きたときに出す石版と選択肢の見た目
+    // NOTE: シーン切り替え中は Time::DeltaTime() が 0 なので、時間は壁時計で進める
     class GameOverScreenUi final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,
                                    public LifeCycleCallback::IUpdatable
@@ -52,7 +50,7 @@ namespace GamePlay::Ui
 
         void OnStart() override;
         void OnUpdate() override;
-        /** @brief timeScale にも SkipNextFrame にも影響されない壁時計の差分を返す */
+        // NOTE: timeScale にも SkipNextFrame にも影響されない壁時計の差分を返す
         [[nodiscard]] float TickWallClockSeconds();
 
         void PlayIntroTweens();
@@ -60,7 +58,7 @@ namespace GamePlay::Ui
         void UpdateIntro(float deltaSecs);
         void UpdateCurtain(float deltaSecs);
         void TickButtons(float deltaSecs) const;
-        /** @param appearRate 石版・鉄札・操作ヒントの見え方。幕とは別に下ろす */
+        // NOTE: appearRate は石版・鉄札・操作ヒントの見え方。幕とは別に下ろす
         void ApplyContentAlpha(float appearRate) const;
         void ApplyVeil(float blendRate) const;
         void SetSlabOffset(float offsetY) const;
@@ -96,19 +94,19 @@ namespace GamePlay::Ui
         [[serialize(0)]] float inputGuardSecs_ = 0.35f;
         [[serialize(0)]] float curtainCloseSecs_ = 0.45f;
         [[serialize(0)]] float curtainOpenSecs_ = 0.6f;
-        // 石版が浮き上がり切るまでの割合。残りで落ちて着地する
+        // NOTE: 石版が浮き上がり切るまでの割合。残りで落ちて着地する
         [[serialize(1)]] float slabPeakRate_ = 0.65f;
 
         Phase phase_ = Phase::Hidden;
-        /** 効果音と入力受付の合図に使う時計 */
+        // NOTE: 効果音と入力受付の合図に使う時計
         float elapsedSecs_ = 0.0f;
-        /** 出だしの幕と、抜けるときの幕の両方に使う */
+        // NOTE: 出だしの幕と、抜けるときの幕の両方に使う
         LibCore::Tween::TweenPlayer<float> veilTween_;
-        /** 基準位置からの下向きのずれ */
+        // NOTE: 基準位置からの下向きのずれ
         LibCore::Tween::TweenPlayer<float> slabOffsetTween_;
         LibCore::Tween::TweenPlayer<float> slabAlphaTween_;
         LibCore::Tween::TweenPlayer<float> dirtAlphaTween_;
-        /** 鉄札ごとの出方 0..1 */
+        // NOTE: 鉄札ごとの出方 0..1
         std::array<LibCore::Tween::TweenPlayer<float>, 2> buttonRiseTweens_;
         LibCore::Tween::TweenPlayer<float> hintAlphaTween_;
         int selection_ = RETRY_INDEX;

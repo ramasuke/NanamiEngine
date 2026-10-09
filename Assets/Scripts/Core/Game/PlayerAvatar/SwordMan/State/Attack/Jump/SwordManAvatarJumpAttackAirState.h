@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
-    /** @brief 空中で振りかぶってから真下へ急降下するステート。接地したら JumpAttackLand で叩きつける */
+    // NOTE: 空中で振りかぶってから真下へ急降下するステート。接地したら JumpAttackLand で叩きつける
     class SwordManAvatarJumpAttackAirState final : public SwordManAvatarStateBase
     {
     public:

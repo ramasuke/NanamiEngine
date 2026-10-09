@@ -9,7 +9,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
     TickStatus Action::GenerateParticle::DoTick(const TickContext& context)
     {
-        // プレハブ未設定は「演出無し」として扱う
+        // NOTE: プレハブ未設定は「演出無し」として扱う
         if (!particlePrefab_)
             return TickStatus::Success;
 
@@ -25,7 +25,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         GamePlay::Spawn::SpawnPrefab(*particlePrefab_.get(), spawnPos, lifeTime_);
 
-        // 権威側限定Tickなら、他ピアにも同じ位置に同じパーティクルを出させる
+        // NOTE: 権威側限定Tickなら、他ピアにも同じ位置に同じパーティクルを出させる
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::SpawnPrefabRpc::Send(

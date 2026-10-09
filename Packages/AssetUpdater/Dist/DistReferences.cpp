@@ -19,7 +19,7 @@ namespace NanamiEngine::AssetUpdater::Dist
 {
     namespace
     {
-        // INFO チャンクがまだ素の文字列リストだった最後の ExporterVersion (Binary/Exporter.cs Ver1600)
+        // NOTE: INFO チャンクがまだ素の文字列リストだった最後の ExporterVersion
         constexpr std::int32_t     DIST_EFKEFC_STRING_LISTS_MAX_VERSION = 1610;
         constexpr std::int32_t     DIST_EFKEFC_MAX_COUNT                = 4096;
         constexpr std::wstring_view DIST_EFKEFC_ASSET_EXTENSIONS[] = { L"png", L"jpg", L"jpeg", L"bmp", L"tga", L"dds", L"efkmodel", L"efkmat", L"efkcurve", L"wav" };
@@ -29,7 +29,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         constexpr std::size_t    DIST_MV1_MIN_MATCH    = 4;
         constexpr std::size_t    DIST_MV1_MAX_PREFIX   = 259;
         constexpr std::size_t    DIST_MV1_MAX_RESERVE_BYTES = 256u << 20;
-        // tools/model/mv1.py の TEXTURE_EXTS を名前順にしたもの (正規表現の選択肢の順)
+        // NOTE: テクスチャ拡張子を名前順に並べたもの (正規表現の選択肢の順)
         constexpr std::string_view DIST_MV1_TEXTURE_EXTENSIONS[] = { "bmp", "dds", "jpeg", "jpg", "png", "tga" };
 
         constexpr std::string_view DIST_REFERRING_SUFFIXES[] = { ".efkefc", ".mv1" };
@@ -50,7 +50,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return static_cast<std::int32_t>(DistRefsReadU32(data, offset));
         }
 
-        /** タグごとの最初のチャンク。ファイル末尾を越えるチャンクがあれば壊れている */
+        // NOTE: タグごとの最初のチャンク。ファイル末尾を越えるチャンクがあれば壊れている
         std::optional<std::string> DistRefsEfkefcChunk(const std::string& data, const std::string_view tag)
         {
             if (data.size() < 8 || data.compare(0, 4, "EFKE") != 0)
@@ -79,7 +79,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return text;
         }
 
-        /** 不正なサロゲートがあれば投げる */
+        // NOTE: 不正なサロゲートがあれば投げる
         std::string DistRefsWideToUtf8Strict(const std::wstring& wide)
         {
             if (wide.empty())
@@ -132,7 +132,7 @@ namespace NanamiEngine::AssetUpdater::Dist
                     throw DistRefsError{};
                 for (std::int32_t i = 0; i < count; ++i)
                 {
-                    // ファイル種別、フラグ
+                    // NOTE: ファイル種別とフラグを読み飛ばす
                     offset += 8;
                     paths.push_back(DistRefsReadEfkefcString(chunk, offset));
                 }
@@ -153,10 +153,10 @@ namespace NanamiEngine::AssetUpdater::Dist
             return (c >= L'A' && c <= L'Z') ? static_cast<wchar_t>(c - L'A' + L'a') : c;
         }
 
-        /** INFO が見慣れないレイアウトでも、[^\0]+?\.(拡張子) にあたる部分をできる範囲で拾う */
+        // NOTE: INFO が見慣れないレイアウトでも、[^\0]+?\.(拡張子) にあたる部分をできる範囲で拾う
         std::vector<std::string> DistRefsScanEfkefcText(const std::string& chunk)
         {
-            // NOTE: 奇数バイトの端数と対になっていないサロゲートは捨てる (decode の errors="ignore" と同じ)
+            // NOTE: 奇数バイトの端数と対になっていないサロゲートは捨てる
             if (chunk.size() <= 4)
                 return {};
             const std::size_t units = (chunk.size() - 4) / 2;
@@ -242,7 +242,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return bytes;
         }
 
-        /** Windows の normcase: 小文字にして区切りを '\' にそろえる */
+        // NOTE: 小文字にして区切りを '\' にそろえる (Windows 流のパス正規化)
         std::wstring DistRefsNormCase(std::wstring text)
         {
             std::ranges::replace(text, L'/', L'\\');
@@ -250,7 +250,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return text;
         }
 
-        /** child が parent の下にあれば '/' 区切りの相対パス (大文字小文字は区別しない) */
+        // NOTE: child が parent の下にあれば '/' 区切りの相対パス (大文字小文字は区別しない)
         std::optional<std::string> DistRefsRelativeTo(const std::filesystem::path& child, const std::filesystem::path& parent)
         {
             const std::wstring childText  = child.wstring();

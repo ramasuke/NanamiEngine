@@ -23,13 +23,12 @@ namespace GamePlay::Ui
 
         void HighlightSelectedStage(size_t selectedIndex);
         void SetWorldEnterButtonEnabled(bool isEnabled);
-        /** @brief 選んだステージへの遷移 */
         void EnterWorld(GameCore::Scene::Main::SceneType sceneType);
         [[nodiscard]] bool IsEnteringWorld() const { return isEnteringWorld_; }
         void ShowMapMarker(const glm::vec2& position, bool isCleared);
         void HideMapMarker();
         void ShowStageDetail(const Asset::StageData& stage);
-        /** @brief 未解放のステージ。中身は伏せて、解放条件の文言だけ出す */
+        // NOTE: 未解放のステージ。中身は伏せて、解放条件の文言だけ出す
         void ShowLockedStageDetail(const Asset::StageData& stage);
         void ShowNoSelectionDetail();
         [[nodiscard]] std::shared_ptr<StageSelectRoomUi> Room() const { return roomUi_.get(); }

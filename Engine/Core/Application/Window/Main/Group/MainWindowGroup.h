@@ -20,9 +20,9 @@ namespace NanamiEngine::Core::MainWindow
         template <MainWindowType WindowT>
         [[nodiscard]] std::shared_ptr<WindowT> Catch() const;
 
-        /** @brief クラスが module にあるウィンドウの実体を捨てる (ゲーム DLL を外す前)。戻り値は捨てた数 */
+        // NOTE: クラスが module にあるウィンドウの実体を捨てる (ゲーム DLL を外す前)。戻り値は捨てた数
         std::size_t RemoveWindowsOfModule(ModuleHandle module);
-        /** @brief window のクラスが module にあるか */
+        // NOTE: window のクラスが module にあるか
         [[nodiscard]] static bool IsWindowOfModule(const IMainWindow* window, ModuleHandle module);
 
     private:

@@ -11,7 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // アイテム欄の1枠。表示内容と明るさは外から毎フレーム渡される
+    // NOTE: アイテム欄の1枠。表示内容と明るさは外から毎フレーム渡される
     class ItemSlot final : public Component::ComponentBase
     {
     public:
@@ -27,7 +27,7 @@ namespace GamePlay::Ui
         };
 
         void SetContent(const std::weak_ptr<Asset::SpriteFile>& icon, const std::string& countText);
-        /// 個数の色は都度補間できないので、選ばれた瞬間・外れた瞬間にだけ差し替える
+        // NOTE: 個数の色は都度補間できないので、選ばれた瞬間・外れた瞬間にだけ差し替える
         void SetSelected(bool isSelected);
         void Apply(const Appearance& appearance);
 

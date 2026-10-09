@@ -17,16 +17,12 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 種類ごとの絵(札・角印)を AnnouncementKind の順に並べたものから引く。足りなければ nullptr
-     */
+    // NOTE: 種類ごとの絵(札・角印)を AnnouncementKind の順に並べたものから引く。足りなければ nullptr
     [[nodiscard]] std::shared_ptr<Asset::SpriteFile> FindAnnouncementKindSprite(
         const std::vector<FIELD(Asset::SpriteFile)>& spritesByKind,
         Asset::AnnouncementKind kind);
 
-    /**
-     * @brief 掲示板に貼ったお知らせの札1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える。
-     */
+    // NOTE: 掲示板に貼ったお知らせの札1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える
     class EventBoardNoticeRow final : public Component::ComponentBase,
                                       public LifeCycleCallback::IAwakable
     {
@@ -37,7 +33,7 @@ namespace GamePlay::Ui
 
     private:
         void OnAwake() override;
-        /** @brief 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える */
+        // NOTE: 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える
         void EnsureComponents();
         void RefreshAppearance() const;
 
@@ -50,7 +46,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Component::ImageRenderer) waxSeal_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) selectedTicketSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) unselectedTicketSprite_;
-        /** AnnouncementKind の順 */
+        // NOTE: AnnouncementKind の順
         [[serialize(0)]] std::vector<FIELD(Asset::SpriteFile)> kindChipSprites_;
         [[serialize(0)]] FIELD(Asset::SoundFile) hoverSound_;
         [[serialize(0)]] float selectedScale_ = 1.05f;

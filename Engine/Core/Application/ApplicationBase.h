@@ -46,7 +46,7 @@ namespace NanamiEngine::Core::Application
     public:
         ApplicationBase();
         virtual ~ApplicationBase() = default;
-        /** メインループ。フレーム共通処理を行う */
+        // NOTE: メインループ。フレーム共通処理を行う
         void Run();
         virtual void OnExit() = 0;
         template <MainWindow::MainWindowType T>
@@ -65,11 +65,11 @@ namespace NanamiEngine::Core::Application
         static void                                            ReleaseAssetsDirectory();
         static std::shared_ptr<MainWindow::GameWindow>         GameWindow          ();
         static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
-        /** @brief メインウィンドウに WM_CLOSE を送って終了する */
+        // NOTE: メインウィンドウに WM_CLOSE を送って終了する
         static void                                            RequestClose();
         
     protected:
-        /** 1フレーム分のアプリ固有処理 */
+        // NOTE: 1フレーム分のアプリ固有処理
         virtual void OnFrame() = 0;
 
         static std::shared_ptr<MainWindow::IMainWindow>& CurrentMainWindow    ();

@@ -32,7 +32,6 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] const Container& GetTriggerStayObjects   () const;
 
     private:
-        // Callbacks
         void OnCollisionEnter(const Physics::Manifold& maniFold,
             const std::shared_ptr<GameObject::IGameObject>& other) override;
         void OnCollisionExit(const std::shared_ptr<GameObject::IGameObject>& other) override;

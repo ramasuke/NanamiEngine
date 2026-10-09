@@ -17,7 +17,7 @@ namespace NanamiEngine::UiFlow
 
         int lastFocusedButtonMs = -CURSOR_HOLD_MS * 100;
 
-        // UiScreen の下にある Button は、その画面が最前面のときだけ押せる。UiScreen の下に無い Button は常に押せる
+        // NOTE: UiScreen の下にある Button は、その画面が最前面のときだけ押せる。UiScreen の下に無い Button は常に押せる
         bool IsButtonOnFocusedScreen(const Module::NanamiUi::Button& button)
         {
             auto gameObject = button.Entity().lock();

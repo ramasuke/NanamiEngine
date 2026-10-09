@@ -8,10 +8,8 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * ネットワーク上で共有されるオブジェクトの識別子 (bit16-23 = 採番したピア, 下位16bit = ピア内インデックス)
-     * NOTE: 上位バイトは採番の衝突避けだけで、所有者を表さない
-     */
+    // NOTE: ネットワーク上で共有されるオブジェクトの識別子 (bit16-23 = 採番したピア, 下位16bit = ピア内インデックス)
+    // NOTE: 上位バイトは採番の衝突避けだけで、所有者を表さない
     struct NANAMI_API NetworkObjectId final
     {
         explicit NetworkObjectId(uint32_t networkObjectId = 0);

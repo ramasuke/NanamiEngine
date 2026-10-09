@@ -16,7 +16,6 @@
 
 namespace
 {
-    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
     bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
     {
         if (needle.empty())
@@ -52,7 +51,7 @@ namespace
         return delivery == NanamiEngine::Core::Network::DeliveryMode::Reliable ? "Reliable" : "Unreliable";
     }
 
-    /** @brief コピー/保存用に、表示中のパケットログ行を連結する */
+    // NOTE: コピー/保存用に、表示中のパケットログ行を連結する
     std::string BuildLogText(const std::vector<NanamiEngine::Module::Network::PacketLogRecord>& records)
     {
         std::string text;
@@ -70,7 +69,7 @@ namespace
         return text;
     }
 
-    /** @brief 表示中のパケットログをLogs/にタイムスタンプ付きファイル名で保存する */
+    // NOTE: 表示中のパケットログを Logs/ にタイムスタンプ付きの名前で保存する
     void SaveLogToFile(const std::vector<NanamiEngine::Module::Network::PacketLogRecord>& records)
     {
         namespace fs = std::filesystem;
@@ -150,7 +149,7 @@ NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindo
     ImGui::SameLine();
     ImGui::Checkbox("Auto-scroll", &autoScroll_);
 
-    // パケット種別名の検索ボックス
+    // NOTE: パケット種別名の検索ボックス
     const bool hasSearchText = searchBuffer_[0] != '\0';
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (hasSearchText ? 55.0f : 0.0f));
     ImGui::InputTextWithHint("##NetworkLoggerSearch", "Search...", searchBuffer_, sizeof(searchBuffer_));

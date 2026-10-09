@@ -4,16 +4,16 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief 島が雲の下からせり上がり、階段が架かる演出(ReturningIsland::PlayReturnAsync)の尺と距離 */
+    // NOTE: 島が雲の下からせり上がり、階段が架かる演出の尺と距離
     struct IslandReturnShot
     {
         float skipGrace_secs    = 1.5f;
-        /** 読み込みが明けてからせり上がり始めるまでの時間 */
+        // NOTE: 読み込みが明けてからせり上がり始めるまでの時間
         float delay_secs        = 0.6f;
         float rise_secs         = 6.0f;
         float riseDepth         = 900.0f;
         float riseTiltDegrees   = 7.0f;
-        /** 島が上がりきってから階段が架かり始めるまでの時間 */
+        // NOTE: 島が上がりきってから階段が架かり始めるまでの時間
         float stairsDelay_secs    = 0.8f;
         float stairsStep_secs     = 0.7f;
         float stairsInterval_secs = 0.45f;

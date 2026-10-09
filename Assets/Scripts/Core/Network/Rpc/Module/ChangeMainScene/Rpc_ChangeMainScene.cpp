@@ -5,7 +5,7 @@
 
 namespace
 {
-    // 汎用RPC: メインシーンの切り替えを要求する
+    // NOTE: 汎用RPC: メインシーンの切り替えを要求する
     struct ChangeMainSceneRpcRegistration
     {
         ChangeMainSceneRpcRegistration()

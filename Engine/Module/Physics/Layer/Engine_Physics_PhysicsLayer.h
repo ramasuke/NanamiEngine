@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::Physics
         mask &= ~ToMask(layer);
     }
 
-    /** @brief ProjectConfig/Physics で定義されたレイヤー名と衝突マトリクス */
+    // NOTE: ProjectConfig/Physics で定義されたレイヤー名と衝突マトリクス
     class NANAMI_API PhysicsLayers final
     {
     public:
@@ -73,15 +73,13 @@ namespace NanamiEngine::Module::Physics
         static void SetLayersCollide(Layer a, Layer b, bool collide);
         [[nodiscard]] static bool LayersCollide(Layer a, Layer b);
 
-        // 現在のLayerをGUIで選択
-        // 戻り値：変更されたかどうか
+        // NOTE: 現在の Layer を GUI で選ぶ。変わったら true
         static bool DrawChoiceGui(const char* label, Layer& layer);
 
-        // LayerMask をチェックボックスで編集
-        // 戻り値：変更されたかどうか
+        // NOTE: LayerMask をチェックボックスで編集する。変わったら true
         static bool DrawMaskGui(const char* label, LayerMask& mask);
 
-        // 戻り値：変更されたかどうか
+        // NOTE: 変わったら true
         static bool DrawCollisionMatrixGui();
 
     private:

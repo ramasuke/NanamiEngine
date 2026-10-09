@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
 #include <concepts>
 #include <memory>
@@ -28,34 +28,21 @@ namespace Coroutine
 
 namespace NanamiEngine::Core::Application
 {
-    /**
-     * @brief Engine内部のWindowのライフサイクル
-     * 
-     * @details 
-     *  各Windowのライフサイクルと順序は以下
-     *  - Awake
-     *  - Start
-     *  - Update
-     *  - EndPhysics
-     *  - Render
-     *  - ShadowRender
-     *  - DebugRender
-     */
+    // NOTE: Window のライフサイクル。Awake → Start → 物理 → Update → 描画の順に各コールバックを呼ぶ
     class NANAMI_API WindowLifeCycle final
     {
     public:
         explicit WindowLifeCycle(bool useShadowMap);
         ~WindowLifeCycle();
 
-        /** @brief Game  用のライフサイクルの更新 */
         void OnUpdateForGame();
-        /** @brief Editor用のライフサイクルの更新 */
+        // NOTE: 更新や物理は回さず、描画だけ行う
         void OnUpdateForEditor();
 
-        /** @brief 引数に対して静的にCallbackの受け取りを機能追加 */
+        // NOTE: T の静的な型から対応するコールバック群へ登録する
         template<typename T>
         void StaticAddCallback (std::weak_ptr<T> add);
-        /** @brief 引数に対して動的にCallbackの受け取りを機能追加 */
+        // NOTE: dynamic_cast で実際の型を見て対応するコールバック群へ登録する
         template<typename T>
         void DynamicAddCallback(std::weak_ptr<T> add);
         std::unique_ptr<Coroutine::CoroutineScheduler>& Coroutine() { return coroutineScheduler_; }

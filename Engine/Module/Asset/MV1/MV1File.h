@@ -19,10 +19,10 @@ namespace NanamiEngine::Module::Asset
         Mv1File(const Mv1File&)            = delete;
         Mv1File& operator=(const Mv1File&) = delete;
         [[nodiscard]] const Guid& GetGuid       () const override;
-        /** @brief 元モデルが未読込ならここで読み終えてから複製を返す */
+        // NOTE: 元モデルが未読込ならここで読み終えてから複製を返す
         [[nodiscard]] int         LoadDxLibHandle   () const;
         [[nodiscard]] std::string GetContentPath() const override;
-        /** @brief 非同期ロードが完了して LoadDxLibHandle() が使える状態か。未読込なら読み込みを要求する */
+        // NOTE: 非同期ロードが完了して LoadDxLibHandle() が使える状態か。未読込なら読み込みを要求する
         [[nodiscard]] bool        IsLoadCompleted() const;
         void RequestLoad() const override;
         void Unload() override;
@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::Asset
         archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
         if (version >= 0) archive(CEREAL_NVP(contentPath_));
         if (version >= 0) archive(CEREAL_NVP(guid_));
-        // version 0 はハンドル値を保存していた。デストラクタで解放するため、古い値はメンバに入れず読み捨てる
+        // NOTE: 旧版のハンドル値。読み捨てる (メンバに入れるとデストラクタで解放してしまう)
         int legacyDxLibHandle = -1;
         if (version == 0) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
     }

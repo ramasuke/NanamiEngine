@@ -12,7 +12,7 @@ namespace NanamiEngine::Module::Network
         if (!HasStateAuthority())
             return;
 
-        // NetworkGameObject を持たない子ノード(NetworkComponent のみ)でも落ちないよう自身の ID を使う
+        // NOTE: NetworkGameObject を持たない子ノード(NetworkComponent のみ)でも落ちないよう自身の ID を使う
         const auto id = GetNetworkObjectId();
 
         const auto animator = Components().Catch<Component::Animator>().lock();

@@ -35,7 +35,7 @@ namespace NanamiEngine::Core::Application::Process
         }
         canceled_ = false;
 
-        // エディタが落ちても子プロセス (python から起動した rclone なども) が残らないよう、Job に入れておく
+        // NOTE: エディタが落ちても子孫プロセスが残らないよう、Job に入れておく
         job_ = CreateJobObjectW(nullptr, nullptr);
         if (!job_)
         {
@@ -67,7 +67,7 @@ namespace NanamiEngine::Core::Application::Process
         const bool started = CreateProcessW(nullptr, mutableCommandLine.data(), nullptr, nullptr, TRUE, CREATE_NO_WINDOW | CREATE_SUSPENDED,
                                             nullptr, directory.empty() ? nullptr : directory.c_str(), &startupInfo, &processInfo);
         const DWORD startError = GetLastError();
-        // 子プロセスの終了でパイプが閉じるよう、こちらの書き込み側は閉じておく
+        // NOTE: 子プロセスの終了でパイプが閉じるよう、こちらの書き込み側は閉じておく
         CloseHandle(writePipe);
         if (!started)
         {

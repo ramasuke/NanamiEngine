@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!chatData_)
             return TickStatus::Failure;
 
-        // NOTE: 毎Tick呼ぶと会話が重なって始まり直すので、OnceExecuteの下に置く
+        // WARNING: 毎 Tick 呼ぶと会話が重なって始まり直すので、一度だけ実行されるノードの下に置く
         Coroutine::StartCoroutine(context.ChatUi().OnDisplayChatAsync(displayName_, *chatData_.get()));
 
         if (context.IsNetworkAuthority())

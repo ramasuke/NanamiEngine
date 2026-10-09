@@ -9,7 +9,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief プレイヤーに示す次にすること */
+    // NOTE: プレイヤーに示す次にすること
     struct NavigationObjective
     {
         std::string stepId;
@@ -21,7 +21,7 @@ namespace GamePlay::Ui
         std::weak_ptr<NanamiEngine::Module::GameObject::IGameObject> target;
         float markerHeight = 2.0f;
 
-        /** @return 目的地の足元*/
+        // NOTE: 目的地の足元
         [[nodiscard]] std::optional<glm::vec3> TargetPosition() const
         {
             const auto object = target.lock();
@@ -30,7 +30,7 @@ namespace GamePlay::Ui
             return object->Transform().GetWorldPos();
         }
 
-        /** @return 目印を出す位置 */
+        // NOTE: 目印を出す位置
         [[nodiscard]] std::optional<glm::vec3> MarkerPosition() const
         {
             auto position = TargetPosition();

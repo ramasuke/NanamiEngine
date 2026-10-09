@@ -30,7 +30,7 @@ namespace GameCore::PlayerAvatar::State
         Physics::LayerMask mask;
         Physics::AddLayer(mask, Physics::Layer::Default);
 
-        //NOTE: Rayだと段差の縁や地形の隙間で抜けて Floating になるため球判定
+        // NOTE: Rayだと段差の縁や地形の隙間で抜けて Floating になるため球判定
         return Physics::SphereCast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, stateContext_->GroundCheckUpOffset() + radius, 0.0f),
                                    radius,
                                    glm::vec3(0, -1, 0), stateContext_->GroundCheckDistance(),
@@ -39,7 +39,7 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::IsInteractable() const
     {
-        // 会話UIは全NPCで共有しているため、表示中に別NPCと会話を始めると文章が重なる
+        // NOTE: 会話UIは全NPCで共有しているため、表示中に別NPCと会話を始めると文章が重なる
         const auto& subScenes = GameCore::Game::Instance().SubScenes();
         if (const auto& chattingUIScene = subScenes.Catch<GameCore::Scene::Sub::ChattingUIScene>(GameCore::Scene::Sub::SceneType::ChattingUI);
             chattingUIScene && chattingUIScene->Context().Npc().IsDisplaying())
@@ -55,9 +55,9 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::CanUseCannon() const
     {
-        // NOTE: 近くで E を押すと Canon::OnInteract が要求を立てる (Chatting ステート経由)
+        // NOTE: 乗る要求は大砲側がインタラクトで立てる
         const auto sceneContext = Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
-        // NOTE: 大砲のないシーン (MainIsland など) では未設定
+        // NOTE: 大砲のないシーンでは未設定
         if (!sceneContext || !sceneContext->HasPlayerControllabeCanon())
             return false;
 

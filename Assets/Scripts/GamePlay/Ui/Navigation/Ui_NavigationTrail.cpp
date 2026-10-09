@@ -47,7 +47,7 @@ namespace GamePlay::Ui
             if (!pathFinder_)
                 pathFinder_ = std::make_shared<GameCore::PathFinding::HeightGridAstar>();
 
-            // 目的地が変わったら、前の目的地への道は捨てて探し直す
+            // NOTE: 目的地が変わったら、前の目的地への道は捨てて探し直す
             const glm::vec2 cellSize = grid->CellSize();
             if (HorizontalDistance(searchedGoal_, *targetPosition) > std::max(cellSize.x, cellSize.y))
             {

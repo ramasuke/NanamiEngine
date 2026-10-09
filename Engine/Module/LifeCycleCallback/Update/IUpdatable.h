@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
 
     namespace Detail
     {
-        // DiscardUpdatableBase が旧データのノードを読むためだけの器
+        // NOTE: 旧データに残る IUpdatable のノードを読み捨てるためだけの器
         class NANAMI_API DiscardedUpdatable final : public IUpdatable
         {
         public:
@@ -33,10 +33,8 @@ namespace NanamiEngine::Module::LifeCycleCallback
         };
     }
 
-    /**
-     * @brief IUpdatableの継承をやめたクラスが、旧データに残るIUpdatableのノードを読み捨てる
-     * NOTE: 飛ばすと初出だけに書かれたクラスバージョンが失われ、後続の読み込みが失敗する
-     */
+    // NOTE: IUpdatableの継承をやめたクラスが、旧データに残るIUpdatableのノードを読み捨てる
+    // NOTE: 飛ばすと初出だけに書かれたクラスバージョンが失われ、後続の読み込みが失敗する
     template <class Archive>
     void DiscardUpdatableBase(Archive& archive)
     {

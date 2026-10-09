@@ -4,7 +4,7 @@
 
 namespace GameCore::PlayerAvatar::Item
 {
-    // アイテムを使うときのモーション。Instant はモーション無しでその場で効く
+    // NOTE: アイテムを使うときのモーション。Instant はモーション無しでその場で効く
     enum class ItemUseMotion : int
     {
         Instant = 0,

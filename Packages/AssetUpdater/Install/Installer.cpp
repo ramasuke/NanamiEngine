@@ -42,7 +42,7 @@ namespace NanamiEngine::AssetUpdater
             return result;
         }
 
-        // ウイルス対策ソフトや検索インデクサが一瞬だけ掴んでいることがあるので、少し待って再試行する
+        // NOTE: ウイルス対策ソフトや検索インデクサが一瞬だけ掴んでいることがあるので、少し待って再試行する
         bool InstallerMove(const std::filesystem::path& from, const std::filesystem::path& to, const DWORD flags)
         {
             for (int attempt = 0; attempt < INSTALLER_MOVE_ATTEMPTS; ++attempt)
@@ -104,7 +104,7 @@ namespace NanamiEngine::AssetUpdater
             return result;
         }
 
-        // 1. 置き換えるファイルと消すファイルを決める。Assets/ の外を指すものが1つでもあれば何もしない
+        // NOTE: 1. 置き換えるファイルと消すファイルを決める。Assets/ の外を指すものが1つでもあれば何もしない
         std::vector<InstallerFile> files;
         const auto addFile = [&](const std::string& manifestPath, const std::string& hash)
         {
@@ -144,7 +144,7 @@ namespace NanamiEngine::AssetUpdater
             }
         }
 
-        // 2. 一時置き場のファイルを照合する
+        // NOTE: 2. 一時置き場のファイルを照合する
         for (const InstallerFile& file : files)
         {
             if (Sha256OfFile(paths_.StagedBlobPath(file.hash)) != file.hash)
@@ -154,7 +154,7 @@ namespace NanamiEngine::AssetUpdater
             }
         }
 
-        // 3. 準備: 全部 .update-new として書き出す。ここで失敗しても Assets/ は変わっていない
+        // NOTE: 3. 準備: 全部 .update-new として書き出す。ここで失敗しても Assets/ は変わっていない
         for (const InstallerFile& file : files)
         {
             std::filesystem::create_directories(file.target.parent_path(), error);
@@ -167,7 +167,7 @@ namespace NanamiEngine::AssetUpdater
             }
         }
 
-        // 4. 入れ替え: 1つでも失敗したら、それまでの入れ替えを全部戻す
+        // NOTE: 4. 入れ替え: 1つでも失敗したら、それまでの入れ替えを全部戻す
         std::vector<InstallerJournal> journal;
         journal.reserve(files.size() + removals.size());
         const auto fail = [&](const std::string& message)
@@ -209,7 +209,7 @@ namespace NanamiEngine::AssetUpdater
             journal.push_back({removal, true, false});
         }
 
-        // 5. 確定: installed.json を書き換えた時点で、この版が入ったことになる
+        // NOTE: 5. 確定: installed.json を書き換えた時点で、この版が入ったことになる
         const std::filesystem::path statePrepared = InstallerSuffixed(paths_.installedState, INSTALLER_NEW_SUFFIX);
         if (!InstallerWriteFile(statePrepared, update.remoteJson)
             || !InstallerMove(statePrepared, paths_.installedState, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
@@ -219,7 +219,7 @@ namespace NanamiEngine::AssetUpdater
             return result;
         }
 
-        // 6. 片付け。失敗しても結果は変わらず、残ったものは次回の RemoveLeftovers が消す
+        // NOTE: 6. 片付け。失敗しても結果は変わらず、残ったものは次回の RemoveLeftovers が消す
         for (const InstallerJournal& step : journal)
         {
             if (step.movedAway)

@@ -37,7 +37,6 @@ void Component::BoxCollider::OnDebugDraw() const
     const glm::quat worldRot  = Transform().GetWorldRot() * offsetRot;
     const glm::vec3 halfSize  = size_ * Transform().GetWorldScale() * 0.5f;
 
-    // OnDebugDrawDxCube
     std::array localVertices = {
         glm::vec3{-halfSize.x, -halfSize.y, -halfSize.z},
         glm::vec3{ halfSize.x, -halfSize.y, -halfSize.z},
@@ -49,7 +48,6 @@ void Component::BoxCollider::OnDebugDraw() const
         glm::vec3{-halfSize.x,  halfSize.y,  halfSize.z}
     };
 
-    // 回転, 平行移動を適用
     for (auto& v : localVertices)
     {
         v = worldPos + worldRot * v;

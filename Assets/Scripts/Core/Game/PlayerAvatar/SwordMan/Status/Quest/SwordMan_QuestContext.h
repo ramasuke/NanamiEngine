@@ -13,7 +13,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /// クエストの実行中に触れてよいプレイヤー側の口
+    // NOTE: クエストの実行中に触れてよいプレイヤー側の口
     struct SwordManQuestContext
     {
         const PlayerAvatar::SwordMan::IObservableStatusEvent& statusEvent;

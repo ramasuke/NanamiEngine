@@ -27,7 +27,7 @@ namespace
         }
     }
 
-    /** @brief その段階より前に積み上がっている取り分 */
+    // NOTE: その段階より前に積み上がっている取り分
     float LoadingScreenWeightBefore(const SceneLoadStep step, const bool hasNetworkStep)
     {
         float sum = 0.0f;
@@ -42,9 +42,7 @@ namespace
         return sum;
     }
 
-    /**
-     * @brief 残り時間が分からない段階を埋める、1.0 に届かない飽和カーブ
-     */
+    // NOTE: 残り時間が分からない段階を埋める、1.0 に届かない飽和カーブ
     float LoadingScreenSaturate(const float elapsedSecs, const float timeConstantSecs)
     {
         return 1.0f - std::exp(-elapsedSecs / timeConstantSecs);
@@ -102,12 +100,12 @@ namespace GamePlay::Ui
             phase_ = Phase::CoveringGame;
             break;
         case Phase::RevealingGame:
-            // 地図は消えたあと。幕が明け切る前なので、その濃さから覆い直す
+            // NOTE: 地図は消えたあと。幕が明け切る前なので、その濃さから覆い直す
             PlayCover(coverTween_.Value(), 255.0f, fadeInSecs_);
             phase_ = Phase::CoveringGame;
             break;
         case Phase::CoveringMap:
-            // 地図はまだ出ている。幕を明けて見せ直す
+            // NOTE: 地図はまだ出ている。幕を明けて見せ直す
             PlayCover(coverTween_.Value(), 0.0f, fadeInSecs_);
             phase_ = Phase::RevealingMap;
             break;
@@ -289,7 +287,7 @@ namespace GamePlay::Ui
         const float rawTarget = CalcRawProgress();
         const float follow = 1.0f - std::exp(-std::max(progressFollowRate_, 0.01f) * deltaSecs);
 
-        // 表示は決して後戻りさせない。段階が切り替わって目標が一時的に下がっても据え置く
+        // NOTE: 表示は決して後戻りさせない。段階が切り替わって目標が一時的に下がっても据え置く
         const float next = displayedProgress_ + (rawTarget - displayedProgress_) * follow;
         displayedProgress_ = std::max(displayedProgress_, next);
 
@@ -318,7 +316,7 @@ namespace GamePlay::Ui
         if (percent == lastShownPercent_)
             return;
 
-        // TextRenderer は SetText のたびにテクスチャを作り直すので、整数%が動いた時だけ触る
+        // NOTE: TextRenderer は SetText のたびにテクスチャを作り直すので、整数%が動いた時だけ触る
         lastShownPercent_ = percent;
         if (const auto percentText = percentText_.get())
             percentText->SetText(std::to_string(percent) + "%");

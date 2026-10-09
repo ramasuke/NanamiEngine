@@ -26,11 +26,11 @@ namespace GamePlay::Npc::Friendly
 
     void FriendlyNpc::OnUpdate()
     {
-        // BehaviourTree が未設定・読み込み失敗（OnLoadCopyContent が nullptr）の場合は何もしない
+        // NOTE: BehaviourTree が未設定か読み込みに失敗していれば何もしない
         if (!behaviour_)
             return;
 
-        // 驚いている間は歩きや会話の進行を止める
+        // NOTE: 驚いている間は歩きや会話の進行を止める
         if (const auto reaction = reaction_.lock(); reaction && reaction->IsReacting())
             return;
 

@@ -4,7 +4,7 @@
 
 namespace GameCore::Npc::Enemy
 {
-    /** EnemyFactory がどのプレハブを生成し、生成後に何を配線するかを選ぶ種別 */
+    // NOTE: 敵の種別。どのプレハブを生成し、生成後に何を配線するかを決める
     enum class EnemyKind : int
     {
         NormalBoss = 0,

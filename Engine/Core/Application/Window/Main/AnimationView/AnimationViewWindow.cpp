@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::MainWindow
             return name ? LibCore::Dxlib::ShiftJisToUtf8(name) : std::string();
         }
 
-        /** @brief ルートモーションを持つフレームを hips → pelvis → root の順に名前で探す。見つからなければ 0 */
+        // NOTE: ルートモーションを持ちそうなフレームを名前で探す。見つからなければ先頭フレーム
         int FindDefaultRootFrame(const int modelHandle)
         {
             const int frameNum = MV1GetFrameNum(modelHandle);
@@ -41,7 +41,7 @@ namespace NanamiEngine::Core::MainWindow
             return frameNum > 0 ? 0 : -1;
         }
 
-        /** @brief 初期姿勢でのフレーム原点のワールド座標 */
+        // NOTE: 初期姿勢でのフレーム原点のワールド座標
         VECTOR FrameBasePosition(const int modelHandle, const int frameIndex, const MATRIX& worldMatrix)
         {
             MATRIX localToWorld = MV1GetFrameBaseLocalMatrix(modelHandle, frameIndex);
@@ -70,7 +70,7 @@ namespace NanamiEngine::Core::MainWindow
         SyncModelField();
         stage_.PollModelLoad();
 
-        // 描画(LifeCycle)より前に、このフレームのアニメーション姿勢を確定させる
+        // NOTE: 描画(LifeCycle)より前に、このフレームのアニメーション姿勢を確定させる
         const int   modelHandle = stage_.ModelHandle();
         const float deltaSecs   = isPlaying_ ? Time::DeltaTime() : 0.0f;
 
@@ -127,7 +127,7 @@ namespace NanamiEngine::Core::MainWindow
 
     void AnimationViewWindow::OnSave()
     {
-        // ビューアなので保存対象は無い
+        // NOTE: ビューアなので保存対象は無い
     }
 
     void AnimationViewWindow::SyncModelField()
@@ -160,7 +160,7 @@ namespace NanamiEngine::Core::MainWindow
             return;
         }
 
-        // ModelRenderer は描画時にオフセット込みの行列を設定し直すので、ここではオフセット無しの行列で姿勢を取る
+        // NOTE: ModelRenderer は描画時にオフセット込みの行列を設定し直すので、ここではオフセット無しの行列で姿勢を取る
         const MATRIX world = LibCore::Dxlib::ToDxMatrix(stage_.PreviewWorldMatrix());
         MV1SetMatrix(modelHandle, world);
         const VECTOR basePos    = FrameBasePosition(modelHandle, rootFrameIndex_, world);

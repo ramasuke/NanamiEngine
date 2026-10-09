@@ -16,26 +16,24 @@ namespace NanamiEngine::AssetUpdater
     {
         Idle,
         Checking,
-        /** installed.json が無い 更新は一切しない */
+        // NOTE: installed.json が無い。更新は一切しない
         NotInstalled,
-        /** オフラインなどで確認できなかった。今のアセットで遊べる */
+        // NOTE: オフラインなどで確認できなかった。今のアセットで遊べる
         CheckFailed,
         UpToDate,
         ClientTooOld,
-        /** 更新がある。確認してから BeginInstall する */
+        // NOTE: 更新がある。確認してから BeginInstall する
         UpdateAvailable,
         Downloading,
         Applying,
-        /** 更新があるのに落とせなかった / 適用できなかった。遊ばせずに再試行させる */
+        // NOTE: 更新があるのに落とせなかった / 適用できなかった。遊ばせずに再試行させる
         Failed,
-        /** 適用済み。読み込み済みのアセットは古いので、終了して起動し直してもらう */
+        // NOTE: 適用済み。読み込み済みのアセットは古いので、終了して起動し直してもらう
         ReadyToRestart,
     };
 
-    /**
-     * 確認・ダウンロード・適用を別スレッドで進める
-     * WARNING: CheckResult() / ErrorMessage() は Checking / Downloading / Applying の間は読まないこと
-     */
+    // NOTE: 確認・ダウンロード・適用を別スレッドで進める
+    // WARNING: CheckResult() / ErrorMessage() は Checking / Downloading / Applying の間は読まないこと
     class NANAMI_API AssetUpdateTask final
     {
     public:
@@ -46,7 +44,7 @@ namespace NanamiEngine::AssetUpdater
         AssetUpdateTask& operator=(const AssetUpdateTask&) = delete;
 
         void BeginCheck();
-        /** UpdateAvailable か Failed のときだけ受け付ける */
+        // NOTE: UpdateAvailable か Failed のときだけ受け付ける
         void BeginInstall();
 
         [[nodiscard]] AssetUpdateState         State() const;

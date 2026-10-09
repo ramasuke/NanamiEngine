@@ -84,7 +84,6 @@ namespace NanamiEngine::Module
     {
         bool isInside = CheckInnerMousePointer();
 
-        // 入った瞬間
         if (isInside && !isHovering_)
         {
             isHovering_ = true;
@@ -92,7 +91,6 @@ namespace NanamiEngine::Module
             if (const auto renderer = renderer_.lock(); renderer && onHoverSprite_)
                 renderer->SetSprite(onHoverSprite_.get());
         }
-        // 出た瞬間
         else if (!isInside && isHovering_)
         {
             isHovering_ = false;

@@ -16,7 +16,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 勘定書きに書く中身 */
+    // NOTE: 勘定書きに書く中身
     struct ShopReceiptContent final
     {
         std::shared_ptr<Asset::ItemData> item;
@@ -28,16 +28,14 @@ namespace GamePlay::Ui
         ShopRefusal refusal = ShopRefusal::None;
     };
 
-    /**
-     * @brief 店の勘定書き。選んだ品の値を書き、買えないときは朱で理由を出す
-     */
+    // NOTE: 店の勘定書き。選んだ品の値を書き、買えないときは朱で理由を出す
     class ShopReceipt final : public Component::ComponentBase,
                               public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @param content item が nullptr なら中身を全部隠す(品が1つも無い店) */
+        // NOTE: content の item が nullptr なら中身を全部隠す (品が 1 つも無い店)
         void Show(const ShopReceiptContent& content) const;
-        /** @brief 買えたときに朱の「毎度」判を押す */
+        // NOTE: 買えたときに朱の「毎度」判を押す
         void PlayPaidStamp();
 
     private:
@@ -60,11 +58,11 @@ namespace GamePlay::Ui
         [[serialize(0)]] int markInactiveBlendRate_ = 70;
         [[serialize(0)]] float stampDuration_secs_ = 0.6f;
         [[serialize(0)]] float stampStartScale_ = 1.6f;
-        // 判は stampDuration_secs_ のこの割合まで大きく、stampFadeRate_ から薄れる
+        // NOTE: 判は stampDuration_secs_ のこの割合まで大きく、stampFadeRate_ から薄れる
         [[serialize(1)]] float stampPressRate_ = 0.2f;
         [[serialize(1)]] float stampFadeRate_ = 0.7f;
 
-        // 2本とも同じ長さ。終わりは stampAlpha_ で判定する
+        // NOTE: 2本とも同じ長さ。終わりは stampAlpha_ で判定する
         LibCore::Tween::TweenPlayer<float> stampScale_;
         LibCore::Tween::TweenPlayer<float> stampAlpha_;
         glm::vec3 stampBaseScale_ = glm::vec3(1.0f);

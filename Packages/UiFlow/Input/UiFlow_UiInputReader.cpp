@@ -78,7 +78,7 @@ namespace NanamiEngine::UiFlow
         if (hasPolled_ && frame == lastPolledFrame_)
             return;
 
-        // 読まれていなかった間に押されたものは、押した瞬間として扱わない
+        // NOTE: 読まれていなかった間に押されたものは、押した瞬間として扱わない
         if (!hasPolled_ || frame - lastPolledFrame_ > 1)
             WaitForRelease();
         hasPolled_       = true;

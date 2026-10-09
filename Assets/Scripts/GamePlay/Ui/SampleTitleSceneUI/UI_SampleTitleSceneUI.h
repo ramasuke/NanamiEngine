@@ -19,7 +19,7 @@ namespace GamePlay::Ui
 
         [[serialize(0)]] FIELD(NanamiUi::Button) gameStartButton_;
         [[serialize(0)]] FIELD(NanamiUi::Button) gameExitButton_;
-        /** 配信アセットの更新「早馬の荷札」(AssetUpdatePresenter)。更新が済むまではゲームを始めさせない */
+        // NOTE: 配信アセットの更新画面。更新が済むまではゲームを始めさせない
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) assetUpdatePrefab_;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 

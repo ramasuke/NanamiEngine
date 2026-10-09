@@ -36,7 +36,6 @@ namespace NanamiEngine::Core::Object
             archive(guid_);
         }
 
-        // Lifecycle
         void Init() override
         {
             if (content_.expired())

@@ -2,7 +2,7 @@
 
 namespace
 {
-    /** FieldInitStagingScope の中にいるスレッドだけが非 nullptr になる */
+    // NOTE: FieldInitStagingScope の中にいるスレッドだけが非 nullptr になる
     thread_local std::vector<std::weak_ptr<NanamiEngine::Core::Object::IFieldContext>>* tlsApplicationLifeCycleFieldInitStaging = nullptr;
 }
 

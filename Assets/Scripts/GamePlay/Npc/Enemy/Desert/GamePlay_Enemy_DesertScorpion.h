@@ -3,7 +3,7 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    /** 砂漠の大サソリ。光の浮遊石に惹かれて群れ、オアシスの水場まで出る */
+    // NOTE: 砂漠の大サソリ。光の浮遊石に惹かれて群れ、オアシスの水場まで出る
     class DesertScorpion final : public GameCore::Npc::EnemyBase
     {
     private:

@@ -5,10 +5,8 @@
 
 namespace GameCore::Condition
 {
-    /**
-     * @brief startAt_ <= 今 < endAt_ なら満たす。"YYYY-MM-DD HH:MM"(日本時間)
-     * @note 空欄の側は制限なし。書式が崩れていれば満たさない
-     */
+    // NOTE: startAt_ <= 今 < endAt_ なら満たす。"YYYY-MM-DD HH:MM"(日本時間)
+    // NOTE: 空欄の側は制限なし。書式が崩れていれば満たさない
     class PeriodCondition final : public ICondition
     {
     public:

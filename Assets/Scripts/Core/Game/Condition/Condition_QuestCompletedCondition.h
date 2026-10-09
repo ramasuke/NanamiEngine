@@ -5,7 +5,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief questType_ を達成済みなら解放 */
+    // NOTE: questType_ を達成済みなら解放
     class QuestCompletedCondition final : public ICondition
     {
     public:

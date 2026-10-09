@@ -118,7 +118,7 @@ namespace NanamiEngine::Module::Component
 
     void RigidBody::OnUpdatedPhysics()
     {
-        // NOTE: 書き戻しは物理ステップ直後に BodyAssembler::PullTransforms でまとめて行う
+        // NOTE: 書き戻しは物理ステップ直後にまとめて行う
     }
 
     void RigidBody::OnDestroy()

@@ -44,7 +44,7 @@ namespace GamePlay::Sound
         const auto soundFile = sound.lock();
         if (!soundFile)
         {
-            // NOTE: シーンのコンテキストで bgm_ が解決できていないと、ここで黙って無音になる
+            // NOTE: BGM が解決できていないと無音になるだけなので、警告を残す
             Module::LogWarning("SoundPlayer: BGM が設定されていないか、読み込めていません");
             return;
         }
@@ -123,7 +123,6 @@ namespace GamePlay::Sound
         soundTarget->Stop();
         instance_->CancelFade(soundTarget, true);
 
-        // 管理リストから削除
         auto& list = instance_->bgmSounds_;
         list.erase(
             std::ranges::remove_if(list,

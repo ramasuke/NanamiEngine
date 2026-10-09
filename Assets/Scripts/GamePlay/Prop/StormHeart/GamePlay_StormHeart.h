@@ -11,22 +11,20 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 骸竜の砂嵐中だけ叩ける光の心臓。requiredHits_ 回叩くと骸竜が気絶して砂嵐が止む
-     * @note 同じ GameObject に非 Sensor の Collider と Static な RigidBody が要る
-     * WARNING: 無効にしたコライダーも当たるので、砂嵐の外では地面の下へ退ける
-     */
+    // NOTE: 骸竜の砂嵐中だけ叩ける光の心臓。requiredHits_ 回叩くと骸竜が気絶して砂嵐が止む
+    // NOTE: 同じ GameObject に非 Sensor の Collider と Static な RigidBody が要る
+    // WARNING: 無効にしたコライダーも当たるので、砂嵐の外では地面の下へ退ける
     class StormHeart final : public Component::ComponentBase,
                              public LifeCycleCallback::IAwakable,
                              public LifeCycleCallback::IUpdatable,
                              public GameCore::PlayerAvatar::ITakablePlayerAttack
     {
     public:
-        /** @brief 揺らいでいたら true を返し、揺らぎを消す。骸竜の BT (ホスト) が読む */
+        // NOTE: 揺らいでいたら true を返し、揺らぎを消す。ホスト側で読む
         [[nodiscard]] static bool ConsumeShaken();
-        /** @brief 他のピアで揺らいだ心臓を、このピア (ホスト) でも揺らいだことにする */
+        // NOTE: 他のピアで揺らいだ心臓を、このピア (ホスト) でも揺らいだことにする
         static void ShakeByRemote();
-        /** @brief 揺らいで砂嵐が止んだときの演出。全ピアで流す */
+        // NOTE: 揺らいで砂嵐が止んだときの演出。全ピアで流す
         static void PlayShakenBurst();
 
     private:
@@ -42,7 +40,7 @@ namespace GamePlay::Prop
         static StormHeart* instance_;
 
         [[serialize(0)]] int   requiredHits_  = 3;
-        // 1回の振りで何度も数えないための間隔
+        // NOTE: 1回の振りで何度も数えないための間隔
         [[serialize(0)]] float hitInterval_secs_ = 0.3f;
         [[serialize(0)]] glm::vec3 effectOffset_ = glm::vec3(0.0f, 9.0f, 0.0f);
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) hitParticle_;

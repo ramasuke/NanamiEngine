@@ -4,7 +4,7 @@
 
 namespace GameCore::Damage
 {
-    /** @brief 攻撃の怯み値 */
+    // NOTE: 攻撃の怯み値
     struct FlinchPower final
     {
         constexpr explicit FlinchPower(const int value = 0) : value_(value) {}
@@ -17,7 +17,7 @@ namespace GameCore::Damage
 
 #pragma region Serialization Function
     public:
-        // NOTE: 元がintだったため。
+        // NOTE: 素の int として保存する(元が int だった既存データをそのまま読める)
         template<class Archive>
         int save_minimal(const Archive&) const { return value_; }
 

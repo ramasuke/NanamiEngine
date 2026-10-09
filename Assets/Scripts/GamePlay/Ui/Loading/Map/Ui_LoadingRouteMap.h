@@ -19,23 +19,15 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ロード画面の紙の航路図。飛行船が航路を進んだ距離で読み込みの進み具合を見せる。
-     */
+    // NOTE: ロード画面の紙の航路図。飛行船が航路を進んだ距離で読み込みの進み具合を見せる
     class LoadingRouteMap final : public Component::ComponentBase
     {
     public:
-        /** @brief 航路を切り替える。ロード画面を出すたびに呼ぶ */
+        // NOTE: 航路を切り替える。ロード画面を出すたびに呼ぶ
         void Begin(const Asset::LoadingRouteData& route, bool isStageCleared);
-        /**
-         * @param progress01 表示上の進み具合(後戻りしない値を渡す)
-         * @param clockSecs  動きに使う壁時計の秒。途切れずに増え続ける値を渡す
-         * @param deltaSecs  前回からの壁時計の秒。tween を進める
-         */
+        // NOTE: progress01 は後戻りしない進み具合、clockSecs は増え続ける壁時計の秒、deltaSecs は前回からの秒
         void Tick(float progress01, float clockSecs, float deltaSecs);
-        /**
-         * @brief 地図一式の表示を切り替え、航路ごとに出し分ける部品を付け直す
-         */
+        // NOTE: 地図一式の表示を切り替え、航路ごとに出し分ける部品を付け直す
         void SetShown(bool isShown);
 
     private:
@@ -45,13 +37,13 @@ namespace GamePlay::Ui
             glm::vec2 tangent;
         };
 
-        /** @brief 航路を弧長で等間隔に引けるよう、ベジェを細かく刻んで累積長を持つ */
+        // NOTE: 航路を弧長で等間隔に引けるよう、ベジェを細かく刻んで累積長を持つ
         void BuildRouteSamples(const Asset::LoadingRouteData& route);
         [[nodiscard]] RoutePoint RouteAt(float progress01) const;
         [[nodiscard]] RoutePoint HoverAt(float clockSecs) const;
-        /** @brief prefab に置いた位置や大きさを、動かし始める前に一度だけ覚える */
+        // NOTE: prefab に置いた位置や大きさを、動かし始める前に一度だけ覚える
         void CapturePrefabBases();
-        /** @brief 揺れの往復を回し始める。既に回っていれば触らない */
+        // NOTE: 揺れの往復を回し始める。既に回っていれば触らない
         void StartSways();
         void LayoutRouteDashes();
         void UpdateRouteDashes(float progress01, float deltaSecs);
@@ -59,7 +51,7 @@ namespace GamePlay::Ui
         void UpdateTrail(float progress01, float clockSecs);
         void UpdateCamera(const glm::vec2& focus, float deltaSecs);
         void UpdateClouds(float clockSecs) const;
-        /** @brief 行き先の〇とクリア済みの判を最初から描き直す */
+        // NOTE: 行き先の〇とクリア済みの判を最初から描き直す
         void RestartDrawIns();
         void UpdateDestCircle(float deltaSecs);
         void UpdateStamp(float deltaSecs);
@@ -82,42 +74,42 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) titleText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) fromCaptionText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) toCaptionText_;
-        /** 画面中心を基準にした拡大率。少し寄せておくと、追いかけて動かす余地ができる */
+        // NOTE: 画面中心を基準にした拡大率。少し寄せておくと、追いかけて動かす余地ができる
         [[serialize(0)]] float cameraZoom_ = 1.16f;
         [[serialize(0)]] float cameraZoomWobble_ = 0.012f;
-        /** 1 で飛行船を画面中央に据える。0 で動かさない */
+        // NOTE: 1 で飛行船を画面中央に据える。0 で動かさない
         [[serialize(0)]] float cameraFollow_ = 0.6f;
-        /** カメラが追う点を、飛行船の何割ぶん後ろに取るか */
+        // NOTE: カメラが追う点を、飛行船の何割ぶん後ろに取るか
         [[serialize(0)]] float cameraLag_ = 0.06f;
         [[serialize(0)]] glm::vec2 cameraMaxPan_ = glm::vec2(250.0f, 140.0f);
-        /** 飛行船を航路からどれだけ浮かせて描くか。影は航路の上に落とす */
+        // NOTE: 飛行船を航路からどれだけ浮かせて描くか。影は航路の上に落とす
         [[serialize(0)]] float shipLiftPx_ = 33.0f;
         [[serialize(0)]] float shipBobPx_ = 3.0f;
         [[serialize(0)]] float shipTiltLimitDeg_ = 14.0f;
         [[serialize(0)]] glm::vec2 shadowOffset_ = glm::vec2(12.0f, 9.0f);
         [[serialize(0)]] float cloudShadowSpeed_ = 36.0f;
         [[serialize(0)]] float frontCloudSpeed_ = 150.0f;
-        /** 雲がこの x の範囲を出たら反対側へ回す */
+        // NOTE: 雲がこの x の範囲を出たら反対側へ回す
         [[serialize(0)]] glm::vec2 cloudWrapRangeX_ = glm::vec2(-600.0f, 2520.0f);
-        /** 地図が出てから〇を描き始めるまで。黒幕が明けるのを待つ */
+        // NOTE: 地図が出てから〇を描き始めるまで。黒幕が明けるのを待つ
         [[serialize(1)]] float destCircleDelay_secs_ = 0.35f;
-        /** 〇を一周描くのにかける時間 */
+        // NOTE: 〇を一周描くのにかける時間
         [[serialize(1)]] float destCircleDraw_secs_ = 0.5f;
-        /** 〇を描き終えてから判を押すまで */
+        // NOTE: 〇を描き終えてから判を押すまで
         [[serialize(2)]] float stampDelay_secs_ = 0.15f;
-        /** 判を押し込むのにかける時間 */
+        // NOTE: 判を押し込むのにかける時間
         [[serialize(2)]] float stampPress_secs_ = 0.2f;
-        /** 判が現れた瞬間の大きさ(倍率) */
+        // NOTE: 判が現れた瞬間の大きさ(倍率)
         [[serialize(2)]] float stampStartScale_ = 1.8f;
-        /** 点線が赤くなった瞬間の大きさ(倍率) */
+        // NOTE: 点線が赤くなった瞬間の大きさ(倍率)
         [[serialize(2)]] float dashPopScale_ = 1.5f;
         [[serialize(2)]] float dashPop_secs_ = 0.25f;
-        /** 飛行船が潰れて裏返るまでの時間 */
+        // NOTE: 飛行船が潰れて裏返るまでの時間
         [[serialize(2)]] float shipFlip_secs_ = 0.3f;
         [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
-        /** 飛行船の後ろに並べる煙の、進み具合でのずらし幅 */
+        // NOTE: 飛行船の後ろに並べる煙の、進み具合でのずらし幅
         [[serialize(4)]] float trailStep_ = 0.035f;
-        /** 揺れの片道の秒。周期が揃わないようにずらしてある */
+        // NOTE: 揺れの片道の秒。周期が揃わないようにずらしてある
         [[serialize(4)]] float shipBobHalf_secs_ = 1.31f;
         [[serialize(4)]] float zoomSwayHalf_secs_ = 3.49f;
         [[serialize(4)]] float panSwayXHalf_secs_ = 4.49f;
@@ -146,15 +138,15 @@ namespace GamePlay::Ui
         float hoverLapSecs_ = 7.0f;
         float cloudDirection_ = -1.0f;
         bool isShipFacingLeft_ = false;
-        /** 裏返している途中は、進む向きと絵の向きが食い違う */
+        // NOTE: 裏返している途中は、進む向きと絵の向きが食い違う
         bool isShipSpriteLeft_ = false;
         bool isPrefabBaseCaptured_ = false;
         LibCore::Tween::TweenPlayer<float> destCircleTween_;
         LibCore::Tween::TweenPlayer<float> stampTween_;
-        /** 判は押し始めるまで隠しておく */
+        // NOTE: 判は押し始めるまで隠しておく
         bool isStampPressing_ = false;
         LibCore::Tween::TweenPlayer<float> shipFlipTween_;
-        /** 揺れは -1..1 を往復させ、振幅を掛けて使う */
+        // NOTE: 揺れは -1..1 を往復させ、振幅を掛けて使う
         LibCore::Tween::TweenPlayer<float> shipBobTween_;
         LibCore::Tween::TweenPlayer<float> cameraZoomSwayTween_;
         LibCore::Tween::TweenPlayer<float> cameraPanSwayXTween_;

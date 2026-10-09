@@ -31,21 +31,21 @@ namespace GamePlay::Ui
         Open,
         Taking,
         Cleared,
-        /** 中身のクエストがまだ付いていない依頼書。貼り出すが受けられない */
+        // NOTE: 中身のクエストがまだ付いていない依頼書。貼り出すが受けられない
         Preparing,
-        /** 解放条件を満たしていない依頼。「？？？」で貼り出し、受けられない */
+        // NOTE: 解放条件を満たしていない依頼。「？？？」で貼り出し、受けられない
         Locked,
     };
 
-    /** @brief 掲示板に並べる依頼1件。表示用の文字列は開いた時刻で作っておく */
+    // NOTE: 掲示板に並べる依頼1件。表示用の文字列は開いた時刻で作っておく
     struct QuestBoardEntry
     {
         std::shared_ptr<Asset::BoardQuest> quest;
         QuestBoardState state = QuestBoardState::Open;
         bool        isEventQuest = false;
-        /** 未解放なら「？？？」 */
+        // NOTE: 未解放なら「？？？」
         std::string titleText;
-        /** 未解放なら解放条件の文言 */
+        // NOTE: 未解放なら解放条件の文言
         std::string goalText;
         std::string placeText;
         std::string rewardText;
@@ -53,13 +53,11 @@ namespace GamePlay::Ui
         std::string stateText;
     };
 
-    /**
-     * 依頼一覧のModel。期間外のイベント依頼を落とし、未解放・達成済みを末尾へ回す
-     */
+    // NOTE: 依頼一覧のModel。期間外のイベント依頼を落とし、未解放・達成済みを末尾へ回す
     class QuestBoardModel final
     {
     public:
-        /** @param takingQuests / completedQuests プレイヤーがいなければ nullptr(解放条件も見ず、全部受付中として出す) */
+        // NOTE: takingQuests / completedQuests はプレイヤーがいなければ nullptr (解放条件も見ず、全部受付中として出す)
         QuestBoardModel(
             const std::vector<std::shared_ptr<Asset::BoardQuest>>& quests,
             std::chrono::sys_seconds now,
@@ -73,12 +71,12 @@ namespace GamePlay::Ui
         [[nodiscard]] BoardListCursor&       Cursor()       { return cursor_; }
         [[nodiscard]] const BoardListCursor& Cursor() const { return cursor_; }
 
-        /** @brief 選んでいる依頼を受けたことにする。受付中でなければ何もしない */
+        // NOTE: 選んでいる依頼を受けたことにする。受付中でなければ何もしない
         void MarkSelectedTaking();
 
-        /** @brief 受付中のメインストーリーの依頼に、まだ掲示板で見ていないものがあるか */
+        // NOTE: 受付中のメインストーリーの依頼に、まだ掲示板で見ていないものがあるか
         [[nodiscard]] bool HasUnreadMainStory(const QuestReadLog& readLog) const;
-        /** @brief 受付中のメインストーリーの依頼をすべて見たことにする */
+        // NOTE: 受付中のメインストーリーの依頼をすべて見たことにする
         void MarkMainStoryRead(QuestReadLog& readLog) const;
 
     private:
@@ -86,6 +84,6 @@ namespace GamePlay::Ui
         BoardListCursor cursor_;
     };
 
-    /** @brief 状況欄の文言 */
+    // NOTE: 状況欄の文言
     [[nodiscard]] std::string ToQuestBoardStateText(QuestBoardState state);
 }

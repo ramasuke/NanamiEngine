@@ -23,7 +23,6 @@ namespace GameCore::Npc::Friendly::Behaviour
             spawnPos
         ).lock();
 
-        // 回転設定
         if (instance)
         {
             if (inheritRotation_)

@@ -43,7 +43,7 @@ namespace GamePlay::Ui
             case SwordManAvatarStateAction::LockOnRelease: Offer(Glyph::LockOn,         Label::LockOnRelease, isUsable); return;
             case SwordManAvatarStateAction::CannonTurn:    Offer(Glyph::MoveHorizontal, Label::CannonTurn,    isUsable); return;
             case SwordManAvatarStateAction::CannonFire:    Offer(Glyph::Attack,         Label::CannonFire,    isUsable); return;
-            // アイテムの切替/使用は専用のアイテム欄が出すので、操作ガイドには行を持たない
+            // NOTE: アイテムの切替/使用は専用のアイテム欄が出すので、操作ガイドには行を持たない
             case SwordManAvatarStateAction::CycleItem:
             case SwordManAvatarStateAction::UseItem:       return;
             }
@@ -77,7 +77,7 @@ namespace GamePlay::Ui
         }
 
     private:
-        // 同じ行に複数届いたら、先に届いた使える方を出す
+        // NOTE: 同じ行に複数届いたら、先に届いた使える方を出す
         void Offer(const Glyph glyph, const Label label, const bool isUsable)
         {
             if (!isUsable && IsHiddenWhenUnusable(label))
@@ -107,7 +107,7 @@ namespace GamePlay::Ui
             case SwordManAvatarStateType::JumpAttackAir:
                 return phase == PlayerAvatarInputPhase::Pressed ? std::optional(Label::JumpAttack) : std::nullopt;
             case SwordManAvatarStateType::DashAttack:           return Label::DashAttack;
-            // 押下で溜めへ入るのは攻撃ボタンそのもの。溜めの案内は押し続ける操作にだけ出す
+            // NOTE: 押下で溜めへ入るのは攻撃ボタンそのもの。溜めの案内は押し続ける操作にだけ出す
             case SwordManAvatarStateType::ChargeAttackCharging:
                 return phase == PlayerAvatarInputPhase::Pressed ? Label::Attack : Label::ChargeAttackHold;
             case SwordManAvatarStateType::ChargeAttackRelease:  return Label::ChargeAttackRelease;
@@ -132,7 +132,7 @@ namespace GamePlay::Ui
             return Glyph::Move;
         }
 
-        // 条件が揃ったときにだけ現れる操作
+        // NOTE: 条件が揃ったときにだけ現れる操作
         [[nodiscard]] static bool IsHiddenWhenUnusable(const Label label)
         {
             return label == Label::Chat || label == Label::WakeUp || label == Label::LockOn || label == Label::LockOnRelease;
@@ -175,7 +175,7 @@ namespace GamePlay::Ui
         if (request.isShown)
             return;
 
-        // State が出していない操作でも、指された行は「まだ使えない」姿で見せる
+        // NOTE: State が出していない操作でも、指された行は「まだ使えない」姿で見せる
         switch (row)
         {
         case Row::Move:         request = RowRequest{ true, false, Glyph::Move,         Label::Move             }; return;

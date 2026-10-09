@@ -34,7 +34,7 @@
 
 namespace
 {
-    /** 火花を衝突面からどれだけ手前に置くか */
+    // NOTE: 火花を衝突面からどれだけ手前に置くか
     constexpr float WALL_BLOCK_PARTICLE_SURFACE_OFFSET = 5.0f;
 
     float SmoothDampAngle(
@@ -210,7 +210,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         for (const auto& attackTarget : attackArea.Targets())
         {
-            // 村人は驚くだけでダメージは受けない
+            // NOTE: 村人は驚くだけでダメージは受けない
             if (!attackTarget.GameObject().Components().Catch<GameCore::Npc::IFriendlyNpc>().expired())
                 continue;
 
@@ -261,7 +261,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         const glm::vec3 playerPos     = Transform().GetWorldPos();
         const glm::vec3 attackAreaPos = attackArea.Transform().GetWorldPos();
-        // 武器の高さで水平に飛ばす (斜めだと頭上の出っ張りを拾う)
+        // NOTE: 武器の高さで水平に飛ばす (斜めだと頭上の出っ張りを拾う)
         const glm::vec3 origin(playerPos.x, attackAreaPos.y, playerPos.z);
         const glm::vec3 direction(attackAreaPos.x - playerPos.x, 0.0f, attackAreaPos.z - playerPos.z);
 
@@ -276,7 +276,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         if (!raycastHit.Hit())
             return false;
 
-        // 壁にめり込んで隠れないよう、衝突面から自機側へ少し戻す（面の法線は裏返っていることがある）
+        // NOTE: 壁にめり込んで隠れないよう、衝突面から自機側へ少し戻す（面の法線は裏返っていることがある）
         const glm::vec3 blockPos = raycastHit.Position() - direction / reach * WALL_BLOCK_PARTICLE_SURFACE_OFFSET;
 
         if (Resources().HasAttackBlockedParticlePrefab())
@@ -376,7 +376,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::VisitNormalAttackPress(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        // ジャスト回避直後の受付中はカウンターが溜め・コンボより優先
+        // NOTE: ジャスト回避直後の受付中はカウンターが溜め・コンボより優先
         const bool canCounter = Status().CanCounter();
         const bool canCharge = !canCounter && Status().CanChargeAttack();
         visitor.OnInput(SwordManAvatarStateType::CounterAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, canCounter);
@@ -393,7 +393,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             return;
         }
 
-        // 部位グループの Transform は本体の原点にあるので、狙う点へ向く
+        // NOTE: 部位グループの Transform は本体の原点にあるので、狙う点へ向く
         const glm::vec3 toTarget = ILockOnTarget::PositionOf(*target) - Transform().GetWorldPos();
         if (toTarget.x * toTarget.x + toTarget.z * toTarget.z < 0.0001f)
             return;

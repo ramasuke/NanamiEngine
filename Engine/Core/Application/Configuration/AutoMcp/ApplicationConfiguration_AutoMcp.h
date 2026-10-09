@@ -8,7 +8,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    /** @brief Claude Code などの MCP ブリッジ (tools/automcp) からエディタを操作するための受付設定 */
+    // NOTE: 外部の MCP ブリッジからエディタを操作するための受付設定
     class NANAMI_API AutoMcpConfiguration final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpServer;

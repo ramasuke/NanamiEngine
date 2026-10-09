@@ -28,7 +28,6 @@ namespace NanamiEngine::Module::Asset
             return;
         }
     
-        //NetworkObjectの場合
         if (content_->Components().Catch<Network::NetworkGameObject>().lock())
         {
             Core::Application::ApplicationBase::NetworkPrefabObjectRegistry().Add(content_);

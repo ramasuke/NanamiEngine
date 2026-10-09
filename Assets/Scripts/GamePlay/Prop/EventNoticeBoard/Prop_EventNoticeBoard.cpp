@@ -41,7 +41,7 @@ namespace GamePlay::Prop
     void EventNoticeBoard::OnExitInteractable()
     {
         isInteractable_ = false;
-        // 掲示板を見た後や、依頼が解放された後に離れたときに付け直す
+        // NOTE: 掲示板を見た後や、依頼が解放された後に離れたときに付け直す
         ResolveHasUnread();
         ApplyIdleIcon();
     }

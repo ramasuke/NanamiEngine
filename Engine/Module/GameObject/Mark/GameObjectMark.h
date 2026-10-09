@@ -7,7 +7,7 @@ struct ImVec2;
 
 namespace NanamiEngine::Module::GameObject
 {
-    /** @brief Unity の Select Icon 相当。GameWindow 上でオブジェクトの位置に描くマーク */
+    // NOTE: Unity の Select Icon 相当。ゲーム画面上でオブジェクトの位置に描くマーク
     enum class GameObjectMark : uint8_t
     {
         None = 0,
@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::GameObject
 
     [[nodiscard]] constexpr const char* ToName(const GameObjectMark mark)
     {
-        // ファイルを手で書き換えた等で範囲外の値が入っていても None 扱いにする
+        // NOTE: ファイルを手で書き換えた等で範囲外の値が入っていても None 扱いにする
         return GAMEOBJECT_MARK_NAMES[ToIndex(ToMark(ToIndex(mark)))];
     }
 
@@ -74,12 +74,12 @@ namespace NanamiEngine::Module::GameObject
         return (ToIndex(mark) - 1) % GAMEOBJECT_MARK_COLOR_COUNT;
     }
 
-    /** @brief center を中心にマークを描く。Label のときは label を文字として載せる */
+    // NOTE: center を中心にマークを描く。Label のときは label を文字として載せる
     NANAMI_API void DrawMark(ImDrawList& drawList, const ImVec2& center, GameObjectMark mark, const char* label);
 
-    /** @brief 現在の ImGui 行にマークの小さなプレビューを 1 アイテムとして置く */
+    // NOTE: 現在の ImGui 行にマークの小さなプレビューを 1 アイテムとして置く
     NANAMI_API void DrawMarkPreviewGui(GameObjectMark mark);
 
-    // 戻り値：変更されたかどうか
+    // NOTE: 変更があれば true
     NANAMI_API bool DrawChoiceMarkGui(const char* label, GameObjectMark& mark);
 }

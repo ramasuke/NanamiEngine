@@ -10,7 +10,7 @@
 
 namespace
 {
-    /** @brief NaN のボーン行列が来ることがあるので、Transform に流す前に弾くか判定 */
+    // NOTE: NaN のボーン行列が来ることがあるので、Transform に流す前に弾くか判定
     bool BoneSyncIsFinite(const glm::mat4& matrix)
     {
         for (int column = 0; column < 4; ++column)

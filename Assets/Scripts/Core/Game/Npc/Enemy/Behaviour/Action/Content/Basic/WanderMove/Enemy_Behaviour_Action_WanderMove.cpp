@@ -21,7 +21,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         const glm::vec3 selfPos = context.EnemyTransform().GetWorldPos();
 
-        // 初回のみスポーン地点を記録し、即座に移動開始させる
+        // NOTE: 初回はスポーン地点を記録し、待たずに動き出す
         if (!spawnPosInitialized_)
         {
             spawnPos_            = selfPos;
@@ -29,7 +29,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             currentWaitTime_     = 0.0f;
         }
 
-        // Idle: 待機してからランダム目標地点を決定して Moving へ
+        // NOTE: Idle: 待機してからランダム目標地点を決定して Moving へ
         if (state_ == State::Idle)
         {
             if (animationIdleNumber_ >= 0)
@@ -39,7 +39,6 @@ namespace GameCore::Npc::Enemy::Behaviour
             if (waitTimer_ < currentWaitTime_)
                 return TickStatus::Running;
 
-            // スポーン地点を中心に wanderRadius_ 内でランダムな目標地点を生成
             std::uniform_real_distribution<float> angleDist(0.0f, glm::pi<float>() * 2.0f);
             std::uniform_real_distribution<float> radiusDist(0.0f, wanderRadius_);
             const float angle  = angleDist(rng_);
@@ -51,14 +50,14 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Running;
         }
 
-        // Moving: PathFinding で wanderTarget_ へ移動する
+        // NOTE: Moving: PathFinding で wanderTarget_ へ移動する
         pathFinder_.Tick(grid, selfPos, { wanderTarget_ }, directions_,
                          maxPathCellRange_, maxClimbAngleDeg_, searchIntervalSec_);
 
         if (!pathFinder_.HasPath() || pathFinder_.Path().empty())
             return TickStatus::Running;
 
-        // 到達済みウェイポイントを読み飛ばして前進
+        // NOTE: 到達済みウェイポイントを読み飛ばして前進
         const glm::vec2 cellSize        = grid->CellSize();
         const float     halfCell        = 0.5f * (std::min)(std::abs(cellSize.x), std::abs(cellSize.y));
         const float     arrivalRadius   = (std::max)(halfCell, moveSpeed_ * Time::DeltaTime() * 1.5f);
@@ -74,7 +73,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             path.erase(path.begin());
         }
 
-        // 全ウェイポイント到達 → Idle に戻りランダム待機時間を設定
+        // NOTE: 目標に着いたら Idle に戻る
         if (path.empty())
         {
             pathFinder_.ClearPath();
@@ -98,7 +97,6 @@ namespace GameCore::Npc::Enemy::Behaviour
         velocity.y = context.EnemyRigidBody().LinearVelocity().y;
         context.EnemyRigidBody().SetLinearVelocity(velocity);
 
-        // 移動方向に回転する
         auto&     transform = context.EnemyTransform();
         glm::vec3 forward   = transform.GetWorldRot() * glm::vec3(0, 0, -1);
         forward.y = 0.0f;

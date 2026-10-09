@@ -3,7 +3,7 @@
 #include "Jolt/Jolt.h"
 #include "Jolt/Physics/Collision/BroadPhase/BroadPhaseLayer.h"
 
-// BroadPhaseLayerInterface の簡易実装
+// NOTE: BroadPhaseLayerInterface の簡易実装
 class NANAMI_API SimpleBroadPhaseLayerInterface final : public JPH::BroadPhaseLayerInterface
 {
 public:

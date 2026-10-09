@@ -26,7 +26,7 @@ namespace NanamiEngine::Core::Network
         const auto position        = packet.Data().Read<glm::vec3>(offset);
         const auto rotation        = packet.Data().Read<glm::quat>(offset);
 
-        // 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
+        // NOTE: 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
         if (instanceRegistry_.OwnerOf(networkObjectId) == PlayerId())
             return;
 
@@ -45,7 +45,6 @@ namespace NanamiEngine::Core::Network
     {
         using Configuration = Application::Configuration::NetworkConfiguration;
 
-        // 遅延見込み
         constexpr float LATENCY_ESTIMATE_SECS = 0.01f;
         const float sendInterval       = 1.0f / static_cast<float>(Configuration::GetUnreliableSendRate());
         const float interpolationDelay = sendInterval * 2.0f + LATENCY_ESTIMATE_SECS;

@@ -31,13 +31,13 @@ namespace GamePlay::Ui
         float riseAmount_ = 1.0f;
         float fallAmount_ = 0.8f;
 
-        // ダメージ量で文字の大きさを変える。間は log で補間する
+        // NOTE: ダメージ量で文字の大きさを変える。間は log で補間する
         int   minScaleDamage_ = 10;
         int   maxScaleDamage_ = 300;
         float minScale_       = 0.8f;
         float maxScale_       = 2.0f;
 
-        // 色はダメージで lowColor_ -> heavyColor_ -> maxColor_ へ log 補間。heavyDamage_ 以上はポップさせる
+        // NOTE: 色はダメージで lowColor_ -> heavyColor_ -> maxColor_ へ log 補間。heavyDamage_ 以上はポップさせる
         int     heavyDamage_   = 150;
         Color32 lowColor_      = Color32(255, 255, 255);
         Color32 heavyColor_    = Color32(255, 140, 0);
@@ -49,11 +49,11 @@ namespace GamePlay::Ui
         [[nodiscard]] float   ScaleForDamage(int value) const;
         [[nodiscard]] Color32 ColorForDamage(int value) const;
 
-        // startPos_ からの高さ。上がってから少し落ちる
+        // NOTE: startPos_ からの高さ。上がってから少し落ちる
         LibCore::Tween::TweenPlayer<float> heightTween_;
         glm::vec3 startPos_ = {};
 
-        // baseScale_ に掛ける倍率
+        // NOTE: baseScale_ に掛ける倍率
         LibCore::Tween::TweenPlayer<float> popTween_;
         glm::vec3 baseScale_ = glm::vec3(1.0f);
 
@@ -87,7 +87,7 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(fallTime_));
             if (version >= 0) archive(CEREAL_NVP(riseAmount_));
             if (version >= 0) archive(CEREAL_NVP(fallAmount_));
-            // NOTE: version 1, 2 は部位の強調表示(削除済み)の値が入っているので読み捨てる
+            // NOTE: 旧版の部位強調の値。今は使わないので読み捨てる
             if (version == 1 || version == 2)
             {
                 Color32 breakablePartColor;
@@ -111,12 +111,12 @@ namespace GamePlay::Ui
 #pragma endregion
     };
 
-    /** @brief position にダメージ表記を出す */
+    // NOTE: position にダメージ表記を出す
     void SpawnDealDamageText(Asset::PrefabGameObjectFile& prefab,
                              const glm::vec3& position,
                              int value);
 
-    /** @brief SpawnDealDamageText し、オンラインなら attacker の NetworkGameObject 宛てに他のピアへも出させる */
+    // NOTE: SpawnDealDamageText し、オンラインなら attacker の NetworkGameObject 宛てに他のピアへも出させる
     void SpawnDealDamageTextSynced(Asset::PrefabGameObjectFile& prefab,
                                    const glm::vec3& position,
                                    int value,

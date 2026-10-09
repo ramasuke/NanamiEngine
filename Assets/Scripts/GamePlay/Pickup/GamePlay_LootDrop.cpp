@@ -27,7 +27,7 @@ namespace GamePlay::Pickup
             return glm::vec3(std::cos(angle), 0.0f, std::sin(angle));
         }
 
-        /** @brief total を count 枚 (最大 total 枚) のコインに分け、origin から周りへ飛び散らせる */
+        // NOTE: total を count 枚 (最大 total 枚) のコインに分け、origin から周りへ飛び散らせる
         void DropMoney(Asset::PrefabGameObjectFile& prefab,
                        const GameCore::StatusParameter::Money total,
                        const int count,
@@ -41,7 +41,7 @@ namespace GamePlay::Pickup
             const int   remainder = total.Value() % coinCount;
             const float step      = 2.0f * std::numbers::pi_v<float> / static_cast<float>(coinCount);
 
-            // 円周を等分した向きへ少しずつずらして散らす。固まって落ちないように
+            // NOTE: 円周を等分した向きへ少しずつずらして散らす。固まって落ちないように
             std::uniform_real_distribution startAngle(0.0f, 2.0f * std::numbers::pi_v<float>);
             std::uniform_real_distribution jitter(-0.25f * step, 0.25f * step);
             const float start = startAngle(LootRandom());

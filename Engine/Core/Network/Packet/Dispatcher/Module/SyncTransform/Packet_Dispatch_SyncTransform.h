@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::Network
 
         void DispatchSendPacket(NetworkObjectId id, glm::vec3 position, glm::quat rotation);
         void Update();
-        /** 受信済みスナップショットを捨てる(所有権が自分に移った／破棄されたオブジェクト用) */
+        // NOTE: 受信済みスナップショットを捨てる(所有権が自分に移った／破棄されたオブジェクト用)
         void Forget(NetworkObjectId id);
 
     protected:

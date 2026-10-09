@@ -20,7 +20,7 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetWindowHeight(int height);
         static void                SetWindowColorScale(int scale);
 
-        /** ゲーム起動時の表示モード (プレイヤーが選んだものが LocalPrefs にあればそちらが優先) */
+        // NOTE: ゲーム起動時の表示モード (プレイヤーが選んだものが LocalPrefs にあればそちらが優先)
         [[nodiscard]] static Display::WindowDisplayMode GetDefaultWindowMode();
         static void                                     SetDefaultWindowMode(Display::WindowDisplayMode mode);
 
@@ -51,7 +51,7 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetLightDifG(float g);
         static void                SetLightDifB(float b);
 
-        /** エディタの自由カメラの Near / Far (ゲームのカメラは CinemachineCameraBrain が持つ) */
+        // NOTE: エディタの自由カメラの Near / Far (ゲームのカメラには使わない)
         [[nodiscard]] static float GetEditorCameraNear();
         [[nodiscard]] static float GetEditorCameraFar();
         static void                SetEditorCameraNear(float cameraNear);

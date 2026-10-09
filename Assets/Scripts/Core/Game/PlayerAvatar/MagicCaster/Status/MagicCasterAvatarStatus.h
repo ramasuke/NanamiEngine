@@ -83,28 +83,28 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         [[nodiscard]] bool  CanAvoidRolling() const { return stamina_.Value() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
         [[nodiscard]] float AvoidRollingStateDuration_secs() const { return avoidRollingStateDuration_secs_; }
-        /** 回避の出だしからこの秒数までに受け流した被弾をジャスト回避として扱う */
+        // NOTE: 回避の出だしからこの秒数までに受け流した被弾をジャスト回避として扱う
         [[nodiscard]] float JustAvoidWindow_secs() const { return justAvoidWindow_secs_; }
         void ConsumeAvoidRollingStamina() { ConsumeStamina(avoidRollingStaminaCost_); }
-        /** @brief ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く */
+        // NOTE: ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く
         void OnJustAvoided();
         [[nodiscard]] bool CanCounter() const { return counterWindowRemaining_secs_ > 0.0f; }
         void ConsumeCounter() { counterWindowRemaining_secs_ = 0.0f; }
 
         [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
         [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
-        /** @brief slot は MagicCasterSpellSlot.h の枠番号。クールタイム中か MP が足りなければ false */
+        // NOTE: slot は MagicCasterSpellSlot.h の枠番号。クールタイム中か MP が足りなければ false
         [[nodiscard]] bool CanCast(int slot, const GameCore::Magic::IMagicSpell& spell) const;
-        /** @brief MP を払い、その枠のクールタイムを始める */
+        // NOTE: MP を払い、その枠のクールタイムを始める
         void BeginCast(int slot, const GameCore::Magic::IMagicSpell& spell);
         [[nodiscard]] float CooldownRemaining_secs(int slot) const;
-        /** @brief 残りクールタイムの割合。1 で始まったばかり、0 で使える */
+        // NOTE: 残りクールタイムの割合。1 で始まったばかり、0 で使える
         [[nodiscard]] float CooldownRemainingRate(int slot) const;
 
-        /** @brief 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない */
+        // NOTE: 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない
         void Heal(StatusParameter::Health amount) override;
         void RestoreStamina(float amount) override;
-        /** @brief 魔法の威力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き */
+        // NOTE: 魔法の威力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き
         void ApplyAttackBuff(float rate, float duration_secs) override;
         [[nodiscard]] float AttackPowerRate() const { return attackBuffRemaining_secs_ > 0.0f ? attackBuffRate_ : 1.0f; }
 
@@ -127,7 +127,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         std::shared_ptr<StatusEvent> event_ = std::make_shared<StatusEvent>();
         [[serialize(3)]] std::unique_ptr<QuestGroup> quests_ = std::make_unique<QuestGroup>();
         [[serialize(1)]] std::shared_ptr<PlayerAvatar::Wallet> wallet_;
-        // 初期所持は無い。店で買うか拾うかで増える
+        // NOTE: 初期所持は無い。店で買うか拾うかで増える
         [[serialize(4)]] ItemPouch pouch_;
 
         [[serialize(0)]] StatusParameter::Health maxHealth_;
@@ -146,7 +146,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_;
         [[serialize(0)]] float moveRotateSpeed_;
-        // NOTE: 狙いへの向き直り(FaceAimTarget)用。移動の回転速度とは別にする
+        // NOTE: 狙いへの向き直り用。移動の回転速度とは別にする
         float aimRotateSpeed_ = 6.2f;
         [[serialize(0)]] float jumpPower_;
         [[serialize(0)]] float jumpStateDuration_secs_;
@@ -157,7 +157,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(5)]] float avoidRollingStaminaCost_;
         [[serialize(7)]] float justAvoidWindow_secs_ = 0.15f;
         float justAvoidStaminaRestore_ = 100.0f;
-        float counterWindow_secs_ = 0.5f; ///< ジャスト回避からカウンターを受け付ける時間
+        float counterWindow_secs_ = 0.5f; // ジャスト回避からカウンターを受け付ける時間
         float counterWindowRemaining_secs_ = 0.0f;
 
         [[serialize(0)]] float damageStateDuration_secs_;
@@ -243,7 +243,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(jumpStaminaCost_));
             if (version <= 1)
             {
-                // v1 までは魔法弾1種をスタミナで撃っていた。魔法ごとの MP とクールタイムに移ったので読み捨てる
+                // NOTE: 旧版の魔法弾のパラメータ。今は使わないので読み捨てる
                 Damage::PhysicsPower castDamage_;
                 float castStaminaCost_   = 0.0f;
                 float castCooldown_secs_ = 0.0f;

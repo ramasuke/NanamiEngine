@@ -10,7 +10,7 @@
 
 namespace LibCore::Tween
 {
-    // Back系が一度行き過ぎる量。Robert Pennerの式の定番値で、約10%はみ出す
+    // NOTE: Back系が一度行き過ぎる量。Robert Pennerの式の定番値で、約10%はみ出す
     constexpr float EASE_BACK_OVERSHOOT = 1.70158f;
 
     struct NANAMI_API EaseFunctor
@@ -55,10 +55,10 @@ namespace LibCore::Tween
         float     operator()(float time, float a, float b) const;
         glm::vec3 operator()(float time, const glm::vec3& a, const glm::vec3& b) const;
         glm::quat operator()(float time, const glm::quat& a, const glm::quat& b) const;
-        // Color32 は算術演算を持たないので、.via(Tween::Ease(...)) を付けないと tweeny の既定イージングで start のまま動かない
+        // WARNING: Color32 は算術演算を持たないので、.via(Tween::Ease(...)) を付けないと start のまま動かない
         NanamiEngine::Color32 operator()(float time, const NanamiEngine::Color32& a, const NanamiEngine::Color32& b) const;
         EaseType easing_;
-        // Back系だけが使う
+        // NOTE: Back系だけが使う
         float overshoot_ = EASE_BACK_OVERSHOOT;
     };
 }

@@ -12,10 +12,8 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 目的が変わったときに上中央へ一度だけ出す字幕。
-     * NOTE: 会話中・操作ロック中は明けるのを待ってから出す
-     */
+    // NOTE: 目的が変わったときに上中央へ一度だけ出す字幕
+    // NOTE: 会話中・操作ロック中は明けるのを待ってから出す
     class NavigationBanner final : public Component::ComponentBase,
                                    public LifeCycleCallback::IUpdatable,
                                    public LifeCycleCallback::IUserInterfaceRenderable
@@ -25,7 +23,7 @@ namespace GamePlay::Ui
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
-        /** @return 0..1。出ていなければ 0 */
+        // NOTE: 0..1。出ていなければ 0
         [[nodiscard]] float Alpha() const;
         void DrawCenteredText(const std::string& text, const glm::vec2& centre, float scale, const Color32& color, float alpha) const;
 

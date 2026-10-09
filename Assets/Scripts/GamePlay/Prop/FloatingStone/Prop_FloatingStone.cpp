@@ -19,7 +19,7 @@ namespace GamePlay::Prop
             return transform.GetWorldPos() + transform.GetWorldRot() * glm::vec3(0.0f, centerHeight * transform.GetWorldScale().y, 0.0f);
         }
 
-        /** @brief 飛んでいる石の中心に重ねる光の尾 */
+        // NOTE: 飛んでいる石の中心に重ねる光の尾
         class FlightTrail final
         {
         public:
@@ -62,7 +62,7 @@ namespace GamePlay::Prop
         if (!stone)
             return;
 
-        // NOTE: GameObject を無効にしても Effekseer の再生は残るので、パーティクルは先に止める
+        // WARNING: GameObject を無効にしても Effekseer の再生は残るので、パーティクルは先に止める
         if (!isVisible)
             StoryMovie::SetChildParticlesPlaying(*stone, false);
         stone->SetEnable(isVisible);
@@ -72,7 +72,7 @@ namespace GamePlay::Prop
 
     Coroutine::Task<void> FloatingStone::PlayDepartAsync(std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar)
     {
-        // NOTE: シーンを抜けて破棄されても、このコルーチンが終わるまでは this と石を生かしておく
+        // WARNING: シーンを抜けて破棄されても、このコルーチンが終わるまでは this と石を生かしておく
         const auto self  = Components().Catch<FloatingStone>().lock();
         const auto stone = Entity().lock();
         const DepartShot shot = departShot_;
@@ -114,7 +114,7 @@ namespace GamePlay::Prop
 
             if (elapsed_secs < riseStart_secs)
             {
-                // 力が溢れて、だんだん強く震える
+                // NOTE: 力が溢れて、だんだん強く震える
                 const float width = shot.shakeWidth * StoryMovie::Rate(elapsed_secs, shot.shake_secs);
                 const glm::vec3 shake(std::sin(elapsed_secs * 53.0f), 0.0f, std::cos(elapsed_secs * 41.0f));
                 transform.SetWorldPos(basePos + shake * width);
@@ -128,7 +128,7 @@ namespace GamePlay::Prop
                 if (burstParticle_)
                     Scene::GameObject::Instantiate(burstParticle_.get(), basePos);
                 trail.Spawn();
-                // 心臓に引かれて集まっていた獣が散りはじめる
+                // NOTE: 心臓に引かれて集まっていた獣が散りはじめる
                 GameCore::Story::IslandHeartDeparture::Notify(stone, basePos);
             }
 
@@ -147,7 +147,7 @@ namespace GamePlay::Prop
             trail.Move();
         }
 
-        // 飛び去った石は隠し、置き場所だけ元へ戻しておく
+        // NOTE: 飛び去った石は隠し、置き場所だけ元へ戻しておく
         SetVisible(false);
         transform.SetWorldPos(basePos);
         transform.SetWorldRot(baseRot);
@@ -162,7 +162,7 @@ namespace GamePlay::Prop
         const auto stone = Entity().lock();
         const ReturnShot shot = returnShot_;
 
-        // シーン切り替え直後は DeltaTime が 0 で、コルーチンごと凍る
+        // WARNING: シーン切り替え直後は DeltaTime が 0 で、コルーチンごと凍る
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
         if (IsCanceled())
             co_return;
@@ -229,7 +229,7 @@ namespace GamePlay::Prop
 
             if (elapsed_secs < settleStart_secs)
             {
-                // 回りながら飛んできて、底の真下で勢いを落とす
+                // NOTE: 回りながら飛んできて、底の真下で勢いを落とす
                 const float t = StoryMovie::EaseOutCubic(StoryMovie::Rate(elapsed_secs, shot.fly_secs));
                 transform.SetWorldPos(glm::mix(startPos, approachPos, t));
                 transform.SetWorldRot(StoryMovie::Yaw(shot.flyTurnDegrees * (1.0f - t)) * dockRot);

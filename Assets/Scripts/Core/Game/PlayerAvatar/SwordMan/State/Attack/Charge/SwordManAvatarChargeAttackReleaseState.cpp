@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarChargeAttackReleaseState::DoFixedUpdate()
     {
-        // 跳躍開始から発生（振り下ろし）までの間だけ前方へ踏み込む。In Place のクリップでも跳びかかって見えるようにする
+        // NOTE: 跳躍開始から発生（振り下ろし）までの間だけ前方へ踏み込む。In Place のクリップでも跳びかかって見えるようにする
         if (isAttacked_ || During_secs() < Status().ChargeAttackLungeStart_secs())
         {
             HoldHorizontalVelocity();
@@ -38,7 +38,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
         }
 
-        // 発生前（予備動作中）だけ攻撃対象へ向く
+        // NOTE: 発生前（予備動作中）だけ攻撃対象へ向く
         if (!isAttacked_)
             RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
@@ -66,7 +66,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         isAttacked_ = true;
 
-        // 踏み込みは振り下ろしの瞬間まで。以降はその場で止める
+        // NOTE: 踏み込みは振り下ろしの瞬間まで。以降はその場で止める
         HoldHorizontalVelocity();
 
         const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
@@ -75,11 +75,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         const bool isHit = NormalAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
         PlayAttackSe(isHit);
 
-        // 壁に阻まれたなら叩きつけそのものが成立しないので、地面の岩も出さない
+        // NOTE: 壁に阻まれたなら叩きつけそのものが成立しないので、地面の岩も出さない
         if (!isHit && TryBlockAttackByWall(NormalAttackArea()))
             return;
 
-        // 空振りでも叩きつけた地面から岩を突き出す（高さは足元に合わせる）
+        // NOTE: 空振りでも叩きつけた地面から岩を突き出す（高さは足元に合わせる）
         if (Resources().HasChargeImpactParticlePrefab())
         {
             const glm::vec3 areaPos = NormalAttackArea().Transform().GetWorldPos();

@@ -10,13 +10,11 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     {
         const bool isChatting = context.IsChatting();
 
-        // 会話開始
         if (isChatting && !isPreviewTickChatting_)
         {
             Coroutine::StartCoroutine(ChatAsync(context));
         }
 
-        // 会話が終了
         if (isFinishedChat_)
         {
             isPreviewTickChatting_ = false;
@@ -25,7 +23,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             return TickStatus::Success;
         }
         
-        // 会話中
         if (isChatting)
         {
             isPreviewTickChatting_ = true;

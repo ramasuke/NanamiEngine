@@ -15,7 +15,7 @@ namespace GamePlay::Ui
 
     bool ChatIconPopMotion::Update(const Component::ComponentBase& owner, const float popDuration_secs)
     {
-        // 演出を書き込む前でないと、揺れた後の値を基準にしてしまう
+        // NOTE: 演出を書き込む前でないと、揺れた後の値を基準にしてしまう
         if (!isCaptured_)
         {
             const auto billboard = owner.Components().Catch<NanamiUi::Billboard3D>().lock();
@@ -27,7 +27,7 @@ namespace GamePlay::Ui
             baseScale_      = owner.Transform().GetLocalScale();
             baseAngle_      = billboard->GetAngle();
             wasEnabled_     = billboard->IsEnable();
-            // シーン読み込み時点で表示済みのアイコンはポップさせない
+            // NOTE: シーン読み込み時点で表示済みのアイコンはポップさせない
             shownTime_secs_ = popDuration_secs;
             isCaptured_     = true;
             PlayPop(popDuration_secs);
@@ -39,7 +39,7 @@ namespace GamePlay::Ui
         if (!billboard)
             return false;
 
-        // 外から直接切り替えられることもあるので、有効/無効は毎フレームの変化で検知する
+        // NOTE: 外から直接切り替えられることもあるので、有効/無効は毎フレームの変化で検知する
         const bool isEnabled = billboard->IsEnable();
         if (isEnabled && !wasEnabled_)
         {
@@ -50,7 +50,7 @@ namespace GamePlay::Ui
 
         if (!isEnabled)
         {
-            // このフレームの OnUpdate 後に有効化されても、前回の姿で一瞬描画されないようにしておく
+            // NOTE: このフレームの OnUpdate 後に有効化されても、前回の姿で一瞬描画されないようにしておく
             billboard->SetAlpha(0.0f);
             return false;
         }

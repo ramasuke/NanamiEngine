@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
-    /** @brief ジャンプ攻撃の着地で叩きつけるステート。攻撃範囲は NormalAttackArea を使う */
+    // NOTE: ジャンプ攻撃の着地で叩きつけるステート。攻撃範囲は NormalAttackArea を使う
     class SwordManAvatarJumpAttackLandState final : public SwordManAvatarStateBase
     {
     public:

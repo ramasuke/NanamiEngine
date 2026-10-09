@@ -8,14 +8,12 @@ namespace GameCore::Npc::Friendly::Behaviour
 {
     TickStatus Action::ImplementChat::DoTick(const TickContext& context)
     {
-        // 会話開始
         if (!isPreviewTickChatting_)
         {
             isChatting_ = true;
             Coroutine::StartCoroutine(ChatAsync(context));
         }
 
-        // 会話が終了
         if (isFinishedChat_)
         {
             isPreviewTickChatting_ = false;
@@ -24,7 +22,6 @@ namespace GameCore::Npc::Friendly::Behaviour
             return TickStatus::Success;
         }
         
-        // 会話中
         if (isChatting_)
         {
             isPreviewTickChatting_ = true;

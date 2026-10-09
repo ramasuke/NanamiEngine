@@ -38,7 +38,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (renderer.expired())
             return TickStatus::Failure;
 
-        // NOTE: Sequence は毎Tick先頭からやり直すので Running は返さず、裏で差し替える。同期しない(序章の演出用)
+        // NOTE: 親ノードから毎 Tick やり直されるので Running は返さず、裏で差し替える。同期はしない
         Coroutine::StartCoroutine(SwapAsync(renderer, model_.get()));
         return TickStatus::Success;
     }

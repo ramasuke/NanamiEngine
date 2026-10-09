@@ -13,7 +13,7 @@
 
 namespace
 {
-    // OnDisplayChatAsync は参照で受けるため、コルーチンの寿命中は値で保持しておく
+    // WARNING: OnDisplayChatAsync は参照で受けるため、コルーチンの寿命中は値で保持しておく
     Coroutine::Task<void> ShowChatAsync(
         const std::string displayName,
         const std::shared_ptr<NanamiEngine::Module::Asset::NpcChat> chat)
@@ -23,7 +23,7 @@ namespace
         co_await chattingUIScene->Context().Npc().OnDisplayChatAsync(displayName, *chat);
     }
 
-    // 汎用演出RPC: 会話 UI を表示する(各ピアが自分で閉じる)
+    // NOTE: 汎用演出RPC: 会話 UI を表示する(各ピアが自分で閉じる)
     struct ChatRpcRegistration
     {
         ChatRpcRegistration()

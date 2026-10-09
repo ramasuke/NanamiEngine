@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "cereal/types/base_class.hpp"
@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** プレイヤーとの距離を計測し、distance_ 以内なら Success、超えたら Failure を返すアクション。 */
+    // NOTE: 一番近いプレイヤーが distance_ 以内なら Success。isInnerDistance_ = false で反転
     class ToPlayerDistance final : public ActionBase
     {
     public:

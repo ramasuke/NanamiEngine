@@ -13,7 +13,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		return 1;
 
 #ifdef NANAMI_HOST_LOADS_GAME_MODULE
-	// ゲーム DLL の静的初期化は Run より前に済ませる。静的 lib のときと同じ順序
+	// NOTE: ゲーム DLL の静的初期化は Run より前に済ませる。静的 lib のときと同じ順序
 	if (!Launch::LoadGameModule())
 		return 1;
 #endif

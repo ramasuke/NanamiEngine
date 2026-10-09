@@ -29,7 +29,7 @@ namespace GamePlay::Ui
                                 public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @warning OnStart より前に呼んでください */
+        // WARNING: OnStart より前に呼ぶ
         void Bind(const std::weak_ptr<Prop::MerchantStall>& stall);
 
     private:

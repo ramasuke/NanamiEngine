@@ -24,12 +24,12 @@ namespace GameCore::Npc::Friendly::Behaviour
         void OnDrawGui();
 
     private:
-        /** templateMethodパターン */
+        // NOTE: Template Method パターン
         virtual TickStatus DoTick(const Action::TickContext& context) = 0;
         virtual void DoDrawGui();
 
     protected:
-        /** サンドボックスパターン */
+        // NOTE: サンドボックスパターン
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> GetPlayerAvatar() const;
         
 #pragma region Serialization Function

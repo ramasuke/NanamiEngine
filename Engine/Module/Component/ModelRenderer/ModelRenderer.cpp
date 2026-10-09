@@ -86,7 +86,7 @@ namespace NanamiEngine::Module::Component
                 MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
         }
 
-        // メッシュ経由で対応表を作る
+        // NOTE: メッシュ経由で対応表を作る
         triangleListMaterialIndex_.assign(listNum, -1);
         const int meshNum = (std::max)(MV1GetMeshNum(modelDxLibHandle_), 0);
         meshMaterialIndex_  .reserve(meshNum);
@@ -225,7 +225,7 @@ namespace NanamiEngine::Module::Component
 
         MV1SetWriteZBuffer(modelDxLibHandle_, anyDisableZWrite ? FALSE : TRUE);
 
-        // 対象材質を使うメッシュへ適用する
+        // NOTE: 対象材質を使うメッシュへ適用する
         const int meshNum = static_cast<int>(meshMaterialIndex_.size());
         for (int mesh = 0; mesh < meshNum; ++mesh)
         {
@@ -320,7 +320,7 @@ namespace NanamiEngine::Module::Component
 
         MV1SetMatrix(modelDxLibHandle_, LibCore::Dxlib::ToDxMatrix(GetRenderMatrix()));
 
-        // 影は常に標準シェーダー
+        // NOTE: 影は常に標準シェーダー
         const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
         if (policies.empty())
         {

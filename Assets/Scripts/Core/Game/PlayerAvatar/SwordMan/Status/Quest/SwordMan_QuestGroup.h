@@ -25,7 +25,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                   const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
                   const std::shared_ptr<Wallet>& wallet);
         bool Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) override;
-        /** @return 同じ QuestType を受注中なら受けずに false */
+        // NOTE: 同じ種類を受注中なら受けずに false
         bool Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest);
         void OnDrawGui();
         [[nodiscard]] std::unique_ptr<QuestGroup> DeepCoy() const;
@@ -37,7 +37,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
         
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
-        // version 1 のセーブだけが持つ、職業を問わないクエスト。今は QuestJournal にあるので引き渡すまで預かる
+        // NOTE: 旧版のセーブだけが持つ職業を問わないクエスト。今は QuestJournal にあるので引き渡すまで預かる
         Quest::QuestList legacyStoryQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
         std::shared_ptr<IControlGuideFocusRequest> guideFocus_;

@@ -3,7 +3,7 @@
 
 namespace
 {
-    // ゲーム独自 EPacketType の名前を PacketTypeNameRegistry へ登録する
+    // NOTE: ゲーム独自 EPacketType の名前を PacketTypeNameRegistry へ登録する
     struct CustomPacketTypeNameRegistration
     {
         CustomPacketTypeNameRegistration()

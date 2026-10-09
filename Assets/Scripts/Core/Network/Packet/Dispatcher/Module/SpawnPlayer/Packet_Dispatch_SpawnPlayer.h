@@ -54,7 +54,7 @@ namespace GameCore::Network
         Asset::PlayerAvatarFactory& playerAvatarFactory_;
 
     private:
-        // 後入りへ再送するスポーン履歴(ホストのみ)。ルートの NetworkObjectId が登録済みのものだけ再送する
+        // NOTE: 後入りへ再送するスポーン履歴(ホストのみ)。ルートの NetworkObjectId が登録済みのものだけ再送する
         struct HistoryEntry
         {
             Core::Network::NetworkObjectId rootId;
@@ -63,7 +63,7 @@ namespace GameCore::Network
         std::vector<HistoryEntry> spawnPacketHistory_;
         R4::Disposable newPlayerSubscription_;
         R4::Disposable playerLeftSubscription_;
-        // キー: PlayerId
+        // NOTE: キー: PlayerId
         std::unordered_map<int8_t, Asset::PlayerAvatarAttachments> remoteAttachments_;
     };
 }

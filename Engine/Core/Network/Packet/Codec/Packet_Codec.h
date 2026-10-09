@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    //Enetに渡すことが可能になるデータとEnetからの受信データの変換
+    // NOTE: Packet と enet に渡す／enet から受け取るバイト列との相互変換
     class NANAMI_API PacketCodec
     {
     public:

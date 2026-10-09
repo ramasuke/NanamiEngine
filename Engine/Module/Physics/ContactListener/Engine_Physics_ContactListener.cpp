@@ -61,7 +61,7 @@ namespace NanamiEngine::Module::Physics
         if (isSensor1 && isSensor2)
             return;
 
-        //Sensor同士ではない、Sensor + Rigidで発火
+        // NOTE: Sensor と Rigid の組み合わせは Sensor の接触として扱う
         if (isSensor1 != isSensor2)
         {
             const JPH::Body& sensor = isSensor1 ? body1 : body2;
@@ -132,13 +132,13 @@ namespace NanamiEngine::Module::Physics
         if (body1.IsSensor() || body2.IsSensor())
             return;
 
-        // 壁に張り付かないよう、床と斜面の接触だけを対象にする
-        //NOTE: どちらが地面側かは決まっていないので法線は絶対値で見る
+        // NOTE: 壁に張り付かないよう、床と斜面の接触だけを対象にする
+        // NOTE: どちらが地面側かは決まっていないので法線は絶対値で見る
         const JPH::Vec3 normal = manifold.mWorldSpaceNormal;
         if (std::abs(normal.GetY()) < cosMaxSlope_)
             return;
 
-        // 面に沿って動いている間は動摩擦のまま。止まりかけた時だけ静止摩擦へ切り替える
+        // NOTE: 面に沿って動いている間は動摩擦のまま。止まりかけた時だけ静止摩擦へ切り替える
         const JPH::Vec3 relative = body2.GetLinearVelocity() - body1.GetLinearVelocity();
         const JPH::Vec3 tangent  = relative - normal * relative.Dot(normal);
         if (tangent.Length() >= staticFrictionSpeed_)

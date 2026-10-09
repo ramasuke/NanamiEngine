@@ -5,7 +5,7 @@
 
 namespace GameCore::StatusParameter
 {
-    //NOTE: 値オブジェクト
+    // NOTE: 値オブジェクト
     struct Mana final
     {
         explicit Mana(float value = 0.0f);

@@ -6,9 +6,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** 前方向(-Z)から一番近いプレイヤーへの水平角度(deg)が [minDegree_, maxDegree_] に入れば Success
-     * NOTE: 角度は -180..180 で右が正。useAbsolute_ なら絶対値で判定する
-     */
+    // NOTE: 前方向(-Z)から一番近いプレイヤーへの水平角度(deg)が [minDegree_, maxDegree_] に入れば Success
+    // NOTE: 角度は -180..180 で右が正。useAbsolute_ なら絶対値で判定する
     class ToPlayerAngle final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

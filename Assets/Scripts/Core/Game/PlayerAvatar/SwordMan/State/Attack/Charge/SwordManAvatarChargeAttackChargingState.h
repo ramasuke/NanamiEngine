@@ -18,7 +18,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void EmitChargeCompleteCue() const;
         void SustainChargeShake() const;
         
-        /** @brief 構えを抜けて溜め始めてからの時間 */
+        // NOTE: 構えを抜けて溜め始めてからの時間
         [[nodiscard]] float ChargeElapsed_secs() const;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ChargeAttackCharging; }

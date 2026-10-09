@@ -35,7 +35,7 @@ namespace NanamiEngine::Core::PopupWindow
         [[nodiscard]] const std::unordered_map<std::string, FactoryFunc>& GetAll() const { return factories_; }
         [[nodiscard]] const std::unordered_map<std::string, std::string>& GetCategories() const { return categories_; }
 
-        /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
+        // NOTE: module が登録したウィンドウ種別を消す。戻り値は消した数
         std::size_t UnregisterModule(const ModuleHandle module)
         {
             std::size_t count = 0;

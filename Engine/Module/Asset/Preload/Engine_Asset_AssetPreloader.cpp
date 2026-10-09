@@ -21,7 +21,7 @@ namespace
 {
     constexpr std::size_t ASSET_PRELOADER_GUID_LENGTH = 36;
 
-    /** 本体に GUID を書かない形式。これらは .meta だけ読む */
+    // NOTE: 本体に GUID を書かない形式。これらは .meta だけ読む
     constexpr std::string_view ASSET_PRELOADER_BINARY_EXTENSIONS[] = {
         ".mv1", ".png", ".jpg", ".jpeg", ".tga", ".bmp", ".dds",
         ".mp3", ".wav", ".ogg",
@@ -87,7 +87,7 @@ namespace
         return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
     }
 
-    /** @brief begin から 8-4-4-4-12 形式の GUID が始まっているか */
+    // NOTE: begin から 8-4-4-4-12 形式の GUID が始まっているか
     bool AssetPreloaderIsGuidAt(const std::string_view text, const std::size_t begin)
     {
         for (std::size_t i = 0; i < ASSET_PRELOADER_GUID_LENGTH; ++i)
@@ -105,7 +105,7 @@ namespace
         std::size_t i = 0;
         while (i + ASSET_PRELOADER_GUID_LENGTH <= text.size())
         {
-            // 区切りの位置を先に見て、GUID ではない位置を安く飛ばす
+            // NOTE: 区切りの位置を先に見て、GUID ではない位置を安く飛ばす
             if (text[i + 8] == '-' && text[i + 23] == '-' && AssetPreloaderIsGuidAt(text, i))
             {
                 outGuids.emplace_back(text.substr(i, ASSET_PRELOADER_GUID_LENGTH));
@@ -138,7 +138,7 @@ namespace
 
     std::filesystem::file_time_type AssetPreloaderWriteTime(const std::string& path)
     {
-        // 先読みの失敗でシーンの読み込みまで失敗させないよう、パスの変換で投げられる例外もここで止める
+        // NOTE: 先読みの失敗でシーンの読み込みまで失敗させないよう、パスの変換で投げられる例外もここで止める
         try
         {
             std::error_code error;
@@ -151,7 +151,7 @@ namespace
         }
     }
 
-    /** @brief path とその .meta に書かれた GUID を返す。どちらの更新時刻も変わっていなければ前回の結果を使う */
+    // NOTE: path とその .meta に書かれた GUID を返す。どちらの更新時刻も変わっていなければ前回の結果を使う
     std::vector<std::string> AssetPreloaderScanReferencedGuids(const std::string& path)
     {
         const std::string metaPath = path + ".meta";
@@ -226,7 +226,7 @@ namespace NanamiEngine::Module::Asset
                     continue;
 
                 dependencies.push_back(guid);
-                // 遷移先などで参照しているシーンの中身は、そのシーンを開くときに読む
+                // NOTE: 遷移先などで参照しているシーンの中身は、そのシーンを開くときに読む
                 if (!AssetPreloaderIsSceneFile(it->second))
                     pendingPaths.push_back(it->second);
             }

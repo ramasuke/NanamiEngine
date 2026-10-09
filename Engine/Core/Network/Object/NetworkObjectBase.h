@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <type_traits>
@@ -11,7 +11,7 @@ using namespace NanamiEngine::Core::Network;
 
 namespace NanamiEngine::Core::Network
 {
-    /** ネットワーク上で共通の値を持つ可能性のあるオブジェクトに継承させるclass */
+    // NOTE: ネットワーク上で値を共有するオブジェクトの基底クラス
     class NANAMI_API NetworkObjectBase : public INetworkObject
     {
     public:

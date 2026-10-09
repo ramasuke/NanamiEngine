@@ -23,7 +23,7 @@ namespace GameCore
 
     glm::vec3 Damage::Physics::DamageDirection() const
     {
-        // damageDirection_ は「target から見た attacker 方向」。ノックバックは attacker から離れる向きにしたいので符号反転する。
+        // NOTE: damageDirection_ は target から見た attacker の向き。ノックバックは離れる向きなので反転する
         return glm::normalize(-damageDirection_);
     }
 }

@@ -59,7 +59,7 @@ namespace NanamiEngine::AssetUpdater
         AssetManifest installed;
         if (std::filesystem::exists(settings_.paths.installedState))
         {
-            // 壊れた installed.json は「何も入っていない」扱いに倒して、全件を更新対象として出す
+            // NOTE: 壊れた installed.json は「何も入っていない」扱いに倒して、全件を更新対象として出す
             std::string installedError;
             if (!AssetManifest::TryLoadFile(settings_.paths.installedState, installed, installedError))
                 installed = AssetManifest();
@@ -92,7 +92,7 @@ namespace NanamiEngine::AssetUpdater
             return result;
         }
 
-        // 落とす分に加えて、適用時に Assets/ 側へ同じ量を書き出す
+        // NOTE: 落とす分に加えて、適用時に Assets/ 側へ同じ量を書き出す
         const std::filesystem::space_info space = std::filesystem::space(filesDirectory, error);
         if (!error && space.available < totalBytes * 2)
         {
@@ -109,7 +109,7 @@ namespace NanamiEngine::AssetUpdater
                 return result;
             }
 
-            // 前回途中で止まっていても、照合済みのものはそのまま使う
+            // NOTE: 前回途中で止まっていても、照合済みのものはそのまま使う
             const std::filesystem::path staged = settings_.paths.StagedBlobPath(blob.hash);
             if (Sha256OfFile(staged) != blob.hash)
             {

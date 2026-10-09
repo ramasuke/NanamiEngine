@@ -9,10 +9,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * 汎用RPC(Module::Network::Rpc<Args...>)の識別子。
-     * ゲーム側のERpcType(あるいはengine独自のenum)の数値をそのまま保持する。
-     */
+    // NOTE: 汎用 RPC の識別子。使う側の enum の数値をそのまま保持する
     struct NANAMI_API RpcId final
     {
         explicit constexpr RpcId(uint32_t value = 0) : value_(value) {}

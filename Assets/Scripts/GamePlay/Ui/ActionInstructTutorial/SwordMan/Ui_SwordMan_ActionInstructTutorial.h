@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
 namespace GamePlay::Ui
 {
-    // 戦闘訓練クエストの課題カード
+    // NOTE: 戦闘訓練クエストの課題カード
     class SwordManActionInstructTutorial final : public Component::ComponentBase,
                                                  public LifeCycleCallback::IUpdatable
     {
@@ -52,7 +52,7 @@ namespace GamePlay::Ui
         [[serialize(5)]] std::string stepLabelPrefix_ = "訓練";
         [[serialize(5)]] std::string clearedText_ = "よし！";
 
-        /// 指された行の画面座標からカード中心までのずらし量
+        // NOTE: 指された行の画面座標からカード中心までのずらし量
         [[serialize(5)]] glm::vec2 anchorOffset_px_ = glm::vec2(406.0f, 0.0f);
         [[serialize(5)]] glm::vec2 fallbackPos_px_ = glm::vec2(542.0f, 540.0f);
         [[serialize(5)]] float anchorFollowSpeed_pxPerSec_ = 900.0f;

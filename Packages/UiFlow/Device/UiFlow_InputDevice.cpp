@@ -31,7 +31,7 @@ namespace NanamiEngine::UiFlow
                 .IsAnyDown(INPUT_DEVICE_TRIGGER_DEAD_ZONE, INPUT_DEVICE_THUMB_DEAD_ZONE);
 
             const glm::ivec2 mouse = Platform::Input::Mouse::Position();
-            // 累積値をリセットせずに読み、前回との差を取る。リセットするとほかの読み手の分を取ってしまう
+            // NOTE: 累積値をリセットせずに読み、前回との差を取る。リセットするとほかの読み手の分を取ってしまう
             const int wheel = Platform::Input::Mouse::WheelRotation(false);
             const bool isMouseMoved   = state.hasUpdated && mouse != state.previousMouse;
             const bool isWheelRotated = state.hasUpdated && wheel != state.previousWheel;

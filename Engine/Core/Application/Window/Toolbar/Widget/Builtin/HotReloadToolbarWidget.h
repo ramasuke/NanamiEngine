@@ -7,7 +7,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief ゲーム DLL のビルドと差し替え (docs/HotReload.md §5)。DLL 構成のエディタでだけ出る */
+    // NOTE: ゲーム DLL のビルドと差し替え (docs/HotReload.md §5)。DLL 構成のエディタでだけ出る
     class NANAMI_API HotReloadToolbarWidget final : public IEditorToolbarWidget
     {
     public:

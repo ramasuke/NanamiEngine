@@ -10,13 +10,13 @@
 
 namespace NanamiEngine::Module::Component
 {
-    // ローカルXY平面の板ポリゴンをシェーダー付きで描画する (.mv1 を使わない)
+    // NOTE: ローカルXY平面の板ポリゴンをシェーダー付きで描画する (.mv1 を使わない)
     class NANAMI_API QuadRenderer final : public ComponentBase,
                                public LifeCycleCallback::IRenderable,
                                public IShaderConstantBufferHost
     {
     public:
-        // 定数バッファハンドル (未生成なら生成)。vsFile_ / psFile_ が無効なら -1
+        // NOTE: 定数バッファハンドル (未生成なら生成)。vsFile_ / psFile_ が無効なら -1
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
 
     private:

@@ -9,17 +9,17 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::SetStorm::DoTick(const TickContext& context)
     {
         auto* weather = GamePlay::Weather::WeatherService::Instance();
-        //NOTE: 天候は演出なので、シーンに WeatherService が無くてもツリーは止めない
+        // NOTE: 天候は演出なので、シーンに WeatherService が無くてもツリーは止めない
         if (!weather)
             return TickStatus::Success;
 
-        //NOTE: Sequenceは毎フレーム子0から再Tickされる。同じ目標のままならRPCも送らない
+        // NOTE: 毎 Tick 来ても、同じ目標のままなら設定も RPC もやり直さない
         if (weather->HasStormTarget(intensity_))
             return TickStatus::Success;
 
         weather->SetStorm(intensity_, blendSeconds_);
 
-        // 権威側限定Tickなら、Tickしていない他ピアの空も同じように曇らせる
+        // NOTE: 権威側限定Tickなら、Tickしていない他ピアの空も同じように曇らせる
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::SetStormRpc::Send(

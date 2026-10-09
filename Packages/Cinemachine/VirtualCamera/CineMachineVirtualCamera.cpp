@@ -87,7 +87,7 @@ void CineMachine::CineMachineVirtualCamera::OnAwake()
 
 void CineMachine::CineMachineVirtualCamera::OnStart()
 {
-    // ThirdPerson/LockOnがOnAwakeでRequireComponentするFollow/LookAtも拾えるよう、全員のAwake後に集める
+    // NOTE: Behaviour が OnAwake で RequireComponent した分も拾えるよう、全員の Awake 後に集める
     cameraBehaviours_ = Components().Catches<IVirtualCameraBehaviour>();
     std::ranges::stable_sort(cameraBehaviours_, {}, [](const std::weak_ptr<IVirtualCameraBehaviour>& behaviour)
     {

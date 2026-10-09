@@ -19,7 +19,6 @@
 
 namespace
 {
-    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
     bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
     {
         if (needle.empty())
@@ -43,7 +42,7 @@ void Scene::Scene::Deserialize(
     // NOTE: FIELD の初期化待ちは outContent に貯める (共有キューだと未登録の参照が null で確定する)
     const Core::Application::FieldInitStagingScope stagingScope(outContent.pendingFieldContexts);
 
-    // 未作成のファイルは空の Scene。破損していれば DeserializeException
+    // NOTE: 未作成のファイルは空の Scene。破損していれば DeserializeException
     NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath, [&outContent, progress](cereal::JSONInputArchive& archive)
     {
         archive(cereal::make_nvp("name", outContent.name));
@@ -70,7 +69,7 @@ void Scene::Scene::Deserialize(
 Scene::Scene::Scene(const std::string& filePath)
 {
     filePath_ = filePath;
-    // 中のオブジェクトが初めて描画するときに同期ロードで止まらないよう、参照先の読み込みを先に要求しておく
+    // NOTE: 中のオブジェクトが初めて描画するときに同期ロードで止まらないよう、参照先の読み込みを先に要求しておく
     Module::Asset::AssetPreloader::RequestForScene(filePath_);
 
     DeserializedContent content;
@@ -89,7 +88,7 @@ void Scene::Scene::AdoptDeserializedContent(
 {
     name_ = std::move(content.name);
 
-    // 貯めた FIELD を InitGameObject より先に共有キューへ戻す (同期読み込みと順序を揃える)
+    // NOTE: 貯めた FIELD を InitGameObject より先に共有キューへ戻す (同期読み込みと順序を揃える)
     Core::Application::ApplicationBase::ApplicationLifeCycle().AddStagedFieldInittables(content.pendingFieldContexts);
 
     for (const auto& gameObject : content.gameObjects)
@@ -102,7 +101,6 @@ void Scene::Scene::AdoptDeserializedContent(
 
 Scene::Scene::~Scene()
 {
-    //TODO: replace RemoveImplementAllGameObject()
     for (auto& weakGameObject : gameObjects_ | std::views::values)
     {
         if (const auto gameObject = weakGameObject.lock())
@@ -218,7 +216,7 @@ void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, C
 
     OnDrawFileDropGui(fileDraggingHand);
 
-    // 検索中は階層を無視して、子孫まで含めた全GameObjectから名前がマッチするものをフラットに一覧表示する
+    // NOTE: 検索中は階層を無視して、子孫まで含めた全GameObjectから名前がマッチするものをフラットに一覧表示する
     if (!searchFilter.empty())
     {
         ForEachGameObject([&searchFilter](const std::shared_ptr<Module::GameObject::IGameObject>& gameObject)
@@ -229,7 +227,6 @@ void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, C
         return;
     }
 
-    // 通常のGameObject描画
     for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
     {
         if (const std::shared_ptr<Module::GameObject::IGameObject> gameObject = weakGameObject.lock())
@@ -251,7 +248,7 @@ void Scene::Scene::OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileD
             const auto draggingGuid = fileDraggingHand.TakeDraggingItemGuid();
             if (const auto prefabGameObjectFile = Core::Application::ApplicationBase::ObjectRegistry().Catch<Module::Asset::PrefabGameObjectFile>(draggingGuid.value()); !prefabGameObjectFile.expired())
             {
-                // .prefab の読み込みに失敗している場合は Content() が null
+                // NOTE: .prefab の読み込みに失敗している場合は Content() が null
                 if (const auto content = prefabGameObjectFile.lock()->Content())
                     AddGameObject(content->CopyForEditor());
                 else
@@ -343,7 +340,7 @@ std::shared_ptr<GameObject::IGameObject> Scene::Scene::CatchGameObject(
 void Scene::Scene::ForEachGameObject(
     const std::function<void(const std::shared_ptr<Module::GameObject::IGameObject>&)>& action) const
 {
-    // 親を持つ GameObject も gameObjects_ に残っていることがあるので、ルートから辿って重複を避ける
+    // NOTE: 親を持つ GameObject も gameObjects_ に残っていることがあるので、ルートから辿って重複を避ける
     for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
     {
         const std::shared_ptr<Module::GameObject::IGameObject> rootGameObject = weakGameObject.lock();

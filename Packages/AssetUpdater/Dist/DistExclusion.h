@@ -6,6 +6,6 @@ namespace NanamiEngine::AssetUpdater::Dist
 {
     [[nodiscard]] NANAMI_API bool IsExcludedFromDistribution(const std::string& relPosix);
     
-    /** ASCII の大文字だけを小文字にする */
+    // NOTE: ASCII の大文字だけを小文字にする
     [[nodiscard]] NANAMI_API std::string AsciiLower(std::string text);
 }

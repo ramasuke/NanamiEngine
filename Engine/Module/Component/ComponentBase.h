@@ -29,18 +29,16 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> Entity() const { return gameObjectRef_; }
         [[nodiscard]] GameObject::Transform& Transform() const { return gameObjectRef_.lock()->Transform(); }
-        //NOTE: Componentが破棄されるタイミングで呼ばれる関数
         virtual void OnDestroy() { }
         virtual void BasedOnDrawgui() { }
         virtual void OnDrawGui() override;
-        //NOTE: この関数を何かしらの方法でカプセル化した方が安全
-        //WARNING: エンジン開発者以外使用しないでください。
+        // WARNING: エンジン内部用。GUID を振り直すので通常は呼ばない
         void ResetGuid();
         void SetEnable(bool enable);
         [[nodiscard]] bool IsEnable() const;
-        //NOTE: このComponentが破棄される時にキャンセルされるトークン。
+        // NOTE: この Component が破棄されるときにキャンセルされるトークン
         [[nodiscard]] R4::CancellationToken DestroyCancellationToken() const { return destroyCancellationTokenSource_.Token(); }
-        //WARNING: エンジン開発者以外使用しないでください。
+        // WARNING: エンジン内部用。破棄処理からだけ呼ぶ
         void ImplementCancelOnDestroy();
 
     private:

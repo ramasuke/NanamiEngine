@@ -25,7 +25,7 @@ namespace GamePlay::Prop
         constexpr float         GRASS_MID_HEIGHT_RATIO   = 0.55f;
         constexpr float         GRASS_MID_WIDTH_RATIO    = 0.7f;
 
-        // spos = (根元, 位相) で葉全体を同じ位相で揺らす。u = 高さ比率、v = 葉の高さ
+        // NOTE: spos = (根元, 位相) で葉全体を同じ位相で揺らす。u = 高さ比率、v = 葉の高さ
         Platform::Render::ShaderVertex3D MakeGrassVertex(
             const glm::vec3& position,
             const glm::vec3& root,
@@ -112,7 +112,7 @@ namespace GamePlay::Prop
 
         const glm::vec3 up(0.0f, 1.0f, 0.0f);
 
-        // 読み込み中のハンドルになると SetData で完了待ちに入るので同期で作る
+        // NOTE: 読み込み中のハンドルになると SetData で完了待ちに入るので同期で作る
         const Platform::AsyncLoad::SyncLoadScope syncLoad;
 
         std::vector<Platform::Render::ShaderVertex3D> vertices;

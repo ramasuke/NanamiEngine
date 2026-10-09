@@ -30,7 +30,7 @@ namespace GamePlay::Ui
         follow_ = follow;
         lookAt_ = lookAt;
 
-        // 今映っている画から始める。Follow/LookAt が動く前のフレームで Brain が原点へ補間しないよう、姿勢も写しておく
+        // NOTE: 今映っている画から始める。Follow/LookAt が動く前のフレームで Brain が原点へ補間しないよう、姿勢も写しておく
         const glm::vec3 cameraPos = brain->Transform().GetWorldPos();
         const glm::vec3 forward = brain->Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, 1.0f);
         Transform().SetWorldMatrix(brain->Transform().GetWorldMatrix());
@@ -50,7 +50,7 @@ namespace GamePlay::Ui
             startPitch_rad_ = endPitchDeg_ * GAME_OVER_CAMERA_DEG_TO_RAD;
         }
 
-        // 視線の上で、倒れた位置と同じ奥行きの点を最初の注視点にする
+        // NOTE: 視線の上で、倒れた位置と同じ奥行きの点を最初の注視点にする
         const glm::vec3 lookPoint = cameraPos + forward * glm::dot(targetPos - cameraPos, forward);
         startLookAtOffset_ = lookPoint - targetPos;
 
@@ -89,7 +89,7 @@ namespace GamePlay::Ui
         if (!follow || !lookAt)
             return;
 
-        // 水平角0が +Z 側。GrassLandArrivalMovie と同じ極座標で置く
+        // NOTE: 水平角 0 が +Z 側の極座標で置く
         const float yaw = startYaw_rad_ + orbitDeg_ * GAME_OVER_CAMERA_DEG_TO_RAD * rate;
         const float pitch = std::lerp(startPitch_rad_, endPitchDeg_ * GAME_OVER_CAMERA_DEG_TO_RAD, rate);
         const float distance = std::lerp(startDistance_, endDistance_, rate);

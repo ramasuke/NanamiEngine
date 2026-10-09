@@ -5,20 +5,11 @@
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    /**
-    * @brief IAwakable::OnAwake()の後に一度だけ呼ばれるOnStart()を実装するインターフェース
-    *
-    * @details
-    * 呼び出し順序:
-    * - IAwakable::OnAwake() の後に呼ばれる（1回だけ）
-    * 使用目的:
-    * - Awake 後の初期化処理
-    */
+    // NOTE: OnAwake の後に一度だけ呼ばれる OnStart() を実装するインターフェース
     class NANAMI_API IStartable : public virtual Object::IObject
     {
     public:
         virtual ~IStartable() = default;
-        /** @brief インスタンス生成後、次フレームにOnAwakeより後に呼ばれる初期化処理 */
         virtual void OnStart() = 0;
         
         template <class Archive>

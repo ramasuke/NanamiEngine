@@ -3,7 +3,7 @@
 
 namespace NanamiEngine::Core::Application
 {
-    // ハッシュと比較を shared_ptr ベースで定義
+    // NOTE: weak_ptr を指し先のポインタで比較・ハッシュする
     template <typename T>
     struct SharedPtrHash
     {

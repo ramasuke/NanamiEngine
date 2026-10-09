@@ -36,7 +36,7 @@ namespace NanamiEngine::Core::MainWindow
 
         if (modelHandle != attachedModelHandle_)
         {
-            // 前のモデルは ModelRenderer 側で MV1DeleteModel 済みなので、アタッチ情報を捨てるだけでよい
+            // NOTE: 前のモデルは所有側で MV1DeleteModel 済みなので、アタッチ情報を捨てるだけでよい
             attachIndex_         = -1;
             attachedModelHandle_ = modelHandle;
         }
@@ -45,7 +45,7 @@ namespace NanamiEngine::Core::MainWindow
         const std::optional<Guid> wantedGuid = file ? std::optional<Guid>(file->GetGuid()) : std::nullopt;
         if (wantedGuid != sourceGuid_)
         {
-            // アタッチ元を消す前に外す
+            // NOTE: アタッチ元を消す前に外す
             Detach(modelHandle);
             ReleaseSource();
             sourceGuid_ = wantedGuid;
@@ -91,7 +91,7 @@ namespace NanamiEngine::Core::MainWindow
 
         if (!isLoop_ && time_ > clipEndTime)
             time_ = clipEndTime;
-        // 一時停止中は末尾にシークしても先頭へ戻さない
+        // NOTE: 一時停止中は末尾にシークしても先頭へ戻さない
         if (isLoop_ && step > 0.0f && time_ >= clipEndTime)
             time_ = startTime_;
     }

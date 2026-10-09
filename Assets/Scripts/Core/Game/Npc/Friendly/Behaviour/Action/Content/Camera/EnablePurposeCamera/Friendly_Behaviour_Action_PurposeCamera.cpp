@@ -15,7 +15,7 @@ namespace GameCore::Npc::Friendly::Behaviour
         if (onPurposeCameraEnable_)
         {
             purposeCamera_->SetPriority(ENABLE_PURPOSE_CAMERA_PRIORITY);
-            // カメラがNPCを映している間はプレイヤーを動かさない
+            // NOTE: カメラが NPC を映している間はプレイヤーを動かさない
             PlayerAvatar::LockControlBy(context.NpcGameObject(), PURPOSE_CAMERA_CONTROL_LOCK_TAG);
         }
         else

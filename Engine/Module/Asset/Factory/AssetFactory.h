@@ -23,12 +23,12 @@ namespace NanamiEngine::Module::Asset
 {
     using OnCreateAsset = std::function<bool(const std::string&, std::shared_ptr<AssetBase>&)>;
 
-    /** ProjectWindow の「+」から新規作成できるアセット */
+    // NOTE: エディタの「+」メニューから新規作成できるアセット
     struct NANAMI_API CreatableAsset
     {
         std::string name;
         std::string extension;
-        /** 「+」メニューでの入れ子 ("A::B") */
+        // NOTE: 「+」メニューでの入れ子 ("A::B")
         std::string category;
     };
 
@@ -40,16 +40,16 @@ namespace NanamiEngine::Module::Asset
     public:
         template <typename T>
         void Register(const std::string& extensionLabel);
-        /** @param module 登録元のモジュール。REGISTER_CREATABLE_ASSET_EXTENSION が NANAMI_CURRENT_MODULE() を渡す */
+        // NOTE: module は登録元のモジュール。ホットリロード時にまとめて解除するために記録する
         void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel, const std::string& categoryLabel, Core::ModuleHandle module = {});
         bool TryCreate(const std::string& filePath, std::shared_ptr<AssetBase>& outAsset) const;
-        /** アセットを生成せずに、filePath の拡張子が Register 済みかだけを判定する */
+        // NOTE: アセットを生成せずに、filePath の拡張子が Register 済みかだけを判定する
         [[nodiscard]] bool IsRegisteredExtension(const std::string& filePath) const;
         [[nodiscard]] std::shared_ptr<AssetBase> Load(const std::string& filePath) const;
         template <typename T>
         void RegisterLoader(const std::string& extensionLabel);
         [[nodiscard]] std::vector<CreatableAsset> CreatableAssets() const;
-        /** @brief module が登録した拡張子・ローダー・新規作成メニューを消す。戻り値は消した数 */
+        // NOTE: module が登録した拡張子・ローダー・新規作成メニューを消す。戻り値は消した数
         std::size_t UnregisterModule(Core::ModuleHandle module);
 
     private:
@@ -59,9 +59,9 @@ namespace NanamiEngine::Module::Asset
             EntryT            entry;
             Core::ModuleHandle module;
         };
-        /** filePathからfileを生成する関数群 */
+        // NOTE: filePath からアセットを生成する関数群
         std::vector<Registered<OnCreateAsset>> factories_;
-        /** factories_ に登録された拡張子群 */
+        // NOTE: factories_ に登録された拡張子群
         std::vector<Registered<std::string>> registeredExtensions_;
         std::vector<Registered<std::function<std::shared_ptr<AssetBase>(const std::string&)>>> loaderers_;
         std::vector<Registered<CreatableAsset>> creatableAssetsData_;

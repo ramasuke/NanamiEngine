@@ -81,7 +81,6 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
 
             if (additionConditionGroup_->Check(*additionParams_))
             {
-                // std::cerr << "StartBlendAnimation" << std::endl;
                 if (!isBlending_)
                 {
                     isBlending_ = true;
@@ -92,7 +91,7 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
         }
     }
 
-    // <= : 非ループのクリップは終端でクランプされ続けるので、終端に居る間は毎フレーム再判定させる
+    // NOTE: <= : 非ループのクリップは終端でクランプされ続けるので、終端に居る間は毎フレーム再判定させる
     if (fromNode_.lock()->GetAnimDuration_secs() <= context.during_secs_)
     {
         isFirstBlendingAnimation_ = true;
@@ -115,7 +114,7 @@ void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend(const float ti
     if (isBlending_)
     {
         transitionDuring_secs_ += Time::DeltaTime() * timeScale;
-        // 遷移時間 0 は即時切り替え。DeltaTime が 0 のフレーム（シーン遷移直後）に 0/0 の NaN を作らないよう割らずに済ませる
+        // NOTE: 遷移時間 0 は即時切り替え。0/0 の NaN を作らないよう割らずに済ませる
         const float blendRate = transitionDuration_secs_ > 0.0f
             ? std::clamp(transitionDuring_secs_ / transitionDuration_secs_, 0.0f, 1.0f)
             : 1.0f;
@@ -142,7 +141,7 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
     if (!node)
         return;
 
-    // 新しい購読を張ってから古い方を解除する
+    // NOTE: 新しい購読を張ってから古い方を解除する
     fromNodeSubscription_.Set(node->OnUpdated().Subscribe(
         [this](const IAnimationNode::UpdateCallbackContext context)
         {

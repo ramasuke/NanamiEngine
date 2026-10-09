@@ -9,7 +9,7 @@ namespace Coroutine
 {
     struct NANAMI_API WaitForSubscription final : IEventWaitable
     {
-        //NOTE: token がキャンセルされるまで待つ
+        // NOTE: token がキャンセルされるまで待つ
         explicit WaitForSubscription(NanamiEngine::R4::CancellationToken token);
 
         [[nodiscard]] bool await_ready() const noexcept override;

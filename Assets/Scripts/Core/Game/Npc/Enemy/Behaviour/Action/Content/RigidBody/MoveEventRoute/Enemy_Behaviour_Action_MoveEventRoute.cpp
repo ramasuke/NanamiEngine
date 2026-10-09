@@ -80,7 +80,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             Coroutine::StartCoroutine(MoveAsync(context));
         }
 
-        // 進行方向へ徐々に回転
+        // NOTE: 位置は Tween が動かすので、向きだけ毎 Tick ここで進行方向へ回す
         if (isRotateToMoveDir_ && moveRoute_)
         {
             const auto& routes = moveRoute_->Get();

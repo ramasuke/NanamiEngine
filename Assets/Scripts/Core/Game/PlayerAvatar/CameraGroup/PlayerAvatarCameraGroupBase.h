@@ -17,9 +17,9 @@ namespace GameCore::PlayerAvatar
         virtual void Init(const std::shared_ptr<GameObject::IGameObject>& playerAvatarObject);
         [[nodiscard]] CineMachine::CineMachineVirtualCamera& CurrentCamera() const { return *currentCamera_.lock(); }
 
-        // 敵をロックオンしてカメラを切り替える。target が nullptr なら何もしない
+        // NOTE: 敵をロックオンしてカメラを切り替える。target が nullptr なら何もしない
         void EngageLockOn(const std::shared_ptr<GameObject::IGameObject>& target);
-        // ロックオンを解除し、FollowFromBehind カメラへ戻す
+        // NOTE: ロックオンを解除し、FollowFromBehind カメラへ戻す
         void ReleaseLockOn();
         [[nodiscard]] bool IsLockedOn() const { return isLockedOn_; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnTarget() const { return lockOnTarget_; }

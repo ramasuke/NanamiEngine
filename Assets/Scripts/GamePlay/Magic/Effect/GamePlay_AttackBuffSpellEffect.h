@@ -9,7 +9,7 @@
 
 namespace GamePlay::Magic
 {
-    // 撃ち手のまわりにいる自分と仲間の攻撃力を、しばらく倍率で上げる
+    // NOTE: 撃ち手のまわりにいる自分と仲間の攻撃力を、しばらく倍率で上げる
     class AttackBuffSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:

@@ -5,7 +5,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 掲示板の一覧の選択位置と表示窓の先頭 */
+    // NOTE: 掲示板の一覧の選択位置と表示窓の先頭
     class BoardListCursor final
     {
     public:
@@ -17,7 +17,7 @@ namespace GamePlay::Ui
         [[nodiscard]] size_t VisibleRowCount  () const { return visibleRowCount_;   }
 
         void Select(size_t index);
-        /** @brief 端で止める */
+        // NOTE: 端で止める
         void Move(int delta);
 
         [[nodiscard]] NanamiEngine::R4::Observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.AsObservable(); }

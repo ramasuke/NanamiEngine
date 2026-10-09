@@ -21,10 +21,8 @@ namespace GameCore
 
 namespace GamePlay
 {
-    /**
-     * センサーコライダーに入っている AttackTargetT へダメージを与える攻撃範囲。
-     * NOTE: ダメージは対象をこのピアが所有しているときだけ (ネットワーク生成でない対象には常に) 入る
-     */
+    // NOTE: センサーコライダーに入っている AttackTargetT へダメージを与える攻撃範囲
+    // NOTE: ダメージは対象をこのピアが所有しているときだけ (ネットワーク生成でない対象には常に) 入る
     template<typename AttackTargetT>
     class AttackArea : public NanamiEngine::Module::Network::NetworkComponent,
                        public Physics::Callback::ISensorEnterable,
@@ -67,7 +65,7 @@ namespace GamePlay
         private:
             std::weak_ptr<GameObject::IGameObject> gameObject_;
             std::weak_ptr<AttackTargetT>           target_;
-            // 範囲に入っている Body の GameObject。手足(isPartOfParent_)ごとに出入りするので、全部出た時に対象から外す
+            // NOTE: 範囲に入っている Body の GameObject。手足(isPartOfParent_)ごとに出入りするので、全部出た時に対象から外す
             std::vector<std::weak_ptr<GameObject::IGameObject>> parts_;
         };
 
@@ -77,12 +75,12 @@ namespace GamePlay
         [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
         [[nodiscard]] int                              AttackTargetCount() const { return static_cast<int>(attackTargets_.size()); }
         [[nodiscard]] Core::Network::NetworkObjectId   NetworkObjectId  () const { return GetNetworkObjectId(); }
-        /** 被弾側判定: 対象がネットワーク上で他ピアの所有物ならダメージを適用しない */
+        // NOTE: 被弾側判定: 対象がネットワーク上で他ピアの所有物ならダメージを適用しない
         [[nodiscard]] static bool IsDamageApplicableTarget(GameObject::IGameObject& targetObject);
 
     protected:
         virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
-        /** 対象を他のピアが所有していてダメージを適用しなかったときに呼ばれる */
+        // NOTE: 対象を他のピアが所有していてダメージを適用しなかったときに呼ばれる
         virtual void OnRemoteOwnedTarget(AttackTarget& attackTarget, GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower) {}
 
     private:
@@ -118,7 +116,6 @@ namespace GamePlay
     {
         for (auto attackTarget : Targets())
         {
-            // 被弾側判定: 自分が所有していない(他ピアの)アバターにはダメージを与えない
             if (!IsDamageApplicableTarget(attackTarget.GameObject()))
             {
                 OnRemoteOwnedTarget(attackTarget, fromObject, damagePower);
@@ -130,7 +127,6 @@ namespace GamePlay
                 attackTarget.GameObject(),
                 damagePower));
         }
-        // Components().Catch<Component::ColliderBase>().lock()->OnDebugDraw();
     }
 
     template <typename AttackTargetT>

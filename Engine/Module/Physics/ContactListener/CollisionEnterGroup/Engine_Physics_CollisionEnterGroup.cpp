@@ -43,7 +43,6 @@ namespace NanamiEngine::Module::Physics
             if (aData->IsExpired() || bData->IsExpired())
                 continue;
 
-            // A側
             for (const auto& weak : aData->Components().Catches<Callback::ICollisionEnterable>())
             {
                 if (const auto comp = weak.lock())
@@ -55,7 +54,6 @@ namespace NanamiEngine::Module::Physics
                 }
             }
 
-            // B側
             for (const auto& weak : bData->Components().Catches<Callback::ICollisionEnterable>())
             {
                 if (const auto comp = weak.lock())

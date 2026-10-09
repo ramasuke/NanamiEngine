@@ -4,14 +4,14 @@
 
 namespace GameCore::Reward
 {
-    /** @brief amount_ を所持金に足す */
+    // NOTE: amount_ を所持金に足す
     class MoneyReward final : public IReward
     {
     public:
         MoneyReward() = default;
         explicit MoneyReward(StatusParameter::Money amount);
 
-        /** @brief 報酬がお金だけだったころのデータ(rewardMoney_)を読み替える。0 以下なら空 */
+        // NOTE: 報酬がお金だけだったころのデータ(rewardMoney_)を読み替える。0 以下なら空
         [[nodiscard]] static Rewards FromLegacy(StatusParameter::Money amount);
 
         void Grant(const RewardContext& context) const override;

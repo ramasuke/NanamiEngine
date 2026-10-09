@@ -25,7 +25,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
     TickStatus ActionTimeline::DoTick(const TickContext& context)
     {
-        // NOTE: WaitSeconds と同じく、終わった直後のフレームも続けて Tick されている間は完了のまま（Sequence の途中に置ける）
+        // NOTE: 終わった直後も続けて Tick されている間は完了のまま (親の途中に置ける)
         const bool consecutive = lastTickIndex_ + 1 == context.TickIndex();
         lastTickIndex_ = context.TickIndex();
         if (completed_)

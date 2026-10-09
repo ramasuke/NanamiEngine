@@ -46,7 +46,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual float                                    SlopeCheckUpOffset       () const = 0;
         [[nodiscard]] virtual float                                    SlopeCheckDistance       () const = 0;
 
-        /** @brief PlayerAvatarObject に付いている Animator */
+        // NOTE: PlayerAvatarObject に付いている Animator
         [[nodiscard]] Component::Animator& PlayerAvatarAnimator() const;
     };
 }

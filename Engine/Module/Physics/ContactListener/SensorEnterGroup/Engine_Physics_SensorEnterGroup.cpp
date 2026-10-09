@@ -39,7 +39,6 @@ namespace NanamiEngine::Module::Physics
     {
         for (const auto& enter : pending_)
         {
-            //assert(enter.key_.a_ != enter.key_.b_);
             if (enter.key_.a_ == enter.key_.b_)
                 continue;
 

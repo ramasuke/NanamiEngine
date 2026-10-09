@@ -24,7 +24,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] int         DxLibHandle   () const          { return dxLibHandle_;    }
         [[nodiscard]] int         Size          () const          { return size_;           }
         [[nodiscard]] const Color32& EdgeColor  () const          { return edgeColor_;      }
-        /** @brief 同じ書体を pixelSize で作ったハンドル。縮小描画だと細い線が欠けるので、画面上の大きさで作って原寸で描く */
+        // NOTE: 同じ書体を pixelSize で作ったハンドル。縮小描画だと細い線が欠けるので、画面上の大きさで作って原寸で描く
         [[nodiscard]] int HandleForPixelSize(int pixelSize);
 
     private:
@@ -36,14 +36,14 @@ namespace NanamiEngine::Module::Asset
         int size_;
         int thickness_;
         int fontType_;
-        // fontType_ が EDGE 系のときだけ有効
+        // NOTE: fontType_ が EDGE 系のときだけ有効
         int edgeSize_;
         Color32 edgeColor_;
 
         Guid guid_;
         int dxLibHandle_ = -1;
         std::unordered_map<int, int> sizedHandles_;
-        /** AddFontResourceExA に成功したパス（空なら未登録）。Rename 後も登録時と同じパスで RemoveFontResourceExA するため別に持つ */
+        // NOTE: AddFontResourceExA に成功したパス (空なら未登録)。Rename 後も同じパスで解除するため別に持つ
         std::string addedFontResourcePath_;
 
 #pragma region Serialization Function
@@ -85,7 +85,7 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(thickness_));
             if (version >= 0) archive(CEREAL_NVP(fontType_));
             if (version >= 0) archive(CEREAL_NVP(guid_));
-            // version 1 まではハンドル値を保存していた。デストラクタで解放するため、古い値はメンバに入れず読み捨てる
+            // NOTE: 旧版のハンドル値。読み捨てる (メンバに入れるとデストラクタで解放してしまう)
             int legacyDxLibHandle = -1;
             if (version <= 1) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
             if (version >= 3) archive(CEREAL_NVP(contentPath_));

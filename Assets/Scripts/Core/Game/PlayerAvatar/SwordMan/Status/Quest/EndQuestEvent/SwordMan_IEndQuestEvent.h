@@ -10,7 +10,6 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     public:
         virtual ~IEndQuestEvent() = default;
         
-        //Questが終了した時に呼ばれる関数
         virtual void OnEndQuest() = 0;
         virtual void DoDrawGui () = 0;
 

@@ -17,7 +17,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::MainWindow
 {
-    /** @brief モデルにアニメーションクリップを当てて再生・シーク・2 クリップのブレンドを確認するビューア */
+    // NOTE: モデルにアニメーションクリップを当てて再生・シーク・2 クリップのブレンドを確認するビューア
     class NANAMI_API AnimationViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
@@ -31,9 +31,9 @@ namespace NanamiEngine::Core::MainWindow
         void OnDrawGui(MainWindowDrawGuiContext context) override;
         void OnSave   () override;
 
-        /** @brief modelFile_ がドラッグ&ドロップ等で差し替わっていたらプレビューに反映する */
+        // NOTE: modelFile_ がドラッグ&ドロップ等で差し替わっていたらプレビューに反映する
         void SyncModelField();
-        /** @brief ルートフレームの水平移動を描画オフセットで打ち消し、モデルをその場に留める */
+        // NOTE: ルートフレームの水平移動を描画オフセットで打ち消し、モデルをその場に留める
         void UpdateRootMotionLock(int modelHandle);
         void DrawTransportGui();
         void DrawRootMotionGui(int modelHandle);
@@ -46,9 +46,9 @@ namespace NanamiEngine::Core::MainWindow
         AnimationPreviewSlot slotB_;
         bool  isPlaying_   = true;
         bool  useBlend_    = false;
-        /** @brief スロット B のブレンド率。A は 1 - blendWeight_ */
+        // NOTE: スロット B のブレンド率。A は 1 - blendWeight_
         float blendWeight_ = 0.5f;
-        // ゲーム側 AnimationClipNode は NameCheck 無しでアタッチしている
+        // NOTE: ゲーム側 AnimationClipNode は NameCheck 無しでアタッチしている
         bool  nameCheck_   = false;
 
         bool                lockRootMotion_  = false;

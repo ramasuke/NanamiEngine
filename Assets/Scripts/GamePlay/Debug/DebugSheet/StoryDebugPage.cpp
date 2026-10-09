@@ -10,7 +10,7 @@ namespace GamePlay::Debug
     {
         namespace Story = GameCore::Story;
 
-        /** @brief 今の StoryProgress の中身。全 enum 値を問い合わせて組み立てる */
+        // NOTE: 今の StoryProgress の中身。全 enum 値を問い合わせて組み立てる
         Story::StorySaveData Snapshot(const Story::StoryProgress& story)
         {
             Story::StorySaveData data;
@@ -34,7 +34,7 @@ namespace GamePlay::Debug
             auto& story = Story::StoryProgress::Instance();
             Widgets::Note("切り替えるとその場で保存される。RestorationGate の見た目もすぐ変わる。");
 
-            // NOTE: ゲーム側に手を入れずに済むよう、保存ファイルを書き換えて StoryProgress に読み直させる (Reload が OnChanged も流す)
+            // NOTE: ゲーム側に手を入れず、保存ファイルを書き換えて読み直させる (Reload が OnChanged も流す)
             auto data    = Snapshot(story);
             bool changed = false;
 

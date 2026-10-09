@@ -58,7 +58,7 @@ namespace NanamiEngine::AssetUpdater::Dist
                 print_("        " + error);
             }
 
-            /** body の中の Expect が外れたら name を FAIL にする */
+            // NOTE: body の中の Expect が外れたら name を FAIL にする
             template <class Body>
             void Run(const std::string& name, Body&& body)
             {
@@ -138,21 +138,21 @@ namespace NanamiEngine::AssetUpdater::Dist
                    "                \"guid_\": {\"cereal_class_version\": 0, \"value_\": \"" + guid + "\"}\n            }\n        }\n    }\n}";
         }
 
-        /** Assets/ の実際の形を小さく再現する */
+        // NOTE: Assets/ の実際の形を小さく再現する
         void DistSelfTestMakeTree(const std::filesystem::path& root)
         {
-            // アセット: 本体 + .meta
+            // NOTE: アセット: 本体 + .meta
             DistSelfTestWrite(root, "Assets/Art/Models/Hyena.mv1", "hyena-model");
             DistSelfTestWrite(root, "Assets/Art/Models/Hyena.mv1.meta", DistSelfTestMetaJson("Assets/Art/Models/Hyena.mv1", "11111111-1111-1111-1111-111111111111"));
             DistSelfTestWrite(root, "Assets/Audio/Howl.mp3", "howl-sound");
             DistSelfTestWrite(root, "Assets/Audio/Howl.mp3.meta", DistSelfTestMetaJson("Assets/Audio/Howl.mp3", "22222222-2222-2222-2222-222222222222"));
 
-            // 随伴ファイル: .meta 無しだが実行時に要る
+            // NOTE: 随伴ファイル: .meta 無しだが実行時に要る
             DistSelfTestWrite(root, "Assets/Art/Models/Hyena.fbm/Hyena_Diffuse.png", "hyena-texture");
             DistSelfTestWrite(root, "Assets/Art/Effect/Foo/Model/rock1.efkmodel", "efk-model");
             DistSelfTestWrite(root, "Assets/Art/Shaders/Tree/Tree_VS.vso", "compiled-shader");
 
-            // 開発専用: 落ちるべきもの
+            // NOTE: 開発専用: 落ちるべきもの
             DistSelfTestWrite(root, "Assets/Art/Models/Hyena.fbx", "source-model");
             DistSelfTestWrite(root, "Assets/Art/Effect/_Source/Foo/Foo.efkproj", "source-effect");
             DistSelfTestWrite(root, "Assets/Art/Effect/_Source/Foo/Model/rock1.efkmodel", "source-companion");
@@ -169,7 +169,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             out.append(bytes, 4);
         }
 
-        /** EFKE ヘッダ + 1710 形式の INFO (dependency list) だけの .efkefc */
+        // NOTE: EFKE ヘッダ + 1710 形式の INFO (dependency list) だけの .efkefc
         std::string DistSelfTestEfkefc(const std::vector<std::string>& paths)
         {
             std::string info;
@@ -190,7 +190,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return file + info;
         }
 
-        /** 圧縮なし (キーバイト 0xFF が本文に現れない) の LZ ストリームを持つ .mv1 */
+        // NOTE: 圧縮なし (キーバイト 0xFF が本文に現れない) の LZ ストリームを持つ .mv1
         std::string DistSelfTestMv1(const std::vector<std::string>& paths)
         {
             std::string body("MV1-body\0", 9);
@@ -269,7 +269,7 @@ namespace NanamiEngine::AssetUpdater::Dist
             return "[" + text + "]";
         }
 
-        // Packages/AssetUpdater/Manifest/AssetManifest.cpp が読むキーそのもの
+        // NOTE: クライアント側のマニフェスト読み手が読むキーそのもの
         void StageJsonShape(DistSelfTestReporter& r)
         {
             r.Section("stage 0: JSON shape matches the C++ reader");
@@ -324,9 +324,9 @@ namespace NanamiEngine::AssetUpdater::Dist
                 "Assets/Art/Shaders/Tree/Tree_VS.vso",
                 "Assets/Art/Shaders/Tree/Tree_PS.pso",
                 "Assets/Art/Models/Dragon/M_Body.mat",
-                // 同名の原本が _Source/ にあっても、.mv1 が参照するのは隣のこちら
+                // NOTE: 同名の原本が _Source/ にあっても、.mv1 が参照するのは隣のこちら
                 "Assets/Art/Models/Prop/EventBoard/EventNoticeBoard_Wood.png",
-                // 名前に "source" を含むだけのディレクトリは対象外
+                // NOTE: 名前に "source" を含むだけのディレクトリは対象外
                 "Assets/Art/UI/SourceFrame/Frame.png",
             };
             const std::vector<std::string> dropped =
@@ -394,7 +394,7 @@ namespace NanamiEngine::AssetUpdater::Dist
 
             r.Run("CP932 .meta", [&]
             {
-                // UTF-8 化以前のエンジンが書いた .meta は CP932 のまま残っている。contentPath_ の日本語が UTF-8 として不正
+                // NOTE: UTF-8 化以前のエンジンが書いた .meta は CP932 のまま残っている。contentPath_ の日本語が UTF-8 として不正
                 const std::wstring body = L"{\"value0\":{\"ptr_wrapper\":{\"data\":{\"contentPath_\":\"Assets\\\\Audio\\\\ドラゴンの鳴き声1.mp3\","
                                           L"\"guid_\":{\"value_\":\"AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE\"}}}}}";
                 const int length = WideCharToMultiByte(932, 0, body.data(), static_cast<int>(body.size()), nullptr, 0, nullptr, nullptr);
@@ -491,7 +491,7 @@ namespace NanamiEngine::AssetUpdater::Dist
                 DistSelfTestExpect(!diff.IsUpToDate() && ManifestDiff::Between(installed, installed).IsUpToDate(), "up to date");
                 r.Ok("identical manifests are up to date");
 
-                // installed.json が無いときは全件が新規
+                // NOTE: installed.json が無いときは全件が新規
                 const ManifestDiff fresh = ManifestDiff::Between(DistSelfTestManifest({}), remote);
                 DistSelfTestExpect(fresh.added.size() == 4 && fresh.changed.empty() && fresh.removedPaths.empty(), "fresh");
                 r.Ok("empty installed state makes every entry 'added'");
@@ -661,7 +661,7 @@ namespace NanamiEngine::AssetUpdater::Dist
                 DistSelfTestExpect(rows(again) == got && again.unreadable == report.unreadable, "warm run differs");
                 r.Ok("warm run reads no references (cached by content hash, unreadable included)");
 
-                // 参照キャッシュを足す前の形式 (パス -> [mtime, size, sha256] の平たいオブジェクト)
+                // NOTE: 参照キャッシュを足す前の形式 (パス -> [mtime, size, sha256] の平たいオブジェクト)
                 CEREAL_RAPIDJSON_NAMESPACE::Document saved;
                 const std::string savedText = DistSelfTestRead(cachePath);
                 saved.Parse(savedText.c_str(), savedText.size());
@@ -697,14 +697,14 @@ namespace NanamiEngine::AssetUpdater::Dist
                                    mv1 ? DistSelfTestJoin(*mv1) : std::string("nullopt"));
                 r.Ok(".mv1 texture strings: case-insensitive, deduplicated, at most 259 bytes before the extension");
 
-                // キーバイト 0x01 で "abcd" を 4 回 (距離 4 の重なる一致) にしたもの
+                // NOTE: キーバイト 0x01 で "abcd" を 4 回 (距離 4 の重なる一致) にしたもの
                 std::string lz = "MV11";
                 DistSelfTestAppendI32(lz, 16);
                 DistSelfTestAppendI32(lz, 9 + 7);
                 lz.push_back('\x01');
                 lz += "abcd";
                 lz.push_back('\x01');
-                // code: (12 - 4) << 3 = 0x40 (+1 はキーより大きいため)、距離 - 1 = 3
+                // NOTE: code: (12 - 4) << 3 = 0x40 (+1 はキーより大きいため)、距離 - 1 = 3
                 lz.push_back(static_cast<char>(0x41));
                 lz.push_back('\x03');
                 const std::optional<std::string> decoded = Mv1Decode(lz);

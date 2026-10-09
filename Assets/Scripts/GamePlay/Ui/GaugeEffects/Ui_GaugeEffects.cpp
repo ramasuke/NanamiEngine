@@ -14,7 +14,7 @@ namespace
     // NOTE: HP の割合は health / maxHealth で出るので、満タンは誤差込みで見る
     constexpr float fullValueThreshold = 1.0f - 1.0e-4f;
 
-    // 描画範囲・ブレンドモード・描画モード・描画輝度を抜けるときに元へ戻す
+    // NOTE: 描画範囲・ブレンドモード・描画モード・描画輝度を抜けるときに元へ戻す
     class ScopedDrawState final
     {
     public:
@@ -113,14 +113,14 @@ namespace GamePlay::Ui
         if (trailTween_.IsPlaying())
         {
             trailTween_.Tick(deltaTime);
-            // 回復で値が上がってもトレイルが逆戻りしないよう、現在位置より上には戻さない
+            // NOTE: 回復で値が上がってもトレイルが逆戻りしないよう、現在位置より上には戻さない
             trailValue_ = std::clamp(std::lerp(trailFrom_, value, trailTween_.Value()), value, trailValue_);
         }
     }
 
     void GaugeEffects::StartHealTrail(const float fromValue)
     {
-        // 光が消えきる前に続けて回復したら、まだ光っている下端から伸ばす
+        // NOTE: 光が消えきる前に続けて回復したら、まだ光っている下端から伸ばす
         const bool isGlowing = healTween_.IsPlaying() && healFrom_ < fromValue;
         healFrom_ = isGlowing ? std::lerp(healFrom_, fromValue, healTween_.Value()) : fromValue;
         healTween_.Play(tweeny::from(0.0f)
@@ -186,7 +186,7 @@ namespace GamePlay::Ui
         if (acrossMax <= acrossMin)
             return;
 
-        // 目盛りは余白を除いた範囲を等分する
+        // NOTE: 目盛りは余白を除いた範囲を等分する
         const float startInset  = slider.GetFillStartInset();
         const float innerLength = std::max(0.0f, slider.AlongLength() - startInset - slider.GetFillEndInset());
         slider.ClipToDrawSize();
@@ -212,7 +212,7 @@ namespace GamePlay::Ui
         const int imageW = tipSize->x;
         const int imageH = tipSize->y;
 
-        // 始端からはみ出す分は画像の頭を切り落とす
+        // NOTE: 始端からはみ出す分は画像の頭を切り落とす
         const float alongMax = slider.CalcFillLength(value);
         const float alongMin = std::max(0.0f, alongMax - tipWidth_);
         const int srcLeft    = std::clamp(static_cast<int>(std::lround((alongMin - (alongMax - tipWidth_)) / tipWidth_ * static_cast<float>(imageW))), 0, imageW);
@@ -222,7 +222,7 @@ namespace GamePlay::Ui
         const float acrossMin = bandInsetY_;
         const float acrossMax = slider.AcrossLength() - bandInsetY_;
 
-        // 画像の横方向を伸びる方向に合わせる
+        // NOTE: 画像の横方向を伸びる方向に合わせる
         const glm::vec2 p1 = slider.FillToScreen(alongMin, acrossMin);
         const glm::vec2 p2 = slider.FillToScreen(alongMax, acrossMin);
         const glm::vec2 p3 = slider.FillToScreen(alongMax, acrossMax);
@@ -246,13 +246,13 @@ namespace GamePlay::Ui
         const float fade = 1.0f - progress;
         const ScopedDrawState drawState(false);
 
-        // ゲージ画像そのものを色付きで加算して、模様を残したまま光らせる
+        // NOTE: ゲージ画像そのものを色付きで加算して、模様を残したまま光らせる
         Platform::Draw2D::SetBright(healTrailColor_.R(), healTrailColor_.G(), healTrailColor_.B());
         Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(std::clamp(healTrailAlpha_, 0, 255)) * fade));
         slider.DrawFillRange(slider.GetGaugeSprite()->GetDxLibHandle(), lower, value);
         Platform::Draw2D::SetBright(255, 255, 255);
 
-        // 伸びた先端に細い光の線
+        // NOTE: 伸びた先端に細い光の線
         if (healEdgeWidth_ > 0.0f && value < 1.0f)
         {
             const float edge      = slider.CalcFillLength(value);
@@ -273,7 +273,7 @@ namespace GamePlay::Ui
         const float elapsed   = std::clamp(fullTween_.Value(), 0.0f, 1.0f) * totalSecs;
         const ScopedDrawState drawState(false);
 
-        // ゲージ全体を一瞬明るくして、すっと引かせる
+        // NOTE: ゲージ全体を一瞬明るくして、すっと引かせる
         if (fullFlashAlpha_ > 0 && fullFlashDuration_secs_ > 0.0f && elapsed < fullFlashDuration_secs_)
         {
             const float fade = 1.0f - elapsed / fullFlashDuration_secs_;
@@ -283,7 +283,7 @@ namespace GamePlay::Ui
             Platform::Draw2D::SetBright(255, 255, 255);
         }
 
-        // 始端から終端へ、中央が明るい光の筋を流す
+        // NOTE: 始端から終端へ、中央が明るい光の筋を流す
         if (fullShineAlpha_ > 0 && fullShineWidth_ > 0.0f && fullShineDuration_secs_ > 0.0f && elapsed < fullShineDuration_secs_)
         {
             constexpr int sliceCount = 12;
@@ -306,7 +306,7 @@ namespace GamePlay::Ui
                 if (alongMax <= alongMin)
                     continue;
 
-                // 山なりの濃さ（中央 1、両端 0）
+                // NOTE: 山なりの濃さ（中央 1、両端 0）
                 const float offset = (static_cast<float>(i) + 0.5f) / static_cast<float>(sliceCount) * 2.0f - 1.0f;
                 const float weight = 1.0f - offset * offset;
                 Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(std::clamp(fullShineAlpha_, 0, 255)) * weight));
@@ -328,7 +328,7 @@ namespace GamePlay::Ui
 
         if (slider->IsStretchToDrawSize())
         {
-            // 新しい画像は Slider が描いているので、古い画像を上に重ねて消していく
+            // NOTE: 新しい画像は Slider が描いているので、古い画像を上に重ねて消していく
             if (fadingOutGaugeSprite_ && gaugeFadeDuration_secs_ > 0.0f)
             {
                 const ScopedDrawState drawState(false);

@@ -14,7 +14,7 @@ namespace NanamiEngine::R4
 
     void CancellationToken::Register(std::function<void()> callback) const
     {
-        // 解除済みの composite に add すると、その場で解除（= callback 呼び出し）される
+        // NOTE: 解除済みの composite に add すると、その場で解除（= callback 呼び出し）される
         subscription_.add([callback = std::move(callback)]
         {
             callback();

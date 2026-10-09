@@ -8,10 +8,8 @@ namespace NanamiEngine::UiFlow
 {
     class UiScreen;
 
-    /**
-     * @brief 開いている画面の重なり。最後に開いた画面が最前面で、入力を受けるのはその画面だけ
-     * @note  画面の出し入れは UiScreen::Open() / Close() が行う
-     */
+    // NOTE: 開いている画面の重なり。最後に開いた画面が最前面で、入力を受けるのはその画面だけ
+    // NOTE: 画面の出し入れは UiScreen::Open() / Close() が行う
     class NANAMI_API ScreenStack final
     {
     public:
@@ -24,7 +22,7 @@ namespace NanamiEngine::UiFlow
         [[nodiscard]] UiScreen* Top() const;
         [[nodiscard]] bool IsOpen(std::string_view screenId) const;
         [[nodiscard]] std::vector<std::string> ScreenIds() const;
-        /** @brief 最前面の画面のボタンが出ている (マウスで操作できる) */
+        // NOTE: 最前面の画面のボタンが出ている (マウスで操作できる)
         [[nodiscard]] bool WantsCursor() const;
 
         void Clear();

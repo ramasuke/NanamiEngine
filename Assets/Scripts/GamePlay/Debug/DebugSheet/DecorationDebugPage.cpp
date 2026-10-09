@@ -29,7 +29,7 @@ namespace GamePlay::Debug
                 CollectDecorations(child, decorations);
         }
 
-        /** @brief Assets/ 以下の DecorationData。初めて開いたときに一度だけ集める */
+        // NOTE: Assets/ 以下の DecorationData。初めて開いたときに一度だけ集める
         const std::vector<std::shared_ptr<DecorationData>>& Decorations()
         {
             static std::vector<std::shared_ptr<DecorationData>> decorations;

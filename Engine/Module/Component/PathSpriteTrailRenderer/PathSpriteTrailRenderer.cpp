@@ -63,7 +63,7 @@ namespace NanamiEngine::Module::Component
         const int   passed  = static_cast<int>(std::floor(travel / spacing_));
         const int   count   = static_cast<int>(trailLength_ / spacing_);
 
-        // 折れ線を前から歩き、distance の点を求める(distance は増える一方なので区間を持ち越す)
+        // NOTE: 折れ線を前から歩き、distance の点を求める(distance は増える一方なので区間を持ち越す)
         std::size_t segment      = 1;
         float       segmentStart = 0.0f;
         for (int i = 0; i < count; ++i)
@@ -82,7 +82,7 @@ namespace NanamiEngine::Module::Component
             const float along = segmentLength > 0.0f ? (distance - segmentStart) / segmentLength : 0.0f;
             glm::vec3 position = glm::mix(path_[segment - 1], path_[segment], std::clamp(along, 0.0f, 1.0f));
 
-            // 粒ごとに揺れ方を変える。列が流れても同じ粒は同じ揺れを続けるよう、流れた数で番号を振り直す
+            // NOTE: 粒ごとに揺れ方を変える。列が流れても同じ粒は同じ揺れを続けるよう、流れた数で番号を振り直す
             const float id    = static_cast<float>(i - passed);
             const float phase = id * 1.7f + (driftPeriod_secs_ > 0.0f ? TAU * time_secs_ / driftPeriod_secs_ : 0.0f);
             position += glm::vec3(std::sin(phase), 0.6f * std::sin(phase * 1.3f) + 1.0f, std::cos(phase * 0.8f)) * driftAmplitude_;

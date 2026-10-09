@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-// ゲーム DLL の読み込みと差し替え (エディタ専用)
+// NOTE: ゲーム DLL の読み込みと差し替え (エディタ専用)
 // NOTE: DLL は HotReload/<世代>/ にコピーしてから読む (リンカが元を上書きできるように)
 namespace NanamiEngine::Core::Application::HotReload
 {
@@ -14,10 +14,10 @@ namespace NanamiEngine::Core::Application::HotReload
     public:
         static GameModule& Instance();
 
-        /** @brief source (x64/Debug/<Product>.dll) を世代フォルダへコピーして読む。失敗なら false と理由 */
+        // NOTE: source を世代フォルダへコピーして読む。失敗なら false と理由
         bool LoadInitial(const std::filesystem::path& source, std::string& outError);
         void RequestReload();
-        /** @brief ApplicationBase::Run が ScreenFlip の後に呼ぶ */
+        // NOTE: フレームの切れ目 (ScreenFlip の後) に呼ぶ
         void OnFrameEnd();
 
         [[nodiscard]] bool         IsLoaded     () const { return current_.IsValid(); }
@@ -25,7 +25,7 @@ namespace NanamiEngine::Core::Application::HotReload
         [[nodiscard]] int          Generation   () const { return generation_; }
         [[nodiscard]] const std::filesystem::path& SourcePath() const { return source_; }
         [[nodiscard]] const std::string& LastReport() const { return lastReport_; }
-        /** @brief true なら古い DLL を FreeLibrary しない (取り残しがあっても落ちない保険モード)。LocalPrefs に保存 */
+        // NOTE: true なら古い DLL を FreeLibrary しない (取り残しがあっても落ちない保険モード)。LocalPrefs に保存
         [[nodiscard]] bool KeepOldModules() const { return keepOldModules_; }
         void SetKeepOldModules(bool keep);
 

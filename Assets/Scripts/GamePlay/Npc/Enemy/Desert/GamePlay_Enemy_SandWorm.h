@@ -3,7 +3,7 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    /** 西の砂海に潜むワーム。砂の下から飛び出して噛みつく */
+    // NOTE: 西の砂海に潜むワーム。砂の下から飛び出して噛みつく
     class SandWorm final : public GameCore::Npc::EnemyBase
     {
     private:

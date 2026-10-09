@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: プレハブを指定位置に生成する(lifeTime_secs > 0 なら時限破棄)。パーティクル等の見た目専用
+    // NOTE: 汎用演出RPC: プレハブを指定位置に生成する(lifeTime_secs > 0 なら時限破棄)。パーティクル等の見た目専用
     struct SpawnPrefabRpcRegistration
     {
         SpawnPrefabRpcRegistration()

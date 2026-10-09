@@ -11,10 +11,8 @@ namespace NanamiEngine::Module::Gui::Graph
 {
     class GraphEditorHost;
 
-    /**
-     * @brief GraphEditorHost に載せるグラフエディタの共通部分
-     * @note  派生クラスは Rebuild でデータモデルからノード列・リンク列を作る
-     */
+    // NOTE: GraphEditorHost に載せるグラフエディタの共通部分
+    // NOTE: 派生クラスは Rebuild でデータモデルからノード列・リンク列を作る
     class NANAMI_API GraphDelegateBase : public GraphEditor::Delegate
     {
     public:
@@ -23,25 +21,23 @@ namespace NanamiEngine::Module::Gui::Graph
         void RightClickLink(GraphEditor::LinkIndex linkIndex) override;
 
     protected:
-        /**
-         * @brief Rebuild → GraphEditor::Show → 右クリックメニュー → Delete キー の順に 1 フレーム描画する
-         * @param readOnly 実行中ツリーの表示用。選択と Inspector 表示のみ行い、編集はしない
-         */
+        // NOTE: Rebuild → GraphEditor::Show → 右クリックメニュー → Delete キー の順に 1 フレーム描画する
+        // NOTE: readOnly なら選択と Inspector 表示だけで編集しない
         void DrawFrame(GraphEditorHost& host, bool readOnly);
 
-        /** @brief データモデルからノード列・リンク列を作り直す（毎フレーム Show の前に呼ばれる） */
+        // NOTE: データモデルからノード列・リンク列を作り直す（毎フレーム Show の前に呼ばれる）
         virtual void Rebuild() = 0;
         [[nodiscard]] virtual Guid NodeGuid(GraphEditor::NodeIndex nodeIndex) const = 0;
         [[nodiscard]] virtual std::weak_ptr<Object::IObject> InspectTarget(GraphEditor::NodeIndex nodeIndex) const = 0;
 
-        /** @brief 1 つの入力スロットに複数のリンクを繋げるか（false なら繋ぐ前に既存リンクを DelLink する） */
+        // NOTE: 1 つの入力スロットに複数のリンクを繋げるか（false なら繋ぐ前に既存リンクを DelLink する）
         [[nodiscard]] virtual bool AllowMultipleInputLinks() const { return false; }
 
         virtual void OnNodeSelected(GraphEditor::NodeIndex) {}
         virtual void OnRightClickNode(GraphEditor::NodeIndex) {}
         virtual void OnRightClickLink(GraphEditor::LinkIndex) {}
         virtual void DrawBackgroundMenu() {}
-        /** @brief ツールバーの右端に足すもの（readOnly では呼ばれない） */
+        // NOTE: ツールバーの右端に足すもの（readOnly では呼ばれない）
         virtual void DrawToolbarItems() {}
         virtual void DrawNodeMenu() {}
         virtual void DrawLinkMenu() {}
@@ -52,13 +48,13 @@ namespace NanamiEngine::Module::Gui::Graph
         void DrawFitAllMenuItem() const;
 
         [[nodiscard]] float Zoom() const;
-        /** @brief CustomDraw の本文矩形から、ヘッダーを含むノード全体の矩形を求める */
+        // NOTE: CustomDraw の本文矩形から、ヘッダーを含むノード全体の矩形を求める
         [[nodiscard]] ImRect NodeFrame(const ImRect& body, float zoom) const;
 
-        /** @brief 見出しと本文が切れずに収まるノードの大きさ（拡大率 1） */
+        // NOTE: 見出しと本文が切れずに収まるノードの大きさ（拡大率 1）
         [[nodiscard]] ImVec2 MeasureNodeSize(const std::string& title, const std::string& detail, bool hasBadge) const;
 
-        /** @brief 本文を描く（遠景では描かない） */
+        // NOTE: 本文を描く（遠景では描かない）
         void DrawNodeDetail(ImDrawList* drawList, const ImRect& body, const std::string& detail, ImU32 color) const;
         [[nodiscard]] float DetailFontSize() const;
         [[nodiscard]] bool DetailVisible() const;

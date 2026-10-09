@@ -26,7 +26,7 @@ namespace GamePlay::Ui
         glm::vec3 offset = {};
         offset.y = std::sin(time * floatSpeed_) * floatAmplitude_;
 
-        // 枠を走る光の進み具合 (0..1)。負なら光らせない
+        // NOTE: 枠を走る光の進み具合 (0..1)。負なら光らせない
         float sweepT = -1.0f;
         const float cycleElapsed = std::fmod(time, cycle_secs_);
         if (cycleElapsed < sweepDuration_secs_)

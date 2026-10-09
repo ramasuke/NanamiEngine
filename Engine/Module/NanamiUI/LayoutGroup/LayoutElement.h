@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 親 LayoutGroup の並び方向にこの子が占める枠の割合(0..1)。補間すると周りが跳ねずに詰まる
+    // NOTE: 親 LayoutGroup の並び方向にこの子が占める枠の割合(0..1)。補間すると周りが跳ねずに詰まる
     class NANAMI_API LayoutElement final : public Component::ComponentBase
     {
     public:

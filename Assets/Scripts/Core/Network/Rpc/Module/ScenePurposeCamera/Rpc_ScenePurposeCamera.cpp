@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: シーン上の VirtualCamera(Guid 指定)の優先度を変更する
+    // NOTE: 汎用演出RPC: シーン上の VirtualCamera(Guid 指定)の優先度を変更する
     struct ScenePurposeCameraRpcRegistration
     {
         ScenePurposeCameraRpcRegistration()

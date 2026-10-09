@@ -65,7 +65,7 @@ namespace NanamiEngine::AssetUpdater::Editor
             ImGui::OpenPopup(ASSET_DIST_POPUP);
         }
 
-        // ポップアップを閉じていても進み具合が分かるよう、実行中はツールバーにも出す
+        // NOTE: ポップアップを閉じていても進み具合が分かるよう、実行中はツールバーにも出す
         if (job_.IsRunning())
         {
             ImGui::SameLine();

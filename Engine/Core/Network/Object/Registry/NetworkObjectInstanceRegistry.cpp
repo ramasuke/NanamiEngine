@@ -16,7 +16,7 @@ namespace NanamiEngine::Core::Network
         Entry& entry   = entries_[id.Value()];
         entry.instance = object;
         entry.policy   = policy;
-        // 所有者が既に入っているのは OwnershipSnapshot が先に届いた移譲済みオブジェクト。巻き戻さない
+        // NOTE: 所有者が既に入っているのは OwnershipSnapshot が先に届いた移譲済みオブジェクト。巻き戻さない
         if (entry.owner == PlayerId::Invalid())
             entry.owner = owner;
 

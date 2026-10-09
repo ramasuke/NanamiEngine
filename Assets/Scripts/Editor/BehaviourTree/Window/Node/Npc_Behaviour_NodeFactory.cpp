@@ -19,7 +19,7 @@ namespace Editor::Npc::Behaviour
 
     std::shared_ptr<NodeBase> NodeFactory::Create(const std::string& typeName) const
     {
-        // ActionNode は current の Action を生成
+        // NOTE: ActionNode は現在のツリー種別のアクションを生成する
         if (typeName == ACTION_NODE_NAME)
         {
             if (const auto it = creatableActionNodeFactories_.find(currentBehaviourTreeType_); it != creatableActionNodeFactories_.end())
@@ -29,7 +29,6 @@ namespace Editor::Npc::Behaviour
             return nullptr;
         }
 
-        // 通常ノード
         if (const auto it = creatableNodeFactories_.find(typeName); it != creatableNodeFactories_.end())
         {
             return it->second();

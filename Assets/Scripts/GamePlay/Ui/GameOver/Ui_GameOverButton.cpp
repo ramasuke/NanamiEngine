@@ -32,7 +32,7 @@ namespace GamePlay::Ui
         isHighlighted_ = isHighlighted;
         if (isHighlighted_)
         {
-            // 選ばれた瞬間に熾火が一番明るいところから始まるようにする
+            // NOTE: 選ばれた瞬間に熾火が一番明るいところから始まるようにする
             emberPhase_ = 0.25f;
             highlightTween_.PlayForward();
         }
@@ -77,7 +77,7 @@ namespace GamePlay::Ui
 
         if (const auto label = label_.get())
         {
-            // 札の絵のクロスフェードに紛れるので、文字色は半分を越えたところで切り替えるだけにする
+            // NOTE: 札の絵のクロスフェードに紛れるので、文字色は半分を越えたところで切り替えるだけにする
             label->SetTextColor(highlight >= 0.5f ? labelLitColor_ : labelColor_);
             label->SetBlendRate(alpha);
         }

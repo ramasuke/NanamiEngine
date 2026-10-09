@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         isAttacked_ = false;
         attackTurn_ = {};
 
-        // 予備動作中は自機の向きへ踏み込む
+        // NOTE: 予備動作中は自機の向きへ踏み込む
         LungeForward(Status().DashAttackLungeSpeed());
     }
 
@@ -22,7 +22,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         TryDashAttack();
 
-        // 踏み込みが終わった後はその場に留める
+        // NOTE: 踏み込みが終わった後はその場に留める
         if (isAttacked_)
             HoldHorizontalVelocity();
 
@@ -34,7 +34,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarDashAttackState::DoUpdate()
     {
-        // 発生前（予備動作中）だけ攻撃対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
+        // NOTE: 発生前（予備動作中）だけ攻撃対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
         if (!isAttacked_)
             RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
     }
@@ -55,7 +55,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         isAttacked_ = true;
 
-        // 踏み込みはヒット判定の瞬間まで。以降はその場で止める(居合い斬りのように踏み込んで止まる)
+        // NOTE: 踏み込みはヒット判定の瞬間まで。以降は居合い斬りのようにその場で止める
         HoldHorizontalVelocity();
 
         const bool isHit = DashAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));

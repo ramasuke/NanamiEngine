@@ -13,7 +13,7 @@ namespace GamePlay::Prop
 {
     namespace
     {
-        // 戻る前の島と階段は、雲のずっと下に退避しておく(隠してもコライダーは当たり続けるため)
+        // NOTE: 戻る前の島と階段は、雲のずっと下に退避しておく(隠してもコライダーは当たり続けるため)
         const glm::vec3 SUNK_OFFSET(0.0f, -3000.0f, 0.0f);
     }
 
@@ -51,7 +51,7 @@ namespace GamePlay::Prop
     Coroutine::Task<void> ReturningIsland::PlayReturnAsync(
         std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar, std::function<bool()> canStart, std::function<void()> onReturned)
     {
-        // NOTE: シーンを抜けて破棄されても、このコルーチンが終わるまでは this と島を生かしておく
+        // WARNING: シーンを抜けて破棄されても、このコルーチンが終わるまでは this と島を生かしておく
         const auto self   = Components().Catch<ReturningIsland>().lock();
         const auto island = Entity().lock();
         const auto stairs = stairs_.get();
@@ -82,7 +82,7 @@ namespace GamePlay::Prop
         auto& islandTransform = island->Transform();
         const glm::vec3 islandHomePos = islandTransform.GetWorldPos() - SUNK_OFFSET;
         const glm::quat islandHomeRot = islandTransform.GetWorldRot();
-        // 傾きは島の見える所(カメラが見る所)を中心にかける。島の原点はモデルの外にある
+        // NOTE: 傾きは島の見える所(カメラが見る所)を中心にかける。島の原点はモデルの外にある
         const glm::vec3 pivotHomePos = focus ? focus->Transform().GetWorldPos() - SUNK_OFFSET : islandHomePos;
 
         struct Step
@@ -114,7 +114,7 @@ namespace GamePlay::Prop
 
         const auto placeIsland = [&](const float rise, const float tiltDegrees)
         {
-            // 手前へ傾いたまま上がってきて、揺れながら水平に戻る
+            // NOTE: 手前へ傾いたまま上がってきて、揺れながら水平に戻る
             const glm::quat tilt = glm::angleAxis(glm::radians(tiltDegrees), glm::vec3(1.0f, 0.0f, 0.0f));
             const glm::vec3 sink(0.0f, -shot.riseDepth * (1.0f - rise), 0.0f);
             islandTransform.SetWorldPos(pivotHomePos + tilt * (islandHomePos - pivotHomePos) + sink);
@@ -161,7 +161,7 @@ namespace GamePlay::Prop
                     steps[i].step->SetEnable(true);
                     shownSteps = i + 1;
                 }
-                // 下から跳ね上がって、少し行き過ぎてから収まる
+                // NOTE: 下から跳ね上がって、少し行き過ぎてから収まる
                 const float t = StoryMovie::Rate(elapsed_secs - stepStart_secs, shot.stairsStep_secs);
                 const glm::vec3 drop(0.0f, -shot.stairsStepDrop * (1.0f - StoryMovie::EaseOutBack(t)), 0.0f);
                 steps[i].step->Transform().SetWorldPos(steps[i].homePos + drop);

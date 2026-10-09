@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: 宛先 NetworkObject の子オブジェクト(名前指定)が持つ VirtualCamera の優先度を変更する
+    // NOTE: 汎用演出RPC: 宛先 NetworkObject の子オブジェクト(名前指定)が持つ VirtualCamera の優先度を変更する
     struct PurposeCameraRpcRegistration
     {
         PurposeCameraRpcRegistration()

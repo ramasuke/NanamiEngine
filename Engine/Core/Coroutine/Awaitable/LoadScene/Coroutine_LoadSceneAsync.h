@@ -12,11 +12,11 @@ namespace Coroutine
     {
         Succeeded,
         Failed,
-        /** 読み込みの途中で token がキャンセルされた */
+        // NOTE: 読み込みの途中で token がキャンセルされた
         Cancelled,
     };
 
-    /** @note 既定値は Failed。コルーチン内の例外で既定値が返っても成功扱いにならない */
+    // NOTE: 既定値は Failed。コルーチン内の例外で既定値が返っても成功扱いにならない
     struct NANAMI_API SceneLoadResult final
     {
         SceneLoadStatus status = SceneLoadStatus::Failed;
@@ -26,9 +26,7 @@ namespace Coroutine
         [[nodiscard]] bool IsCancelled() const { return status == SceneLoadStatus::Cancelled; }
     };
 
-    /**
-     * @brief シーンをワーカースレッドで読み込み、メインシーンへ差し替わるまで待つ。待っている間もフレームは回る
-     * @note キャンセルされても読み込みは止めない。捨てるのは GameWindow::CancelSceneLoad の役目
-     */
+    // NOTE: シーンをワーカースレッドで読み込み、メインシーンへ差し替わるまで待つ。待っている間もフレームは回る
+    // NOTE: キャンセルされても読み込みは止めない。捨てるのは GameWindow::CancelSceneLoad の役目
     NANAMI_API Task<SceneLoadResult> LoadSceneAsync(std::string filePath, NanamiEngine::R4::CancellationToken token = {});
 }

@@ -4,7 +4,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 話しかけられる NPC の目印。下向きに弾む */
+    // NOTE: 話しかけられる NPC の目印。下向きに弾む
     class ChatIconChattableMotion final : public Component::ComponentBase,
                                           public LifeCycleCallback::IUpdatable
     {

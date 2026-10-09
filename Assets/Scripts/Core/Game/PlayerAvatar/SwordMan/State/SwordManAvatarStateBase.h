@@ -56,13 +56,13 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     private:
         void OnLockOnEngaged() const override;
-        /** @return 使うモーションのステートへ移ったら true */
+        // NOTE: 使うモーションのステートへ移ったら true
         bool UseSelectedPouchItem() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestLockOnTarget() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> ResolveAttackTarget(AttackTurn& turn) const;
 
     protected:
-        /** ---- 以下サンドボックスパターン ---- */
+        // NOTE: 派生ステートに Context / Status の部品を渡す窓口（サンドボックスパターン）
         [[nodiscard]] State::IStatusEventSubject&            StatusEvent     () const { return Status().Subject                 (); }
         [[nodiscard]] GamePlay::Ui::NpcChatting &            NpcChattingUi   () const { return Context().NpcChattingUi          (); }
         [[nodiscard]] glm::vec3                              FeatStepPos     () const { return Context().PlayerAvatarFeatStepPos(); }
@@ -75,25 +75,25 @@ namespace GameCore::PlayerAvatar::SwordMan
         void TryEmitFootstep(FootstepLatch& latch, const std::vector<FIELD(Asset::SoundFile)>& footstepSounds) const;
         void PlayRandomSe(const std::vector<FIELD(Asset::SoundFile)>& sounds, const glm::vec3& position) const;
         void PlayAttackSe(bool isHit) const;
-        /** 専用の空振り/ヒット音を鳴らす。未設定の側は PlayAttackSe(isHit) と同じ共通の音になる */
+        // NOTE: 専用の空振り／ヒット音を鳴らす。未設定の側は共通の音で代替する
         void PlayAttackSe(bool isHit, const FIELD(Asset::SoundFile)& whiffSound, const FIELD(Asset::SoundFile)& hitSound) const;
         void ResetMoveSpeedFromVelocity(MoveSpeedRamp& ramp) const;
         void LungeForward(float speed) const;
-        /** @return 再生中の移動系クリップ(Idle/Walk/Run...)のブレンド率の合計 [0,1]。AnimationTree が無ければ 1 */
+        // NOTE: 再生中の移動系クリップのブレンド率の合計 [0,1]。AnimationTree が無ければ 1
         [[nodiscard]] float LocomotionBlendRate() const;
         void MoveForward(MoveSpeedRamp& ramp, StatusParameter::MoveSpeed maxSpeed, float accelerationTime_secs, float decelerationTime_secs) const;
         bool UpdateItemPouchInput() const;
         [[nodiscard]] Damage::PhysicsPower BuffedAttackPower(Damage::PhysicsPower base) const;
         bool UpdateTransitions() const;
-        // 攻撃ボタンの押下。溜められるなら構えて待ち、離すと通常攻撃・押し続けると溜めになる
+        // NOTE: 攻撃ボタンの押下。溜められるなら構えて待ち、離すと通常攻撃・押し続けると溜めになる
         void VisitNormalAttackPress(ISwordManAvatarTransitionVisitor& visitor) const;
         void RotateTowardsAttackTarget(AttackTurn& turn, float smoothTime_secs, float maxRotateSpeed) const;
         void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power) const;
-        /** 攻撃の演出を出し、オンラインなら他のピアにも出させる。rotation / scale が無ければプレハブのまま */
+        // NOTE: 攻撃の演出を出し、オンラインなら他のピアにも出させる。rotation / scale が無ければプレハブのまま
         void SpawnAttackParticle(Asset::PrefabGameObjectFile& prefab, const glm::vec3& position,
                                  const std::optional<glm::quat>& rotation = std::nullopt, std::optional<float> scale = std::nullopt) const;
         void ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const;
-        // 弾かれたら AttackedShocked へ遷移する
+        // NOTE: 弾かれたら AttackedShocked へ遷移する
         bool TryBlockAttackByWall(PlayerAttackArea& attackArea) const;
     };
 }

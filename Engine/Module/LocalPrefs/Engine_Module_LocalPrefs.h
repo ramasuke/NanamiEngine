@@ -13,8 +13,7 @@
 #include "../Log/NanamiEngine_Module_Log.h"
 #include "../Serialization/Engine_Module_Serialization.h"
 
-// ゲーム側のデータ保存・復元用モジュール
-// セーブデータやプレイヤーの進行状況など、ゲーム固有のデータをローカルのJSONファイルに永続化するために使用する
+// NOTE: ゲーム固有のデータをローカルの JSON ファイルに保存・復元するモジュール
 namespace NanamiEngine::Module::LocalPrefs
 {
     template<class T>
@@ -24,7 +23,7 @@ namespace NanamiEngine::Module::LocalPrefs
         cereal::JSONInputArchive(ifstream)(value);
     };
 
-    // 保存先ルートフォルダ。実行ファイルからの相対パスで解決される
+    // NOTE: 保存先ルートフォルダ。カレントディレクトリからの相対パスで解決される
     constexpr auto LOCAL_PREFS_DATA_FOLDER_PATH = "LocalPrefs/";
     constexpr auto LOCAL_PREFS_DATA_FILE_EXTENSION_LABEL = ".json";
 
@@ -34,8 +33,7 @@ namespace NanamiEngine::Module::LocalPrefs
     // NOTE: ファイルパスの親ディレクトリが存在しない場合、再帰的に作成する
     NANAMI_API void EnsureDirectory(const std::string& path);
 
-    // Save/Load の公開APIが共通で使う内部実装
-    // NOTE: 直接呼び出しは非推奨
+    // NOTE: Save/Load 系の共通実装。直接は呼ばない
     template<Serializable T>
     void SaveImpl(const std::string& fullPath,
                   const std::string& key,
@@ -43,27 +41,27 @@ namespace NanamiEngine::Module::LocalPrefs
     {
         EnsureDirectory(fullPath);
 
-        // 書き込み中にクラッシュしても既存ファイルが壊れないよう、一時ファイルに書いてからリネームする
+        // NOTE: 書き込み中にクラッシュしても既存ファイルが壊れないよう、一時ファイルに書いてからリネームする
         const std::string tmpPath = fullPath + ".tmp";
         try
         {
-            // JSON のルートキーをデータ型名ではなく key 文字列で固定することで、型名変更後も読み込めるようにする
+            // NOTE: ルートキーを型名ではなく key にして、型名を変えても読めるようにする
             Serialization::SaveJsonFile(tmpPath, [&](cereal::JSONOutputArchive& archive)
             {
                 archive(cereal::make_nvp(key, value));
             });
-            // ofstream のスコープを抜けてフラッシュ・クローズが完了した後にリネームする
+            // NOTE: ofstream のスコープを抜けてフラッシュ・クローズが完了した後にリネームする
             std::filesystem::rename(tmpPath, fullPath);
         }
         catch (const Exception::SerializationException&)
         {
-            // 書き込み失敗時は中途半端な一時ファイルを削除してから上位に投げる
+            // NOTE: 書き込み失敗時は中途半端な一時ファイルを削除してから上位に投げる
             std::filesystem::remove(tmpPath);
             throw;
         }
         catch (const std::exception& exception)
         {
-            // rename 失敗（filesystem_error）なども SerializeException に揃える
+            // NOTE: rename 失敗（filesystem_error）なども SerializeException に揃える
             std::filesystem::remove(tmpPath);
             throw Exception::SerializeException(fullPath, exception.what());
         }
@@ -74,17 +72,15 @@ namespace NanamiEngine::Module::LocalPrefs
                const std::string& key)
     {
         T value;
-        // ファイルが無い → FileNotFoundException、破損 → DeserializeException
+        // NOTE: ファイルが無い → FileNotFoundException、破損 → DeserializeException
         Serialization::LoadJsonFile(fullPath, [&](cereal::JSONInputArchive& archive)
         {
-            // SaveImpl と同じキー名を指定することで、JSON上のフィールドと型を対応付ける
+            // NOTE: SaveImpl と同じキー名を指定することで、JSON上のフィールドと型を対応付ける
             archive(cereal::make_nvp(key, value));
         });
         return value;
     }
 
-    /** --- 公開API --- */
-    // ファイルが存在しない・破損している場合は例外を投げる。確実に存在することが前提のデータに使う
     template<Serializable T>
     void Save(const std::string& key, const T& value)
     {
@@ -92,7 +88,7 @@ namespace NanamiEngine::Module::LocalPrefs
         SaveImpl(path, key, value);
     }
 
-    // サブフォルダ付きで保存する。同じキー名のデータを種別ごとに分けたい場合に使う
+    // NOTE: サブフォルダ付きで保存する。同じキー名のデータを種別ごとに分けたい場合に使う
     template<Serializable T>
     void SaveWithPath(const std::string& addPath,
                       const std::string& key,
@@ -102,6 +98,7 @@ namespace NanamiEngine::Module::LocalPrefs
         SaveImpl(path, key, value);
     }
 
+    // NOTE: ファイルが無い・壊れている時は例外を投げる。確実に存在することが前提のデータに使う
     template<Serializable T>
     T Load(const std::string& key)
     {
@@ -117,7 +114,7 @@ namespace NanamiEngine::Module::LocalPrefs
         return LoadImpl<T>(path, key);
     }
 
-    // ファイルが存在しない・読み込みエラーの場合は例外を投げずに defaultValue を返す。初回起動時など未保存状態が正常なデータに使う
+    // NOTE: ファイルが無い・読めない時は例外でなく defaultValue を返す。未保存が正常なデータに使う
     template<Serializable T>
     T LoadOrDefault(const std::string& key, const T& defaultValue)
     {
@@ -134,7 +131,7 @@ namespace NanamiEngine::Module::LocalPrefs
         }
         catch (const Exception::SerializationException& exception)
         {
-            // JSONの破損やスキーマ不一致など、読み込みエラーはデフォルト値で継続するが、黙って握りつぶさず警告を残す
+            // NOTE: 読み込みエラーはデフォルト値で続行するが、黙って握りつぶさず警告は残す
             LogWarning("LocalPrefs: " + std::string(exception.what()) + " -> デフォルト値を使用します");
             return defaultValue;
         }
@@ -163,7 +160,7 @@ namespace NanamiEngine::Module::LocalPrefs
         }
     }
 
-    // ファイルの有無や読み込みの成否を optional で返す。呼び出し側が存在チェックと値取得を同時に行いたい場合に使用する
+    // NOTE: ファイルが無い・読めない時は nullopt。存在確認と取得を一度に済ませたい場合に使う
     template<Serializable T>
     std::optional<T> TryLoad(const std::string& key)
     {

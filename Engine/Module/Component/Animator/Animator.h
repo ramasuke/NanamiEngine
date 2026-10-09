@@ -25,9 +25,9 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] int AnimationModelHandle() const { return modelDxLibHandle_; }
         [[nodiscard]] AnimationTree::AnimationTree* GetAnimationTree() const { return animationTree_.get(); }
 
-        /** @brief 指定名クリップの再生進捗 */
+        // NOTE: 指定名クリップの再生進捗
         [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetClipProgress(const std::string& clipName) const;
-        /** @brief 現在再生中クリップの再生進捗 */
+        // NOTE: 現在再生中クリップの再生進捗
         [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetCurrentClipProgress() const;
 
         [[nodiscard]] float GetTimeScale() const { return timeScale_; }
@@ -49,7 +49,6 @@ namespace NanamiEngine::Module::Component
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
             archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
-            //archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
             archive(CEREAL_NVP(animationTreeFile_));
             archive(CEREAL_NVP(timeScale_));
         }
@@ -61,7 +60,7 @@ namespace NanamiEngine::Module::Component
             if (version >= 0) archive(CEREAL_NVP(animationTreeFile_));
             if (version >= 2 && version < 5)
             {
-                // ボーン追従は BoneSync に移動した。旧 animationSyncs_ は保存済みデータが全て 0 件なので件数だけ読み捨てる
+                // NOTE: 旧版の animationSyncs_ (今は BoneSync)。保存済みは全て 0 件なので件数だけ読み捨てる
                 std::size_t animationSyncCount = 0;
                 archive(cereal::make_nvp("animationSyncCount", animationSyncCount));
             }

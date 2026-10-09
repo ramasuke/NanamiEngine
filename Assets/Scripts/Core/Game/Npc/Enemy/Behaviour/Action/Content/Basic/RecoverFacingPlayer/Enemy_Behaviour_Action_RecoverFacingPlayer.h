@@ -8,9 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** 攻撃後の硬直。holdSeconds_ 止まった後、一番近いプレイヤーへ向き直る。
-     * NOTE: 角度が turnWalkAngle_ を超えていたらその場で回さず、歩きながら弧を描いて向き直る
-     */
+    // NOTE: 攻撃後の硬直。holdSeconds_ 止まった後、一番近いプレイヤーへ向き直る
+    // NOTE: 角度が turnWalkAngle_ を超えていたらその場で回さず、歩きながら弧を描いて向き直る
     class RecoverFacingPlayer final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
@@ -35,7 +34,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
         bool         isRunning_      = false;
         bool         isWalkTurning_  = false;
-        // その場旋回中の向き。-1: 左, 1: 右, 0: 旋回していない
+        // NOTE: その場旋回中の向き。-1: 左, 1: 右, 0: 旋回していない
         int          turnInPlaceSign_ = 0;
         float        during_secs_    = 0.0f;
         float        duration_secs_  = 0.0f;

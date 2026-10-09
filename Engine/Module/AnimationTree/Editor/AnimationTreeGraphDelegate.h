@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::AnimationTree
     public:
         void Draw(AnimationTree& tree, Gui::Graph::GraphEditorHost& host, bool readOnly);
 
-        // GraphEditor::Delegate
+        // NOTE: GraphEditor::Delegate の実装
         bool AllowedLink(GraphEditor::NodeIndex from, GraphEditor::NodeIndex to) override;
         void MoveSelectedNodes(ImVec2 delta) override;
         void AddLink(GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex inputSlotIndex,
@@ -36,7 +36,7 @@ namespace NanamiEngine::Module::AnimationTree
         ImU32 LinkColor(GraphEditor::LinkIndex linkIndex, ImU32 defaultColor) override;
 
     protected:
-        // GraphDelegateBase
+        // NOTE: GraphDelegateBase の実装
         void Rebuild() override;
         [[nodiscard]] Guid NodeGuid(GraphEditor::NodeIndex nodeIndex) const override;
         [[nodiscard]] std::weak_ptr<Object::IObject> InspectTarget(GraphEditor::NodeIndex nodeIndex) const override;

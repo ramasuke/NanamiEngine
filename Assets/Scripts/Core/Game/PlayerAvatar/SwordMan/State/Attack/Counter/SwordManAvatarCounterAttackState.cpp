@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarCounterAttackState::DoFixedUpdate()
     {
-        // 発生の瞬間まで相手へ踏み込む
+        // NOTE: 発生の瞬間まで相手へ踏み込む
         if (isAttacked_)
         {
             HoldHorizontalVelocity();

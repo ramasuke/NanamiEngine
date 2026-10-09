@@ -77,7 +77,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             ComboNormalAttackStateDuration_secs  () const { return comboNormalAttackStateDuration_secs_; }
         [[nodiscard]] float                             AttackedShockedStateDuration_secs    () const { return attackedShockedStateDuration_secs_; }
         [[nodiscard]] const std::vector<HitFeelParam>&  ComboHitFeel                         () const { return comboHitFeel_; }
-        /** @brief comboIndex 段目の踏み込み速度。用意されていない段は踏み込まない */
+        // NOTE: comboIndex 段目の踏み込み速度。用意されていない段は踏み込まない
         [[nodiscard]] float                             ComboAttackLungeSpeed                (const int comboIndex) const
         {
             return comboIndex < static_cast<int>(comboHitFeel_.size()) ? comboHitFeel_[comboIndex].LungeSpeed() : 0.0f;
@@ -115,7 +115,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] bool                              CanCounter                           () const   { return counterWindowRemaining_secs_ > 0.0f; }
         [[nodiscard]] const AttackParam<Damage::PhysicsPower>& CounterAttack                 () const   { return counterAttack_; }
         [[nodiscard]] const HitFeelParam&               CounterHitFeel                       () const   { return counterHitFeel_; }
-        /** @brief ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く */
+        // NOTE: ジャスト回避の報酬。スタミナを戻してカウンターの受付を開く
                       void                              OnJustAvoided();
                       void                              ConsumeCounter() { counterWindowRemaining_secs_ = 0.0f; }
         [[nodiscard]] float                             DeathStateDuration_secs              () const   { return deathStateDuration_secs_; }
@@ -129,10 +129,10 @@ namespace GameCore::PlayerAvatar::SwordMan
                       void                              ConsumeChargeAttackStamina();
                       void                              ConsumeJumpStamina();
                       void                              StartJumpCooldown();
-        /** @brief 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない */
+        // NOTE: 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない
                       void                              Heal(StatusParameter::Health amount) override;
                       void                              RestoreStamina(float amount) override;
-        /** @brief 攻撃力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き */
+        // NOTE: 攻撃力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き
                       void                              ApplyAttackBuff(float rate, float duration_secs) override;
         [[nodiscard]] float                             AttackPowerRate() const { return attackBuffRemaining_secs_ > 0.0f ? attackBuffRate_ : 1.0f; }
         [[nodiscard]] float                             AttackBuffRemaining_secs() const { return attackBuffRemaining_secs_; }
@@ -170,17 +170,17 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(9)]] std::vector<HitFeelParam> comboHitFeel_;
         [[serialize(9)]] HitFeelParam dashHitFeel_; 
         [[serialize(9)]] float comboInputBufferWindow_secs_;
-        [[serialize(11)]] float chargeAttackHoldThreshold_secs_; ///< 攻撃ボタンを押してから溜め始めるまでの構えの時間
-        [[serialize(11)]] float chargeAttackMaxCharge_secs_;     ///< 溜め開始から最大溜めに達するまでの時間。これ未満で離すと通常コンボ
-        [[serialize(11)]] float chargeAttackMaxHold_secs_;       ///< 最大溜めのまま保持できる上限。超えると自動解放
+        [[serialize(11)]] float chargeAttackHoldThreshold_secs_; // 攻撃ボタンを押してから溜め始めるまでの構えの時間
+        [[serialize(11)]] float chargeAttackMaxCharge_secs_;     // 溜め開始から最大溜めに達するまでの時間。これ未満で離すと通常コンボ
+        [[serialize(11)]] float chargeAttackMaxHold_secs_;       // 最大溜めのまま保持できる上限。超えると自動解放
         [[serialize(11)]] AttackParam<Damage::PhysicsPower> chargeAttack_;
         [[serialize(11)]] HitFeelParam chargeHitFeel_;
-        [[serialize(11)]] float chargeAttackLungeStart_secs_; ///< 解放ステート開始から前方への踏み込みを始める時間。発生時に止める
+        [[serialize(11)]] float chargeAttackLungeStart_secs_; // 解放ステート開始から前方への踏み込みを始める時間。発生時に止める
         [[serialize(11)]] float chargeAttackLungeSpeed_;
         [[serialize(11)]] float chargeAttackStaminaCost_;
-        [[serialize(17)]] AttackParam<Damage::PhysicsPower> jumpAttack_; ///< 着地の叩きつけ。発生・持続は JumpAttackLand ステート開始から
+        [[serialize(17)]] AttackParam<Damage::PhysicsPower> jumpAttack_; // 着地の叩きつけ。発生・持続は JumpAttackLand ステート開始から
         [[serialize(17)]] HitFeelParam jumpAttackHitFeel_;
-        [[serialize(17)]] float jumpAttackWindup_secs_; ///< 空中で振りかぶって止まる時間。過ぎたら真下へ急降下する
+        [[serialize(17)]] float jumpAttackWindup_secs_; // 空中で振りかぶって止まる時間。過ぎたら真下へ急降下する
         [[serialize(17)]] float jumpAttackPlungeSpeed_;
 
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
@@ -198,9 +198,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] float                      avoidRollingStaminaCost_;
         float                                       justAvoidWindow_secs_ = 0.15f;
         float                                       justAvoidStaminaRestore_ = 100.0f;
-        float                                       counterWindow_secs_ = 0.5f; ///< ジャスト回避からカウンターを受け付ける時間
+        float                                       counterWindow_secs_ = 0.5f; // ジャスト回避からカウンターを受け付ける時間
         float                                       counterWindowRemaining_secs_ = 0.0f;
-        AttackParam<Damage::PhysicsPower>           counterAttack_ = AttackParam(Damage::PhysicsPower(45, Damage::FlinchPower(60)), EnhancePower(15), 0.2666666667f, 0.6f); ///< 発生・全体は CounterAttack クリップ(Great Sword Downward Slash の 6〜33F を 1.5 倍速)に合わせる
+        AttackParam<Damage::PhysicsPower>           counterAttack_ = AttackParam(Damage::PhysicsPower(45, Damage::FlinchPower(60)), EnhancePower(15), 0.2666666667f, 0.6f); // 発生・全体は CounterAttack クリップの尺に合わせる
         HitFeelParam                                counterHitFeel_ = HitFeelParam(1.0f, 0.15f, 7.0f, 0.9f, 0.22f, 45.0f);
         [[serialize(0)]] float                      deathStateDuration_secs_;
         [[serialize(0)]] float                      downStateDuration_secs_ = 13.6363636364f;
@@ -215,7 +215,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
 
-        // 初期所持(SwordManAvatarResource)はセーブにポーチが無いときだけ入れる
+        // NOTE: 初期所持品はセーブにポーチが無いときだけ入れる
         [[serialize(21)]] ItemPouch pouch_;
         float     attackBuffRemaining_secs_ = 0.0f;
         float     attackBuffRate_ = 1.0f;
@@ -304,7 +304,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
             if (version >= 8) archive(CEREAL_NVP(dashAttackLungeSpeed_secs_));
             if (version >= 9) archive(CEREAL_NVP(comboHitFeel_));
-            // v18 のみ保持していた旧フィールド(HitFeelParam へ移動)を読み捨てる
+            // NOTE: 旧版の踏み込み速度。今は HitFeelParam にあるので読み捨てる
             std::vector<float> comboAttackLungeSpeeds_;
             if (version == 18) archive(CEREAL_NVP(comboAttackLungeSpeeds_));
             if (version >= 9) archive(CEREAL_NVP(dashHitFeel_));
@@ -323,7 +323,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 17) archive(CEREAL_NVP(jumpAttackPlungeSpeed_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
-            // v12 のみ保持していた旧フィールド(SwordManAvatarResource へ移動)を読み捨てる
+            // NOTE: 旧版の加速時間。今は SwordManAvatarResource にあるので読み捨てる
             float walkAccelerationTime_secs_ = 0.0f;
             float runAccelerationTime_secs_  = 0.0f;
             if (version == 12) archive(CEREAL_NVP(walkAccelerationTime_secs_));

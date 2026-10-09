@@ -67,7 +67,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::stringstream ss;
 
         {
-            // NOTE: 型登録が紐付くのは JSON と PortableBinary だけ
+            // WARNING: 多態型の登録は JSON と PortableBinary にしか紐付かない
             cereal::PortableBinaryOutputArchive outputArchive(ss);
             outputArchive(*this);
         }
@@ -103,7 +103,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             return;
         }
 
-        // 完了フラグはセーブをまたいで残るので、受け直しても報酬が出るのは初回だけ
+        // NOTE: 完了フラグはセーブをまたいで残るので、受け直しても報酬が出るのは初回だけ
         const auto reward = (*swordManQuest)->RewardMoney();
         if (Quest::QuestJournal::Instance().MarkCompleted(completeQuest) && wallet_)
             wallet_->Earn(reward);

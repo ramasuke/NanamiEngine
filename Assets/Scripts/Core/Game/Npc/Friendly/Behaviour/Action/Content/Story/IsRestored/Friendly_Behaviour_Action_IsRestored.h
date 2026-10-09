@@ -6,13 +6,13 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /** @brief 施設が直っているかどうかが expected_ と同じなら Success */
+    // NOTE: 施設が直っているかどうかが expected_ と同じなら Success
     class IsRestored final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-        // NOTE: tools.bt で設定できるよう Story::Facility を int で持つ
+        // NOTE: ツリーの編集ツールから設定できるよう Story::Facility を int で持つ
         [[serialize(0)]] int facility_ = 0;
         [[serialize(0)]] bool expected_ = true;
 

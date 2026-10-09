@@ -42,7 +42,7 @@ namespace GamePlay::Ui
             case MagicCasterAvatarStateAction::Move:          Offer(Glyph::Move,   Label::Move,          isUsable); return;
             case MagicCasterAvatarStateAction::LockOn:        Offer(Glyph::LockOn, Label::LockOn,        isUsable); return;
             case MagicCasterAvatarStateAction::LockOnRelease: Offer(Glyph::LockOn, Label::LockOnRelease, isUsable); return;
-            // アイテムの切替/使用は専用のアイテム欄が出すので、操作ガイドには行を持たない
+            // NOTE: アイテムの切替/使用は専用のアイテム欄が出すので、操作ガイドには行を持たない
             case MagicCasterAvatarStateAction::CycleItem:
             case MagicCasterAvatarStateAction::UseItem:       return;
             }
@@ -68,7 +68,7 @@ namespace GamePlay::Ui
             return Row::Move;
         }
 
-        // 同じ行に複数届いたら、先に届いた使える方を出す
+        // NOTE: 同じ行に複数届いたら、先に届いた使える方を出す
         void Offer(const Glyph glyph, const Label label, const bool isUsable)
         {
             if (!isUsable && IsHiddenWhenUnusable(label))
@@ -106,7 +106,7 @@ namespace GamePlay::Ui
             return Glyph::Move;
         }
 
-        // 条件が揃ったときにだけ現れる操作
+        // NOTE: 条件が揃ったときにだけ現れる操作
         [[nodiscard]] static bool IsHiddenWhenUnusable(const Label label)
         {
             return label == Label::Chat || label == Label::LockOn || label == Label::LockOnRelease;

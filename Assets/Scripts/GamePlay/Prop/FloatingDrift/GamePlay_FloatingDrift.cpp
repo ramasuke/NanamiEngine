@@ -12,7 +12,7 @@ namespace GamePlay::Prop
     {
         homePos_ = Transform().GetLocalPos();
         homeRot_ = Transform().GetLocalRot();
-        //NOTE: 置き場所から位相を決める。乱数だと再生のたびに見え方が変わる
+        // NOTE: 置き場所から位相を決める。乱数だと再生のたびに見え方が変わる
         phase_ = std::fmod(std::abs(homePos_.x * 0.013f + homePos_.z * 0.007f), 1.0f) * glm::two_pi<float>();
     }
 

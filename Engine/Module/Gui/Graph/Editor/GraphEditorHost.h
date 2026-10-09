@@ -8,35 +8,31 @@
 
 namespace NanamiEngine::Module::Gui::Graph
 {
-    /**
-     * @brief ImGuizmo の GraphEditor を 1 枚のキャンバスとして描画するホスト。
-     * @note  ViewState (パン・ズーム) はセッション中だけ保持し、保存しない
-     */
+    // NOTE: ImGuizmo の GraphEditor を 1 枚のキャンバスとして描画するホスト
+    // NOTE: ViewState (パン・ズーム) はセッション中だけ保持し、保存しない
     class NANAMI_API GraphEditorHost final
     {
     public:
         GraphEditorHost();
 
-        /**
-         * @brief ツールバーとキャンバスを現在のウィンドウの残り領域に描画する
-         * @param readOnly true ならノードの移動・リンク編集を禁止する（実行中ツリーの表示用）
-         */
+        // NOTE: ツールバーとキャンバスを現在のウィンドウの残り領域に描画する
+        // NOTE: readOnly ならノードの移動・リンク編集を禁止する
         void Draw(GraphEditor::Delegate& delegate, bool readOnly);
 
-        /** @brief スクリーン座標を、ノード位置と同じグラフ座標に変換する（直前の Draw 時点の表示で計算） */
+        // NOTE: スクリーン座標を、ノード位置と同じグラフ座標に変換する（直前の Draw 時点の表示で計算）
         [[nodiscard]] ImVec2 ScreenToGraph(const ImVec2& screenPosition) const;
 
-        /** @brief 次の Draw で全ノード（またはselectedOnly なら選択中ノード）が収まるように表示を合わせる */
+        // NOTE: 次の Draw で全ノード（またはselectedOnly なら選択中ノード）が収まるように表示を合わせる
         void RequestFit(bool selectedOnly = false);
 
-        /** @brief キャンバスのウィンドウ（子ウィンドウ含む）がフォーカスされているか。キーボードショートカットの判定用 */
+        // NOTE: キャンバスのウィンドウ（子ウィンドウ含む）がフォーカスされているか。キーボードショートカットの判定用
         [[nodiscard]] bool IsFocused() const { return isFocused_; }
 
         [[nodiscard]] GraphEditor::Options& Options() { return options_; }
 
         [[nodiscard]] float Zoom() const { return viewState_.mFactor; }
 
-        /** @brief 次の Draw だけ、ツールバーの右端に描くもの（readOnly では描かない） */
+        // NOTE: 次の Draw だけ、ツールバーの右端に描くもの（readOnly では描かない）
         void SetToolbarExtra(std::function<void()> drawExtra) { toolbarExtra_ = std::move(drawExtra); }
 
     private:
@@ -51,12 +47,12 @@ namespace NanamiEngine::Module::Gui::Graph
         std::function<void()>    toolbarExtra_;
     };
 
-    /** @brief ノードの見た目テンプレートを作る（入出力スロット名は持たない） */
+    // NOTE: ノードの見た目テンプレートを作る（入出力スロット名は持たない）
     [[nodiscard]] NANAMI_API GraphEditor::Template MakeNodeTemplate(ImU32 headerColor, ImU8 inputCount, ImU8 outputCount);
 
-    /** @brief その大きさで描く文字のフォント（既定フォントより大きければ大きいフォント） */
+    // NOTE: その大きさで描く文字のフォント（既定フォントより大きければ大きいフォント）
     [[nodiscard]] NANAMI_API ImFont* FontForSize(float pixelSize);
 
-    /** @brief 開いている全 InspectorWindow に対象を表示させる */
+    // NOTE: 開いている全 InspectorWindow に対象を表示させる
     NANAMI_API void ShowInInspector(const std::weak_ptr<Object::IObject>& object);
 }

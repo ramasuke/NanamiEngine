@@ -10,7 +10,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::PlayAnimation::DoTick(const TickContext& context)
     {
         auto& param = context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME);
-        // NOTE: Sequence は後ろの Wait が終わるまで毎フレームこのノードを Tick し直すので、音はアニメーションに入ったときに 1 回だけ鳴らす
+        // NOTE: 親ノードから毎フレーム Tick し直されるので、音はアニメーションに入ったときだけ鳴らす
         if (param.Get() != animatorSetParamNumber_)
         {
             waitAnimationSound_secs_.Reset();
@@ -27,7 +27,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (holdSeconds_ <= 0.0f)
             return TickStatus::Success;
 
-        // NOTE: WaitSeconds と同じく、前回の Tick で呼ばれなかった = 入り直したので待ち直す
+        // NOTE: 前回の Tick で呼ばれなかった = 入り直したので待ち直す
         if (lastTickIndex_ + 1 != context.TickIndex())
             hold_secs_ = 0.0f;
         lastTickIndex_ = context.TickIndex();

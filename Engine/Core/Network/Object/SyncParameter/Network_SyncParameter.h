@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
 #include "Network_INetworkSyncParameter.h"
 #include "Id/Network_SyncParameter_Id.h"
@@ -12,11 +12,8 @@ namespace NanamiEngine::Core::Network
     NANAMI_API void DeRegisterParamId(ParameterId id);
     NANAMI_API void SyncSendParam(const INetworkSyncParameter& param);
 
-    /**
-     * ネットワーク上で同期させるT型を作成する型
-     * @tparam T 同期させるParameterの型, 条件としてserialize可能でなければならない。
-     * IDはNetworkAwake(NetworkObjectId, uint32_t&)が呼ばれた時点でobjectId+localIndexから確定する。
-     */
+    // NOTE: ネットワーク上で同期する値。T は serialize 可能であること
+    // NOTE: ID は NetworkAwake の時点で objectId + localIndex から確定する
     template <typename T>
     class SyncParameter final : public INetworkSyncParameter, public NetworkObjectBase
     {

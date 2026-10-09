@@ -24,7 +24,7 @@ namespace GameCore::Scene::Main
         void DoExit() override;
         void OnDrawGui() override;
 
-        /** @brief 導入が読めなければタイトルへ戻す */
+        // NOTE: 導入が読めなければタイトルへ戻す
         [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }
 
         std::weak_ptr<IPlayerAvatar> playerAvatar_;

@@ -11,14 +11,14 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~PlayerAvatarInputActionBase() = default;
         void OnUpdate();
-        /** @brief 最後に触られた入力機器 */
+        // NOTE: 最後に触られた入力機器
         [[nodiscard]] PlayerAvatarInputDevice CurrentDevice() const { return NanamiEngine::UiFlow::InputDevice::Current(); }
         void Enable();
         void Disable();
         virtual void OnDrawGui() = 0;
 
     protected:
-        ///以下サンドボックスパターン
+        // NOTE: 以下サンドボックスパターン
         template <typename ReadValueT>
         using Input = std::shared_ptr<PlayerAvatarInput<ReadValueT>>;
         template <typename ReadValueT>

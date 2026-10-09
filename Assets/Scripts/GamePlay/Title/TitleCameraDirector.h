@@ -13,10 +13,8 @@
 
 namespace GamePlay::Title
 {
-    /**
-     * @brief タイトル画面のカメラ。shotsRoot_ の子の VirtualCamera を順に映してループする。
-     * @note  各ショットはカメラからその先頭の子の VirtualCamera へ Brain の補間で動く
-     */
+    // NOTE: タイトル画面のカメラ。shotsRoot_ の子の VirtualCamera を順に映してループする
+    // NOTE: 各ショットはカメラからその先頭の子の VirtualCamera へ Brain の補間で動く
     class TitleCameraDirector final : public Component::ComponentBase,
                                       public LifeCycleCallback::IStartable,
                                       public LifeCycleCallback::IUpdatable
@@ -39,7 +37,7 @@ namespace GamePlay::Title
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) dipMask_;
         [[serialize(0)]] std::vector<float> shotDurations_secs_;
         [[serialize(0)]] float defaultShotDuration_secs_ = 9.0f;
-        // 暗転の全長 (半分で暗くなり、半分で明ける)
+        // NOTE: 暗転の全長 (半分で暗くなり、半分で明ける)
         [[serialize(0)]] float dipDuration_secs_ = 0.8f;
         [[serialize(0)]] int shotPriority_ = 100;
 

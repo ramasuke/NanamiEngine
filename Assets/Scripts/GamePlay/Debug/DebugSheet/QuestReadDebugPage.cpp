@@ -31,7 +31,7 @@ namespace GamePlay::Debug
             std::string title;
         };
 
-        /** @brief .meta から guid_ を抜き出す。読めなければ空 */
+        // NOTE: .meta から guid_ を抜き出す。読めなければ空
         std::string ReadMetaGuid(const std::filesystem::path& metaPath)
         {
             std::ifstream stream(metaPath, std::ios::binary);
@@ -42,10 +42,8 @@ namespace GamePlay::Debug
             return std::regex_search(text, match, GUID_PATTERN) ? match[1].str() : std::string();
         }
 
-        /**
-         * @brief .boardQuest のうちメインストーリーのものを集める
-         * NOTE: 型でアセットを列挙する API が無いので、.meta の guid から実体を引く
-         */
+        // NOTE: .boardQuest のうちメインストーリーのものを集める
+        // NOTE: 型でアセットを列挙する API が無いので、.meta の guid から実体を引く
         std::vector<MainStoryBoardQuest> CollectMainStoryBoardQuests()
         {
             namespace fs = std::filesystem;

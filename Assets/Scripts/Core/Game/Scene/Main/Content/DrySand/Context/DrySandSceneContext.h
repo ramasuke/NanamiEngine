@@ -19,7 +19,7 @@
 
 namespace GameCore::Scene
 {
-    /** 砂漠 (DrySandScene) のコンテキスト。中身は GrassLandSceneContext と同じ */
+    // NOTE: 砂漠のコンテキスト
     class DrySandSceneContext final : public SceneContextBase
     {
     public:
@@ -28,7 +28,7 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<Asset::SoundFile> BGM() const { return bgm_.get(); }
         [[nodiscard]] GamePlay::Network::CustomNetworkRunner& NetworkRunner() const { return *networkRunner_.get(); }
         [[nodiscard]] std::weak_ptr<GamePlay::Network::CustomNetworkRunner> WeakNetworkRunner() const { return networkRunner_.get(); }
-        /** enemySpawnPointsRoot_ の子孫のうち EnemySpawnPoint を持つもの。湧かせる種別は各地点が持つ */
+        // NOTE: enemySpawnPointsRoot_ の子孫のうち EnemySpawnPoint を持つもの。湧かせる種別は各地点が持つ
         [[nodiscard]] std::vector<std::shared_ptr<Npc::Enemy::EnemySpawnPoint>> EnemySpawnPoints() const;
 
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalCamera() const { return arrivalCamera_.get(); }
@@ -47,26 +47,26 @@ namespace GameCore::Scene
         [[nodiscard]] const glm::vec3& ArrivalCameraStart() const { return arrivalCameraStart_; }
         [[nodiscard]] const glm::vec3& ArrivalCameraEnd  () const { return arrivalCameraEnd_;   }
         [[nodiscard]] float ArrivalLookAtHeight() const { return arrivalLookAtHeight_; }
-        /** 島を見下ろす空撮の尺。0なら空撮せず、ポータルのショットから始める */
+        // NOTE: 島を見下ろす空撮の尺。0なら空撮せず、ポータルのショットから始める
         [[nodiscard]] int ArrivalOverview_msecs       () const { return arrivalOverview_msecs_;        }
-        /** 空撮の終点からポータルのショットの始点まで降りてくる尺 */
+        // NOTE: 空撮の終点からポータルのショットの始点まで降りてくる尺
         [[nodiscard]] int ArrivalOverviewDescend_msecs() const { return arrivalOverviewDescend_msecs_; }
-        /** 空撮のカメラが2台とも置かれているか */
+        // NOTE: 空撮のカメラが2台とも置かれているか
         [[nodiscard]] bool HasArrivalOverviewCamera() const { return arrivalOverviewStartCamera_ && arrivalOverviewEndCamera_; }
-        /** 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く */
+        // NOTE: 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewStartCamera() const { return arrivalOverviewStartCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewEndCamera  () const { return arrivalOverviewEndCamera_  .get(); }
-        /** 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない */
+        // NOTE: 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない
         [[nodiscard]] const std::string& ArrivalIslandTitle   () const { return arrivalIslandTitle_;    }
         [[nodiscard]] const std::string& ArrivalIslandSubtitle() const { return arrivalIslandSubtitle_; }
-        /** 空撮のあとに巡る島の見どころ。最後の見どころからポータルへ降りるので、ポータルに近いものを最後に並べる */
+        // NOTE: 空撮のあとに巡る島の見どころ。最後の見どころからポータルへ降りるので、ポータルに近いものを最後に並べる
         [[nodiscard]] const std::vector<GrassLand::StageArrivalTourShot>& ArrivalTourShots() const { return arrivalTourShots_; }
-        /** 空撮の字幕 (StageArrivalCaption を持つプレハブ) */
+        // NOTE: 空撮の字幕 (StageArrivalCaption を持つプレハブ)
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> ArrivalCaptionPrefab() const { return arrivalCaptionPrefab_.get(); }
-        /** このステージのクリア条件。どちらかが -1 なら無し */
+        // NOTE: このステージのクリア条件。どちらかが -1 なら無し
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
-        /** 神殿前の広場に落ちている光の浮遊石。骸竜を倒すと飛び去り、それ以降は出さない */
+        // NOTE: 神殿前の広場に落ちている光の浮遊石。骸竜を倒すと飛び去り、それ以降は出さない
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> FloatingStone() const { return floatingStone_.get(); }
 
     private:
@@ -88,7 +88,7 @@ namespace GameCore::Scene
         [[serialize(0)]] glm::vec3 arrivalCameraStart_            = glm::vec3(22.0f, 3.5f, 24.0f);
         [[serialize(0)]] glm::vec3 arrivalCameraEnd_              = glm::vec3(18.0f, 2.5f, 36.0f);
         [[serialize(0)]] float     arrivalLookAtHeight_           = 12.0f;
-        // NOTE: tools.scene で設定できるよう EnemyKind / Story::StoryFlag を int で持つ
+        // NOTE: ツールから設定できるよう EnemyKind / Story::StoryFlag を int で持つ
         [[serialize(0)]] int       clearEnemyKind_                = -1;
         [[serialize(0)]] int       clearStoryFlag_                = -1;
         [[serialize(2)]] FIELD(GamePlay::Prop::FloatingStone) floatingStone_;
@@ -164,7 +164,7 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(clearStoryFlag_));
             if (version <= 1)
             {
-                // v0〜v1 は石・カメラ・パーティクルを別々に持っていた。今は石の FloatingStone が持つので読み捨てる
+                // NOTE: 旧版の石・カメラ・パーティクル。今は FloatingStone が持つので読み捨てる
                 [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldStone;
                 [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera)         oldStoneCamera;
                 [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile)                   oldLiftOffParticle;
@@ -187,7 +187,7 @@ namespace GameCore::Scene
             }
             if (version >= 3 && version <= 4)
             {
-                // v4 までは空撮の位置をワールド座標で持っていた。今はマーカーを置くので読み捨てる
+                // NOTE: 旧版の空撮のワールド座標。今はマーカーを置くので読み捨てる
                 [[serialize(3)]] glm::vec3 arrivalOverviewCameraStart_ = glm::vec3(0.0f);
                 [[serialize(3)]] glm::vec3 arrivalOverviewCameraEnd_   = glm::vec3(0.0f);
                 [[serialize(3)]] glm::vec3 arrivalOverviewLookAt_      = glm::vec3(0.0f);

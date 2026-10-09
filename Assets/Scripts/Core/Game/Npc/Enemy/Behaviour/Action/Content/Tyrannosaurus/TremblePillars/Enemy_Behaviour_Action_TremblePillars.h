@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 近くの ChargeBreakPillar を揺らし、突進で倒せそうなことを見せる */
+    // NOTE: 近くの ChargeBreakPillar を揺らし、突進で倒せそうなことを見せる
     class TremblePillars final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

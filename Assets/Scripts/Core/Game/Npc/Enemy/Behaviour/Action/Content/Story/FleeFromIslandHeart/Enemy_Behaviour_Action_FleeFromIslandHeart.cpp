@@ -68,7 +68,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             if (timer_secs_ < startle_secs_)
                 return TickStatus::Running;
 
-            // 心臓から離れる向きを、頭ごとに少しずつばらけさせる
+            // NOTE: 心臓から離れる向きを、頭ごとに少しずつばらけさせる
             const glm::vec3 away = glm::length2(toHeart) > 1e-6f
                 ? -glm::normalize(toHeart)
                 : Horizontal(context.EnemyTransform().GetWorldRot() * glm::vec3(0, 0, 1));
@@ -120,7 +120,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
     void Action::FleeFromIslandHeart::Leave(const TickContext& context)
     {
-        // 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を消させる
+        // NOTE: 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を消させる
         if (context.IsNetworkAuthority())
             GameCore::Network::EnemyLeaveRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
 

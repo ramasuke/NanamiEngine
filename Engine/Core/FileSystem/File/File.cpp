@@ -35,7 +35,7 @@ namespace NanamiEngine::Core::FileSystem
         auto& factory = Module::Asset::AssetFactory::Instance();
         if (factory.IsRegisteredExtension(filePath))
         {
-            // .meta があるなら最初から Load する。先に TryCreate すると、捨てるだけのアセットが Guid 生成と ObjectRegistry 登録を伴って毎回作られる
+            // NOTE: .meta があれば最初から Load する。先に TryCreate すると、捨てるだけのアセットが毎回 ObjectRegistry に登録される
             if (std::filesystem::exists(filePath + ".meta"))
                 return std::move(LoadFileForMeta(filePath, fileName));
 
@@ -59,14 +59,12 @@ namespace NanamiEngine::Core::FileSystem
     {
         File copied;
 
-        //fileName_
         {
             std::filesystem::path p(fileName_);
             std::string newName = p.stem().string() + "_copy" + p.extension().string();
             copied.fileName_ = newName;
         }
 
-        //filePath_
         {
             std::filesystem::path p(filePath_);
             std::string newName = p.stem().string() + "_copy" + p.extension().string();
@@ -77,7 +75,6 @@ namespace NanamiEngine::Core::FileSystem
                 copied.filePath_ = newName;
         }
 
-        //contentのコピー
         if (content_)
         {
             std::stringstream ss;
@@ -153,7 +150,7 @@ namespace NanamiEngine::Core::FileSystem
         }
         catch (const Module::Exception::NanamiException& exception)
         {
-            // 壊れたファイルは空データで上書きせずここで止める
+            // NOTE: 壊れたファイルは空データで上書きせずここで止める
             Module::LogError("File: 保存に失敗しました: " + std::string(exception.what()));
         }
     }
@@ -168,7 +165,7 @@ namespace NanamiEngine::Core::FileSystem
 
     void File::OnDoubleClick() const
     {
-        // 未登録の拡張子や .meta の読み込みに失敗したファイルは content_ が null
+        // NOTE: 未登録の拡張子や .meta の読み込みに失敗したファイルは content_ が null
         if (!content_)
             return;
 
@@ -178,7 +175,7 @@ namespace NanamiEngine::Core::FileSystem
         }
         catch (const Module::Exception::NanamiException& exception)
         {
-            // Scene / Prefab / AnimationTree / BehaviourTree のダブルクリックによる読み込み失敗をここで一括して受ける
+            // NOTE: 各アセットのダブルクリックによる読み込み失敗をここで一括して受ける
             Module::LogError("File: 開けませんでした: " + std::string(exception.what()));
         }
     }

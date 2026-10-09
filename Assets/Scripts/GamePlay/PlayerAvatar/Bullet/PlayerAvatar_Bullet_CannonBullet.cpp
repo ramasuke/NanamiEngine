@@ -19,7 +19,7 @@ namespace GamePlay::PlayerAvatar::Bullet
         const Physics::Manifold& maniFold,
         const std::shared_ptr<GameObject::IGameObject>& other)
     {
-        // 手足のコライダーに当たっても本体にダメージが入るようにする
+        // NOTE: 手足のコライダーに当たっても本体にダメージが入るようにする
         const auto owner = Physics::FindBodyOwner(other);
         for (auto& playerAttackable : owner->Components().Catches<GameCore::PlayerAvatar::ITakablePlayerAttack>())
         {

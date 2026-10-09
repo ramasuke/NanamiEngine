@@ -5,7 +5,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /** @brief 攻撃1段分の手応えパラメータ。踏み込みとヒットした瞬間の演出 */
+    // NOTE: 攻撃1段分の手応えパラメータ。踏み込みとヒットした瞬間の演出
     struct HitFeelParam final
     {
         explicit HitFeelParam(
@@ -16,17 +16,17 @@ namespace GameCore::PlayerAvatar
             float targetShakeDuration_secs = 0.0f,
             float lungeSpeed = 0.0f);
 
-        /** @brief カメラシェイクの強度 */
+        // NOTE: カメラシェイクの強度
         [[nodiscard]] float ShakeIntensity      () const { return shakeIntensity_;       }
-        /** @brief カメラシェイクの長さ[秒] */
+        // NOTE: カメラシェイクの長さ[秒]
         [[nodiscard]] float ShakeDuration_secs  () const { return shakeDuration_secs_;   }
-        /** @brief ヒットパーティクルの拡大率(1.0が等倍) */
+        // NOTE: ヒットパーティクルの拡大率(1.0が等倍)
         [[nodiscard]] float ParticleScale       () const { return particleScale_;        }
-        /** @brief 被弾した相手モデルの揺れ幅[ワールド単位]。攻撃した本人の画面だけで揺らすローカル演出 */
+        // NOTE: 被弾した相手モデルの揺れ幅[ワールド単位]。攻撃した本人の画面だけで揺らすローカル演出
         [[nodiscard]] float TargetShakeAmplitude    () const { return targetShakeAmplitude_;     }
-        /** @brief 被弾した相手モデルの揺れの長さ[秒] */
+        // NOTE: 被弾した相手モデルの揺れの長さ[秒]
         [[nodiscard]] float TargetShakeDuration_secs() const { return targetShakeDuration_secs_; }
-        /** @brief 発生までの前方への踏み込み速度。0なら踏み込まない */
+        // NOTE: 発生までの前方への踏み込み速度。0なら踏み込まない
         [[nodiscard]] float LungeSpeed              () const { return lungeSpeed_;               }
 
     private:

@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::Network
 
     void ByteBuffer::EnsureReadable(const size_t offset, const size_t size) const
     {
-        // offset + size のオーバーフローを避けるため差分で比較する
+        // NOTE: offset + size のオーバーフローを避けるため差分で比較する
         if (offset > data_.size() || size > data_.size() - offset)
         {
             throw Module::Exception::PacketDeserializeException(

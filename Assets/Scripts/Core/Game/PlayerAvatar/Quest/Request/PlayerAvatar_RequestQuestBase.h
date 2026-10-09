@@ -11,10 +11,8 @@
 
 namespace GameCore::PlayerAvatar::Quest::Request
 {
-    /**
-     * @brief 汎用依頼の土台。受注時の記録帳の数から requiredCount_ 増えたら達成
-     * NOTE: repeatable_ が false なら1度だけ。達成済みは BoardQuest の guid で残るので、週ごとに依頼を作り直せばまた受けられる
-     */
+    // NOTE: 汎用依頼の土台。受注時の記録帳の数から requiredCount_ 増えたら達成
+    // NOTE: repeatable_ が false なら 1 度だけ。達成済みは依頼書の guid で残るので、作り直した依頼はまた受けられる
     class RequestQuestBase : public ITakeableQuest
     {
     public:
@@ -28,13 +26,13 @@ namespace GameCore::PlayerAvatar::Quest::Request
         [[nodiscard]] bool RecordsCompletionByType() const override { return false; }
 
         [[nodiscard]] int RequiredCount() const { return requiredCount_; }
-        /** @brief 受注してから増えた数。始まっていなければ 0 */
+        // NOTE: 受注してから増えた数。始まっていなければ 0
         [[nodiscard]] int Progress() const;
 
     protected:
-        /** @brief 今の記録帳の数(受注からの差ではなく通算) */
+        // NOTE: 今の記録帳の数(受注からの差ではなく通算)
         [[nodiscard]] virtual int CurrentRecord(const Record::IRecordBook& records) const = 0;
-        /** @brief 対象の数が増えたときに、増えたあとの通算を流す */
+        // NOTE: 対象の数が増えたときに、増えたあとの通算を流す
         [[nodiscard]] virtual NanamiEngine::R4::Observable<int> ObserveRecord(const Record::IRecordBook& records) const = 0;
         virtual void DoDrawGui() = 0;
 
@@ -43,7 +41,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
 
         [[serialize(0)]] PlayerAvatar::QuestType questType_ = PlayerAvatar::QuestType::GrasslandHyenaCull;
         [[serialize(0)]] int                     requiredCount_ = 1;
-        // 受注した時点の通算。空なら未受注(掲示板の原本など)
+        // NOTE: 受注した時点の通算。空なら未受注(掲示板の原本など)
         [[serialize(0)]] std::optional<int>      startRecord_;
         [[serialize(1)]] bool                    repeatable_ = true;
         const Record::IRecordBook*               records_ = nullptr;

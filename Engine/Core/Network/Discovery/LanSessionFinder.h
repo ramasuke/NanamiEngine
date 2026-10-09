@@ -11,9 +11,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * セッションキーが一致するホストを LAN から探す (同一 PC と各サブネットへブロードキャスト)
-     */
+    // NOTE: セッションキーが一致するホストを LAN から探す (同一 PC と各サブネットへブロードキャスト)
     class NANAMI_API LanSessionFinder final
     {
     public:
@@ -22,9 +20,9 @@ namespace NanamiEngine::Core::Network
         LanSessionFinder(const LanSessionFinder&) = delete;
         LanSessionFinder& operator=(const LanSessionFinder&) = delete;
 
-        /** 一定間隔で問い合わせを送り直し、届いた返事を読む。毎フレーム呼ぶ */
+        // NOTE: 一定間隔で問い合わせを送り直し、届いた返事を読む。毎フレーム呼ぶ
         void Update();
-        /** 最初に答えたホスト */
+        // NOTE: 最初に答えたホスト
         [[nodiscard]] const std::optional<HostEndpoint>& Found() const;
 
     private:

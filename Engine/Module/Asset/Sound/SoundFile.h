@@ -20,20 +20,20 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] int         GetDxLibHandle() const          { return dxLibHandle_;  }
         [[nodiscard]] std::string GetContentPath() const override;
 
-        /** @brief 再生 (バックグラウンド)。loop でループ、restart で再生中でも頭から */
+        // NOTE: 再生 (バックグラウンド)。loop でループ、restart で再生中でも頭から
         void Play(bool loop = false, bool restart = true) const;
         void Stop() const;
         [[nodiscard]] bool IsPlaying() const;
-        /** @brief 音量 0..255。鳴っている最中にも効く (アセット設定の volume_ は変えない) */
+        // NOTE: 音量 0..255。鳴っている最中にも効く (アセット設定の volume_ は変えない)
         void SetVolume(int volume) const;
-        /** @brief アセットに設定された音量 0..255 */
+        // NOTE: アセットに設定された音量 0..255
         [[nodiscard]] int GetVolume() const { return volume_; }
-        /** @brief SetVolume で最後に指定された音量 0..255 */
+        // NOTE: SetVolume で最後に指定された音量 0..255
         [[nodiscard]] int GetCurrentVolume() const { return currentVolume_; }
-        /** @brief 次の再生 1 回だけの音量 0..255 */
+        // NOTE: 次の再生 1 回だけの音量 0..255
         void SetNextPlayVolume(int volume) const;
         void Set3DPosition(const glm::vec3& position) const;
-        /** @brief 最後に指定された音量に、今の音量設定 (Audio::SetMasterVolume など) を掛け直す */
+        // NOTE: 最後に指定された音量に、今の音量設定 (Audio::SetMasterVolume など) を掛け直す
         void ReapplyVolume() const;
 
     private:
@@ -44,7 +44,7 @@ namespace NanamiEngine::Module::Asset
         int dxLibHandle_ = -1;
 
         int volume_ = 0;
-        /** 最後に指定された素の音量 (倍率を掛ける前)。実行時のみ */
+        // NOTE: 最後に指定された素の音量 (倍率を掛ける前)。実行時のみ
         mutable int currentVolume_ = 0;
         Audio::AudioCategory category_ = Audio::AudioCategory::Se;
 #pragma region Serialization Function

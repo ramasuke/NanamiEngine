@@ -11,9 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief プレイヤーから目的地への道を求め、renderer_ に渡して蛍を流させる。
-     */
+    // NOTE: プレイヤーから目的地への道を求め、renderer_ に渡して蛍を流させる
     class NavigationTrail final : public Component::ComponentBase,
                                   public LifeCycleCallback::IUpdatable
     {
@@ -27,11 +25,11 @@ namespace GamePlay::Ui
         [[serialize(0)]] int                      maxCellRange_ = 400;
         [[serialize(0)]] float                    maxClimbAngle_deg_ = 45.0f;
         [[serialize(0)]] float                    searchInterval_secs_ = 1.0f;
-        /** @brief 目的地にこれより近いと出さない */
+        // NOTE: 目的地にこれより近いと出さない
         [[serialize(0)]] float                    hideDistance_ = 45.0f;
         [[serialize(0)]] float                    fade_secs_ = 0.4f;
 
-        /** @brief ワーカースレッドを持つので動かせない。使うときに作る */
+        // NOTE: ワーカースレッドを持つので動かせない。使うときに作る
         std::shared_ptr<GameCore::PathFinding::HeightGridAstar> pathFinder_;
         std::vector<glm::vec3>                 polyline_;
 

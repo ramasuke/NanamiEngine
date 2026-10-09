@@ -107,7 +107,7 @@ namespace Editor::Npc::Behaviour
             entry.node   = node;
             entry.title  = node->GraphNodeTitle();
             entry.detail = node->GraphNodeDetail();
-            // 名前の無いアクションは型名を見出しにする
+            // NOTE: 名前の無いアクションは型名を見出しにする
             if (entry.title.empty())
                 std::swap(entry.title, entry.detail);
 
@@ -210,7 +210,7 @@ namespace Editor::Npc::Behaviour
         for (auto& entry : nodes_)
             entry.size = MeasureNodeSize(entry.title, entry.detail, entry.siblingCount > 1);
 
-        // Entry まで辿り着けないノードは浮きノード（実行されない）
+        // NOTE: Entry まで辿り着けないノードは浮きノード（実行されない）
         for (auto& entry : nodes_)
         {
             const NodeEntry* root = &entry;
@@ -220,7 +220,7 @@ namespace Editor::Npc::Behaviour
         }
     }
 
-    // GraphEditor は AllowedLink(子 = 入力スロット側, 親 = 出力スロット側) の順で呼ぶ
+    // NOTE: from は子（入力スロット側）、to は親（出力スロット側）
     bool BehaviourTreeGraphDelegate::AllowedLink(const GraphEditor::NodeIndex from, const GraphEditor::NodeIndex to)
     {
         if (readOnly_ || from >= nodes_.size() || to >= nodes_.size() || from == to)
@@ -231,7 +231,7 @@ namespace Editor::Npc::Behaviour
         if (IsEntry(child.get()) || parent->MaxChildren() == 0)
             return false;
 
-        // 子のサブツリーに親が含まれていたら循環する
+        // NOTE: 子のサブツリーに親が含まれていたら循環する
         std::vector<std::shared_ptr<NodeBase>> subtree;
         std::unordered_set<const NodeBase*>    visited;
         CollectSubtree(child, subtree, visited);
@@ -243,7 +243,7 @@ namespace Editor::Npc::Behaviour
         if (readOnly_)
             return;
 
-        // 選択ノードの子孫も一緒に動かす（親をドラッグするとぶら下がっているノードが相対位置を保って付いてくる）
+        // NOTE: 選択ノードの子孫も相対位置を保って一緒に動かす
         std::vector<std::shared_ptr<NodeBase>> targets;
         std::unordered_set<const NodeBase*>    visited;
         for (GraphEditor::NodeIndex i = 0; i < nodes_.size(); ++i)
@@ -255,7 +255,7 @@ namespace Editor::Npc::Behaviour
             node->PositionRef() += glm::vec2(delta.x, delta.y);
     }
 
-    // GraphEditor の Link は input = 親（出力スロット側）, output = 子（入力スロット側）
+    // NOTE: inputNode は親（出力スロット側）、outputNode は子（入力スロット側）
     void BehaviourTreeGraphDelegate::AddLink(const GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex,
                                              const GraphEditor::NodeIndex outputNodeIndex, GraphEditor::SlotIndex)
     {
@@ -286,7 +286,7 @@ namespace Editor::Npc::Behaviour
         if (std::ranges::find(*detachedNodes_, child) == detachedNodes_->end())
             detachedNodes_->push_back(child);
 
-        // 同じ Show 呼び出しの中で GetLinkCount / GetLink が続くので、リンクもすぐ作り直す
+        // NOTE: 同じフレーム内で続けてリンクが参照されるので、すぐ作り直す
         RebuildLinks();
     }
 
@@ -303,7 +303,7 @@ namespace Editor::Npc::Behaviour
             Detach(child);
         }
 
-        // 子を 1 つしか持てない親なら、今の子を浮きノードにしてから繋ぐ
+        // NOTE: 子を 1 つしか持てない親なら、今の子を浮きノードにしてから繋ぐ
         if (parent->Children().size() >= parent->MaxChildren())
         {
             for (const auto& existing : parent->Children())
@@ -350,7 +350,7 @@ namespace Editor::Npc::Behaviour
         if (IsFolded(*parent) && !IsListSequence(*parent))
             ToggleFold(*parent);
 
-        // 親の右、既存の子の下に置く（子を 1 つしか持てない親は置き換えるので親の右隣）
+        // NOTE: 親の右、既存の子の下に置く（子を 1 つしか持てない親は置き換えるので親の右隣）
         glm::vec2 target = parent->PositionRef() + glm::vec2(NodeSize(parent.get()).x + K_LAYOUT_GAP_X, 0.0f);
         if (parent->MaxChildren() != 1 && !parent->Children().empty())
             target.y = SubtreeBottom(parent->Children().back()) + K_LAYOUT_GAP_Y;
@@ -397,7 +397,7 @@ namespace Editor::Npc::Behaviour
         for (const auto& child : node->Children())
             nextY = LayoutSubtree(child, childX, nextY, visited);
 
-        // 畳んだノードの子は展開したときの位置だけ決め、縦の場所は取らない
+        // NOTE: 畳んだノードの子は展開したときの位置だけ決め、縦の場所は取らない
         if (IsFolded(*node))
             return y + size.y + K_LAYOUT_GAP_Y;
         return std::max(nextY, y + size.y + K_LAYOUT_GAP_Y);
@@ -465,7 +465,7 @@ namespace Editor::Npc::Behaviour
         }
         DrawNodeDetail(drawList, rectangle, entry.detail, K_DETAIL_TEXT_COLOR);
 
-        // 兄弟が複数あるときは実行順をヘッダー右端に出す
+        // NOTE: 兄弟が複数あるときは実行順をヘッダー右端に出す
         if (entry.siblingCount > 1 && canText)
         {
             const std::string badge = "#" + std::to_string(entry.childOrder + 1);
@@ -481,7 +481,7 @@ namespace Editor::Npc::Behaviour
                 drawList->AddText(font, fontSize, ImVec2(frame.Min.x, frame.Max.y + 3.0f * zoom), K_DETACHED_TEXT_COLOR, "未接続（実行されません）");
         }
 
-        // 実行中ツリーのビューアでは、直近の Tick 結果で枠を色分けする
+        // NOTE: 実行中ツリーのビューアでは、直近の Tick 結果で枠を色分けする
         if (const auto statusColor = DrawGraphEditorGuiHelper::RuntimeStatusColor(*entry.node))
         {
             const float outline = 3.0f * zoom;
@@ -495,7 +495,7 @@ namespace Editor::Npc::Behaviour
         return nodes_.size();
     }
 
-    // テンプレートはノードごとに 1 つ（色と入出力の有無がノードの型で決まるため）
+    // NOTE: テンプレートはノードごとに 1 つ（色と入出力の有無がノードの型で決まるため）
     const GraphEditor::Template BehaviourTreeGraphDelegate::GetTemplate(const GraphEditor::TemplateIndex index)
     {
         if (index >= nodes_.size())
@@ -623,7 +623,7 @@ namespace Editor::Npc::Behaviour
         const bool isEntry = IsEntry(node.get());
         if (ImGui::MenuItem("Disconnect from Parent", nullptr, false, ParentOf(node.get()) != nullptr))
             Detach(node);
-        // Entry はツリーに必ず 1 つ必要なので消せない
+        // NOTE: Entry はツリーに必ず 1 つ必要なので消せない
         if (ImGui::MenuItem("Delete Node", "Del", false, !isEntry))
             DeleteNode(node, true);
         if (ImGui::MenuItem("Delete Subtree", nullptr, false, !isEntry))

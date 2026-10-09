@@ -60,11 +60,11 @@ namespace GamePlay::Ui
         }
         visibleCount_ = wantedCount;
 
-        // HorizontalLayoutGroup は原点から右へ並べるので、枠の数だけ帯を左へずらして右端を固定する。
+        // NOTE: HorizontalLayoutGroup は原点から右へ並べるので、枠の数だけ帯を左へずらして右端を固定する
         stripBaseX_ = -static_cast<float>(visibleCount_ - 1) * slotPitch_px_;
         ApplyStripSlide();
 
-        // 名前は選択中の枠の真上に出す
+        // NOTE: 名前は選択中の枠の真上に出す
         const float centreX = (static_cast<float>(CenterSlotIndex()) - static_cast<float>(visibleCount_ - 1)) * slotPitch_px_;
         if (namePlate_)
         {
@@ -118,7 +118,7 @@ namespace GamePlay::Ui
         const float slide = slideTween_.Value();
         const float dimRate = static_cast<float>(dimAlpha_) / 255.0f;
         const float lastSlotPos = static_cast<float>(visibleCount_ - 1);
-        // 選ばれた瞬間に膨らんで戻る(0 -> 1 -> 0)
+        // NOTE: 選ばれた瞬間に膨らんで戻る(0 -> 1 -> 0)
         const float pop = selectPopRate_ * std::sin(ITEM_BAR_PI * (1.0f - selectPulse_.Value()));
 
         for (std::size_t i = 0; i < visibleCount_ && i < slotViews_.size(); ++i)
@@ -127,10 +127,10 @@ namespace GamePlay::Ui
             if (!view)
                 continue;
 
-            // 帯がずれている間は、枠の見た目上の位置と中央との距離で選択中らしさを補間する
+            // NOTE: 帯がずれている間は、枠の見た目上の位置と中央との距離で選択中らしさを補間する
             const float slotPos = static_cast<float>(i) + slide;
             const float selectedRate = 1.0f - std::min(std::abs(slotPos - static_cast<float>(CenterSlotIndex())), 1.0f);
-            // 帯の端からはみ出している枠(回り込んで入ってくる枠)は薄くする
+            // NOTE: 帯の端からはみ出している枠(回り込んで入ってくる枠)は薄くする
             const float overflow = std::max(-slotPos, slotPos - lastSlotPos);
             const float edgeRate = 1.0f - std::clamp(overflow, 0.0f, 1.0f);
 
@@ -151,7 +151,7 @@ namespace GamePlay::Ui
         }
 
         const int groupBlendRate = ItemBarToBlendRate(groupAlpha);
-        // 名前は帯が止まるにつれて浮かび上がらせる
+        // NOTE: 名前は帯が止まるにつれて浮かび上がらせる
         const float nameRate = 1.0f - std::min(std::abs(slide), 1.0f);
         if (namePlate_)  namePlate_ ->SetBlendRate(groupBlendRate);
         if (nameText_)   nameText_  ->SetBlendRate(ItemBarToBlendRate(groupAlpha * nameRate));
@@ -232,7 +232,7 @@ namespace GamePlay::Ui
 
         const auto declaration = source_->Declaration();
         const auto acceptance = declaration.acceptance;
-        // Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ
+        // NOTE: Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ
         if (acceptance == PlayerAvatarControlAcceptance::Accept)
         {
             isShownDeclared_  = declaration.isShown;
@@ -249,14 +249,14 @@ namespace GamePlay::Ui
                     selectPulse_.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(selectPulseDuration_secs_)));
             }
 
-            // 中身は即座に回るので、帯を前の位置へずらしておいて中央へ戻す
+            // NOTE: 中身は即座に回るので、帯を前の位置へずらしておいて中央へ戻す
             if (const int step = isContentDirty_ ? 0 : SelectionStep(pouch); step != 0 && slideDuration_secs_ > 0.0f)
                 slideTween_.Play(tweeny::from(static_cast<float>(step)).to(0.0f).during(Ms(slideDuration_secs_)).via(Ease(EaseType::OutCubic)));
 
             lastRevision_ = pouch.Revision();
             lastSelectedIndex_ = pouch.SelectedIndex();
             isContentDirty_ = false;
-            // 拾ったアイテムでポーチの枠が増えることがある
+            // NOTE: 拾ったアイテムでポーチの枠が増えることがある
             SpawnSlots(pouch);
             RefreshContent(pouch);
         }

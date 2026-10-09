@@ -6,10 +6,8 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ビックリマーク。ゆっくり上下し、周期の先頭で枠を光が走り、周期の最後にコトッと傾く
-     * @details 光は子オブジェクトなので位置・スケールは親から引き継ぐ。角度と透明度だけ下地に合わせる
-     */
+    // NOTE: ビックリマーク。ゆっくり上下し、周期の先頭で枠を光が走り、周期の最後にコトッと傾く
+    // NOTE: 光は子オブジェクトなので位置・スケールは親から引き継ぐ。角度と透明度だけ下地に合わせる
     class ChatIconSurpriseMotion final : public Component::ComponentBase,
                                          public LifeCycleCallback::IUpdatable
     {

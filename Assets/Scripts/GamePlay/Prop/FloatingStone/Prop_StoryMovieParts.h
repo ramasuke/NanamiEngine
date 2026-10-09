@@ -12,7 +12,7 @@ namespace NanamiEngine::Module::GameObject
     class IGameObject;
 }
 
-/** @brief FloatingStone / ReturningIsland / ScatterFloatingStones の演出で共有する部品 */
+// NOTE: 物語演出のコルーチンで共有する部品
 namespace GamePlay::Prop::StoryMovie
 {
     inline float EaseOutCubic (const float t) { return 1.0f - std::pow(1.0f - t, 3.0f); }
@@ -22,10 +22,10 @@ namespace GamePlay::Prop::StoryMovie
     inline float Rate(const float elapsed_secs, const float during_secs) { return std::clamp(elapsed_secs / during_secs, 0.0f, 1.0f); }
     inline glm::quat Yaw(const float degrees) { return glm::angleAxis(glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f)); }
 
-    /** @brief 子の ParticleSystem をまとめて再生/停止する */
+    // NOTE: 子の ParticleSystem をまとめて再生/停止する
     void SetChildParticlesPlaying(NanamiEngine::Module::GameObject::IGameObject& root, bool isPlaying);
 
-    /** @brief 動かした物のコライダーを、次の Flush で今の位置に作り直させる(Static の Body は Transform に付いてこない) */
+    // NOTE: 動かした物のコライダーを、次の Flush で今の位置に作り直させる(Static の Body は Transform に付いてこない)
     void RebuildColliders(NanamiEngine::Module::GameObject::IGameObject& root);
 
     void MoveBy(NanamiEngine::Module::GameObject::IGameObject& gameObject, const glm::vec3& offset);

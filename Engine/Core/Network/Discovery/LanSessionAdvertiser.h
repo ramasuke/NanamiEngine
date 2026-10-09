@@ -9,7 +9,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /** ホスト側: LAN から届いた探索の問い合わせに、セッションキーが一致すれば待ち受けポートを答える */
+    // NOTE: ホスト側: LAN から届いた探索の問い合わせに、セッションキーが一致すれば待ち受けポートを答える
     class NANAMI_API LanSessionAdvertiser final
     {
     public:
@@ -18,10 +18,10 @@ namespace NanamiEngine::Core::Network
         LanSessionAdvertiser(const LanSessionAdvertiser&) = delete;
         LanSessionAdvertiser& operator=(const LanSessionAdvertiser&) = delete;
 
-        /** 探索ポートを確保できたか。同じ PC で別のホストが告知していると false */
+        // NOTE: 探索ポートを確保できたか。同じ PC で別のホストが告知していると false
         [[nodiscard]] bool IsListening() const;
         [[nodiscard]] const std::string& SessionKey() const;
-        /** 届いている問い合わせを読んで答える。毎フレーム呼ぶ */
+        // NOTE: 届いている問い合わせを読んで答える。毎フレーム呼ぶ
         void Update();
 
     private:

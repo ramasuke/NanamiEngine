@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Asset
         SpriteFile& operator=(const SpriteFile&) = delete;
         void OnEnableAsset() override;
         [[nodiscard]] const Guid& GetGuid        () const override { return guid_;     }
-        /** @brief 未読込ならここで読み終えてから返す */
+        // NOTE: 未読込ならここで読み終えてから返す
         [[nodiscard]] int         GetDxLibHandle () const;
         [[nodiscard]] std::string GetContentPath () const override;
         void RequestLoad() const override;

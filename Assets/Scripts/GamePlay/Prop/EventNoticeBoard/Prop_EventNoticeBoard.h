@@ -10,9 +10,7 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief イベント掲示板。調べると告知一覧のUIを開き、未読のメイン依頼があればビックリマークを出す
-     */
+    // NOTE: イベント掲示板。調べると告知一覧のUIを開き、未読のメイン依頼があればビックリマークを出す
     class EventNoticeBoard final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,
                                    public LifeCycleCallback::IUpdatable,
@@ -26,7 +24,7 @@ namespace GamePlay::Prop
         void OnInteract        () override;
         [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
         [[nodiscard]] GameCore::PlayerAvatar::PlayerInteractKind InteractKind() const override { return GameCore::PlayerAvatar::PlayerInteractKind::Read; }
-        /** @brief プレイヤーがまだいなくて判定できなければ isResolved_ を立てない */
+        // NOTE: プレイヤーがまだいなくて判定できなければ isResolved_ を立てない
         void ResolveHasUnread();
         void ApplyIdleIcon() const;
 

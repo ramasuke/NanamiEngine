@@ -16,24 +16,19 @@ namespace NanamiEngine::Module::Gui::Graph
 
 namespace Editor::Npc::Behaviour
 {
-    /**
-     * @brief BehaviourTree（敵 / 友好 NPC 共通）を ImGuizmo GraphEditor に見せるアダプタ。
-     * @note  切り離したサブツリーは浮きノードとして残す
-     */
+    // NOTE: BehaviourTree（敵 / 友好 NPC 共通）を ImGuizmo GraphEditor に見せるアダプタ
+    // NOTE: 切り離したサブツリーは浮きノードとして残す
     class BehaviourTreeGraphDelegate final : public NanamiEngine::Module::Gui::Graph::GraphDelegateBase
     {
     public:
-        /**
-         * @brief グラフを 1 フレーム描画する
-         * @param detachedNodes 浮きノードの一覧（ツリーが保存する）。Create / Paste / 切り離しで増える
-         * @param readOnly      実行中ツリーの表示用。選択と Inspector 表示のみ行い、編集はしない
-         */
+        // NOTE: グラフを 1 フレーム描画する。detachedNodes は浮きノードの一覧で、作成・貼り付け・切り離しで増える
+        // NOTE: readOnly なら選択と Inspector 表示だけで編集しない
         void Draw(const std::shared_ptr<NodeBase>& entryNode,
                   std::vector<std::shared_ptr<NodeBase>>& detachedNodes,
                   NanamiEngine::Module::Gui::Graph::GraphEditorHost& host,
                   bool readOnly);
 
-        // GraphEditor::Delegate
+        // NOTE: GraphEditor::Delegate の実装
         bool AllowedLink(GraphEditor::NodeIndex from, GraphEditor::NodeIndex to) override;
         void MoveSelectedNodes(ImVec2 delta) override;
         void AddLink(GraphEditor::NodeIndex inputNodeIndex, GraphEditor::SlotIndex inputSlotIndex,
@@ -49,7 +44,7 @@ namespace Editor::Npc::Behaviour
         void NodeDoubleClicked(GraphEditor::NodeIndex nodeIndex) override;
 
     protected:
-        // GraphDelegateBase
+        // NOTE: GraphDelegateBase の実装
         void Rebuild() override;
         [[nodiscard]] Guid NodeGuid(GraphEditor::NodeIndex nodeIndex) const override;
         [[nodiscard]] std::weak_ptr<NanamiEngine::Module::Object::IObject> InspectTarget(GraphEditor::NodeIndex nodeIndex) const override;
@@ -70,7 +65,7 @@ namespace Editor::Npc::Behaviour
             std::string               title;
             std::string               detail;
             ImVec2                    size;
-            /** @brief リスト表示している子（畳まれた葉だけの Sequence） */
+            // NOTE: リスト表示している子（畳まれた葉だけの Sequence）
             std::vector<std::shared_ptr<NodeBase>> rows;
             GraphEditor::NodeIndex    parent      = INVALID_INDEX;
             std::size_t               childOrder  = 0;
@@ -84,7 +79,7 @@ namespace Editor::Npc::Behaviour
             GraphEditor::NodeIndex child;
         };
 
-        /** @brief 直前に切り離した子。同じ親へ繋ぎ直したら元の順番（と重み）に戻す */
+        // NOTE: 直前に切り離した子。同じ親へ繋ぎ直したら元の順番（と重み）に戻す
         struct LastDetached
         {
             std::weak_ptr<NodeBase> parent;
@@ -92,31 +87,31 @@ namespace Editor::Npc::Behaviour
             ChildSlot               slot;
         };
 
-        /** @brief ノードの親子関係からリンク列と親情報を作り直す（ノード列と index は変えない） */
+        // NOTE: ノードの親子関係からリンク列と親情報を作り直す（ノード列と index は変えない）
         void RebuildLinks();
 
-        /** @brief child を今の親（または浮きノード一覧）から外して浮きノードにする */
+        // NOTE: child を今の親（または浮きノード一覧）から外して浮きノードにする
         void Detach(const std::shared_ptr<NodeBase>& child);
-        /** @brief 浮きノードの child を parent に繋ぐ。子を 1 つしか持てない親の既存の子は浮きノードへ移す */
+        // NOTE: 浮きノードの child を parent に繋ぐ。子を 1 つしか持てない親の既存の子は浮きノードへ移す
         void Attach(const std::shared_ptr<NodeBase>& parent, const std::shared_ptr<NodeBase>& child);
-        /** @brief ノードを消す。keepChildren なら子は浮きノードとして残し、false ならサブツリーごと消す */
+        // NOTE: ノードを消す。keepChildren なら子は浮きノードとして残し、false ならサブツリーごと消す
         void DeleteNode(const std::shared_ptr<NodeBase>& node, bool keepChildren);
         void AddChildNode(const std::shared_ptr<NodeBase>& parent, const std::shared_ptr<NodeBase>& child);
         void AddDetachedNode(const std::shared_ptr<NodeBase>& node, const glm::vec2& position);
 
-        /** @brief 左→右のツリーに並べ直す（深さ = X、兄弟 = 上から実行順） */
+        // NOTE: 左→右のツリーに並べ直す（深さ = X、兄弟 = 上から実行順）
         void AutoLayout();
-        /** @brief node をサブツリーごと (x, y) から並べ、次の兄弟を置ける y を返す */
+        // NOTE: node をサブツリーごと (x, y) から並べ、次の兄弟を置ける y を返す
         float LayoutSubtree(const std::shared_ptr<NodeBase>& node, float x, float y, std::unordered_set<const NodeBase*>& visited);
         [[nodiscard]] ImVec2 NodeSize(const NodeBase* node) const;
-        /** @brief サブツリーの一番下の y（ノードの下端） */
+        // NOTE: サブツリーの一番下の y（ノードの下端）
         [[nodiscard]] float SubtreeBottom(const std::shared_ptr<NodeBase>& root) const;
 
-        /** @brief 子が全部アクションの Sequence（既定で畳んでリスト表示する） */
+        // NOTE: 子が全部アクションの Sequence（既定で畳んでリスト表示する）
         [[nodiscard]] static bool IsListSequence(const NodeBase& node);
         [[nodiscard]] bool IsFolded(const NodeBase& node) const;
         void ToggleFold(const NodeBase& node);
-        /** @brief 畳まれたノードの子へは降りずに集める */
+        // NOTE: 畳まれたノードの子へは降りずに集める
         void CollectVisible(const std::shared_ptr<NodeBase>& root,
                             std::vector<std::shared_ptr<NodeBase>>& out,
                             std::unordered_set<const NodeBase*>& visited) const;
@@ -136,7 +131,7 @@ namespace Editor::Npc::Behaviour
         std::unordered_map<const NodeBase*, std::uint64_t> firstSeenOrder_;
         std::uint64_t                                      nextSeenOrder_ = 0;
 
-        /** @brief 既定の開閉を反転したノード */
+        // NOTE: 既定の開閉を反転したノード
         std::unordered_set<Guid, GuidHash> toggled_;
         bool                               pendingLayout_ = false;
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Engine/Core/Platform/Input/Input.h"
 
-// ゲームコードでの入力の短い書き方 (Keyboard::IsDown(Key::Return) など)
+// NOTE: ゲームコードでの入力の短い書き方 (Keyboard::IsDown(Key::Return) など)
 namespace GameCore::InputAliases
 {
     using NanamiEngine::Platform::Input::Key;

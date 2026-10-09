@@ -5,19 +5,19 @@
 
 namespace GamePlay::Weather
 {
-    // 草と木が共有する風の供給元。シーンに1つ置く。NOTE: 振幅は消費側が持つ
+    // NOTE: シーンに 1 つ置く風の供給元。振幅は使う側が持つ
     class WindZone final : public Component::ComponentBase,
                            public LifeCycleCallback::IInitRenderable
     {
     public:
-        // シーンに未配置でも草・木が壊れないよう、インスタンスが無ければ既定値を返す
+        // NOTE: シーンに未配置でも使う側が壊れないよう、インスタンスが無ければ既定値を返す
         [[nodiscard]] static glm::vec2 GetDirection ();
         [[nodiscard]] static float     GetStrength01();
         [[nodiscard]] static float     GetSpeed     ();
         [[nodiscard]] static float     GetFrequency ();
 
     private:
-        // エディタでは OnAwake が呼ばれないため、両方で走る InitRenderer で登録する
+        // NOTE: エディタでは OnAwake が呼ばれないため、両方で走る InitRenderer で登録する
         void InitRenderer() override;
         void OnDestroy   () override;
 

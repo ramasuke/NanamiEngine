@@ -50,15 +50,15 @@ namespace NanamiEngine::Module::AnimationTree
 
         [[nodiscard]] const std::vector<std::shared_ptr<IAnimationNode>>& CurrentNodes() const { return currentNodes_; }
 
-        /** @warning Playモード時は呼び出し必須 */
+        // WARNING: 再生に使う前に必ず呼ぶ
         void InitForAnimator(int modelHandle);
 
         [[nodiscard]] AnimationStateSnapshot GetCurrentState() const;
         void ApplyRemoteState(const AnimationStateSnapshot& state, int modelHandle);
 
-        /** @brief 指定名クリップの再生進捗 */
+        // NOTE: 指定名クリップの再生進捗
         [[nodiscard]] std::optional<ClipProgress> GetClipProgress(const std::string& clipName) const;
-        /** @brief 現在再生中クリップの再生進捗*/
+        // NOTE: 現在再生中クリップの再生進捗
         [[nodiscard]] std::optional<ClipProgress> GetCurrentClipProgress() const;
 
     private:

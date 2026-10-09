@@ -10,7 +10,7 @@
 
 namespace GamePlay::Magic
 {
-    // 撃ち手の前（ロックオン中は対象の方向）の地面に、壁や罠をしばらく置く
+    // NOTE: 撃ち手の前（ロックオン中は対象の方向）の地面に、壁や罠をしばらく置く
     class PlacementSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:
@@ -18,12 +18,12 @@ namespace GamePlay::Magic
         void Execute(const GameCore::Magic::IMagicCaster& caster, const GameCore::Magic::MagicCastTarget& target) const override;
 
     private:
-        /** @brief MagicPlacement を持つプレハブ。罠は MagicBlast（detonateOnEnter_）も持つ */
+        // NOTE: MagicPlacement を持つプレハブ。罠は MagicBlast（detonateOnEnter_）も持つ
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) placementPrefab_;
-        /** @brief 罠が起爆した時の威力。壁では使わない */
+        // NOTE: 罠が起爆した時の威力。壁では使わない
         [[serialize(0)]] GameCore::Damage::PhysicsPower power_ = GameCore::Damage::PhysicsPower(0);
         [[serialize(0)]] float lifeTime_secs_ = 10.0f;
-        /** @brief 撃ち手からどれだけ前に置くか */
+        // NOTE: 撃ち手からどれだけ前に置くか
         [[serialize(0)]] float distance_ = 40.0f;
 
 #pragma region Serialization Function

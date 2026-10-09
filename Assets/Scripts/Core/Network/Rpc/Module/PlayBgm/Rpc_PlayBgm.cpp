@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: 再生中の BGM を全て止めて指定 BGM を流す
+    // NOTE: 汎用演出RPC: 再生中の BGM を全て止めて指定 BGM を流す
     struct PlayBgmRpcRegistration
     {
         PlayBgmRpcRegistration()

@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include "fwd.hpp"
 
-//NOTE: glm と DxLib の型の変換。DxLib を呼ぶ .cpp からだけ include する(公開ヘッダには出さない)
+// NOTE: glm と DxLib の型の変換。DxLib を呼ぶ .cpp からだけ include する(公開ヘッダには出さない)
 namespace LibCore::Dxlib
 {
     NANAMI_API VECTOR    ToDxVector  (const glm::vec3& vector);

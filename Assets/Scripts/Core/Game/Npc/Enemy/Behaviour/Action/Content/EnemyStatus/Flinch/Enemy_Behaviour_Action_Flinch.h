@@ -7,9 +7,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 怯み耐性を超える攻撃を受けたら flinch_secs_ の間 Running を返し続ける
-     */
+    // NOTE: 怯み耐性を超える攻撃を受けたら flinch_secs_ の間 Running を返し続ける
     class Flinch final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
@@ -19,7 +17,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] Damage::FlinchResistance flinchResistance_;
         [[serialize(0)]] int animatorSetParam_ = 0;
         [[serialize(0)]] float flinch_secs_ = 0.6f;
-        // OnDamage のノックバックを使う敵は false にする(同じ Tick で速度を上書きしてしまう)
+        // NOTE: OnDamage のノックバックを使う敵は false にする(同じ Tick で速度を上書きしてしまう)
         [[serialize(0)]] bool isStopHorizontalMove_ = true;
 
         bool  isFlinching_ = false;

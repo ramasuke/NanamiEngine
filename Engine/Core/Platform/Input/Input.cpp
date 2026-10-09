@@ -108,7 +108,7 @@ namespace NanamiEngine::Platform::Input
     {
         GamepadState state;
         XINPUT_STATE raw{};
-        // DX_INPUT_PAD1 = 1、以降は連番
+        // NOTE: DX_INPUT_PAD1 = 1、以降は連番
         if (GetJoypadXInputState(DX_INPUT_PAD1 + index, &raw) != 0)
             return state;
 

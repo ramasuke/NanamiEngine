@@ -3,7 +3,7 @@
 
 namespace GameCore::StatusParameter
 {
-    //NOTE: 値オブジェクト推奨
+    // NOTE: 値オブジェクト
     struct Health final
     {
         explicit Health(int value = 0);

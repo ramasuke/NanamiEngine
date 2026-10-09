@@ -8,19 +8,19 @@
 
 namespace GameCore::PlayerAvatar::Item
 {
-    // 使い手の正面の地面に爆弾を置く。起爆と範囲ダメージは置いたプレハブの MagicBlast が受け持つ
+    // NOTE: 使い手の正面の地面に爆弾を置く。起爆と範囲ダメージは置いたプレハブの MagicBlast が受け持つ
     class PlaceBombEffect final : public IItemEffect
     {
     public:
         void Apply(IItemEffectTarget& target, const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& user) const override;
 
     private:
-        /** @brief センサーの SphereCollider と MagicBlast を持つプレハブ */
+        // NOTE: センサーの SphereCollider と MagicBlast を持つプレハブ
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bombPrefab_;
         [[serialize(0)]] Damage::PhysicsPower power_ = Damage::PhysicsPower(80);
-        /** @brief 置いてから起爆するまで */
+        // NOTE: 置いてから起爆するまで
         [[serialize(0)]] float fuse_secs_ = 3.0f;
-        /** @brief 使い手からどれだけ前に置くか */
+        // NOTE: 使い手からどれだけ前に置くか
         [[serialize(0)]] float distance_ = 8.0f;
 
 #pragma region Serialization Function

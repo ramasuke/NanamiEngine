@@ -67,7 +67,7 @@ namespace GamePlay::Ui
 
     int StageArrivalCaption::ToBlendRate(const float rate, const int maxBlendRate)
     {
-        // なめらかに立ち上げて、なめらかに消す
+        // NOTE: なめらかに立ち上げて、なめらかに消す
         const float eased = rate * rate * (3.0f - 2.0f * rate);
         return std::clamp(static_cast<int>(static_cast<float>(maxBlendRate) * eased), 0, 255);
     }

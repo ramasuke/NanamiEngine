@@ -25,19 +25,19 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         void OnAwake       () override;
         void OnCameraUpdate() override;
-        // Follow/LookAtが読むオフセットを先に書き込む
+        // NOTE: Follow/LookAtが読むオフセットを先に書き込む
         [[nodiscard]] VirtualCameraStage Stage() const override { return VirtualCameraStage::Driver; }
 
         void UpdateMouseInput();
         void UpdateGamepadInput();
 
-        // Alt 押下中はカーソルの固定を外す。Game ビルドでは OS カーソルも表示する
+        // NOTE: Alt 押下中はカーソルの固定を外す。Game ビルドでは OS カーソルも表示する
         static void SetCursorReleased(bool released);
 
         void UpdateFollowTargetBehaviour() const;
         void UpdateLookAtTargetBehaviour() const;
 
-        // Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
+        // NOTE: Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& desiredOffset) const;
 
         // NOTE: マウスカーソルは1つなので、どのインスタンスが固定したかは問わず全体で共有する(IsMousePinned 用)
@@ -54,9 +54,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         float maxPitch_         =  1.2f;
         float mouseSensitivity_ = 0.005f;
         float distance_         = 5.0f;
-        // 障害物にめり込まないようカメラを手前に寄せる際の余白
+        // NOTE: 障害物にめり込まないようカメラを手前に寄せる際の余白
         float collisionBuffer_  = 0.3f;
-        // めり込み判定に使う球の半径。カメラ周囲に確保する最低限の空き
+        // NOTE: めり込み判定に使う球の半径。カメラ周囲に確保する最低限の空き
         float collisionRadius_  = 2.0f;
 
         FIELD(GameObject::IGameObject                ) cameraBrain_;
@@ -64,7 +64,6 @@ namespace NanamiEngine::CineMachine::Behaviour
         FIELD(Behaviour::VirtualCameraFollowBehaviour) follow_;
         FIELD(Behaviour::VirtualCameraLookAtBehaviour) lookAt_;
 
-        // Offsets
         glm::vec3 followOffsetPos_ = glm::vec3(0.0f);
         glm::vec3 lookAtOffsetPos_ = glm::vec3(0.0f, 1.0f, 0.0f);
 

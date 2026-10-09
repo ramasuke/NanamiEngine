@@ -7,7 +7,7 @@
 
 namespace GamePlay::Ui
 {
-    /// 訓練カードに出す1課題分の文言。押すボタン名は書かない（操作ガイドの光っている行が示す）
+    // NOTE: 訓練カードに出す1課題分の文言。押すボタン名は書かない（操作ガイドの光っている行が示す）
     class ActionInstructTutorialStep final
     {
     public:

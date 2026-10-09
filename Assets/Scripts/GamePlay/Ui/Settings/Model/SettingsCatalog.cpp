@@ -6,7 +6,7 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        /** @brief 0..VOLUME_STEPS の音量行。説明はどの値でも同じ */
+        // NOTE: 0..VOLUME_STEPS の音量行。説明はどの値でも同じ
         SettingsItem VolumeItem(std::string label, const std::string& description, std::function<int()> get, std::function<void(int)> set)
         {
             constexpr int steps = GameCore::GameSettings::VOLUME_STEPS;

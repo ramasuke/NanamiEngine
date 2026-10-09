@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../../../PathFinding/HeightGridAstar/Multithread/PathFinding_HeightGridAstar_Multithread.h"
 #include "../../../../../../../PathFinding/PathFinding_GridDirections.h"
 
@@ -13,13 +13,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** HeightGridMap の格子グリッドで PathFinder を使って経路探索をワーカースレッドで実行し、プレイヤーへ向かうアクション。
-     * NOTE:
-     * - 1フレーム目: 探索スレッドを起動するだけで移動せず Failure を返す。
-     * - 2フレーム目以降: 前フレームまでに計算された経路で移動する。
-     *     移動できれば SetLinearVelocity で移動して Success、できなければ Failure。
-     * 探索は移動するたびに現在位置を始点として追跡し直す。
-     */
+    // NOTE: ワーカースレッドの経路探索でプレイヤーへ向かう。経路が出るまでは Running、動けたら Success
+    // NOTE: 探索は移動するたびに現在位置から取り直す
     class ChasePlayerForPathFinding final : public ActionBase
     {
     public:

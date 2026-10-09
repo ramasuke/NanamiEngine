@@ -31,14 +31,14 @@ namespace NanamiEngine::UiFlow
         [[nodiscard]] bool IsOpen   () const { return state_ != ScreenState::Closed; }
         [[nodiscard]] bool IsFocused() const { return state_ == ScreenState::Opened; }
         [[nodiscard]] const std::string& ScreenId() const { return screenId_; }
-        /** @brief 最前面で開いている間だけ入力を返す */
+        // NOTE: 最前面で開いている間だけ入力を返す
         [[nodiscard]] UiInputReader& Input() { return input_; }
 
         [[nodiscard]] R4::Observable<R4::Unit> OnOpened  () const { return onOpened_  .AsObservable(); }
         [[nodiscard]] R4::Observable<R4::Unit> OnClosed  () const { return onClosed_  .AsObservable(); }
-        /** @brief 上に別の画面が開いた */
+        // NOTE: 上に別の画面が開いた
         [[nodiscard]] R4::Observable<R4::Unit> OnCovered () const { return onCovered_ .AsObservable(); }
-        /** @brief 上の画面が閉じて、最前面に戻った */
+        // NOTE: 上の画面が閉じて、最前面に戻った
         [[nodiscard]] R4::Observable<R4::Unit> OnRevealed() const { return onRevealed_.AsObservable(); }
 
     private:
@@ -47,7 +47,7 @@ namespace NanamiEngine::UiFlow
         void OnUpdate () override;
         void OnDestroy() override;
 
-        /** @brief 通知を出さずにスタックから外れ、ロックを返す */
+        // NOTE: 通知を出さずにスタックから外れ、ロックを返す
         void Detach();
         void Cover ();
         void Reveal();

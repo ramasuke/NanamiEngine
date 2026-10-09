@@ -17,11 +17,11 @@ namespace
     using LibCore::Tween::Ms;
     using LibCore::Tween::TweenPlayer;
 
-    /** ロード画面の配置の基準にしている画面の大きさ */
+    // NOTE: ロード画面の配置の基準にしている画面の大きさ
     constexpr glm::vec2 LOADING_ROUTE_MAP_SCREEN_CENTER = glm::vec2(960.0f, 540.0f);
     constexpr int LOADING_ROUTE_MAP_SAMPLE_COUNT = 128;
 
-    /** @brief -1..1 を行って戻ってを繰り返す */
+    // NOTE: -1..1 を行って戻ってを繰り返す
     void LoadingRouteMapStartSway(TweenPlayer<float>& sway, const float halfSecs)
     {
         if (sway.IsPlaying())
@@ -43,7 +43,7 @@ namespace
         return sway.Value();
     }
 
-    /** @brief 再生していないときは等倍 */
+    // NOTE: 再生していないときは等倍
     float LoadingRouteMapScaleRate(const TweenPlayer<float>& tween)
     {
         return tween.IsPlaying() ? tween.Value() : 1.0f;
@@ -63,7 +63,7 @@ namespace
         return glm::angleAxis(radians, glm::vec3(0.0f, 0.0f, 1.0f));
     }
 
-    /** @brief 奥行き(z)は prefab のまま残して、平面の位置だけ動かす */
+    // NOTE: 奥行き(z)は prefab のまま残して、平面の位置だけ動かす
     void LoadingRouteMapSetLocalPos(NanamiEngine::Module::GameObject::Transform& transform, const glm::vec2& position)
     {
         transform.SetLocalPos(glm::vec3(position, transform.GetLocalPos().z));
@@ -117,7 +117,7 @@ namespace GamePlay::Ui
             LoadingRouteMapSetLocalPos(stamp->Transform(), route.StampPosition());
         }
 
-        // 向きが決まるまでは右向きで出す
+        // NOTE: 向きが決まるまでは右向きで出す
         isShipFacingLeft_ = false;
         isShipSpriteLeft_ = false;
         shipFlipTween_.Stop();
@@ -151,7 +151,7 @@ namespace GamePlay::Ui
         UpdateShip(point, deltaSecs);
         UpdateTrail(progress, clockSecs);
 
-        // 飛行船そのものより少し後ろを追うと、画面の中で飛行船が前へ出ていくように見える
+        // NOTE: 飛行船そのものより少し後ろを追うと、画面の中で飛行船が前へ出ていくように見える
         const glm::vec2 focus = isHover_ ? hoverCenter_ : RouteAt(std::max(0.0f, progress - cameraLag_)).position;
         UpdateCamera(focus, deltaSecs);
         UpdateClouds(clockSecs);
@@ -196,7 +196,7 @@ namespace GamePlay::Ui
 
     LoadingRouteMap::RoutePoint LoadingRouteMap::HoverAt(const float clockSecs) const
     {
-        // 時計回りに楕円を回る。行き先の島が地図に無い遷移(タイトルへ戻る等)用
+        // NOTE: 時計回りに楕円を回る。行き先の島が地図に無い遷移(タイトルへ戻る等)用
         const float angle = clockSecs / hoverLapSecs_ * 2.0f * std::numbers::pi_v<float>;
         const glm::vec2 position = hoverCenter_ + glm::vec2(std::cos(angle) * hoverRadius_.x, std::sin(angle) * hoverRadius_.y);
         const glm::vec2 tangent  = glm::vec2(-std::sin(angle) * hoverRadius_.x, std::cos(angle) * hoverRadius_.y);
@@ -205,7 +205,7 @@ namespace GamePlay::Ui
 
     void LoadingRouteMap::CapturePrefabBases()
     {
-        // 雲は置いた位置を流れの基準に、飛行船・判・点線は置いた大きさを tween の等倍にする
+        // NOTE: 雲は置いた位置を流れの基準に、飛行船・判・点線は置いた大きさを tween の等倍にする
         if (isPrefabBaseCaptured_)
             return;
 
@@ -260,7 +260,7 @@ namespace GamePlay::Ui
             if (isHover_)
                 continue;
 
-            // 線の両端は島の絵に掛かるので、端を少し残して等間隔に並べる
+            // NOTE: 線の両端は島の絵に掛かるので、端を少し残して等間隔に並べる
             const float at = (static_cast<float>(i) + 0.5f) / static_cast<float>(count);
             const RoutePoint point = RouteAt(at);
             LoadingRouteMapSetLocalPos(dash->Transform(), point.position);
@@ -282,7 +282,7 @@ namespace GamePlay::Ui
             const char isPassed = at <= progress01 ? 1 : 0;
             if (dashPassed_[i] != isPassed)
             {
-                // 通り過ぎた区間を赤インクでなぞる
+                // NOTE: 通り過ぎた区間を赤インクでなぞる
                 // NOTE: 航路を出した直後(-1 から)は弾ませない
                 if (isPassed && dashPassed_[i] == 0)
                 {
@@ -307,7 +307,7 @@ namespace GamePlay::Ui
         if (!ship)
             return;
 
-        // 左へ進むときは左向きの絵に替える。回転で裏返すと上下が逆さになるので、横に潰して裏返す
+        // NOTE: 左へ進むときは左向きの絵に替える。回転で裏返すと上下が逆さになるので、横に潰して裏返す
         if (std::abs(point.tangent.x) > 0.001f)
         {
             const bool isFacingLeft = point.tangent.x < 0.0f;
@@ -322,7 +322,7 @@ namespace GamePlay::Ui
         }
 
         shipFlipTween_.Tick(deltaSecs);
-        // 潰れ切るまでは元の向きの絵のまま
+        // NOTE: 潰れ切るまでは元の向きの絵のまま
         const bool isSpriteLeft = shipFlipTween_.IsPlaying() && shipFlipTween_.Progress() < 0.5f
             ? !isShipFacingLeft_
             : isShipFacingLeft_;
@@ -388,7 +388,8 @@ namespace GamePlay::Ui
         if (!camera)
             return;
 
-        // 画面中心を基準に拡大し、追う点が中心へ寄るようにずらす。机の端が見えないよう、ずらす量には上限を掛ける
+        // NOTE: 画面中心を基準に拡大し、追う点が中心へ寄るようにずらす
+        // NOTE: 机の端が見えないよう、ずらす量には上限を掛ける
         const float zoom = cameraZoom_ + zoomSway * cameraZoomWobble_;
         glm::vec2 pan = -zoom * cameraFollow_ * (focus - LOADING_ROUTE_MAP_SCREEN_CENTER);
         pan = glm::clamp(pan, -cameraMaxPan_, cameraMaxPan_);
@@ -413,7 +414,7 @@ namespace GamePlay::Ui
                 if (!cloud)
                     continue;
 
-                // 一枚ずつ速さを変えて、同じ間隔のまま流れていかないようにする
+                // NOTE: 一枚ずつ速さを変えて、同じ間隔のまま流れていかないようにする
                 const float cloudSpeed = speed * (1.0f + 0.22f * static_cast<float>(i % 3));
                 float x = bases[i].x - cloudWrapRangeX_.x + cloudDirection_ * cloudSpeed * clockSecs;
                 x = std::fmod(x, wrapWidth);
@@ -429,14 +430,14 @@ namespace GamePlay::Ui
 
     void LoadingRouteMap::RestartDrawIns()
     {
-        // 〇は書き始めは速く、閉じるところで緩める。黒幕が明けるのを待ってから描く
+        // NOTE: 〇は書き始めは速く、閉じるところで緩める。黒幕が明けるのを待ってから描く
         destCircleTween_.Play(tweeny::from(0.0f)
             .to(0.0f).during(Ms(destCircleDelay_secs_))
             .to(1.0f).during(Ms(destCircleDraw_secs_)).via(Ease(EaseType::OutCubic)));
         if (const auto destCircle = destCircle_.get())
             destCircle->SetFillRate(0.0f);
 
-        // 判は〇を描き終えてから、大きく現れて押し込む
+        // NOTE: 判は〇を描き終えてから、大きく現れて押し込む
         const float stampWaitSecs = (hasDestCircle_ ? destCircleDelay_secs_ + destCircleDraw_secs_ : destCircleDelay_secs_)
                                   + stampDelay_secs_;
         stampTween_.Play(tweeny::from(0.0f)

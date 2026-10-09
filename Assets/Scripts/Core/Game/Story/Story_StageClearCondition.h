@@ -4,7 +4,7 @@
 
 namespace GameCore::Story
 {
-    /** @brief ステージのクリア条件。bossKind の敵を倒したら flag を立てる */
+    // NOTE: ステージのクリア条件。bossKind の敵を倒したら flag を立てる
     struct StageClearCondition
     {
         Npc::Enemy::EnemyKind bossKind;

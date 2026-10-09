@@ -35,7 +35,6 @@ namespace GameCore::Npc::Enemy::FirstEventDragon
 
     Coroutine::Task<void> AppearToTouchDownIsLand::ToDestroyAirShipMovieAsync(const Behaviour::Action::TickContext context)
     {
-        //context.EnemyAnimator().Param<int>(Behaviour::ANIMATOR_PARAM_NAME).Set(static_cast<int>(AnimationType::FlyingIdle));
         for (const auto& throughRoute : toDestroyAirShipRoute_->Get())
         {
             co_await StartTween(throughRoute, context);

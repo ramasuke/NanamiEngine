@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit() override;
 
         void TryComboAttack();
-        /** @brief その段の音を鳴らす。敵に当たったかどうかで打撃音と空振り音を鳴らし分ける */
+        // NOTE: 現在の段に応じた打撃音／空振り音を鳴らす
         void PlayComboAttackSe(bool isHit) const;
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }
@@ -25,7 +25,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     private:
         int  currentCombo_ = 0;
         bool isAttacked_   = false;
-        /** @brief NormalAttack入力の先行/後追い猶予(数フレーム分)を持たせるための残り時間 */
+        // NOTE: 次段の先行入力を受け付ける猶予の残り時間
         float bufferedAttackTimer_secs_ = 0.0f;
         AttackTurn attackTurn_;
     };

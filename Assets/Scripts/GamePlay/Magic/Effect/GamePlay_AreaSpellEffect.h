@@ -10,7 +10,7 @@
 
 namespace GamePlay::Magic
 {
-    // 狙った地点の足元に、少し遅れて範囲攻撃を起こす
+    // NOTE: 狙った地点の足元に、少し遅れて範囲攻撃を起こす
     class AreaSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:
@@ -18,13 +18,13 @@ namespace GamePlay::Magic
         void Execute(const GameCore::Magic::IMagicCaster& caster, const GameCore::Magic::MagicCastTarget& target) const override;
 
     private:
-        /** @brief センサーの SphereCollider と MagicBlast を持つプレハブ */
+        // NOTE: センサーの SphereCollider と MagicBlast を持つプレハブ
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) blastPrefab_;
         [[serialize(0)]] GameCore::Damage::PhysicsPower power_ = GameCore::Damage::PhysicsPower(20);
         [[serialize(0)]] float delay_secs_ = 0.5f;
-        /** @brief ロックオンしていない時に狙う距離 */
+        // NOTE: ロックオンしていない時に狙う距離
         [[serialize(0)]] float range_ = 150.0f;
-        /** @brief 狙いを使わず術者の足元で起こす（カウンター用の衝撃波） */
+        // NOTE: 狙いを使わず術者の足元で起こす（カウンター用の衝撃波）
         [[serialize(1)]] bool centerOnCaster_ = false;
 
 #pragma region Serialization Function

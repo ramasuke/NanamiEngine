@@ -5,7 +5,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /** @brief メインストーリーのクエストの土台。全職業が受けられ、報酬は初回達成時のみ */
+    // NOTE: メインストーリーのクエストの土台。全職業が受けられ、報酬は初回達成時のみ
     class MainStoryQuestBase : public Quest::ITakeableQuest
     {
     public:
@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar
         void OnDrawGui() override;
 
     protected:
-        //templateMethodパターン
+        // NOTE: Template Method パターン
         virtual void DoStartQuest(const Quest::QuestContext& context) = 0;
         virtual void DoDrawGui() = 0;
 

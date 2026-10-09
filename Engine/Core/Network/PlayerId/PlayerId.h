@@ -7,9 +7,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * 接続しているクライアント番号
-     */
+    // NOTE: 接続しているクライアント番号
     struct NANAMI_API PlayerId final
     {
         explicit PlayerId(int playerId = -1);

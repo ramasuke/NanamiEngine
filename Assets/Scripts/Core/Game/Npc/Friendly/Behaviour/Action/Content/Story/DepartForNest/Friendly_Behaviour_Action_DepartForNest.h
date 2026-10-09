@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /** @brief 拠点の島が古竜の巣へ引かれていく演出を流し、巣へ移る (MainIslandScene::BeginNestDeparture) */
+    // NOTE: 拠点の島が古竜の巣へ引かれていく演出を流し、巣へ移る
     class DepartForNest final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

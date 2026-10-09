@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Bone
 
 #pragma region Serialization Function
     public:
-        /** @param boneNames ボーン名の選択候補。モデル未ロードで空なら名前を直接入力する */
+        // NOTE: boneNames はボーン名の選択候補。空なら名前を直接入力する
         void OnDrawGui(const std::vector<std::string>& boneNames);
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {

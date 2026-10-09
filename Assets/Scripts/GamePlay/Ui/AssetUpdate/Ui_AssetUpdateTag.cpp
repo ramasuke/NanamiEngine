@@ -105,7 +105,7 @@ namespace GamePlay::Ui
         hoofPopTweens_.assign(hoofPrints_.size(), LibCore::Tween::TweenPlayer<float>{});
         HideStamps();
 
-        // 最初は何も出さない。状態が決まってから Show* で開く
+        // NOTE: 最初は何も出さない。状態が決まってから Show* で開く
         if (phase_ == Phase::Hidden)
         {
             if (const auto root = visualRoot_.get())
@@ -189,7 +189,7 @@ namespace GamePlay::Ui
 
         phase_ = Phase::Leaving;
         
-        // 上へ抜ける
+        // NOTE: 上へ抜ける
         const float leaveSecs = dropDuration_secs_ * 0.7f;
         dropTween_.Play(tweeny::from(0.0f).to(-dropDistance_px_).during(Ms(leaveSecs)).via(Ease(EaseType::InQuad)));
         veilTween_.Play(tweeny::from(1.0f).to(0.0f).during(Ms(leaveSecs)));
@@ -235,7 +235,7 @@ namespace GamePlay::Ui
         
         HideStamps();
 
-        // 出ている札の中身だけを書き換えるときは降ろし直さない
+        // NOTE: 出ている札の中身だけを書き換えるときは降ろし直さない
         if (phase_ == Phase::Hidden || phase_ == Phase::Leaving)
         {
             phase_ = Phase::Entering;

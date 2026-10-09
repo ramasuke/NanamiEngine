@@ -47,7 +47,7 @@ namespace NanamiEngine::Module::AnimationTree
         float                 speed_                  = 1.0f;
         float                 blendAnimationOffset_secs_   = 0.0f;
         float                 clipStartTime_          = 0.0f;
-        /** @brief 0 以下ならクリップ末尾 */
+        // NOTE: 0 以下ならクリップ末尾
         float                 clipEndTime_            = 0.0f;
         bool                  isLoop_                 = true;
         bool                  nameCheck_              = false;

@@ -61,7 +61,7 @@ namespace NanamiEngine::Module::Physics
             if (!bodyA || !bodyB)
                 continue;
 
-            // sensor + rigid のみ通す
+            // NOTE: sensor + rigid のみ通す
             if (bodyA->IsSensor() == bodyB->IsSensor())
                 continue;
 

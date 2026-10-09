@@ -5,9 +5,7 @@
 
 namespace GameCore::PlayerAvatar::Quest::Request
 {
-    /**
-     * @brief 受注後に item_ を requiredCount_ 個拾ったら達成 (納品はしない)
-     */
+    // NOTE: 受注後に item_ を requiredCount_ 個拾ったら達成 (納品はしない)
     class CollectRequestQuest final : public RequestQuestBase
     {
     private:

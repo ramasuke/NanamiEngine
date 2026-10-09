@@ -38,7 +38,7 @@ namespace NanamiEngine::Core::MainWindow
             content->OnDrawGui();
         }
 
-        // 描画ループ中に contents_ を書き換えないよう、閉じる操作はループ後に行う（未保存の編集は破棄）
+        // NOTE: 描画ループ中に contents_ を書き換えないよう、閉じる操作はループ後に行う（未保存の編集は破棄）
         for (const auto& content : closedContents)
             RemoveContent(content);
     }

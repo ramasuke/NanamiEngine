@@ -7,10 +7,8 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /**
-     * @brief State が起こしうる遷移と State 内の操作を、評価順に受け取る
-     * @note 遷移させる実装は最初に成立した遷移で止まり、以降の宣言は実行しない。表示用の実装には全ての宣言が届く
-     */
+    // NOTE: State が起こしうる遷移と State 内の操作を、評価順に受け取る
+    // NOTE: 遷移させる実装は最初に成立した遷移で止まり、以降の宣言は実行しない。表示用の実装には全ての宣言が届く
     template <typename StateTypeT, typename InputT, typename ActionT>
     class IPlayerAvatarTransitionVisitor
     {
@@ -22,10 +20,7 @@ namespace GameCore::PlayerAvatar
         virtual ~IPlayerAvatarTransitionVisitor() = default;
 
         virtual void Automatic(StateTypeT to, bool condition) {}
-        /**
-         * @param isUsable 入力以外の遷移条件。操作ガイドの使用可否表示にも使われる
-         * @param isReady  使用可否としては見せないタイミング条件
-         */
+        // NOTE: isUsable は入力以外の遷移条件で、使用可否の表示にも使う。isReady は表示に出さないタイミング条件
         virtual void OnInput(StateTypeT to, InputT input, PlayerAvatarInputPhase phase, bool isUsable, bool isReady) {}
         void OnInput(const StateTypeT to, const InputT input, const PlayerAvatarInputPhase phase, const bool isUsable)
         {
@@ -46,7 +41,7 @@ namespace GameCore::PlayerAvatar
         return false;
     }
 
-    /** @brief VisitTransitions の宣言どおりに遷移させる。最初に成立した遷移で止まる */
+    // NOTE: VisitTransitions の宣言どおりに遷移させる。最初に成立した遷移で止まる
     template <typename TransitionVisitorT>
     class PlayerAvatarTransitionExecutorBase : public TransitionVisitorT
     {
@@ -74,7 +69,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] bool HasChanged() const { return hasChanged_; }
 
     protected:
-        // 遷移した後の宣言は、遷移前の State の条件で書かれているので実行しない
+        // NOTE: 遷移した後の宣言は、遷移前の State の条件で書かれているので実行しない
         void TryChange(const StateType to, const bool condition)
         {
             if (hasChanged_ || !condition)

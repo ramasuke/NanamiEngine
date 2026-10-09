@@ -98,7 +98,7 @@ namespace GamePlay::Ui
         if (isReactionSurprise_)
             return;
 
-        // 目的の相手は「話せる」の代わりに驚きアイコンを出す。話しかけられる距離の表示(chatting)はそのまま
+        // NOTE: 目的の相手は「話せる」の代わりに驚きアイコンを出す。話しかけられる距離の表示(chatting)はそのまま
         const bool objective = isObjectiveSurprise_ && isShow_;
         if (chattableIcon_) chattableIcon_->SetEnable(requestedChattable_ && !objective);
         if (chattingIcon_)  chattingIcon_ ->SetEnable(requestedChatting_);

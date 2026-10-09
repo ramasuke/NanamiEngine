@@ -36,7 +36,7 @@ namespace GamePlay::Ui
                                    public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief 更新がある、UIで受け取るか尋ねる */
+        // NOTE: 更新があることを知らせ、受け取るか尋ねる
         void ShowOffer(const AssetUpdateParcel& parcel);
         void ShowReceiving();
         void ShowUnpacking();
@@ -70,7 +70,7 @@ namespace GamePlay::Ui
         void OnStart () override;
         void OnUpdate() override;
 
-        /** @brief 呼び出し側の OnStart が先に走って元の位置を取り損ねないように */
+        // NOTE: 呼び出し側の OnStart が先に走って元の位置を取り損ねないように
         void EnsureStarted();
         void Open(const std::string& headline, Body body);
         void SetHints(const std::string& confirmLabel, const std::string& cancelLabel);
@@ -143,7 +143,7 @@ namespace GamePlay::Ui
 
         bool  isStarted_ = false;
         Phase phase_ = Phase::Hidden;
-        /** 札の基準位置からの縦のずれ */
+        // NOTE: 札の基準位置からの縦のずれ
         LibCore::Tween::TweenPlayer<float> dropTween_;
         LibCore::Tween::TweenPlayer<float> veilTween_;
         glm::vec3 tagBasePos_ = glm::vec3(0.0f);
@@ -158,7 +158,7 @@ namespace GamePlay::Ui
         std::weak_ptr<NanamiUi::BlendImageRenderer> pressingStamp_;
         glm::vec3 stampBaseScale_ = glm::vec3(1.0f);
         
-        /** 押している途中だけ再生中 */
+        // NOTE: 押している途中だけ再生中
         LibCore::Tween::TweenPlayer<float> stampScaleTween_;
         LibCore::Tween::TweenPlayer<float> stampAlphaTween_;
 

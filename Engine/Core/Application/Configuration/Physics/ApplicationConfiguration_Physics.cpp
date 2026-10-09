@@ -12,7 +12,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_MAX_PHYSICS_STEP        = 1;
     constexpr auto DEFAULT_GRAVITY_SCALE           = -360.8f;
     constexpr auto DEFAULT_COLLISION_STEPS         = 1;
-    // atan(2.0) ≒ 63度までの斜面で滑り出さない
+    // NOTE: atan(2.0) ≒ 63度までの斜面で滑り出さない
     constexpr auto DEFAULT_STATIC_FRICTION             = 2.0f;
     constexpr auto DEFAULT_STATIC_FRICTION_SPEED       = 30.0f;
     constexpr auto DEFAULT_STATIC_FRICTION_MAX_SLOPE   = 60.0f;
@@ -84,7 +84,7 @@ namespace NanamiEngine::Core::Application::Configuration
             Module::ProjectConfig::SaveWithPath(PHYSICS_CONFIG_PATH, PHYSICS_LAYER_COLLISION_MASKS_KEY, masks);
         }
 
-        // 戻り値：変更されたかどうか
+        // NOTE: 変更があれば true
         bool DrawLayersGui()
         {
             namespace Physics = Module::Physics;

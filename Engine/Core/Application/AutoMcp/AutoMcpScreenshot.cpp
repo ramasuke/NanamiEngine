@@ -34,7 +34,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         void PrepareDirectory()
         {
             std::error_code error;
-            // 前回起動時の残りは連番が重なるので、このセッションの初回に片付ける
+            // NOTE: 前回起動時の残りは連番が重なるので、このセッションの初回に片付ける
             if (ScreenshotSequence() == 0)
                 std::filesystem::remove_all(SCREENSHOT_DIRECTORY, error);
 
@@ -45,7 +45,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         int MakeScreenWithoutAsyncLoad(const int width, const int height)
         {
-            // 非同期読み込みのままだと読み込み中ハンドルが返り、GetDrawScreenGraph が失敗する
+            // WARNING: 非同期読み込みのままだと読み込み中ハンドルが返り、GetDrawScreenGraph が失敗する
             const int useASyncLoad = GetUseASyncLoadFlag();
             SetUseASyncLoadFlag(FALSE);
             const int handle = MakeScreen(width, height, FALSE);

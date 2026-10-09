@@ -4,13 +4,13 @@
 
 namespace NanamiEngine::Module::Component
 {
-    // カスタム頂点/ピクセルシェーダーとb4定数バッファを保持できるレンダラーの共通インターフェース。
+    // NOTE: カスタム頂点/ピクセルシェーダーと b4 定数バッファを持つレンダラーの共通インターフェース
     class NANAMI_API IShaderConstantBufferHost
     {
     public:
         virtual ~IShaderConstantBufferHost() = default;
 
-        // 定数バッファハンドルを返す(未生成なら生成)。シェーダーが無効なら -1
+        // NOTE: 定数バッファハンドルを返す(未生成なら生成)。シェーダーが無効なら -1
         [[nodiscard]] virtual int GetOrCreateShaderConstantBufferHandle() = 0;
 
         template<class Archive> void save(Archive& archive, const std::uint32_t version) const { }

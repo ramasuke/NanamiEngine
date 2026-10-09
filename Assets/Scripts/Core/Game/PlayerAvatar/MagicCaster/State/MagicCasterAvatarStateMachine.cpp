@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
 {
     namespace
     {
-        // ArmStretch/GetUp に相当するStateが無いので、演出は棒立ちで通す
+        // NOTE: ArmStretch/GetUp に相当するStateが無いので、演出は棒立ちで通す
         MagicCasterAvatarStateType ToMagicCasterEventSceneState(const EventSceneStateType type)
         {
             switch (type)

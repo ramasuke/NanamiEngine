@@ -16,7 +16,6 @@
 
 namespace
 {
-    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
     bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
     {
         if (needle.empty())
@@ -57,7 +56,7 @@ namespace
         }
     }
 
-    /** @brief 色分けが失われるコピー/保存用に、各行へレベル接頭辞を付けて連結する */
+    // NOTE: 色分けが失われるコピー/保存用に、各行へレベル接頭辞を付けて連結する
     std::string BuildLogText(const std::vector<const NanamiEngine::Module::LogRecord*>& records)
     {
         std::string text;
@@ -70,7 +69,7 @@ namespace
         return text;
     }
 
-    /** @brief 表示中のログをLogs/にタイムスタンプ付きファイル名で保存する */
+    // NOTE: 表示中のログを Logs/ にタイムスタンプ付きの名前で保存する
     void SaveLogToFile(const std::vector<const NanamiEngine::Module::LogRecord*>& records)
     {
         namespace fs = std::filesystem;
@@ -110,7 +109,7 @@ namespace
         int count;
     };
 
-    /** @brief レベルと本文が同じログを、隣接していなくても最初に出た位置の1行へまとめる */
+    // NOTE: レベルと本文が同じログを、隣接していなくても最初に出た位置の1行へまとめる
     std::vector<ConsoleRow> CollapseRecords(const std::vector<const NanamiEngine::Module::LogRecord*>& records)
     {
         std::vector<ConsoleRow> rows;
@@ -126,14 +125,14 @@ namespace
         return rows;
     }
 
-    /** @brief 直前の行の、横スクロールしても見えている右端に件数バッジを重ねて描く */
+    // NOTE: 直前の行の、横スクロールしても見えている右端に件数バッジを重ねて描く
     void DrawCountBadge(const int count)
     {
         const std::string label = std::to_string(count);
         const ImVec2 labelSize = ImGui::CalcTextSize(label.c_str());
         constexpr float paddingX = 6.0f;
 
-        // ContentRegionRect はスクロール分ずれているので、ScrollX を足し戻して見えている右端にする
+        // NOTE: ContentRegionRect はスクロール分ずれているので、ScrollX を足し戻して見えている右端にする
         const float right = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x + ImGui::GetScrollX();
         const ImVec2 badgeMin(right - labelSize.x - paddingX * 2.0f, ImGui::GetItemRectMin().y);
         const ImVec2 badgeMax(right, ImGui::GetItemRectMax().y);
@@ -158,7 +157,7 @@ NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindo
     bool isOpen = true;
     ImGui::Begin(("Console##" + std::to_string(id_)).c_str(), &isOpen);
 
-    // history はvisibleRecordsが指すポインタの寿命を保つため、名前付きローカル変数にする
+    // WARNING: visibleRecords が指すポインタの寿命を保つため、history は名前付きローカル変数に持つ
     const auto history = Module::LogHistory();
     const std::string searchText = searchBuffer_;
     std::vector<const Module::LogRecord*> visibleRecords;
@@ -197,7 +196,7 @@ NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindo
     ImGui::SameLine();
     ImGui::Checkbox("Auto-scroll", &autoScroll_);
 
-    // ログ本文の検索ボックス
+    // NOTE: ログ本文の検索ボックス
     const bool hasSearchText = searchBuffer_[0] != '\0';
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (hasSearchText ? 55.0f : 0.0f));
     ImGui::InputTextWithHint("##ConsoleSearch", "Search...", searchBuffer_, sizeof(searchBuffer_));

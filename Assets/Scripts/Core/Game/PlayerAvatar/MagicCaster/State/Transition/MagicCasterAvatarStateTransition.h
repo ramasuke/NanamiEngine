@@ -28,10 +28,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         : public IPlayerAvatarTransitionVisitor<MagicCasterAvatarStateType, MagicCasterAvatarInput, MagicCasterAvatarStateAction>
     {
     public:
-        /**
-         * @brief 基本魔法か持ち込み枠の詠唱へ移る
-         * @param isBasicSpellUsable 操作ガイドの表示専用。撃てるかどうかは枠ごとに TryBeginCast が判定する
-         */
+        // NOTE: 基本魔法か持ち込み枠の詠唱へ移る。isBasicSpellUsable は表示用で、撃てるかどうかは枠ごとに判定する
         virtual void Cast(bool isBasicSpellUsable) {}
     };
 }

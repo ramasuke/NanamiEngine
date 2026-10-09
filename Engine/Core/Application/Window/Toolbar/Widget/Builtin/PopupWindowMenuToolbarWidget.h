@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief 登録済みの PopupWindow を開くメニュー */
+    // NOTE: 登録済みの PopupWindow を開くメニュー
     class NANAMI_API PopupWindowMenuToolbarWidget final : public IEditorToolbarWidget
     {
     public:

@@ -6,7 +6,7 @@ namespace GamePlay::Npc::Enemy
 {
     class Hyena;
 
-    /** 生成した Hyena の weak_ptr の入れ物。読むたびに死んだ分を落とす */
+    // NOTE: 生成した Hyena の weak_ptr の入れ物。読むたびに死んだ分を落とす
     class HyenaRepository final
     {
     public:

@@ -7,13 +7,13 @@
 
 namespace GamePlay::Ui
 {
-    // プレハブ内に1個だけ配置し、選択中のステージが変わるたびMoveTo()で使い回す
+    // NOTE: プレハブ内に1個だけ配置し、選択中のステージが変わるたび MoveTo() で使い回す
     class StageMapMarker final : public Component::ComponentBase,
                                  public LifeCycleCallback::IAwakable,
                                  public LifeCycleCallback::IUpdatable
     {
     public:
-        // 移動先を新しい浮遊(bobbing)の基準位置としても採用する
+        // NOTE: 移動先を新しい浮遊(bobbing)の基準位置としても採用する
         void MoveTo(const glm::vec2& position);
         void SetCleared(bool isCleared);
 

@@ -20,13 +20,12 @@ namespace GameCore::PlayerAvatar::Item
 {
     class IItemEffectTarget;
 
-    // アイテムを使うモーション1回分
+    // NOTE: アイテムを使うモーション1回分
     class ItemUseAction final
     {
     public:
-        /** @brief ポーチに預けられたアイテムを受け取る。 */
+        // NOTE: ポーチに預けられたアイテムを受け取る
         void Begin(ItemPouch& pouch);
-        /** @brief 使う */
         void Update(float during_secs, ItemPouch& pouch, IItemEffectTarget& target,
                     const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& user);
         void End();

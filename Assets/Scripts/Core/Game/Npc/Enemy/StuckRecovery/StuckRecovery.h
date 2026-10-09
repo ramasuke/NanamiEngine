@@ -24,10 +24,8 @@ namespace NanamiEngine::Module::BlackBoard
 
 namespace GameCore::Npc::Enemy
 {
-    /**
-     * @brief 地形にはまった敵を開けた方向へ押し出し、抜けなければ最後に自由だった地点へワープさせる
-     * @note  権威側だけで呼ぶ
-     */
+    // NOTE: 地形にはまった敵を開けた方向へ押し出し、抜けなければ最後に自由だった地点へワープさせる
+    // WARNING: 権威側だけで呼ぶ
     class StuckRecovery final
     {
     public:
@@ -47,11 +45,11 @@ namespace GameCore::Npc::Enemy
                   const NanamiEngine::Module::BlackBoard::ParameterGroup* parameters,
                   const char* reason);
 
-        /** この水平速度未満しか指示されていないフレームは判定しない */
+        // NOTE: この水平速度未満しか指示されていないフレームは判定しない
         [[serialize(0)]] float minMoveSpeed_          = 5.0f;
-        /** 指示速度に対して実際に進んだ割合がこれ未満なら進めていないとみなす */
+        // NOTE: 指示速度に対して実際に進んだ割合がこれ未満なら進めていないとみなす
         [[serialize(0)]] float progressRate_          = 0.25f;
-        /** 進めない時間の合計がこの秒数を超えるごとに押し出す */
+        // NOTE: 進めない時間の合計がこの秒数を超えるごとに押し出す
         [[serialize(0)]] float nudgeAfter_secs_       = 1.0f;
         [[serialize(0)]] int   maxNudges_             = 3;
         [[serialize(0)]] float nudge_secs_            = 0.6f;
@@ -62,15 +60,15 @@ namespace GameCore::Npc::Enemy
         [[serialize(0)]] float castDistance_          = 40.0f;
         [[serialize(0)]] float wallMaxNormalY_        = 0.6f;
         [[serialize(0)]] float warpAfter_secs_        = 4.0f;
-        /** 最寄りのプレイヤーがこれより遠いのに strandedWindow_secs_ の間ほぼ動いていなければ取り残されたとみなす */
+        // NOTE: 最寄りのプレイヤーがこれより遠いのに strandedWindow_secs_ の間ほぼ動いていなければ取り残されたとみなす
         [[serialize(0)]] float strandedDistance_      = 150.0f;
         [[serialize(0)]] float strandedWindow_secs_   = 8.0f;
         [[serialize(0)]] float strandedTolerance_     = 10.0f;
-        /** 最後に自由に動けていた地点からこれ以上落ちたらワープする */
+        // NOTE: 最後に自由に動けていた地点からこれ以上落ちたらワープする
         [[serialize(0)]] float fallDropHeight_        = 60.0f;
         [[serialize(0)]] float recordInterval_secs_   = 0.5f;
         [[serialize(0)]] int   maxRecords_            = 12;
-        /** 現在地からこれより近い記録はワープ先にしない */
+        // NOTE: 現在地からこれより近い記録はワープ先にしない
         [[serialize(0)]] float minWarpDistance_       = 30.0f;
         [[serialize(0)]] float warpLift_              = 5.0f;
         [[serialize(0)]] std::string stateKeyName_      = "State";

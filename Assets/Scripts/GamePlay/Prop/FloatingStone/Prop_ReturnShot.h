@@ -4,21 +4,21 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief 拠点の島へ石が戻ってはまる演出(FloatingStone::PlayReturnAsync)の尺と距離 */
+    // NOTE: 拠点の島へ石が戻ってはまる演出の尺と距離
     struct ReturnShot
     {
         float skipGrace_secs    = 1.5f;
-        /** 石のモデルの結晶の中ほど(モデルの単位)。LookAt と光の尾はここに合わせる */
+        // NOTE: 石のモデルの結晶の中ほど(モデルの単位)。LookAt と光の尾はここに合わせる
         float stoneCenterHeight = 8.5f;
-        /** 読み込みが明けてから飛んでくるまでの時間 */
+        // NOTE: 読み込みが明けてから飛んでくるまでの時間
         float delay_secs        = 1.0f;
         float fly_secs          = 4.0f;
         float settle_secs       = 1.4f;
         float hold_secs         = 2.2f;
         float flyTurnDegrees    = 540.0f;
-        /** はまる位置から見た飛び始めの位置 */
+        // NOTE: はまる位置から見た飛び始めの位置
         glm::vec3 startOffset    = glm::vec3(900.0f, -350.0f, 900.0f);
-        /** はまる位置から見た、減速し始める位置(底の真下) */
+        // NOTE: はまる位置から見た、減速し始める位置(底の真下)
         glm::vec3 approachOffset = glm::vec3(0.0f, -90.0f, 0.0f);
 
         void OnDrawGui();

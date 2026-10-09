@@ -5,7 +5,7 @@
 
 namespace GameCore::Damage
 {
-    /** @brief 敵の怯み耐性。負にすると怯み値 0 の攻撃でも怯む(雑魚敵用) */
+    // NOTE: 敵の怯み耐性。負にすると怯み値 0 の攻撃でも怯む(雑魚敵用)
     struct FlinchResistance final
     {
         constexpr explicit FlinchResistance(const int value = 0) : value_(value) {}
@@ -18,7 +18,7 @@ namespace GameCore::Damage
 
 #pragma region Serialization Function
     public:
-        // NOTE: 素の int として保存する(既存データの "flinchResistance_": 5 をそのまま読める)
+        // NOTE: 素の int として保存する(元が int だった既存データをそのまま読める)
         template<class Archive>
         int save_minimal(const Archive&) const { return value_; }
 

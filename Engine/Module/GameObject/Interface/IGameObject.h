@@ -48,13 +48,13 @@ namespace NanamiEngine::Module::GameObject
         virtual void SetMark(GameObjectMark mark) = 0;
         [[nodiscard]] virtual Transform&         Transform() = 0;
         [[nodiscard]] virtual ComponentGroup&    Components() = 0;
-        /** @brief GameObjectの全ての機能の有効無効を切り替える */
+        // NOTE: GameObjectの全ての機能の有効無効を切り替える
         virtual bool IsEnable () = 0;
         virtual void SetEnable(bool enable) = 0;
         virtual void OnDrawTreeGui(bool drawChildren = true) = 0;
         virtual void OnDestroy() const {}
         
-        ///WARNING: EngineApiなのでEngine内部コードでしか使用しないで下さい。
+        // WARNING: エンジン内部用。破棄処理からだけ呼ぶ
         virtual void ImplementDestroy() {}
     };
 }

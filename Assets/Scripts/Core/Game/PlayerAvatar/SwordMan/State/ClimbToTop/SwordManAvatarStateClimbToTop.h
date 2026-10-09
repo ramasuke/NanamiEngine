@@ -16,7 +16,5 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit  () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ClimbToTop; }
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::None; }
-
-        // Coroutine::Task<void> ClimbingAsync();
     };
 }

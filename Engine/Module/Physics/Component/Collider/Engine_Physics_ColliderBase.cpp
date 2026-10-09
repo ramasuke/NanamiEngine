@@ -76,7 +76,7 @@ namespace NanamiEngine::Module::Component
 
     void ColliderBase::SetLegacyMotion(const Physics::MotionType motionType, const Physics::Constraints constraints)
     {
-        // 全軸を固定した Dynamic は Body 生成時に Static へ置き換えられていたので、Static として扱う
+        // NOTE: 全軸を固定した Dynamic は Body 生成時に Static へ置き換えられていたので、Static として扱う
         constexpr auto ALL_CONSTRAINTS = static_cast<Physics::Constraints>(0b111111);
         legacyMotionType_ = motionType == Physics::MotionType::Dynamic && constraints == ALL_CONSTRAINTS
             ? Physics::MotionType::Static

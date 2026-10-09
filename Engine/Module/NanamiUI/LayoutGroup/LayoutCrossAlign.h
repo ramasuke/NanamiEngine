@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // LayoutGroupの積み重ね軸と直交する軸の揃え方。Start/End は中心を cellSize_ の半分ずらす
+    // NOTE: LayoutGroupの積み重ね軸と直交する軸の揃え方。Start/End は中心を cellSize_ の半分ずらす
     enum class LayoutCrossAlign : int
     {
         Start = 0,

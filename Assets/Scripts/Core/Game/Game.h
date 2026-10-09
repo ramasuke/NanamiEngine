@@ -56,15 +56,15 @@ namespace GameCore
     private:
         void InitMainSceneGroup();
         void InitSubSceneGroup();
-        /** @brief ロード画面のシーンを常駐させ、その LoadingScreenUi を掴む */
+        // NOTE: ロード画面のシーンを常駐させ、その LoadingScreenUi を掴む
         void InitStageLoadingScene();
-        /** @brief ゲームオーバー画面のシーンを常駐させる。中の GameOverPresenter が自分で死亡を見張る */
+        // NOTE: ゲームオーバー画面のシーンを常駐させる
         void InitGameOverScene();
         void OnAwake () override;
         void OnUpdate() override;
         void OnDestroy() override;
 #if NANAMI_DEBUG_SHEET_ENABLED
-        /** @brief DebugSheet を最前面に描く */
+        // NOTE: DebugSheet を最前面に描く
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override;
 #endif

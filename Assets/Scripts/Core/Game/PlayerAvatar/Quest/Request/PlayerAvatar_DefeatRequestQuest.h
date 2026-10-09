@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::Quest::Request
 {
-    /** @brief 討伐依頼。受注してから enemyKind_ を requiredCount_ 体倒したら達成 */
+    // NOTE: 討伐依頼。受注してから enemyKind_ を requiredCount_ 体倒したら達成
     class DefeatRequestQuest final : public RequestQuestBase
     {
     private:

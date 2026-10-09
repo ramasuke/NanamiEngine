@@ -38,7 +38,7 @@ namespace GameCore::PlayerAvatar
             return nullptr;
 
         const auto& item = slots_[selectedIndex_].item;
-        // 効果がまだ無いアイテムは使えない扱い
+        // NOTE: 効果の無いアイテムは使えない扱い
         if (!item || !item->HasEffect())
             return nullptr;
         return item;

@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 攻撃者の画面で出したダメージ表記を、他のピアにも出す
+    // NOTE: 攻撃者の画面で出したダメージ表記を、他のピアにも出す
     struct DealDamageTextRpcRegistration
     {
         DealDamageTextRpcRegistration()

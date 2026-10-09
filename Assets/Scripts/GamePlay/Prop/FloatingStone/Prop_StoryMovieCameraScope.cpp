@@ -9,7 +9,7 @@ namespace GamePlay::Prop::StoryMovie
 {
     namespace
     {
-        // 到着演出(100)や NPC の会話カメラより上に出す
+        // NOTE: 到着演出や NPC の会話カメラより上に出す
         constexpr int CAMERA_PRIORITY = 110;
     }
 
@@ -50,7 +50,7 @@ namespace GamePlay::Prop::StoryMovie
             return;
         isEnded_ = true;
 
-        // 優先度を戻すと三人称カメラが勝ち、Brain のブレンドで帰る
+        // NOTE: カメラを無効にすると三人称カメラが勝ち、Brain のブレンドで帰る
         if (camera_)
             camera_->OnDisable();
         controlLock_.Release();

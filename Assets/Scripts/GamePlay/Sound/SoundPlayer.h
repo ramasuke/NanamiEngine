@@ -14,11 +14,11 @@ namespace GamePlay::Sound
 
         [[nodiscard]] static glm::vec3 Position();
         static void PlaySe(const Asset::SoundFile& sound, const glm::vec3& soundPosition);
-        /** @brief fadeIn_secs が 0 より大きいと、無音からアセットの音量まで上げる */
+        // NOTE: fadeIn_secs が 0 より大きいと、無音からアセットの音量まで上げる
         static void PlayBgm(const std::weak_ptr<Asset::SoundFile>& sound, float fadeIn_secs = 0.0f);
         static void StopAllBgm();
         static void StopBgm(const std::weak_ptr<Asset::SoundFile>& sound);
-        /** @brief 鳴っている BGM を全て fadeOut_secs かけて下げてから止める。0 以下ならすぐ止める */
+        // NOTE: 鳴っている BGM を全て fadeOut_secs かけて下げてから止める。0 以下ならすぐ止める
         static void FadeOutAllBgm(float fadeOut_secs);
 
     private:

@@ -44,7 +44,7 @@ namespace NanamiEngine::Core::MainWindow
         if (!renderer || !model_)
             return;
 
-        // 非同期ロード中に SetMv1File すると -1 になるので、ロード完了後に取り直す
+        // NOTE: 非同期ロード中に SetMv1File すると -1 になるので、ロード完了後に取り直す
         if (renderer->modelDxLibHandle_ == -1 && model_->IsLoadCompleted())
             renderer->SetMv1File(model_);
     }
@@ -57,7 +57,7 @@ namespace NanamiEngine::Core::MainWindow
             pendingFrame_ = false;
         }
 
-        // 描画より先にカメラを更新し、FrameCamera の結果をこのフレームの描画に反映させる
+        // NOTE: 描画より先にカメラを更新し、FrameCamera の結果をこのフレームの描画に反映させる
         camera_.OnUpdate();
         if (showGrid_)
             DrawGrid();
@@ -110,7 +110,7 @@ namespace NanamiEngine::Core::MainWindow
         if (previewObject_ && !modelRenderer_.expired())
             return;
 
-        // ComponentGroup::Add<T> はカレント MainWindow の LifeCycle にコールバックを登録するため、owner がカレントであることを保証する
+        // NOTE: ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、先に owner をカレントにする
         if (Application::ApplicationBase::GetMainWindow() != owner)
             Application::ApplicationBase::OnChangeWindow(owner);
 
@@ -132,7 +132,7 @@ namespace NanamiEngine::Core::MainWindow
         }
 
         const int handle = renderer->modelDxLibHandle_;
-        // フレームのローカル→ワールド行列にプレビュー Transform を含めるため、先に行列を設定しておく
+        // NOTE: フレームのローカル→ワールド行列にプレビュー Transform を含めるため、先に行列を設定しておく
         MV1SetMatrix(handle, LibCore::Dxlib::ToDxMatrix(previewObject_->Transform().GetWorldMatrix()));
 
         glm::vec3 minPos( FLT_MAX);
@@ -168,24 +168,24 @@ namespace NanamiEngine::Core::MainWindow
         const glm::vec3 center = (minPos + maxPos) * 0.5f;
         const float     radius = (std::max)(glm::length(maxPos - minPos) * 0.5f, 0.01f);
 
-        // Editor3DCamera は FOV 90° / near 5 固定。外接球が視錐台に内接する距離 (r / sin(fov/2)) に余裕を足す
+        // NOTE: FOV / near は Editor3DCamera の固定値。外接球が視錐台に内接する距離に余裕を足す
         const float fovY      = glm::radians(90.0f);
         const float nearPlane = 5.0f;
         float distance = radius / std::sin(fovY * 0.5f) * 1.15f;
         distance = (std::max)(distance, radius + nearPlane + 1.0f);
 
-        // Editor3DCamera の前方は rotation * (0,0,1) なので LH 版の lookAt を使う
+        // NOTE: Editor3DCamera の前方は rotation * (0,0,1) なので LH 版の lookAt を使う
         const glm::vec3 viewDir = frameViewDirection_;
         camera_.SetPosition(center - viewDir * distance);
         camera_.SetRotation(glm::quatLookAtLH(viewDir, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-        // グリッド間隔はモデルの大きさに合わせて 10 のべき乗にする
+        // NOTE: グリッド間隔はモデルの大きさに合わせて 10 のべき乗にする
         gridStep_ = std::pow(10.0f, std::floor(std::log10(radius)));
     }
 
     glm::vec3 ModelPreviewStage::DefaultFrameViewDirection()
     {
-        // 右上前方から見下ろす
+        // NOTE: 右上前方から見下ろす
         return glm::normalize(glm::vec3(-0.45f, -0.35f, -1.0f));
     }
 

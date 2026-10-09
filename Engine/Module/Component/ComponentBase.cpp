@@ -4,7 +4,7 @@ Component::ComponentBase:: ComponentBase() = default;
 
 Component::ComponentBase::~ComponentBase()
 {
-    // ComponentGroup::OnDestroy を通らずに捨てられた場合の保険
+    // NOTE: ComponentGroup::OnDestroy を通らずに捨てられた場合の保険
     ImplementCancelOnDestroy();
 }
 

@@ -48,15 +48,11 @@ namespace GamePlay::PlayerAvatar
 
 namespace GameCore
 {
-    /**
-     * @brief 全てのPlayerAvatarに必要な処理を実装するインターフェース
-     */
     class IPlayerAvatar
     {
     public:
         virtual ~IPlayerAvatar() = default;
 
-        /** @brief EventScene用のStateMachine */
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
         [[nodiscard]] virtual NanamiEngine::Module::Component::RigidBody       & RigidBody       () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::InteractableArea            & InteractableArea   () const = 0;
@@ -66,7 +62,7 @@ namespace GameCore
         [[nodiscard]] virtual NanamiEngine::Module::GameObject::Transform      & PlayerTransform () const = 0;
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
         [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
-        /** @brief クライアントで操作しているアバターか */
+        // NOTE: クライアントで操作しているアバターか
         [[nodiscard]] virtual bool                                               IsOwner         () const = 0;
         virtual void SaveStatus() = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();

@@ -6,7 +6,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief 島の飾り decoration_ を持っていれば満たす */
+    // NOTE: 島の飾り decoration_ を持っていれば満たす
     class DecorationOwnedCondition final : public ICondition
     {
     public:

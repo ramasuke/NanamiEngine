@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::Network
 {
     namespace
     {
-        // NetworkLoggerWindow等に表示するログ履歴の上限件数（超えた分は古いものから捨てる）
+        // NOTE: ログ履歴の上限件数。超えた分は古いものから捨てる
         constexpr size_t kMaxPacketLogHistory = 2000;
 
         std::mutex& PacketLogMutex()

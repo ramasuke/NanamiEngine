@@ -12,7 +12,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Custom
     };
 
-    /** @brief ProjectWindow からソースファイルを開く外部エディタの設定 */
+    // NOTE: ソースファイルを開く外部エディタの設定
     class NANAMI_API CodeEditorConfiguration final
     {
     public:

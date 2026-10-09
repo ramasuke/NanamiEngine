@@ -13,7 +13,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 黒板の1行に書く中身 */
+    // NOTE: 黒板の1行に書く中身
     struct ShopRowContent final
     {
         std::shared_ptr<Asset::ItemData> item;
@@ -22,7 +22,7 @@ namespace GamePlay::Ui
         bool isAffordable = true;
     };
 
-    /** @brief 品書きの黒板の1行。表示窓の分だけ作って使い回し、中身は Bind で差し替える */
+    // NOTE: 品書きの黒板の1行。表示窓の分だけ作って使い回し、中身は Bind で差し替える
     class ShopRow final : public Component::ComponentBase
     {
     public:

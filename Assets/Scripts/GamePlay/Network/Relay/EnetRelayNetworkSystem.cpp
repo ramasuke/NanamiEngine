@@ -76,7 +76,7 @@ namespace GamePlay::Network
     {
         if (host_)
         {
-            // 中継サーバーがタイムアウトを待たずに部屋を片付けられるよう、切断を通知してから閉じる
+            // NOTE: 中継サーバーがタイムアウトを待たずに部屋を片付けられるよう、切断を通知してから閉じる
             NanamiEngine::Core::Network::DisconnectGracefully(host_, relay_);
             enet_host_destroy(host_);
         }
@@ -162,7 +162,7 @@ namespace GamePlay::Network
             BecomeHost();
             break;
         case NanamiRelay::ControlType::Joined:
-            // PlayerId はホストからの AssignPlayerId で届き、そこで Connected になる
+            // NOTE: PlayerId はホストからの AssignPlayerId で届き、そこで Connected になる
             NanamiEngine::Module::Log("EnetRelayNetworkSystem: 部屋に参加しました session=" + sessionKey_);
             if (room_.mode == RelayRoom::Mode::Join)
                 status_->code = room_.code;
@@ -180,7 +180,7 @@ namespace GamePlay::Network
 
     void EnetRelayNetworkSystem::BecomeHost()
     {
-        // EnetUDPNetworkSystem のサーバーと同じく、ホストは自分に PlayerId 0 を振って受信キューに積む
+        // NOTE: EnetUDPNetworkSystem のサーバーと同じく、ホストは自分に PlayerId 0 を振って受信キューに積む
         isHost_   = true;
         playerId_ = PlayerId(nextPlayerId_++);
         state_    = ConnectionState::Connected;
@@ -192,7 +192,7 @@ namespace GamePlay::Network
 
     void EnetRelayNetworkSystem::OnGameDataReceived(const std::uint8_t* data, std::size_t size)
     {
-        // ホストに届くパケットは先頭が送り主の slot
+        // NOTE: ホストに届くパケットは先頭が送り主の slot
         if (isHost_)
         {
             if (size < 1)
@@ -218,7 +218,7 @@ namespace GamePlay::Network
         NanamiEngine::Module::Log("EnetRelayNetworkSystem: 中継サーバーから切断されました (" + std::string(DisconnectReasonText(reason)) + ")");
         relay_ = nullptr;
 
-        // PlayerId をもらう前に切れたなら接続失敗(中継サーバーに届かない・バージョン違い・部屋に断られたなど)
+        // NOTE: PlayerId をもらう前に切れたなら接続失敗(中継サーバーに届かない・バージョン違い・部屋に断られたなど)
         if (state_ == ConnectionState::Connecting)
         {
             state_ = ConnectionState::Failed;
@@ -237,7 +237,7 @@ namespace GamePlay::Network
 
         if (nextPlayerId_ > NanamiEngine::Core::Network::MAX_PLAYER_ID)
         {
-            // 中継サーバー越しには相手を切断できないので、PlayerId を渡さずに相手の接続タイムアウトを待つ
+            // NOTE: 中継サーバー越しには相手を切断できないので、PlayerId を渡さずに相手の接続タイムアウトを待つ
             NanamiEngine::Module::LogError("EnetRelayNetworkSystem: PlayerId を使い切ったため slot " + std::to_string(slot) + " を受け入れませんでした");
             return;
         }
@@ -264,7 +264,7 @@ namespace GamePlay::Network
         slotsByPlayer_.erase(leftId);
         NanamiEngine::Module::Log("EnetRelayNetworkSystem: player " + leftId.ToString() + " left");
 
-        // EnetUDPNetworkSystem::NotifyPlayerLeft と同じく、離脱者の所有物はホスト(自分)が引き継ぐ
+        // NOTE: EnetUDPNetworkSystem::NotifyPlayerLeft と同じく、離脱者の所有物はホスト(自分)が引き継ぐ
         Packet packet = Packet::Create(DefaultPacketType::PlayerLeft);
         packet.Data().Write(leftId);
         packet.Data().Write(playerId_);
@@ -291,7 +291,7 @@ namespace GamePlay::Network
 
     void EnetRelayNetworkSystem::SendEncoded(const Packet& packet, const std::optional<std::uint8_t> target)
     {
-        // 未接続(中継サーバー喪失・接続前)のときは送らずに捨てる
+        // NOTE: 未接続(中継サーバー喪失・接続前)のときは送らずに捨てる
         if (!relay_ || relay_->state != ENET_PEER_STATE_CONNECTED)
             return;
 

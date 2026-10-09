@@ -18,13 +18,10 @@ namespace Editor::Npc::Enemy::Behaviour
     public:
         using CreateFunc = std::function<std::unique_ptr<GameCore::Npc::Enemy::Behaviour::ActionBase>()>;
 
-        /** アクション型登録 */
         void Register(const std::string& typeName, CreateFunc func);
 
-        /** アクション生成 */
         [[nodiscard]] std::unique_ptr<GameCore::Npc::Enemy::Behaviour::ActionBase> Create(const std::string& typeName) const;
 
-        /** 登録済み型一覧（エディタ用） */
         [[nodiscard]] const std::unordered_map<std::string, CreateFunc>& CreatableActions() const;
 
     private:

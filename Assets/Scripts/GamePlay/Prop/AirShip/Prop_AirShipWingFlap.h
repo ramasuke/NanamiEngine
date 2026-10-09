@@ -4,7 +4,7 @@
 
 namespace GamePlay::Prop
 {
-    // 翼帆を開始時のローカル回転から rotateAxis_ まわりに sin で羽ばたかせる (モデル原点 = 蝶番)
+    // NOTE: 翼帆を開始時のローカル回転から rotateAxis_ まわりに sin で羽ばたかせる (モデル原点 = 蝶番)
     class AirShipWingFlap final : public Component::ComponentBase,
                                   public LifeCycleCallback::IAwakable,
                                   public LifeCycleCallback::IUpdatable

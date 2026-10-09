@@ -4,15 +4,15 @@
 
 namespace GameCore::Story
 {
-    // NOTE: セーブとシーンの RestorationGate に int で残るので、新しい値は必ず末尾に足す。一覧は docs/Story.md
+    // WARNING: セーブとシーンに int で残るので、新しい値は必ず末尾に足す。一覧は docs/Story.md
     enum class Facility : int
     {
-        // WARNING: Dock..Field は仮置きで、施設データ・建つ場所はもう無い(2026-09-24 に削除)。番号は再利用しない
+        // WARNING: Dock..Field は削除済みの施設。番号は再利用しない
         Dock = 0,
         GeneralStore,
         HunterLodge,
         Field,
-        // 一族の家。噴水の島に草原の狩人の一族が住み、仲間(キャラ選択)を出してくれる
+        // NOTE: 一族の家。噴水の島に草原の狩人の一族が住み、仲間(キャラ選択)を出してくれる
         ClanHouse,
     };
 

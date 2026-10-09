@@ -5,7 +5,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief questType_ を手元のプレイヤーが受注中なら解放 */
+    // NOTE: questType_ を手元のプレイヤーが受注中なら解放
     class QuestTakingCondition final : public ICondition
     {
     public:

@@ -68,7 +68,7 @@ namespace NanamiEngine::CineMachine::Behaviour
     {
         const float deltaTime = Time::DeltaTime();
 
-        // 要求は毎フレーム消費する。呼び出し側が要求をやめれば(ステート離脱・破棄を含む)自然に0へ戻る
+        // NOTE: 要求は毎フレーム消費する。呼び出し側が要求をやめれば自然に 0 へ戻る
         const float blend = 1.0f - std::exp(-deltaTime / std::max(sustainSmoothTime_secs_, 0.001f));
         sustain_ += (sustainRequest_ - sustain_) * blend;
         if (sustainRequest_ <= 0.0f && sustain_ < 0.001f)

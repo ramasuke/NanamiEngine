@@ -9,7 +9,7 @@
 
 namespace GamePlay::Ui
 {
-    // 大砲の再装填ゲージ。満タンになった瞬間と発射時に演出を再生する
+    // NOTE: 大砲の再装填ゲージ。満タンになった瞬間と発射時に演出を再生する
     class CannonCooldownGauge final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUserInterfaceRenderable,
                                       public LifeCycleCallback::IUpdatable
@@ -78,7 +78,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] glm::vec2 promptTextOffset_ = glm::vec2(-138.0f, -1.0f);
         [[serialize(0)]] glm::vec2 countTextOffset_ = glm::vec2(0.0f, 2.0f);
 
-        // シーンの文字列と同じ UTF-8 で持つ（/utf-8 無しの MSVC は日本語リテラルを CP932 に変換してしまうため）。"装填中" / "発射"
+        // NOTE: "装填中" / "発射" を UTF-8 のバイト列で持つ
         [[serialize(0)]] std::string coolingPromptText_ = "\xE8\xA3\x85\xE5\xA1\xAB\xE4\xB8\xAD";
         [[serialize(0)]] std::string readyPromptText_ = "\xE7\x99\xBA\xE5\xB0\x84";
         [[serialize(0)]] float promptTextScale_ = 0.42f;
@@ -120,7 +120,7 @@ namespace GamePlay::Ui
         float total_secs_ = 1.0f;
         int lastCount_ = 0;
         bool isReady_ = false;
-        // 乗った瞬間の「最初から装填済み」では装填完了の音を鳴らさない
+        // NOTE: 乗った瞬間の「最初から装填済み」では装填完了の音を鳴らさない
         bool hasCountedDown_ = false;
         float readyElapsed_secs_ = 0.0f;
         float shootElapsed_secs_ = 1000.0f;

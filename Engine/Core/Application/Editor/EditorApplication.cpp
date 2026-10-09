@@ -51,7 +51,7 @@ void Core::Application::EditorApplication::OnFrame()
     ImGui::EndFrame();
 
     RenderVertex();
-    // ImGui はバックバッファに直接重ねて描くので、3D だけの絵はこの間でしか取れない
+    // NOTE: ImGui はバックバッファに直接重ねて描くので、3D だけの絵はこの間でしか取れない
     AutoMcp::AutoMcpServer::Instance().OnSceneRendered();
     ImGuiWrapper::Instance().Draw();
     AutoMcp::AutoMcpServer::Instance().OnFrameEnd();
@@ -73,7 +73,7 @@ void Core::Application::EditorApplication::OnDrawGui()
 
 void Core::Application::EditorApplication::OnDrawGizmo()
 {
-    // 選択中の GameObject を解決する。Inspector が複数あるときは最後に選択されたものを優先。
+    // NOTE: Inspector が複数あるときは最後に選択されたものを対象にする
     std::shared_ptr<Module::GameObject::IGameObject> target;
     int bestOrder = -1;
     for (auto* inspector : PopupWindows().Catch<PopupWindow::InspectorWindow>())
@@ -93,7 +93,7 @@ void Core::Application::EditorApplication::OnDrawGizmo()
 
     const ImGuiIO& io = ImGui::GetIO();
 
-    // 右ドラッグ中・テキスト入力中はツール切替を受け付けない
+    // NOTE: 右ドラッグ中・テキスト入力中はツール切替を受け付けない
     const bool cameraControlling = ImGui::IsMouseDown(ImGuiMouseButton_Right);
     if (!cameraControlling && !io.WantTextInput)
     {

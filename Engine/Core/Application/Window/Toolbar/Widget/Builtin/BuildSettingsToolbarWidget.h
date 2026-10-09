@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief Build Settings を開くボタンと、ビルド中の進み具合 */
+    // NOTE: Build Settings を開くボタンと、ビルド中の進み具合
     class NANAMI_API BuildSettingsToolbarWidget final : public IEditorToolbarWidget
     {
     public:

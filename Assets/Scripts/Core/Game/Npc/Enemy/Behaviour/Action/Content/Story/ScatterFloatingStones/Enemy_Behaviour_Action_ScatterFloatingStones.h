@@ -9,10 +9,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief stonesRoot_ の子の浮遊石をせり上がらせて三方へ飛ばす
-     * NOTE: 始めたらすぐ Success を返すので OnceExecute で包むこと
-     */
+    // NOTE: stonesRoot_ の子の浮遊石をせり上がらせて三方へ飛ばす
+    // WARNING: 始めたらすぐ Success を返すので、一度だけ実行されるノードの下に置く
     class ScatterFloatingStones final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
@@ -24,14 +22,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             float rise_secs;
             float hover_secs;
             float fly_secs;
-            float flyDistance; ///< 水平に飛ぶ距離
-            float flyRise;     ///< 飛ぶあいだに上がる高さ
+            float flyDistance; // 水平に飛ぶ距離
+            float flyRise;     // 飛ぶあいだに上がる高さ
         };
 
-        /**
-         * @brief 石をせり上がらせてから根元から見た向きへ飛ばし、飛び終えたら隠す
-         * @note BT より長生きしうるので static。石の子の ParticleSystem は PlayMode を Manual にしておく
-         */
+        // NOTE: BT より長生きしうるので static
+        // NOTE: 石の子の ParticleSystem は PlayMode を Manual にしておく
         static Coroutine::Task<void> PlayScatterAsync(std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> stonesRoot, ScatterShot shot);
 
         [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) stonesRoot_;

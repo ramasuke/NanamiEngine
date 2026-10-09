@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::Item
     {
     public:
         virtual ~IItemEffect() = default;
-        /** @param user 使ったアバター */
+        // NOTE: user は使ったアバター
         virtual void Apply(
             IItemEffectTarget& target,
             const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& user) const = 0;

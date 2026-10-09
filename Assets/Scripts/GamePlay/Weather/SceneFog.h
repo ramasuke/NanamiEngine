@@ -6,15 +6,13 @@
 
 namespace GamePlay::Weather
 {
-    /**
-     * @brief シーンにいる間ずっと線形フォグを掛け、抜けるときに切る
-     */
+    // NOTE: シーンにいる間ずっと線形フォグを掛け、抜けるときに切る
     class SceneFog final : public Component::ComponentBase,
                            public LifeCycleCallback::IStartable,
                            public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief true の間は自分でフォグを掛けない (WeatherService が掛ける) */
+        // NOTE: true の間は自分でフォグを掛けない (使う側が掛ける)
         void SetDrivenExternally(const bool driven) { drivenExternally_ = driven; }
 
         [[nodiscard]] NanamiEngine::Color32 FogColor() const { return fogColor_; }

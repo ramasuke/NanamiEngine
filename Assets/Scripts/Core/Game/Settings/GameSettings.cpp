@@ -28,7 +28,7 @@ namespace GameCore
 
     GameSettings& GameSettings::GetInstance()
     {
-        // 初回呼び出し時に LocalPrefs からロードする。ファイルがない場合はデフォルト値を使用する
+        // NOTE: 初回呼び出し時に LocalPrefs からロードする。ファイルがない場合はデフォルト値を使用する
         static GameSettings instance = NanamiEngine::Module::LocalPrefs::LoadOrDefaultWithPath<GameSettings>(
             GAME_SETTINGS_FILE_PATH, GAME_SETTINGS_FILE_KEY, GameSettings{});
         static const bool applied = (instance.ApplyAudioVolume(), true);

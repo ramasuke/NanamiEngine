@@ -48,7 +48,7 @@ namespace NanamiEngine::Core::PopupWindow
 {
     namespace
     {
-        /** @brief 入力を確定したフレームで true を返す。確定した文字列は buffer に入っている */
+        // NOTE: 入力を確定したフレームで true を返す。確定した文字列は buffer に入っている
         template <size_t N>
         bool BuildSettingsEditText(const char* id, char (&buffer)[N], bool& active, const std::string& savedValue)
         {
@@ -190,7 +190,8 @@ namespace NanamiEngine::Core::PopupWindow
         ImGui::SetCursorPosX(BUILD_SETTINGS_LABEL_WIDTH);
         if (ImGui::Button("Open Output Folder"))
         {
-            // NOTE: 未ビルドでも開けるよう先に作る。フォルダの "open" 動詞は環境によって何も起きないので explorer.exe に渡す
+            // NOTE: 未ビルドでも開けるようフォルダを先に作る
+            // NOTE: フォルダの "open" 動詞は環境によって何も起きないので explorer.exe に渡す
             const std::filesystem::path outputDirectory = BuildConfiguration::OutputDirectory();
             std::wstring                arguments       = outputDirectory.wstring();
             // WARNING: 末尾の \ が閉じ引用符をエスケープしてしまう

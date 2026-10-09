@@ -8,7 +8,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 列数/行数のどちらを固定して折り返すか
+    // NOTE: 列数/行数のどちらを固定して折り返すか
     enum class GridConstraint : int
     {
         FixedColumnCount = 0,
@@ -31,7 +31,7 @@ namespace NanamiEngine::Module::NanamiUi
         return "Unknown";
     }
 
-    // グリッドがどの角を起点(1番目の子の位置)にして広がっていくか。
+    // NOTE: グリッドがどの角を起点(1番目の子の位置)にして広がっていくか
     enum class GridStartCorner : int
     {
         UpperLeft = 0,
@@ -60,7 +60,7 @@ namespace NanamiEngine::Module::NanamiUi
         return "Unknown";
     }
 
-    // 子 GameObject を cellSize_ の格子状に並べる (子の実サイズは変えない)
+    // NOTE: 子 GameObject を cellSize_ の格子状に並べる (子の実サイズは変えない)
     class NANAMI_API GridLayoutGroup final : public Component::ComponentBase,
                                   public LifeCycleCallback::ILateUpdatable
     {

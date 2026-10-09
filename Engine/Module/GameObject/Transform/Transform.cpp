@@ -82,7 +82,7 @@ namespace NanamiEngine::Module::GameObject
         {
             const glm::vec3 parentWorldScale = parentObj->Transform().GetWorldScale();
 
-            // ゼロ割防止
+            // NOTE: ゼロ割防止
             localScale_ = {
                 parentWorldScale.x != 0.0f ? worldScale.x / parentWorldScale.x : worldScale.x,
                 parentWorldScale.y != 0.0f ? worldScale.y / parentWorldScale.y : worldScale.y,
@@ -106,7 +106,7 @@ namespace NanamiEngine::Module::GameObject
             glm::length(glm::vec3(localMatrix[2]))
         };
 
-        // スケール成分を除去してから回転を抽出する（非等倍スケールで quat が歪むのを防ぐ）
+        // NOTE: スケール成分を除去してから回転を抽出する（非等倍スケールで quat が歪むのを防ぐ）
         glm::mat3 rotationBasis(localMatrix);
         rotationBasis[0] = localScale_.x > 1e-8f ? rotationBasis[0] / localScale_.x : glm::vec3(1.0f, 0.0f, 0.0f);
         rotationBasis[1] = localScale_.y > 1e-8f ? rotationBasis[1] / localScale_.y : glm::vec3(0.0f, 1.0f, 0.0f);
@@ -213,16 +213,12 @@ namespace NanamiEngine::Module::GameObject
 
     glm::vec3 Transform::GetWorldEulerAngle() const
     {
-        // World回転を quat として取得
         const glm::quat worldRot = GetWorldRot();
 
-        // quat → euler(rad)
         glm::vec3 eulerRad = glm::eulerAngles(worldRot);
 
-        // rad → deg
         glm::vec3 eulerDeg = glm::degrees(eulerRad);
 
-        // 0 ~ 360 に正規化
         auto normalize360 = [](float deg)
         {
             deg = std::fmod(deg, 360.0f);
@@ -265,7 +261,7 @@ namespace NanamiEngine::Module::GameObject
 
         const auto newParent = parent.lock();
 
-        // 自分自身、または自分の子孫への再親付けは循環参照を生み木構造を破壊するため拒否する。
+        // NOTE: 自分自身や子孫への再親付けは循環を生むので拒否する
         if (newParent)
         {
             if (newParent == self)
@@ -334,7 +330,6 @@ namespace NanamiEngine::Module::GameObject
 
             result.emplace_back(child);
 
-            // child の Transform からさらに取得
             const auto& childTransform = child->Transform();
             auto subChildren = childTransform.GetAllChildren();
 
@@ -428,7 +423,6 @@ namespace NanamiEngine::Module::GameObject
     {
         if (ImGui::CollapsingHeader("Transform"))
         {
-            // Local (editable) ? open by default
             if (ImGui::TreeNodeEx("Local", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 glm::vec3 pos = localPos_;
@@ -452,7 +446,6 @@ namespace NanamiEngine::Module::GameObject
                 ImGui::TreePop();
             }
 
-            // World (read-only)
             if (ImGui::TreeNode("World"))
             {
                 ImGui::BeginDisabled(true);
@@ -466,7 +459,6 @@ namespace NanamiEngine::Module::GameObject
                 ImGui::TreePop();
             }
 
-            // Option
             if (ImGui::TreeNode("Option"))
             {
                 if (ImGui::Button("Set camera position"))

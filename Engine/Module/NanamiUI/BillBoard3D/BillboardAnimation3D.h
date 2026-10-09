@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // SpriteAnimationFile の1コマを3D空間にビルボード描画する。コマは自動では進めない
+    // NOTE: SpriteAnimationFile の1コマを3D空間にビルボード描画する。コマは自動では進めない
     class NANAMI_API BillboardAnimation3D final : public Component::ComponentBase,
                                        public LifeCycleCallback::IInitRenderable,
                                        public LifeCycleCallback::IUserInterfaceRenderable
@@ -15,7 +15,7 @@ namespace NanamiEngine::Module::NanamiUi
         void SetFrame(int frame);
         [[nodiscard]] int GetFrameCount() const;
 
-        // 実行時の演出用（シリアライズしない）。0 で描画しない、1 で最大
+        // NOTE: 実行時の演出用（シリアライズしない）。0 で描画しない、1 で最大
         void SetAlpha(float alpha);
         void SetAngle(float angle);
 

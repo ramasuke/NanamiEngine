@@ -1,4 +1,4 @@
-#include "Enemy_Behaviour_Action_ChasePlayerForPathFinding.h"
+﻿#include "Enemy_Behaviour_Action_ChasePlayerForPathFinding.h"
 
 #include <algorithm>
 #include <cmath>
@@ -34,7 +34,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!pathFinder_.HasPath() || pathFinder_.Path().empty())
             return TickStatus::Running;
 
-        // 到達済みウェイポイントを読み飛ばして前進
+        // NOTE: 到達済みウェイポイントを読み飛ばして前進
         const glm::vec2 cellSize        = grid->CellSize();
         const float     halfCell        = 0.5f * (std::min)(std::abs(cellSize.x), std::abs(cellSize.y));
         const float     arrivalRadius   = (std::max)(halfCell, moveSpeed_ * Time::DeltaTime() * 1.5f);
@@ -50,7 +50,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             path.erase(path.begin());
         }
 
-        // 全ウェイポイント到達 → パスを無効化して再探索待ち
+        // NOTE: 全ウェイポイントに着いたら再探索を待つ
         if (path.empty())
         {
             pathFinder_.ClearPath();
@@ -70,7 +70,6 @@ namespace GameCore::Npc::Enemy::Behaviour
         velocity.y = context.EnemyRigidBody().LinearVelocity().y;
         context.EnemyRigidBody().SetLinearVelocity(velocity);
 
-        // 移動方向に回転する
         auto& transform = context.EnemyTransform();
         glm::vec3 forward = transform.GetWorldRot() * glm::vec3(0, 0, -1);
         forward.y = 0.0f;

@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 描画範囲・ブレンドモード・描画モードを抜けるときに元へ戻す
+    // NOTE: 描画範囲・ブレンドモード・描画モードを抜けるときに元へ戻す
     class ScopedDrawState final
     {
     public:
@@ -67,7 +67,7 @@ namespace NanamiEngine::Module::NanamiUi
         const float cosAngle = std::cos(angle);
         const float sinAngle = std::sin(angle);
 
-        // 回転していないときは従来どおり整数座標に揃える
+        // NOTE: 回転していないときは整数座標に揃える
         const glm::vec2 origin(worldPos.x, worldPos.y);
         return DrawFrame{
             isRotated ? origin : glm::trunc(origin),
@@ -154,7 +154,7 @@ namespace NanamiEngine::Module::NanamiUi
         const int x = static_cast<int>(frame.origin.x);
         const int y = static_cast<int>(frame.origin.y);
 
-        // 回転していなければ画面平行のクリップで px 単位に切れる
+        // NOTE: 回転していなければ画面平行のクリップで px 単位に切れる
         if (!frame.isRotated)
         {
             const LocalRect visible = FillToLocalRect(startLength, fillLength, 0.0f, AcrossLength());
@@ -182,7 +182,7 @@ namespace NanamiEngine::Module::NanamiUi
         if (imageW <= 0 || imageH <= 0 || frame.size.x <= 0.0f || frame.size.y <= 0.0f)
             return;
 
-        // 回転したクリップはできないので、元画像をテクセル単位で切り出して四隅に描く
+        // NOTE: 回転したクリップはできないので、元画像をテクセル単位で切り出して四隅に描く
         const float alongLength = AlongLength();
         const int imageAlong    = IsVerticalFill() ? imageH : imageW;
         const auto toTexel      = [&](const float length) { return std::clamp(static_cast<int>(std::lround(length / alongLength * static_cast<float>(imageAlong))), 0, imageAlong); };
@@ -257,13 +257,12 @@ namespace NanamiEngine::Module::NanamiUi
     {
         const int w = static_cast<int>(frame.size.x);
         const int h = static_cast<int>(frame.size.y);
-        // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の SetDrawScreen で完了待ちに入る
+        // NOTE: 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の SetDrawScreen で完了待ちに入る
         const int useASyncLoad = GetUseASyncLoadFlag();
         SetUseASyncLoadFlag(FALSE);
         const int maskedScreen = MakeScreen(w, h, true);
         SetUseASyncLoadFlag(useASyncLoad);
 
-        //マスク生成フェーズ
         SetDrawScreen(maskedScreen);
         ClsDrawScreen();
 
@@ -273,7 +272,7 @@ namespace NanamiEngine::Module::NanamiUi
         const float angle = renderRot  .z;
         const float scale = renderScale.x;
 
-        // マスク内ローカル座標で描画
+        // NOTE: マスク内ローカル座標で描画
         DrawRotaGraphF(
             drawPosition_.x,
             drawPosition_.y,
@@ -283,15 +282,14 @@ namespace NanamiEngine::Module::NanamiUi
             TRUE
         );
 
-        // 減少分を黒で塗る
+        // NOTE: 減少分を黒で塗る
         const int lostWidth = static_cast<int>(w * (1.0f - value_));
         DrawBox(w - lostWidth, 0, w, h, GetColor(0, 0, 0), TRUE);
 
-        // 黒を透過
+        // NOTE: 黒を透過
         GraphFilter(maskedScreen, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS, 20, TRUE, GetColor(0, 255, 0), 0);
         SetDrawScreen(DX_SCREEN_BACK);
 
-        //最終描画フェーズ
         GraphFilter(maskedScreen, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_GREATER, 128, TRUE, GetColor(0, 255, 0), 0);
         DrawGraph(static_cast<int>(frame.origin.x), static_cast<int>(frame.origin.y), maskedScreen, TRUE);
         DeleteGraph(maskedScreen);

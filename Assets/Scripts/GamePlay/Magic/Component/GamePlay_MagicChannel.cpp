@@ -21,7 +21,7 @@ namespace GamePlay::Magic
         powerPerTick_           = powerPerTick;
         remainingDuration_secs_ = duration_secs;
         tickInterval_secs_      = (std::max)(tickInterval_secs, 0.05f);
-        // センサーの接触は次の物理ステップで入るので、最初の1回も1間隔待ってから当てる
+        // NOTE: センサーの接触は次の物理ステップで入るので、最初の1回も1間隔待ってから当てる
         untilNextTick_secs_     = tickInterval_secs_;
         isChanneling_           = true;
         hasBegun_               = true;

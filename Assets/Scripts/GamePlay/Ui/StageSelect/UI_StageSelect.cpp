@@ -136,7 +136,7 @@ namespace GamePlay::Ui
 
     void StageSelectUi::EnterWorld(const GameCore::Scene::Main::SceneType sceneType)
     {
-        // 連打で同じ遷移を積み直さない。遷移が済めばこの UI ごと拠点のシーンと一緒に消える
+        // NOTE: 連打で同じ遷移を積み直さない。遷移が済めばこの UI ごと拠点のシーンと一緒に消える
         if (isEnteringWorld_)
             return;
 
@@ -150,7 +150,7 @@ namespace GamePlay::Ui
         const int step = to > from ? 1 : -1;
         for (int rate = from; rate != to; rate += step)
         {
-            // NOTE: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
+            // WARNING: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
             {
                 const auto locked = renderer.lock();
                 if (!locked)
@@ -171,7 +171,7 @@ namespace GamePlay::Ui
         const int step = to > from ? 1 : -1;
         for (int rate = from; rate != to; rate += step)
         {
-            // NOTE: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
+            // WARNING: shared_ptr を持ったまま待つと、閉じた後もレンダラーが生き残って描画され落ちる
             {
                 const auto locked = renderer.lock();
                 if (!locked)

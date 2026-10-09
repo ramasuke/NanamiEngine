@@ -103,7 +103,7 @@ namespace GameCore::Scene::GrassLand
         const glm::vec3 spawnPos = context->PlayerSpawnPoint();
         groundPos_ = glm::vec3(spawnPos.x, ArrivalGroundY(spawnPos, spawnPos.y), spawnPos.z);
 
-        // ショットは(横, カメラ直下の地面からの高さ, 前)で持っている
+        // NOTE: ショットは(横, カメラ直下の地面からの高さ, 前)で持っている
         const auto shotPos = [this](const glm::vec3& shot)
         {
             glm::vec3 pos = groundPos_ + side_ * shot.x + forward_ * shot.z;
@@ -125,7 +125,7 @@ namespace GameCore::Scene::GrassLand
             }
         }
 
-        // 開く前のポータル越しに見えてしまうので、歩き出すまでは膜の奥で消しておく
+        // NOTE: 開く前のポータル越しに見えてしまうので、歩き出すまでは膜の奥で消しておく
         controlLock_.Set(NanamiEngine::ControlLock::Service::Instance().Acquire());
         avatar->PlayerTransform().SetWorldPos(WalkPos(0.0f));
         avatar->PlayerTransform().SetWorldRot(facingRot);
@@ -140,7 +140,7 @@ namespace GameCore::Scene::GrassLand
             SnapCamera(cameraStartPos_, PortalCenter());
         }
 
-        // 空撮から始めるときは、ロード画面が明ける前から空撮の始めのカメラを映しておく
+        // NOTE: 空撮から始めるときは、ロード画面が明ける前から空撮の始めのカメラを映しておく
         if (const auto overviewStart = hasOverview_ ? context->ArrivalOverviewStartCamera() : nullptr)
         {
             overviewStart->SetPriority(ARRIVAL_SHOT_PRIORITY);
@@ -163,7 +163,7 @@ namespace GameCore::Scene::GrassLand
     template<class TContext>
     Coroutine::Task<void> StageArrivalMovie<TContext>::PlayAsync(std::shared_ptr<StageArrivalMovie> self)
     {
-        // ChangeMainSceneがSkipNextFrameを60回積んでいる間はDeltaTimeが0で、コルーチンごと凍る
+        // NOTE: シーン切り替え直後のフレームスキップ中は DeltaTime が 0 で、コルーチンごと凍る
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
         if (self->isCanceled_ || !self->isBegun_)
             co_return;
@@ -197,7 +197,7 @@ namespace GameCore::Scene::GrassLand
         const glm::vec3 lookAtHeight(0.0f, context->ArrivalLookAtHeight(), 0.0f);
         const glm::vec3 anchor = context->PlayerSpawnPoint();
 
-        // 勢いよく開いて一度行き過ぎ、歩き出してしばらくしたら一度膨らんでから閉じる
+        // NOTE: 勢いよく開いて一度行き過ぎ、歩き出してしばらくしたら一度膨らんでから閉じる
         const glm::vec3 closedScale = self->portalScale_ * ARRIVAL_PORTAL_MIN_OPEN_RATE;
         auto portalScaleTween = tweeny::from(closedScale)
             .to(closedScale       ).during(openDelay_msecs )
@@ -245,14 +245,14 @@ namespace GameCore::Scene::GrassLand
             else if (const auto portal = self->portal_.lock())
                 portal->Transform().SetLocalScale(portalScale.Value());
 
-            // 開ききった時点では膜の奥にいるので、ここで出しても膜に隠れて見えない
+            // NOTE: 開ききった時点では膜の奥にいるので、ここで出しても膜に隠れて見えない
             if (!isWalking && elapsed_secs * 1000.0f >= static_cast<float>(walkStart_msecs))
             {
                 isWalking = true;
                 self->SetAvatarVisible(true);
                 avatar->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::WarpIn);
 
-                // 注視点をポータルからプレイヤーへ付け替える。振り向きはBrainの回転補間に任せる
+                // NOTE: 注視点をポータルからプレイヤーへ付け替える。振り向きはBrainの回転補間に任せる
                 if (const auto lookAt = self->cameraLookAt_.lock())
                 {
                     lookAt->SetTarget(avatar->PlayerTransform().GetGameObject());
@@ -295,7 +295,7 @@ namespace GameCore::Scene::GrassLand
         if (arrivalCamera)
             arrivalCamera->SetBlendIn(ArrivalDuring_msecs(context->ArrivalOverviewDescend_msecs()) / 1000.0f, LibCore::EaseType::InOutSine);
 
-        // 島の名前を出しながら島を見下ろす
+        // NOTE: 島の名前を出しながら島を見下ろす
         if (const auto caption = self->caption_.lock(); caption && !context->ArrivalIslandTitle().empty())
             caption->ShowIsland(context->ArrivalIslandTitle(), context->ArrivalIslandSubtitle());
         if (co_await PlayShotAsync(self, context->ArrivalOverviewStartCamera(), context->ArrivalOverviewEndCamera(),
@@ -304,7 +304,7 @@ namespace GameCore::Scene::GrassLand
         if (self->isCanceled_)
             co_return false;
 
-        // 見どころを1か所ずつ切り替えで映す。見どころはポータルに近いものを最後に並べる
+        // NOTE: 見どころを1か所ずつ切り替えで映す。見どころはポータルに近いものを最後に並べる
         for (const auto& shot : context->ArrivalTourShots())
         {
             if (!shot.HasCameras())
@@ -359,7 +359,7 @@ namespace GameCore::Scene::GrassLand
 
             elapsed_secs += Time::DeltaTime();
 
-            // 字幕は次のショットへ切り替わる前に消しきる
+            // NOTE: 字幕は次のショットへ切り替わる前に消しきる
             if (const auto caption = self->caption_.lock())
             {
                 const float remaining_secs = duration_secs - elapsed_secs;
@@ -386,12 +386,12 @@ namespace GameCore::Scene::GrassLand
         if (!camera)
             return;
 
-        // Follow/LookAtのtargetはどちらもスポーン地点のマーカーなので、そこからのオフセットで置く
+        // NOTE: Follow/LookAtのtargetはどちらもスポーン地点のマーカーなので、そこからのオフセットで置く
         const glm::vec3 anchor = context->PlayerSpawnPoint();
         follow->followOffset_ = pos - anchor;
         lookAt->SetOffsetPos(lookAtPos - anchor);
 
-        // Follow/LookAtが次に動くまでカメラは古い姿勢のままなので、先に合わせてからBrainをスナップさせる
+        // NOTE: Follow/LookAtが次に動くまでカメラは古い姿勢のままなので、先に合わせてからBrainをスナップさせる
         camera->Transform().SetWorldPos(pos);
         lookAt->LookAtTarget();
         if (const auto brain = context->CameraBrain())
@@ -438,7 +438,7 @@ namespace GameCore::Scene::GrassLand
     template<class TContext>
     bool StageArrivalMovie<TContext>::IsSkipRequested()
     {
-        // ステージ選択の決定キーを押しっぱなしで来ても即スキップにならないよう、一度離すまで待つ
+        // NOTE: 決定キーを押しっぱなしで来ても即スキップにならないよう、一度離すまで待つ
         const bool isDown = ArrivalIsSkipInputDown();
         isSkipArmed_ |= !isDown;
         return isSkipArmed_ && isDown;
@@ -497,7 +497,7 @@ namespace GameCore::Scene::GrassLand
         ReleaseCaption();
         SetAvatarVisible(true);
 
-        // 優先度を戻すとFollowFromBehind(0)が勝ち、Brainのブレンドで三人称へ帰る
+        // NOTE: 優先度を戻すと三人称カメラが勝ち、Brain のブレンドで帰る
         DisableShotCameras();
         if (const auto context = context_.lock())
         {

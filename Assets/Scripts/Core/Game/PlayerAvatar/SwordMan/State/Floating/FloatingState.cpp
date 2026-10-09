@@ -50,7 +50,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void FloatingState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
+        // NOTE: アイテム欄は出したまま使えなくする。宣言しないとアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
         if (!Conditions().IsGround(Resources().JumpAttackGroundCheckRadius()))

@@ -10,12 +10,12 @@ namespace GamePlay::Npc::Enemy
     {
     private:
         void DoUpdate() override;
-        // EnemyFactory の NormalBoss はこの竜のプレハブ
+        // NOTE: EnemyFactory の NormalBoss はこの竜のプレハブ
         [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return GameCore::Npc::Enemy::EnemyKind::NormalBoss; }
 
-        /** 島の外へ落ちたら戻す位置 */
+        // NOTE: 島の外へ落ちたら戻す位置
         [[serialize(5)]] glm::vec3 respawnPosition_ = glm::vec3(0.0f, 300.0f, 0.0f);
-        /** これより下へ落ちたら戻す */
+        // NOTE: これより下へ落ちたら戻す
         [[serialize(5)]] float fallLimitY_ = -100.0f;
 
 #pragma region Serialization Function

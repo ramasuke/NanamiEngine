@@ -18,7 +18,7 @@ namespace NanamiEngine::Core::Network
 
 namespace NanamiEngine::Module::Network
 {
-    /** Game実装側から呼ばれるAPIが実装されています。 */
+    // NOTE: 通信の開始・終了と送受信の入口。実際のシステムと振り分けは派生クラスが決める
     class NANAMI_API NetworkRunnerBase : public Component::ComponentBase,
                               public LifeCycleCallback::IUpdatable
     {
@@ -29,48 +29,42 @@ namespace NanamiEngine::Module::Network
         [[nodiscard]] static NetworkRunnerBase& Instance();
         [[nodiscard]] static NetworkRunnerBase* TryGetInstance() { return s_instance_; }
 
-        /** API: ホストとして開始し、sessionKey で LAN に告知する。結果は GetConnectionState() で見る */
+        // NOTE: ホストとして開始し、sessionKey で LAN に告知する。結果は接続状態で見る
         void StartHost(const std::string& sessionKey);
-        /** API: host へクライアントとして接続を始める。結果は GetConnectionState() で見る */
+        // NOTE: host へクライアントとして接続を始める。結果は接続状態で見る
         void StartClient(const Core::Network::HostEndpoint& host);
-        /** API: 通信を止め、StartHost / StartClient をやり直せる状態に戻す */
+        // NOTE: 通信を止め、もう一度開始できる状態に戻す
         void Shutdown();
         [[nodiscard]] bool IsStarted() const;
         [[nodiscard]] bool IsServer() const;
         [[nodiscard]] Core::Network::ConnectionState GetConnectionState() const;
-        /** API: PlayerIDの取得 */
         [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
-        /** API: NetworkObjectId の現在の所有者 */
         [[nodiscard]] Core::Network::PlayerId OwnerOf(Core::Network::NetworkObjectId id) const;
-        /** API: 自分がそのオブジェクトの所有者(権威)か */
+        // NOTE: 自分がそのオブジェクトの所有者 (権威) か
         [[nodiscard]] bool IsLocallyOwned(Core::Network::NetworkObjectId id) const;
-        /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
-        /** API: パケット送信 */
         void SendNetworkPacket(const Core::Network::Packet& packet);
         
-        /** --- Defaultの通信処理API一覧 --- */
-        //API: Network上で共有するオブジェクトの生成処理
+        // NOTE: ネットワーク上で共有するオブジェクトを生成する
         void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation);
 
     protected:
-        /** settings は DoCreateUseNetworkSystem にそのまま渡る。独自の INetworkSystem で始める派生クラス向け */
+        // NOTE: settings は DoCreateUseNetworkSystem にそのまま渡る。独自の INetworkSystem で始める派生クラス向け
         void Start(const Core::Network::NetworkStartSettings& settings);
 
     private:
         void OnUpdate() override;
-        /** 受け取ったパケットを処理 */
         void DispatchPollPackets();
 
     protected:
-        /** template method pattern*/
+        // NOTE: 派生クラスが埋めるテンプレートメソッド
         virtual void DoInitialize() = 0;
         virtual void DoShutdown() = 0;
         virtual void DoDispatchReceivedPacket(const Core::Network::Packet& packet) = 0;
         [[nodiscard]] virtual std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem(
             const Core::Network::NetworkStartSettings& settings) const = 0;
 
-        /** SandBox pattern */
+        // NOTE: 派生クラスに公開する通信部品
         [[nodiscard]] Core::Network::IPacketSender    & PacketSender() const;
         [[nodiscard]] Core::Network::IPlayerIdProvider& PlayerIdProvider() const;
 

@@ -26,7 +26,6 @@ namespace Coroutine
     {
         const float deltaTime = NanamiEngine::Time::DeltaTime();
 
-        // Tickable
         for (auto it = tickables_.begin(); it != tickables_.end();)
         {
             auto* waitable = *it;
@@ -43,7 +42,6 @@ namespace Coroutine
             }
         }
 
-        // Event
         for (auto it = events_.begin(); it != events_.end();)
         {
             if (const auto* waitable = *it; waitable->await_ready())
@@ -57,7 +55,6 @@ namespace Coroutine
             }
         }
 
-        // Coroutine chain
         for (auto it = coroutines_.begin(); it != coroutines_.end();)
         {
             if (auto& [awaited, awaiting] = *it; awaited.done())
@@ -72,7 +69,6 @@ namespace Coroutine
             }
         }
 
-        // pending反映
         if (!pendingTickables_.empty())
         {
             tickables_.insert(tickables_.end(),
@@ -155,7 +151,6 @@ namespace Coroutine
             destroyed.insert(addr);
         };
 
-        // Tickable
         for (const auto* waitable : tickables_)
             destroyIfNeeded(waitable->CoroutineHandle());
         for (const auto* waitable : pendingTickables_)
@@ -165,13 +160,11 @@ namespace Coroutine
         for (const auto* waitable : pendingFixedTickables_)
             destroyIfNeeded(waitable->CoroutineHandle());
 
-        // Event
         for (const auto* waitable : events_)
             destroyIfNeeded(waitable->CoroutineHandle());
         for (const auto* waitable : pendingEvents_)
             destroyIfNeeded(waitable->CoroutineHandle());
 
-        // Coroutine
         for (auto& [awaited, awaiting] : coroutines_)
         {
             destroyIfNeeded(awaited);

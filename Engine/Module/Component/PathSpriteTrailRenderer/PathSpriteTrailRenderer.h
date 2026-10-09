@@ -13,18 +13,16 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /**
-     * @brief 折れ線に沿ってスプライトをビルボードで並べ、始点から終点へ流す
-     */
+    // NOTE: 折れ線に沿ってスプライトをビルボードで並べ、始点から終点へ流す
     class NANAMI_API PathSpriteTrailRenderer final : public ComponentBase,
                                           public LifeCycleCallback::IUpdatable,
                                           public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        /** @brief ワールド座標の折れ線 */
+        // NOTE: ワールド座標の折れ線
         void SetPath(std::span<const glm::vec3> points);
         void ClearPath();
-        /** @brief 0〜1。全体のアルファに掛ける */
+        // NOTE: 0〜1。全体のアルファに掛ける
         void SetVisibility(float visibility);
         [[nodiscard]] float PathLength() const { return pathLength_; }
 
@@ -36,7 +34,7 @@ namespace NanamiEngine::Module::Component
         [[serialize(0)]] int                      renderOrder_ = 0;
         [[serialize(0)]] FIELD(Asset::SpriteFile) sprite_;
         [[serialize(0)]] LibCore::Dxlib::BlendMode blendMode_ = LibCore::Dxlib::BlendMode::Add;
-        /** @brief 始点からこの長さまで並べる */
+        // NOTE: 始点からこの長さまで並べる
         [[serialize(0)]] float                    trailLength_ = 300.0f;
         [[serialize(0)]] float                    startOffset_ = 12.0f;
         [[serialize(0)]] float                    spacing_ = 14.0f;

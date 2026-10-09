@@ -8,7 +8,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 会話を出すだけで終わりを待たない。演出を進めながら台詞を重ねるときに使う */
+    // NOTE: 会話を出すだけで終わりを待たない。演出を進めながら台詞を重ねるときに使う
     class StartChat final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

@@ -24,7 +24,7 @@ namespace GamePlay::Ui
 
         constexpr float TAU = std::numbers::pi_v<float> * 2.0f;
 
-        /** @return 目的地の方向を画面上の向き(右が +x、下が +y)にしたもの。カメラの背後でも向きは保つ */
+        // NOTE: 目的地の方向を画面上の向き (右が +x、下が +y) にする。カメラの背後でも向きは保つ
         glm::vec2 ScreenDirection(const glm::vec3& worldPos, const glm::vec2& screenCentre)
         {
             // NOTE: 背後の点は WorldToScreen の x,y が当てにならないので、画面中央の右・下へ向かうワールドの向きに射影する
@@ -81,7 +81,7 @@ namespace GamePlay::Ui
         if (!fireflySprite_)
             return;
 
-        // 先頭(画面の縁)ほど明るく、光が内から外へ流れて見えるように位相をずらす
+        // NOTE: 先頭(画面の縁)ほど明るく、光が内から外へ流れて見えるように位相をずらす
         const float phase = edgeFlowPeriod_secs_ > 0.0f ? time_secs_ / edgeFlowPeriod_secs_ : 0.0f;
         const int count = std::max(edgeFireflyCount_, 1);
         for (int i = 0; i < count; ++i)
@@ -150,7 +150,7 @@ namespace GamePlay::Ui
             return;
         }
 
-        // 画面外: 目的地の向きへ伸ばした線が、縁から edgeMargin_px_ 内側の枠に当たる所
+        // NOTE: 画面外: 目的地の向きへ伸ばした線が、縁から edgeMargin_px_ 内側の枠に当たる所
         const glm::vec2 direction = ScreenDirection(*markerPosition, centre);
         const glm::vec2 half = centre - glm::vec2(edgeMargin_px_);
         const float reachX = std::abs(direction.x) > 1e-4f ? half.x / std::abs(direction.x) : std::numeric_limits<float>::max();
@@ -159,7 +159,7 @@ namespace GamePlay::Ui
 
         DrawEdge(edge, direction, alpha);
 
-        // 添え書きは蛍の列の内側。右の縁なら右揃え
+        // NOTE: 添え書きは蛍の列の内側。右の縁なら右揃え
         const float inset = edgeFireflySpacing_px_ * static_cast<float>(std::max(edgeFireflyCount_, 1)) + 12.0f;
         const glm::vec2 labelAt = edge - direction * inset + glm::vec2(0.0f, -lineGap_px_ * 0.5f);
         DrawLabel(labelAt, current->label, distanceText, direction.x > 0.3f, alpha);

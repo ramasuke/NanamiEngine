@@ -7,7 +7,7 @@
 
 namespace
 {
-    // 他のピアのプレイヤーの攻撃を、被弾した対象の持ち主が受ける
+    // NOTE: 他のピアのプレイヤーの攻撃を、被弾した対象の持ち主が受ける
     struct PlayerAttackDamageRpcRegistration
     {
         PlayerAttackDamageRpcRegistration()

@@ -42,7 +42,6 @@ void GameObject::ComponentGroup::OnDrawGui()
 
     for (const auto& component : drawTargets)
     {
-        // 型名を取得して名前空間を除去
         std::string_view fullName = typeid(*component).name();
         const size_t lastColon = fullName.rfind("::");
         std::string_view displayClassName = (lastColon != std::string_view::npos)
@@ -109,9 +108,9 @@ void GameObject::ComponentGroup::OnDestroy()
 void GameObject::ComponentGroup::DestroyComponent(const std::shared_ptr<Component::ComponentBase>& component)
 {
     component->OnDestroy();
-    // OnDestroy の中ではまだトークンを使えるよう、切るのはその後
+    // NOTE: OnDestroy の中ではまだトークンを使えるよう、切るのはその後
     component->ImplementCancelOnDestroy();
-    // InitComponentGroup で行った登録を外す
+    // NOTE: InitComponentGroup で行った登録を外す
     Core::Application::ApplicationBase::ObjectRegistry().Unregister(component->GetGuid(), *component);
 }
 

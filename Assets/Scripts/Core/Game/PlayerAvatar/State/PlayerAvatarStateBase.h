@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Component
 
 namespace GameCore::PlayerAvatar
 {
-    //NOTE: 値オブジェクト
+    // NOTE: 値オブジェクト
     template <typename ContextT, typename StateTypeT>
     struct PlayerAvatarStateArgs final
     {
@@ -39,9 +39,7 @@ namespace GameCore::PlayerAvatar
         std::function<void(StateTypeT)> onChangeState_;
     };
 
-    /**
-     * @brief PlayerAvatar の State に共通する処理
-     */
+    // NOTE: PlayerAvatar の State に共通する処理
     template <typename ContextT, typename StateTypeT, typename AnimationTypeT, typename TransitionVisitorT>
     class PlayerAvatarStateBase : public IPlayerAvatarState
     {
@@ -58,7 +56,7 @@ namespace GameCore::PlayerAvatar
         virtual ~PlayerAvatarStateBase() override = default;
         [[nodiscard]] virtual AnimationTypeT AnimationType() const = 0;
         [[nodiscard]] virtual PlayerAvatarControlAcceptance ControlAcceptance() const = 0;
-        /** @brief このStateから起こりうる遷移とState内の操作を評価順に宣言する。副作用を持たせないこと */
+        // NOTE: このStateから起こりうる遷移とState内の操作を評価順に宣言する。表示にも使うので副作用を持たせないこと
         virtual void VisitTransitions(TransitionVisitorT& visitor) const {}
 
         void OnEnter() override
@@ -89,18 +87,17 @@ namespace GameCore::PlayerAvatar
         std::function<void(StateTypeT)> onChangeState_;
 
     protected:
-        /** ---- 以下templateMethodパターン ---- */
+        // NOTE: 以下 Template Method パターン
         virtual void DoEnter      () = 0;
         virtual void DoUpdate     () = 0;
         virtual void DoFixedUpdate() = 0;
         virtual void DoExit       () = 0;
 
-        /** @brief UpdateLockOn で新しくロックオンした時に呼ばれる */
+        // NOTE: UpdateLockOn で新しくロックオンした時に呼ばれる
         virtual void OnLockOnEngaged() const {}
 
     protected:
-        /** ---- 以下サンドボックスパターン ---- */
-        /** @note Playerの行動に必要なパラメータと行動を取得できる関数群 */
+        // NOTE: 以下サンドボックスパターン。派生 State が使うパラメータと行動の窓口
         [[nodiscard]] ContextT&                             Context      () const { return *context_; }
         [[nodiscard]] GameObject::IGameObject&              Player       () const { return *Context().PlayerAvatarObject(); }
         [[nodiscard]] Component::Animator&                  Animator     () const { return Context().PlayerAvatarAnimator(); }
@@ -114,16 +111,15 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] GamePlay::PlayerAvatar::InteractableArea& InteractableArea() const { return Context().InteractableArea(); }
         [[nodiscard]] State::PlayerAvatarStateCondition     Conditions   () const { return State::PlayerAvatarStateCondition(context_); }
         [[nodiscard]] State::PlayerAvatarStateAction        Actions      () const { return State::PlayerAvatarStateAction   (context_); }
-        /** @note カメラと索敵範囲が生きている時だけ呼ぶこと */
+        // WARNING: カメラと索敵範囲が生きている時だけ呼ぶこと
         [[nodiscard]] LockOnController                      LockOnControl() const { return LockOnController(Context().Camera(), Context().LockOnDetectionArea()); }
 
         void ResetDuringTime() { stateDuring_secs_ = 0.0f; }
-        //現在のStateの持続時間を返す
         [[nodiscard]] float During_secs() const { return stateDuring_secs_; }
         void OnChangeState(const StateTypeT type) const { onChangeState_(type); }
         [[nodiscard]] const std::function<void(StateTypeT)>& OnChangeStateCallback() const { return onChangeState_; }
 
-        // 1回潰すだけだと重力で斜面を滑り出すので、留まるStateは毎 DoFixedUpdate で呼ぶ
+        // NOTE: 1回潰すだけだと重力で斜面を滑り出すので、留まるStateは毎 DoFixedUpdate で呼ぶ
         void HoldHorizontalVelocity() const
         {
             RigidBody().SetLinearVelocity(glm::vec3(0.0f, RigidBody().LinearVelocity().y, 0.0f));
@@ -134,7 +130,7 @@ namespace GameCore::PlayerAvatar
             Context().Camera().ChangeCamera(camera);
         }
 
-        /** @brief ロックオン中はロックオンカメラを維持し、そうでなければ背後のカメラへ切り替える */
+        // NOTE: ロックオン中はロックオンカメラを維持し、そうでなければ背後のカメラへ切り替える
         void ChangeCameraByLockOn() const
         {
             if (ExpiredCamera())
@@ -144,7 +140,7 @@ namespace GameCore::PlayerAvatar
             ChangeCamera(cameraGroup.IsLockedOn() ? cameraGroup.LockOnCamera() : cameraGroup.FollowFromBehind());
         }
 
-        /** @brief LockOn 入力のトグル、ロック中の左右切り替え、対象が見えなくなった時の自動解除 */
+        // NOTE: LockOn 入力のトグル、ロック中の左右切り替え、対象が見えなくなった時の自動解除
         void UpdateLockOn() const
         {
             if (ExpiredCamera() || Context().ExpiredLockOnDetectionArea())
@@ -169,7 +165,7 @@ namespace GameCore::PlayerAvatar
                 isLockedOn || !cameraGroup.LockOnCandidate().expired());
         }
 
-        /** @brief 真上へ跳び、ジャンプのクールダウンとスタミナ消費を始める */
+        // NOTE: 真上へ跳び、ジャンプのクールダウンとスタミナ消費を始める
         void ApplyJump() const
         {
             auto& status = Context().Status();
@@ -178,7 +174,7 @@ namespace GameCore::PlayerAvatar
             status.ConsumeJumpStamina();
         }
 
-        /** @brief 移動入力があればその方向(カメラ基準)へ即座に向く。なければ今の向きのまま転がる */
+        // NOTE: 移動入力があればその方向(カメラ基準)へ即座に向く。なければ今の向きのまま転がる
         void FaceAvoidRollingDirection() const
         {
             auto& input = Context().Input();
@@ -189,7 +185,7 @@ namespace GameCore::PlayerAvatar
             Actions().FaceTowards(Actions().CameraRelativeDirection(glm::vec2(move.x, move.y)));
         }
 
-        /** @brief 回避中は自機の前方へ、出だしを速く終わり際を遅くした速度で進める */
+        // NOTE: 回避中は自機の前方へ、出だしを速く終わり際を遅くした速度で進める
         void MoveAvoidRolling() const
         {
             const auto& resources = Context().Resources();

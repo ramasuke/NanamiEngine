@@ -21,7 +21,7 @@ namespace NanamiEngine::Core::Toolbar
         {
             const auto& prefsList = Module::LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().GetPrefsList();
 
-            // subPath をカテゴリキーとしてグループ化 (アルファベット順、空文字は "General")
+            // NOTE: subPath ごとにまとめ、見出しはアルファベット順に並べる
             std::map<std::string, std::vector<size_t>> categoryMap;
             for (size_t i = 0; i < prefsList.size(); ++i)
                 categoryMap[prefsList[i].subPath].push_back(i);

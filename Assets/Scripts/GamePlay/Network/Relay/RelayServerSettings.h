@@ -7,7 +7,7 @@
 
 namespace GamePlay::Network
 {
-    /** 中継サーバーの接続情報 */
+    // NOTE: 中継サーバーの接続情報
     struct RelayServerSettings final
     {
         bool          useRelayServer = true;
@@ -17,11 +17,10 @@ namespace GamePlay::Network
 
         [[nodiscard]] static RelayServerSettings Load();
 
-        /** 中継サーバーを使う設定で、接続先と appId が埋まっているか */
+        // NOTE: 中継サーバーを使う設定で、接続先と appId が埋まっているか
         [[nodiscard]] bool IsEnabled() const;
         [[nodiscard]] NanamiEngine::Core::Network::HostEndpoint Endpoint() const { return { address, port }; }
 
-        // DrawLocalPrefWidget から呼ばれる
         void OnDrawGui();
 
         template<class Archive>

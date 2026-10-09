@@ -7,7 +7,7 @@ namespace NanamiEngine::Core::Network
 {
     namespace
     {
-        // 別のアプリや古い版のパケットを読まないための目印
+        // NOTE: 別のアプリや古い版のパケットを読まないための目印
         constexpr std::uint32_t LAN_SESSION_MAGIC            = 0x444C4E4E; // "NNLD"
         constexpr std::uint8_t  LAN_SESSION_PROTOCOL_VERSION = 1;
 
@@ -26,7 +26,7 @@ namespace NanamiEngine::Core::Network
             return buffer;
         }
 
-        /** ヘッダが一致すれば本体の読み出し位置を返す */
+        // NOTE: ヘッダが一致すれば本体の読み出し位置を返す
         std::optional<size_t> ReadLanSessionHeader(const ByteBuffer& buffer, const LanSessionMessageKind kind)
         {
             size_t offset = 0;

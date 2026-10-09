@@ -8,7 +8,7 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    /** センサーに入った ITakableEnemyAttack へ、投射物1つにつき1回だけダメージを与える */
+    // NOTE: センサーに入った ITakableEnemyAttack へ、投射物1つにつき1回だけダメージを与える
     class AttackProjectile final : public Component::ComponentBase,
                                    public Physics::Callback::ISensorEnterable,
                                    public IAttackProjectile

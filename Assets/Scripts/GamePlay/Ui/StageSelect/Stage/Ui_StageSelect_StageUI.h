@@ -28,7 +28,7 @@ namespace GamePlay::Ui
         [[nodiscard]] bool                              IsLocked         () const { return isLocked_;                        }
 
         void SetHighlighted(bool isHighlighted);
-        /** @brief ロック中は名前を伏せ、属性アイコンを錠前にして難易度を隠す */
+        // NOTE: ロック中は名前を伏せ、属性アイコンを錠前にして難易度を隠す
         void SetLocked(bool isLocked);
 
     private:

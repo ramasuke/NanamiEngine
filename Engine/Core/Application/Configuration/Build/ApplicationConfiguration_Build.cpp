@@ -31,10 +31,10 @@ namespace NanamiEngine::Core::Application::Configuration
     bool                     BuildConfiguration::assetUpdatesEnabled_ = BUILD_DEFAULT_ASSET_UPDATES;
 
     constexpr auto BUILD_CONFIG_PATH          = "Build/";
-    // RuntimeConfigDirectory() と揃える
+    // NOTE: RuntimeConfigDirectory() と揃える
     constexpr auto BUILD_RUNTIME_CONFIG_PATH  = "Build/Runtime/";
     constexpr auto BUILD_PRODUCT_NAME_KEY     = "ProductName";
-    // NOTE: Asset Dist は空の Required Client Version をこれで埋める
+    // NOTE: アセット配信の Required Client Version が空のときの既定値にもなる
     constexpr auto BUILD_CLIENT_VERSION_KEY   = "ClientVersion";
     constexpr auto BUILD_START_SCENE_GUID_KEY = "StartSceneGuid";
     constexpr auto BUILD_CONFIGURATION_KEY    = "Configuration";
@@ -44,7 +44,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
     namespace
     {
-        // ImGui の入力は UTF-8 なので、ACP ではなく UTF-8 として wide 文字列にする
+        // NOTE: ImGui の入力は UTF-8 なので、ACP ではなく UTF-8 として wide 文字列にする
         std::filesystem::path BuildConfigUtf8ToPath(const std::string& utf8)
         {
             return std::filesystem::path(std::u8string(utf8.begin(), utf8.end()));

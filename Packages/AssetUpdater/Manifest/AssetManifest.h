@@ -35,7 +35,7 @@ namespace NanamiEngine::AssetUpdater
     {
         std::string   hash;
         std::uint64_t size = 0;
-        /** この中身を使うパスのうち最初の1つ。エラーの表示用 */
+        // NOTE: この中身を使うパスのうち最初の1つ。エラーの表示用
         std::string   path;
     };
 

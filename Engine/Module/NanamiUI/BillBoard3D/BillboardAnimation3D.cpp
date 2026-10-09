@@ -48,7 +48,7 @@ namespace NanamiEngine::Module::NanamiUi
         const int frame = std::clamp(frame_, 0, static_cast<int>(handles.size()) - 1);
 
         SetDrawBlendMode(isAdditive_ ? DX_BLENDMODE_ADD : DX_BLENDMODE_ALPHA, static_cast<int>(alpha_ * 255.0f));
-        // 同じ位置に描かれた下地のビルボードに深度で負けないよう、深度は書き込まない
+        // NOTE: 同じ位置に描かれた下地のビルボードに深度で負けないよう、深度は書き込まない
         SetWriteZBuffer3D(FALSE);
 
         DrawBillboard3D(

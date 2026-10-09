@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    /// State を遷移させない操作
+    // NOTE: State を遷移させない操作
     enum class SwordManAvatarStateAction : uint8_t
     {
         Move,

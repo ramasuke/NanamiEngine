@@ -36,7 +36,7 @@ namespace GameCore::Scene::Main
 
     Coroutine::Task<EnterResult> MainIslandScene::OnEnterAsync(NanamiEngine::R4::CancellationToken)
     {
-        // Context の FIELD は読み込んだシーン内を指すので、読み込みが済んだここで初めて触る
+        // NOTE: Context の FIELD は読み込んだシーン内を指すので、読み込みが済んだここで初めて触る
         Context()->Init();
 
         auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
@@ -111,7 +111,7 @@ namespace GameCore::Scene::Main
                 if (camera && camera->DestroyCancellationToken().IsCancellationRequested())
                     co_return;
                 elapsed_secs += Time::DeltaTime();
-                // 島が引きずられはじめ、だんだん揺れが強くなる
+                // NOTE: 島が引きずられはじめ、だんだん揺れが強くなる
                 const float rate = GamePlay::Prop::StoryMovie::Rate(elapsed_secs, departure_secs);
                 NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::SustainShakeMainCamera(0.15f + 0.55f * rate);
             }
@@ -212,7 +212,7 @@ namespace GameCore::Scene::Main
 
     void MainIslandScene::DoExit()
     {
-        // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
+        // NOTE: 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {
             PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);

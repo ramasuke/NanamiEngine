@@ -134,7 +134,7 @@ void Component::ParticleSystem::TryStopPlaying()
 {
     if (playingEffectHandle_ != -1)
     {
-        // 再生ハンドルは StopEffekseer3DEffect で止める（DeleteEffekseerEffect はリソースハンドル専用）
+        // WARNING: 再生ハンドルは StopEffekseer3DEffect で止める (DeleteEffekseerEffect はリソースハンドル専用)
         StopEffekseer3DEffect(playingEffectHandle_);
         playingEffectHandle_ = -1;
     }
@@ -149,7 +149,7 @@ void Component::ParticleSystem::TryReleaseEffectResource()
 {
     if (resourceEffectHandle_ != -1)
     {
-        // ParticleFile::LoadDxLibHandle はインスタンスごとに新しく読み込むので、読み込んだ Component 側で解放する
+        // NOTE: ParticleFile::LoadDxLibHandle はインスタンスごとに新しく読み込むので、読み込んだ Component 側で解放する
         DeleteEffekseerEffect(resourceEffectHandle_);
         resourceEffectHandle_ = -1;
     }

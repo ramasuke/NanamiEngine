@@ -45,13 +45,13 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::LookAtTarget() const
     constexpr auto up = glm::vec3(0, 1, 0);
 
     glm::vec3 toTarget = targetPos - cameraPos;
-    // カメラと注視対象の座標が一致する場合、normalize(0,0,0)はNaNになるためフォールバック
+    // NOTE: カメラと注視対象の座標が一致する場合、normalize(0,0,0)はNaNになるためフォールバック
     if (glm::dot(toTarget, toTarget) < 0.0001f)
         toTarget = glm::vec3(0.0f, 0.0f, 1.0f);
     const glm::vec3 forward = glm::normalize(toTarget);
 
     glm::vec3 rightAxis = glm::cross(up, forward);
-    // forwardがワールドupと平行な場合、crossがゼロベクトルになるため別軸でフォールバック
+    // NOTE: forwardがワールドupと平行な場合、crossがゼロベクトルになるため別軸でフォールバック
     if (glm::dot(rightAxis, rightAxis) < 0.0001f)
         rightAxis = glm::cross(glm::vec3(0, 0, 1), forward);
     const glm::vec3 right = glm::normalize(rightAxis);

@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief LockPlayerControl で止めた操作を戻す */
+    // NOTE: LockPlayerControl で止めた操作を戻す
     class UnlockPlayerControl final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

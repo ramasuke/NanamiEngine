@@ -6,13 +6,13 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /** @brief StoryProgress のフラグを立てる(その場で保存される)。手元の PC にだけ残る */
+    // NOTE: StoryProgress のフラグを立てる(その場で保存される)。手元の PC にだけ残る
     class SetStoryFlag final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-        // NOTE: tools.bt で設定できるよう Story::StoryFlag を int で持つ
+        // NOTE: ツリーの編集ツールから設定できるよう Story::StoryFlag を int で持つ
         [[serialize(0)]] int flag_ = 0;
 
     public:

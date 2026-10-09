@@ -26,7 +26,7 @@ namespace GamePlay::Ui
         using GameCore::PlayerAvatar::MagicCaster::SPELL_LOADOUT_SLOT_COUNT;
         using GameCore::PlayerAvatar::MagicCaster::SPELL_SLOTS_PER_PAGE;
 
-        /** 向き（0=上 1=右 2=下 3=左）の外向きの単位ベクトル。ボタン表示を枠の外側の頂点に置くのに使う */
+        // NOTE: 向き（0=上 1=右 2=下 3=左）の外向きの単位ベクトル。ボタン表示を枠の外側の頂点に置くのに使う
         const std::array<glm::vec2, SPELL_SLOTS_PER_PAGE> SPELL_PALETTE_DIRECTIONS =
         {
             glm::vec2( 0.0f, -1.0f),
@@ -89,7 +89,7 @@ namespace GamePlay::Ui
 
     glm::vec3 SpellPalette::BackAnchorPos(const int direction) const
     {
-        // 奥のページは時計回りに 45° ずらした斜めに置く。入れ替えると陣が回ったように見える
+        // NOTE: 奥のページは時計回りに 45° ずらした斜めに置く。入れ替えると陣が回ったように見える
         const FIELD(GameObject::IGameObject)* anchors[] = { &anchorTopRight_, &anchorBottomRight_, &anchorBottomLeft_, &anchorTopLeft_ };
         const auto anchor = anchors[direction]->get();
         return anchor ? anchor->Transform().GetLocalPos() : glm::vec3(0.0f);
@@ -292,7 +292,7 @@ namespace GamePlay::Ui
                           && state != MagicCasterAvatarStateType::WarpIn
                           && state != MagicCasterAvatarStateType::Death;
         const bool isPad = device_ == PlayerAvatarInputDevice::Gamepad;
-        // キーボードは 1〜4 を直接押すので、右クリック（2ページ目）を押している間だけ開いた見た目にする
+        // NOTE: キーボードは 1〜4 を直接押すので、右クリック（2ページ目）を押している間だけ開いた見た目にする
         const bool isOpen = isShown && (input.Palette().IsUpdatePressed() || (!isPad && input.PageShift().IsUpdatePressed()));
 
         // NOTE: キーボードは右クリックで開くと同時に 2 頁目になるので、そのときは開く音だけ。離して戻るときは鳴らさない

@@ -7,7 +7,7 @@ namespace GamePlay::Weather
 {
     namespace
     {
-        // WindZone 未配置時の既定値。GrassField が持っていた値をそのまま引き継いでいる
+        // NOTE: WindZone 未配置時の既定値
         constexpr float DEFAULT_DIRECTION_DEG = 30.0f;
         constexpr float DEFAULT_STRENGTH01    = 1.0f;
         constexpr float DEFAULT_SPEED         = 1.6f;

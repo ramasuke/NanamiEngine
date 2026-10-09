@@ -11,20 +11,20 @@
 
 namespace GamePlay::Pickup
 {
-    /** @brief 地面に落ちている拾い物の共通部分。少し待ってからこの PC のプレイヤーへ飛んでいき渡す */
+    // NOTE: 地面に落ちている拾い物の共通部分。少し待ってからこの PC のプレイヤーへ飛んでいき渡す
     class PickupItemBase : public Component::ComponentBase,
                            public LifeCycleCallback::IUpdatable,
                            public GameCore::PlayerAvatar::IPlayerPickable
     {
     protected:
-        /** @brief 生成直後に呼ぶ。sideDirection 側へ、横速度をランダムにして跳ね上げる */
+        // NOTE: 生成直後に呼ぶ。sideDirection 側へ、横速度をランダムにして跳ね上げる
         void Launch(const glm::vec3& sideDirection);
         [[nodiscard]] bool IsPickable() const;
 
         virtual void OnPickupUpdate(float elapsed_secs) {}
-        /** @brief picker の持ち物に入りきらない間は false。その間は地面に残る */
+        // NOTE: picker の持ち物に入りきらない間は false。その間は地面に残る
         [[nodiscard]] virtual bool CanReceive(const GameCore::PlayerAvatar::IPlayerAvatarStatus& picker) const { return true; }
-        /** @brief 中身を拾った人へ渡す */
+        // NOTE: 中身を拾った人へ渡す
         virtual void Receive(GameCore::PlayerAvatar::IPlayerAvatarStatus& pickerStatus) = 0;
 
     private:
@@ -43,9 +43,9 @@ namespace GamePlay::Pickup
         [[serialize(0)]] float pickupDelay_secs_   = 0.6f;
         [[serialize(0)]] FIELD(Asset::SoundFile) pickupSound_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) pickupParticle_;
-        // 島の外へ落ちた拾い物を落とし続けないよう、出た高さからこれだけ落ちたら消す
+        // NOTE: 島の外へ落ちた拾い物を落とし続けないよう、出た高さからこれだけ落ちたら消す
         [[serialize(1)]] float fallOutDepth_ = 500.0f;
-        // 隙間や崖下へ落ちても取りに行かずに済むよう、地形をすり抜けてプレイヤーへ飛ばす
+        // NOTE: 隙間や崖下へ落ちても取りに行かずに済むよう、地形をすり抜けてプレイヤーへ飛ばす
         [[serialize(2)]] float homingSpeed_          = 80.0f;
         [[serialize(2)]] float homingAcceleration_   = 600.0f;
         [[serialize(2)]] float homingMaxSpeed_       = 700.0f;

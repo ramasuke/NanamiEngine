@@ -8,15 +8,13 @@
 
 namespace GameCore::Npc::Enemy
 {
-    /**
-     * ステージの敵の湧き地点。この GameObject の位置と向きで kind_ の敵を湧かせる
-     * NOTE: prefab_ を指定するとその prefab を湧かせる(イベントの強い個体など)。ボスHPゲージなどの後処理は kind_ で決まる
-     */
+    // NOTE: ステージの敵の湧き地点。この GameObject の位置と向きで kind_ の敵を湧かせる
+    // NOTE: prefab_ を指定するとその prefab を湧かせる。ボス HP ゲージなどの後処理は kind_ で決まる
     class EnemySpawnPoint final : public Component::ComponentBase
     {
     public:
         [[nodiscard]] EnemyKind Kind() const { return kind_; }
-        /** @return 指定がなければ nullptr(EnemyFactory の kind_ の prefab を使う) */
+        // NOTE: 指定がなければ nullptr (種類ごとの既定の prefab が使われる)
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> Prefab() const { return prefab_.get(); }
 
     private:
@@ -38,7 +36,7 @@ namespace GameCore::Npc::Enemy
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(kind_));
-            // NOTE: version 1 は倒したボスを湧かせないためのストーリーフラグを持っていた。今は倒しても毎回湧く
+            // NOTE: 旧版のストーリーフラグ。今は使わないので読み捨てる
             if (version == 1)
             {
                 int skipIfStoryFlag_ = -1;

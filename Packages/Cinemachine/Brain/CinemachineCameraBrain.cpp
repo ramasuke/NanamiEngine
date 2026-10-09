@@ -35,7 +35,7 @@ void CineMachine::CinemachineCameraBrain::OnStart()
 
 void CineMachine::CinemachineCameraBrain::OnLateUpdate()
 {
-    // 切り替え時の補間先が古くならないよう、非アクティブなカメラも更新する (重複は1回だけ)
+    // NOTE: 切り替え時の補間先が古くならないよう、非アクティブなカメラも更新する (重複は1回だけ)
     std::vector<const CineMachineVirtualCamera*> updatedCameras;
     updatedCameras.reserve(virtualCameras_.size());
     for (const auto& virtualCamera : virtualCameras_)
@@ -65,11 +65,11 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
 
     const float dt = Time::DeltaTime();
 
-    // カメラが切り替わったら今の姿勢から補間する (最初のカメラは補間しない)
+    // NOTE: カメラが切り替わったら今の姿勢から補間する (最初のカメラは補間しない)
     const CineMachineVirtualCamera* targetCamera = currentVirtualCamera_.get().get();
     if (targetCamera != blendTargetCamera_)
     {
-        // 切り替え先のカメラが補間を指定していればそちらを使う
+        // NOTE: 切り替え先のカメラが補間を指定していればそちらを使う
         blend_ = targetCamera->CustomBlendIn().value_or(BlendIn{ cameraBlendDuration_secs_, LibCore::EaseType::SmoothStep });
         if (blendTargetCamera_ != nullptr && blend_.duration_secs > 0.0f)
         {
@@ -87,7 +87,7 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
         blendElapsed_ += dt;
         const float rate = std::clamp(blendElapsed_ / blend_.duration_secs, 0.0f, 1.0f);
         const float t    = LibCore::Tween::Ease(blend_.ease).Ease(rate);
-        // 行き先は毎フレームのtargetなので、移動中のカメラにも追従したまま合流する
+        // NOTE: 行き先は毎フレームのtargetなので、移動中のカメラにも追従したまま合流する
         smoothedPos_ = glm::mix(blendFromPos_, targetPos, t);
         smoothedRot_ = glm::slerp(blendFromRot_, targetRot, t);
         smoothedFov_ = glm::mix(blendFromFov_, targetFov, t);
@@ -96,14 +96,13 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
     }
     else if (currentVirtualCamera_->WantsImmediateApply())
     {
-        // lerp/slerpを完全にスキップしてVirtualCameraのTransformを即時適用する。
         smoothedPos_ = targetPos;
         smoothedRot_ = targetRot;
         smoothedFov_ = targetFov;
     }
     else
     {
-        // 補完の開始点は揺れを含まないsmoothedPos_/smoothedRot_にする。
+        // NOTE: 補間の起点は揺れを含まない smoothedPos_ / smoothedRot_ にする
         smoothedPos_ = glm::mix(smoothedPos_, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
         smoothedRot_ = glm::slerp(smoothedRot_, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
         smoothedFov_ = glm::mix(smoothedFov_, targetFov, 1.0f - std::exp(-fovLerpSpeed_secs_ * dt));
@@ -111,17 +110,17 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
     Transform().SetWorldPos(smoothedPos_);
     Transform().SetWorldRot(smoothedRot_);
 
-    // アクティブなVirtualCameraが切り替わったことをビヘイビアに通知する(NoiseCameraBehaviourのフェードイン等)。
+    // NOTE: アクティブな VirtualCamera が切り替わったことをビヘイビアに通知する
     if (currentVirtualCamera_.get().get() != liveCamera_)
     {
         liveCamera_ = currentVirtualCamera_.get().get();
         currentVirtualCamera_->OnBecameLive();
     }
 
-    // ShakeCameraBehaviourなど、補完後にオフセットを加えるビヘイビアのコールバック。
+    // NOTE: 補間後にオフセットを加えるビヘイビアのコールバック
     currentVirtualCamera_->MainCameraCallback();
 
-    // コールバック後の最終Transformでカメラをセットアップする。
+    // NOTE: コールバックで動いた後の Transform でカメラを確定する
     const glm::vec3 finalPos = Transform().GetWorldPos();
     const glm::quat finalRot = Transform().GetWorldRot();
     const glm::vec3 forward   = finalRot * glm::vec3(0, 0, 1);
@@ -151,7 +150,7 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
     const glm::vec3 right   = cameraRot * glm::vec3(1, 0, 0) * (tanHalfFov * aspectRatio);
     const glm::vec3 up      = cameraRot * glm::vec3(0, 1, 0) * tanHalfFov;
 
-    // near=1 のときのNear平面の中心と四隅
+    // NOTE: near=1 のときのNear平面の中心と四隅
     const std::array<glm::vec3, 5> nearPlanePoints = {
         forward,
         forward + right + up,
@@ -162,7 +161,7 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
 
     const Module::Physics::LayerMask mask = nearClipLayerMask_;
 
-    // 球の重なり判定はメッシュの三角形を枝刈りできず重いため、最近傍で打ち切れるレイで調べる
+    // NOTE: 球の重なり判定はメッシュの三角形を枝刈りできず重いため、最近傍で打ち切れるレイで調べる
     float safeNear = cameraNear_;
     for (const glm::vec3& point : nearPlanePoints)
     {
@@ -191,7 +190,7 @@ void CineMachine::CinemachineCameraBrain::OnDebugRender()
         {
             smoothedPos_ = currentVirtualCamera_->Transform().GetWorldPos();
             smoothedRot_ = currentVirtualCamera_->Transform().GetWorldRot();
-            // OnUpdateが回らない編集モードでも、錐台表示が現在のFOVを映すようにする
+            // NOTE: OnUpdateが回らない編集モードでも、錐台表示が現在のFOVを映すようにする
             smoothedFov_ = currentVirtualCamera_->Fov();
             appliedFov_  = smoothedFov_;
             hasSmoothedPose_ = true;
@@ -289,12 +288,12 @@ void CineMachine::CinemachineCameraBrain::ApplyVirtualCameraMatrix(
 
 void CineMachine::CinemachineCameraBrain::SnapToVirtualCamera(const CineMachineVirtualCamera& virtualCamera)
 {
-    // Transformだけ書き換えても、次のOnUpdateが残っているsmoothedPos_から補間し直して元へ戻すので、補間の起点ごと合わせる
+    // NOTE: Transform だけ書き換えても次の更新で smoothedPos_ から補間し直されるので、起点ごと合わせる
     smoothedPos_ = virtualCamera.Transform().GetWorldPos();
     smoothedRot_ = virtualCamera.Transform().GetWorldRot();
     smoothedFov_ = virtualCamera.Fov();
     hasSmoothedPose_ = true;
-    // スナップ先への切り替え補間は不要
+    // NOTE: スナップ先への切り替え補間は不要
     blendTargetCamera_ = &virtualCamera;
     isBlending_ = false;
     Transform().SetWorldPos(smoothedPos_);
@@ -332,9 +331,6 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
     if (cameraBrain_ == nullptr)
         return;
 
-    // assert(!cameraBrain_->virtualCameras_.empty() && "No virtual cameras registered!");
-
-    //TODO: 明らかにバグです、修正必須。
     if (cameraBrain_->virtualCameras_.empty())
         return;
     

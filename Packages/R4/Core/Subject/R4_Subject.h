@@ -4,14 +4,14 @@
 
 namespace NanamiEngine::R4
 {
-    ///NOTE: OnNext した値を購読者へ流す（R3 の Subject<T>）
+    // NOTE: OnNext した値を購読者へ流す（R3 の Subject<T>）
     template <typename T>
     class Subject final
     {
     public:
         Subject() = default;
         Subject(const Subject&) { }
-        // rxcpp の subject はムーブ元が空になるので、ムーブは共有
+        // NOTE: rxcpp の subject はムーブ元が空になるので、ムーブは共有
         Subject(Subject&& other) : subject_(other.subject_) { }
         Subject& operator=(const Subject&) { return *this; }
         Subject& operator=(Subject&&)      { return *this; }

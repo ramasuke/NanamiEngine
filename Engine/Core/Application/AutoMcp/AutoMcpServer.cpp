@@ -93,7 +93,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return false;
         }
 
-        // 他プロセスに同じポートを横取りされないようにする
+        // NOTE: 他プロセスに同じポートを横取りされないようにする
         int exclusive = 1;
         setsockopt(listenSocket, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, reinterpret_cast<const char*>(&exclusive), sizeof(exclusive));
 
@@ -173,7 +173,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         if (!IsListening())
             return;
 
-        // 前フレームまでに受けたスクリーンショットを先に仕上げる。今フレームで受けた要求は次のフレームの絵を返す
+        // NOTE: 前フレームまでに受けたスクリーンショットを先に仕上げる。今フレームで受けた要求は次のフレームの絵を返す
         GrabScreenshots(false);
         FinishScreenshots();
 
@@ -370,7 +370,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
     void AutoMcpServer::FinishScreenshots()
     {
-        // game モードは OnSceneRendered を一度通ってから仕上げる
+        // NOTE: game モードは OnSceneRendered を一度通ってから仕上げる
         std::vector<PendingScreenshot> remaining;
         for (auto& screenshot : screenshots_)
         {

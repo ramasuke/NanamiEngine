@@ -6,7 +6,7 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief 突進してきた敵の頭が刺さる障害物の目印 */
+    // NOTE: 突進してきた敵の頭が刺さる障害物の目印
     class ChargeStuckObstacle final : public Component::ComponentBase
     {
     public:

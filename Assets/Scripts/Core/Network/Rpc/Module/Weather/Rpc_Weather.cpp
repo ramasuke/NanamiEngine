@@ -6,7 +6,7 @@
 
 namespace
 {
-    // 汎用演出RPC: 権威側が変えた天候を、この宛先を持つ他ピアの空にも反映する
+    // NOTE: 汎用演出RPC: 権威側が変えた天候を、この宛先を持つ他ピアの空にも反映する
     struct WeatherRpcRegistration
     {
         WeatherRpcRegistration()

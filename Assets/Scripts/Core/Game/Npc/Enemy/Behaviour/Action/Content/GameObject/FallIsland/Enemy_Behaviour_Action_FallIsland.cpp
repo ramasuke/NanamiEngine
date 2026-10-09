@@ -46,7 +46,7 @@ namespace
             return true;
         };
 
-        // ぐらりと傾く。行き過ぎて少し揺れ戻る
+        // NOTE: ぐらりと傾く。行き過ぎて少し揺れ戻る
         for (float t = 0.0f; t < motion.tiltSecs; t += Time::DeltaTime())
         {
             const float u      = t / motion.tiltSecs;
@@ -58,7 +58,7 @@ namespace
             co_await Coroutine::WaitYield();
         }
 
-        // 傾いたまま加速して落ちていく
+        // NOTE: 傾いたまま加速して落ちていく
         for (float t = 0.0f; t < motion.fallSecs; t += Time::DeltaTime())
         {
             const float u = t / motion.fallSecs;

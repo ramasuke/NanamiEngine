@@ -13,10 +13,8 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::MainWindow
 {
-    /**
-     * @brief AnimationViewWindow で再生する 1 クリップ分の再生状態と DxLib のアタッチ管理
-     * @note  再生仕様は AnimationClipNode に合わせる。animationFile_ が空ならモデル自身のアニメーションを使う
-     */
+    // NOTE: プレビュー再生する 1 クリップ分の再生状態と DxLib のアタッチ管理
+    // NOTE: 再生仕様は AnimationClipNode に合わせる。animationFile_ が空ならモデル自身のアニメーションを使う
     class NANAMI_API AnimationPreviewSlot final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
@@ -27,7 +25,7 @@ namespace NanamiEngine::Core::MainWindow
         AnimationPreviewSlot(const AnimationPreviewSlot&)            = delete;
         AnimationPreviewSlot& operator=(const AnimationPreviewSlot&) = delete;
 
-        /** @brief アニメ .mv1 の読み込みと、クリップ/ソース/モデル変更に応じたアタッチのやり直し。modelHandle が -1 なら何もしない */
+        // NOTE: アニメ .mv1 を読み、変更に応じてアタッチし直す。modelHandle が -1 なら何もしない
         void Sync(int modelHandle, bool nameCheck);
         void Advance(float deltaSecs);
         void Apply(int modelHandle, float blendRate) const;
@@ -41,15 +39,15 @@ namespace NanamiEngine::Core::MainWindow
 
     private:
         void  ReleaseSource();
-        /** @brief クリップを切り替え、前のクリップ用の再生区間と時間をリセットする */
+        // NOTE: クリップを切り替え、前のクリップ用の再生区間と時間をリセットする
         void  SelectClip(int clipIndex);
-        /** @brief クリップ一覧を引くハンドル。animationFile_ が空ならモデル自身 */
+        // NOTE: クリップ一覧を引くハンドル。animationFile_ が空ならモデル自身
         [[nodiscard]] int   ClipSourceHandle(int modelHandle) const;
         [[nodiscard]] float ClipEndTime() const;
 
         FIELD(Module::Asset::Mv1File) animationFile_;
         std::optional<Guid> sourceGuid_;
-        // LoadDxLibHandle で複製した呼び出し側所有のハンドル
+        // NOTE: LoadDxLibHandle で複製した自前のハンドル。解放もここで行う
         int sourceHandle_ = -1;
 
         int  attachIndex_          = -1;
@@ -63,7 +61,7 @@ namespace NanamiEngine::Core::MainWindow
         float time_      = 0.0f;
         float speed_     = 1.0f;
         float startTime_ = 0.0f;
-        /** @brief 0 以下ならクリップ末尾 */
+        // NOTE: 0 以下ならクリップ末尾
         float endTime_   = 0.0f;
         bool  isLoop_    = true;
 

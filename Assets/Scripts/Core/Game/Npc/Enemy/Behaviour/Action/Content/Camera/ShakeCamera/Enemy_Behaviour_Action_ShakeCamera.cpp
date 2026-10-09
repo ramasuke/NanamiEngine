@@ -10,7 +10,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(intensity_, duration_);
 
-        // 権威側限定Tickなら、他ピア自身のカメラも同じ強さ/長さで揺らす
+        // NOTE: 権威側限定Tickなら、他ピア自身のカメラも同じ強さ/長さで揺らす
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::ShakeCameraRpc::Send(

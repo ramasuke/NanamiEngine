@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    // エンジン由来の RPC は 0 起点で追加する (ゲーム側は 1,000,000 以降を使う)
+    // NOTE: エンジン由来の RPC は 0 起点で追加する。ゲーム側の ID 空間とは重ならないよう分けてある
     enum class EEngineRpcType : uint32_t
     {
     };

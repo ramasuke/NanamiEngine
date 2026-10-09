@@ -17,7 +17,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 受注中・達成・準備中・未解放の判の絵。受付中は nullptr(判を押さない) */
+    // NOTE: 受注中・達成・準備中・未解放の判の絵。受付中は nullptr(判を押さない)
     struct QuestBoardStampSprites
     {
         std::shared_ptr<Asset::SpriteFile> taking;
@@ -28,9 +28,7 @@ namespace GamePlay::Ui
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> For(QuestBoardState state) const;
     };
 
-    /**
-     * @brief 掲示板に貼った依頼書の札1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える。
-     */
+    // NOTE: 掲示板に貼った依頼書の札1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える
     class EventBoardQuestRow final : public Component::ComponentBase,
                                      public LifeCycleCallback::IAwakable
     {
@@ -41,7 +39,7 @@ namespace GamePlay::Ui
 
     private:
         void OnAwake() override;
-        /** @brief 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える */
+        // NOTE: 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える
         void EnsureComponents();
         void RefreshAppearance() const;
 

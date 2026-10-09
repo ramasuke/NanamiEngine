@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 骸竜の砂嵐 (Weather::Sandstorm の BeginSummoned / EndSummoned) を始めるか止めて、他のピアにも送る */
+    // NOTE: 骸竜の砂嵐を始めるか止めて、他のピアにも送る
     class BossSandstorm final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

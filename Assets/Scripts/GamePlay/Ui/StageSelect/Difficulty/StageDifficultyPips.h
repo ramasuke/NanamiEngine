@@ -5,7 +5,7 @@
 
 namespace GamePlay::Ui
 {
-    // Each child ImageRenderer is one pip; the first `difficulty` children show the filled sprite.
+    // NOTE: 子の ImageRenderer 1つが目盛り1つ。先頭から difficulty 個を塗りつぶしの絵にする
     class StageDifficultyPips final : public Component::ComponentBase
     {
     public:

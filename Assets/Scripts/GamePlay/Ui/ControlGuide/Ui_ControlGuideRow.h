@@ -11,7 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // 操作ガイドの1行
+    // NOTE: 操作ガイドの1行
     class ControlGuideRow final : public Component::ComponentBase
     {
     public:
@@ -30,13 +30,13 @@ namespace GamePlay::Ui
         };
 
         void SetContent(const std::weak_ptr<Asset::SpriteFile>& glyph, const std::string& label);
-        /// ラベルの色は都度補間できないので、指され始め・外れた瞬間にだけ差し替える
+        // NOTE: ラベルの色は都度補間できないので、指され始め・外れた瞬間にだけ差し替える
         void SetFocused(bool isFocused);
         void Apply(const Appearance& appearance);
 
     private:
         void CatchParts();
-        /// 長いラベルが強調の矢印に重ならないよう、収まらない分だけ横に詰める
+        // NOTE: 長いラベルが強調の矢印に重ならないよう、収まらない分だけ横に詰める
         void FitLabelWidth();
 
         [[serialize(1)]] FIELD(GameObject::IGameObject) content_;
@@ -92,7 +92,6 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(glyphFlash_));
             if (version >= 1) archive(CEREAL_NVP(labelShadow_));
             if (version >= 1) archive(CEREAL_NVP(label_));
-            // v2 でチュートリアルが指す行の強調表示を足した
             if (version >= 2) archive(CEREAL_NVP(focusStrip_));
             if (version >= 2) archive(CEREAL_NVP(focusArrow_));
             if (version >= 2) archive(CEREAL_NVP(focusCheck_));

@@ -58,7 +58,7 @@ void GameCore::PlayerAvatar::MagicCaster::State::CastState::DoUpdate()
 
 void GameCore::PlayerAvatar::MagicCaster::State::CastState::DoExit()
 {
-    // 撃つ前に止められたら、溜めの演出だけが最後まで流れないように消す
+    // NOTE: 撃つ前に止められたら、溜めの演出だけが最後まで流れないように消す
     if (!hasFired_)
     {
         if (const auto castEffect = castEffect_.lock())

@@ -18,27 +18,25 @@ namespace Coroutine
 {
     enum class TweenBodyMode
     {
-        // tween の移動量だけを速度にする
+        // NOTE: tween の移動量だけを速度にする
         Delta,
-        // tween の絶対位置へ向かう速度にする。壁を抜けた後に追いつく
+        // NOTE: tween の絶対位置へ向かう速度にする。壁を抜けた後に追いつく
         Follow,
     };
 
     struct NANAMI_API TweenBodyOptions
     {
         TweenBodyMode mode = TweenBodyMode::Delta;
-        //NOTE: Y は重力に任せ、XZ だけ tween で動かす
+        // NOTE: Y は重力に任せ、XZ だけ tween で動かす
         bool keepGravityY = false;
-        // 速度の上限, 0 以下なら無制限
+        // NOTE: 速度の上限。0 以下なら無制限
         float maxSpeed = 30.0f;
-        // 終わった次のステップで、tween で動かしていた軸の速度を 0 にするかどうか
+        // NOTE: 終わった次のステップで、tween で動かしていた軸の速度を 0 にするかどうか
         bool stopOnFinish = true;
     };
 
-    /**
-     * @brief tween の位置を RigidBody の速度に変換して物理の固定ステップで動かす (衝突で押し戻される)
-     * NOTE: Kinematic は Transform に書くので衝突で止まらない。回転は常に Transform に直接書く
-     */
+    // NOTE: tween の位置を RigidBody の速度に変換して物理の固定ステップで動かす (衝突で押し戻される)
+    // NOTE: Kinematic は Transform に書くので衝突で止まらない。回転は常に Transform に直接書く
     template<typename... Types>
     class WaitForTweenBody final : public ITickableWaitable
     {
@@ -66,7 +64,7 @@ namespace Coroutine
             if (rigidBodyRef_.MotionType() == NanamiEngine::Module::Physics::MotionType::Static)
                 NanamiEngine::Module::LogWarning("WaitForTweenBody: RigidBody が Static のため、Transform に直接書きます(衝突は効きません)");
 
-            // 物理と同じ固定ステップで進める(毎フレームの Tick だと1フレーム遅れ、サブステップ数ともずれる)
+            // NOTE: 物理と同じ固定ステップで進める(毎フレームの Tick だと1フレーム遅れ、サブステップ数ともずれる)
             Core::Application::ApplicationBase::GameWindow()
                 ->LifeCycle().Coroutine()
                 ->RegisterFixedTickable(this);
@@ -79,7 +77,7 @@ namespace Coroutine
             if (fixedDeltaTime <= 0.0f)
                 return;
 
-            // 前のステップで tween が終わっている: 最後の移動分はもう反映済みなので止めて完了
+            // NOTE: 前のステップで tween が終わっている: 最後の移動分はもう反映済みなので止めて完了
             if (tween_.progress() >= 1.0f)
             {
                 if (options_.stopOnFinish && IsDynamic())
@@ -96,7 +94,7 @@ namespace Coroutine
 
             if (!IsDynamic())
             {
-                // Kinematic はこのステップの OnBeginPhysics で MoveKinematic される
+                // NOTE: Kinematic はこのステップの OnBeginPhysics で MoveKinematic される
                 transformRef_.SetWorldPos(target);
                 prevTarget_ = target;
                 return;
@@ -106,7 +104,7 @@ namespace Coroutine
             glm::vec3 velocity = (target - from) / fixedDeltaTime;
             prevTarget_ = target;
 
-            // keepGravityY なら Y は tween で動かさない
+            // NOTE: keepGravityY なら Y は tween で動かさない
             if (options_.keepGravityY)
                 velocity.y = 0.0f;
             if (options_.maxSpeed > 0.0f && glm::length(velocity) > options_.maxSpeed)

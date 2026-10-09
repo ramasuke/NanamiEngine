@@ -12,17 +12,17 @@ namespace NanamiEngine::R4
 
     namespace Detail
     {
-        //NOTE: child を parent に積み、child 解除時に parent から外す処理も積む (rxcpp の add は外さない)
+        // NOTE: child を parent に積み、child 解除時に parent から外す処理も積む (rxcpp の add は外さない)
         NANAMI_API void Attach(const rxcpp::composite_subscription& parent, const rxcpp::composite_subscription& child);
     }
 
-    ///NOTE: 購読の寿命。Dispose() で購読解除。コピーしても同じ購読を指す
+    // NOTE: 購読の寿命。Dispose() で購読解除。コピーしても同じ購読を指す
     class NANAMI_API Disposable final
     {
     public:
         Disposable() = default;
         explicit Disposable(rxcpp::composite_subscription subscription);
-        // rxcpp の購読はムーブ元が空になり、触ると std::terminate するので、ムーブもコピーとして扱う
+        // NOTE: rxcpp の購読はムーブ元が空になり、触ると std::terminate するので、ムーブもコピーとして扱う
         Disposable(const Disposable&) = default;
         Disposable(Disposable&& other) : subscription_(other.subscription_) { }
         Disposable& operator=(const Disposable&) = default;
@@ -35,7 +35,7 @@ namespace NanamiEngine::R4
         const Disposable& AddTo(const CompositeDisposable& composite) const;
         const Disposable& RegisterTo(const CancellationToken& token) const;
 
-        //NOTE: DestroyCancellationToken() を持つもの（Component）が破棄される時に解除する
+        // NOTE: DestroyCancellationToken() を持つものが破棄される時に解除する
         template <typename OwnerT>
         requires requires(const OwnerT& owner) { { owner.DestroyCancellationToken() } -> std::convertible_to<CancellationToken>; }
         const Disposable& AddTo(const OwnerT* owner) const
@@ -56,7 +56,7 @@ namespace NanamiEngine::R4
         rxcpp::composite_subscription subscription_;
     };
 
-    ///NOTE: 複数の Disposable をまとめて Dispose する。コピーしても同じ入れ物を指す
+    // NOTE: 複数の Disposable をまとめて Dispose する。コピーしても同じ入れ物を指す
     class NANAMI_API CompositeDisposable final
     {
     public:
@@ -67,9 +67,9 @@ namespace NanamiEngine::R4
         CompositeDisposable& operator=(CompositeDisposable&& other) { subscription_ = other.subscription_; return *this; }
 
         void Add(const Disposable& disposable) const;
-        //NOTE: 中身をすべて Dispose する。以降に Add したものは即 Dispose される
+        // NOTE: 中身をすべて Dispose する。以降に Add したものは即 Dispose される
         void Dispose() const;
-        //NOTE: 中身をすべて Dispose するが、この入れ物は引き続き使える
+        // NOTE: 中身をすべて Dispose するが、この入れ物は引き続き使える
         void Clear() const;
         [[nodiscard]] bool IsDisposed() const;
 
@@ -78,7 +78,7 @@ namespace NanamiEngine::R4
         rxcpp::composite_subscription subscription_;
     };
 
-    ///NOTE: 差し替えると古い方を Dispose する。破棄時にも Dispose し、コピーは空から始まる
+    // NOTE: 差し替えると古い方を Dispose する。破棄時にも Dispose し、コピーは空から始まる
     class NANAMI_API SerialDisposable final
     {
     public:

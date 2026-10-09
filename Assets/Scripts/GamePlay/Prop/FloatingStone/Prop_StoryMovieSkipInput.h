@@ -2,7 +2,7 @@
 
 namespace GamePlay::Prop::StoryMovie
 {
-    /** @brief 押しっぱなしで入ってきても即スキップにならないよう、一度離すまで待つ */
+    // NOTE: 押しっぱなしで入ってきても即スキップにならないよう、一度離すまで待つ
     class SkipInput final
     {
     public:

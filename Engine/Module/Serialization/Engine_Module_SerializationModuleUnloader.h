@@ -4,7 +4,7 @@
 #include "../../Core/Api/NanamiApi.h"
 #include "../../Core/Api/NanamiModule.h"
 
-// ゲーム DLL が cereal に登録した多相型を表から消す
+// NOTE: ゲーム DLL が cereal に登録した多相型を表から消す
 // WARNING: 順序はインスタンス破棄 → Unregister → FreeLibrary → ClearClassVersions
 namespace NanamiEngine::Module::Serialization
 {
@@ -23,7 +23,7 @@ namespace NanamiEngine::Module::Serialization
     public:
         static ModuleUnloadReport Unregister(Core::ModuleHandle module);
         static void               ClearClassVersions();
-        /** @brief PolymorphicCasters に vtable が module にある caster が残っている数 */
+        // NOTE: PolymorphicCasters に vtable が module にある caster が残っている数
         [[nodiscard]] static std::size_t CountLeftoverCasters(Core::ModuleHandle module);
     };
 }

@@ -33,7 +33,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
             , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context);
 
         static Coroutine::Task<void> PlayAsync(std::shared_ptr<AboardAirShipMovie> movie);
-        /** @brief 演出を流さず、船が着いた後の状態にする。主人公を出す前に呼ぶ */
+        // NOTE: 演出を流さず、船が着いた後の状態にする。主人公を出す前に呼ぶ
         static void DockImmediately(FirstTouchDownMainIsLandSceneContext& context);
         void Cancel() { isCancelled_ = true; }
 

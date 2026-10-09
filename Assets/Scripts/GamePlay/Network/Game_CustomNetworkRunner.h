@@ -32,14 +32,12 @@ namespace GamePlay::Network
 
         [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
-        /**
-         * 中継サーバー経由で sessionKey の部屋に入る。公開部屋なら空きが無ければホストになる
-         */
+        // NOTE: 中継サーバー経由で sessionKey の部屋に入る。公開部屋なら空きが無ければホストになる
         void StartRelay(const std::string& sessionKey, const RelayServerSettings& relay, const RelayRoom& room = {});
 
-        /** 非公開部屋のコード。公開部屋・LAN・未接続では空 */
+        // NOTE: 非公開部屋のコード。公開部屋・LAN・未接続では空
         [[nodiscard]] std::string RelayRoomCode() const;
-        /** 中継サーバーの部屋に入る前に切れた理由 */
+        // NOTE: 中継サーバーの部屋に入る前に切れた理由
         [[nodiscard]] std::optional<std::string> RelayFailure() const;
 
         std::weak_ptr<GameCore::IPlayerAvatar> SpawnPlayerAvatar(
@@ -47,7 +45,7 @@ namespace GamePlay::Network
             glm::vec3 position,
             glm::quat rotation);
 
-        /** @param prefab nullptr なら EnemyFactory の kind の prefab */
+        // NOTE: prefab が nullptr なら kind の既定の prefab
         std::shared_ptr<Module::GameObject::IGameObject> SpawnEnemy(
             GameCore::Npc::Enemy::EnemyKind kind,
             const std::shared_ptr<Asset::PrefabGameObjectFile>& prefab,
@@ -70,9 +68,9 @@ namespace GamePlay::Network
         };
 
         std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
-        // StartRelay の間だけ入り、DoCreateUseNetworkSystem が EnetRelayNetworkSystem を選ぶ目印になる
+        // NOTE: StartRelay の間だけ入り、DoCreateUseNetworkSystem が EnetRelayNetworkSystem を選ぶ目印になる
         std::optional<RelayStart> pendingRelayStart_;
-        // インスペクタ表示用: 最後に中継サーバー経由で始めたときの接続先
+        // NOTE: インスペクタ表示用: 最後に中継サーバー経由で始めたときの接続先
         std::optional<RelayStart> activeRelay_;
         [[serialize(1)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
         [[serialize(4)]] FIELD(Asset::EnemyFactory) enemyFactory_;

@@ -17,7 +17,7 @@ namespace GamePlay::Ui
 
         constexpr float TITLE_PI = 3.14159265f;
 
-        /** @brief delaySecs を過ぎてから durationSecs で 0 → 1 */
+        // NOTE: delaySecs を過ぎてから durationSecs で 0 → 1
         float TitleDelayedRate(const float elapsedSecs, const float delaySecs, const float durationSecs)
         {
             if (durationSecs <= 0.0f)
@@ -175,7 +175,7 @@ namespace GamePlay::Ui
     {
         pressElapsed_secs_ += deltaSecs;
         const float period = std::max(pressPulsePeriod_secs_, 0.1f);
-        // 出し切った明るさから始めて、ゆっくり息をするように明滅させる
+        // NOTE: 出し切った明るさから始めて、ゆっくり息をするように明滅させる
         const float wave = 0.5f + 0.5f * std::cos(2.0f * TITLE_PI * pressElapsed_secs_ / period);
         const float pulse = pressPulseMinRate_ + (1.0f - pressPulseMinRate_) * wave;
         const float uncovered = 1.0f - coverRate_;
@@ -204,13 +204,13 @@ namespace GamePlay::Ui
             if (!text)
                 continue;
 
-            // 右から少し滑り込ませる
+            // NOTE: 右から少し滑り込ませる
             text->Transform().SetLocalPos(menuBasePos_[static_cast<size_t>(i)] + glm::vec3(menuSlide_px_ * (1.0f - eased), 0.0f, 0.0f));
             const float emphasis = i == selection_ ? 1.0f : unselectedTextRate_;
             TitleSetBlend(text, eased * emphasis * (1.0f - coverRate_));
         }
 
-        // 帯は選んだ行へ指数的に追いかける
+        // NOTE: 帯は選んだ行へ指数的に追いかける
         const float targetY = menuBasePos_[static_cast<size_t>(selection_)].y;
         bandY_ += (targetY - bandY_) * std::clamp(bandFollowRate_ * deltaSecs, 0.0f, 1.0f);
         if (const auto band = selectBand_.get())

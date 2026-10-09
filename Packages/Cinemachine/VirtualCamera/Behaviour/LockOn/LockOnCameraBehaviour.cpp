@@ -80,7 +80,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         constexpr auto worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-        // Follow/LookAtはこの位置にオフセットを足すので、同じ基準点を使う
+        // NOTE: Follow/LookAtはこの位置にオフセットを足すので、同じ基準点を使う
         const glm::vec3 playerPos = IVirtualCameraTarget::PositionOf(*followTarget);
         const glm::vec3 targetPos = lockOnTarget->Transform().GetWorldPos();
 
@@ -88,7 +88,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (glm::dot(flatToTarget, flatToTarget) >= 0.0001f)
             lastFlatDir_ = glm::normalize(flatToTarget);
 
-        // right/up は VirtualCameraLookAtBehaviour が作る姿勢と同じ外積の順にそろえる
+        // NOTE: right/up は VirtualCameraLookAtBehaviour が作る姿勢と同じ外積の順にそろえる
         const float pitch = glm::radians(pitchAngle_deg_);
         const glm::vec3 forward = glm::normalize(lastFlatDir_ * std::cos(pitch) - worldUp * std::sin(pitch));
         const glm::vec3 right   = glm::normalize(glm::cross(worldUp, forward));
@@ -106,7 +106,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const auto aim = lockOnAim_.lock();
         points[16] = ILockOnCameraTarget::PositionOf(aim ? *aim : *lockOnTarget);
 
-        // 画面の縦横方向に投影した範囲の中心を注視点にする
+        // NOTE: 画面の縦横方向に投影した範囲の中心を注視点にする
         glm::vec2 projectedMin(std::numeric_limits<float>::max());
         glm::vec2 projectedMax(std::numeric_limits<float>::lowest());
         for (const glm::vec3& point : points)
@@ -118,7 +118,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::vec2 projectedCenter = (projectedMin + projectedMax) * 0.5f;
         const glm::vec3 lookAtPos = playerPos + right * projectedCenter.x + up * projectedCenter.y;
 
-        // 全ての点が画角(余白込み)に入る、注視点からの最小距離を求める
+        // NOTE: 全ての点が画角(余白込み)に入る、注視点からの最小距離を求める
         float requiredDistance = minDistance_;
         if (const auto* brain = CinemachineCameraBrain::Instance())
         {
@@ -145,7 +145,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         const glm::vec3 cameraPos = lookAtPos - forward * distance;
 
-        // 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
+        // NOTE: 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
         follow_->followOffset_ = ResolveCameraCollision(playerPos, cameraPos - playerPos);
         lookAt_->SetOffsetPos(lookAtPos - playerPos);
     }
@@ -161,17 +161,16 @@ namespace NanamiEngine::CineMachine::Behaviour
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
         Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
 
-        // 位置を決める。
         Module::Physics::RaycastHit hit = Module::Physics::SphereCast(originPos, collisionRadius_, direction, distance, mask);
         if (hit.Hit() && hit.Distance() <= 0.0f)
         {
-            // 始点の時点で球が既に壁に重なっている場合、Rayにフォールバック
+            // NOTE: 始点の時点で球が既に壁に重なっている場合、Rayにフォールバック
             hit = Module::Physics::Raycast(originPos, direction, distance, mask);
         }
         if (!hit.Hit())
             return desiredOffset;
 
-        // 障害物の少し手前にカメラを配置する
+        // NOTE: 障害物の少し手前にカメラを配置する
         const float adjustedDistance = std::max(0.0f, hit.Distance() - collisionBuffer_);
 
         return direction * adjustedDistance;

@@ -11,10 +11,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 一番近いプレイヤーへの水平角度で、最初に当てはまった範囲の値をブラックボードに書く
-     * NOTE: どの範囲にも入らなければ useFallback_ なら fallbackValue_ を書いて Success、でなければ Failure
-     */
+    // NOTE: 一番近いプレイヤーへの水平角度で、最初に当てはまった範囲の値をブラックボードに書く
+    // NOTE: どの範囲にも入らなければ useFallback_ なら fallbackValue_ を書いて Success、でなければ Failure
     class PlayerAngleDispatch final : public ActionBase
     {
     public:

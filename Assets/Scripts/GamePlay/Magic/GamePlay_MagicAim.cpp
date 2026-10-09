@@ -24,11 +24,11 @@ namespace GamePlay::Magic
         constexpr float MAGIC_AIM_GROUND_PROBE_UP   = 40.0f;
         constexpr float MAGIC_AIM_GROUND_PROBE_DOWN = 200.0f;
 
-        /** @brief 撃ち手をこの画面が持っていて、hitObject の持ち主が攻撃を受ける相手(村人以外)なら、その持ち主を返す */
+        // NOTE: 撃ち手をこの画面が持っていて、hitObject の持ち主が攻撃を受ける相手(村人以外)なら、その持ち主を返す
         std::shared_ptr<GameObject::IGameObject> FindHitEnemyForLocalCaster(const std::weak_ptr<GameObject::IGameObject>& caster,
                                                                             const std::shared_ptr<GameObject::IGameObject>& hitObject)
         {
-            // 魔法は全員の画面で実行されるので、他人の魔法には反応しない
+            // NOTE: 魔法は全員の画面で実行されるので、他人の魔法には反応しない
             const auto casterObject = caster.lock();
             if (!casterObject || !IsSpellApplicableTarget(*casterObject))
                 return nullptr;
@@ -37,7 +37,7 @@ namespace GamePlay::Magic
             if (!owner || owner->Components().Catch<GameCore::PlayerAvatar::ITakablePlayerAttack>().expired())
                 return nullptr;
 
-            // 村人は驚くだけでダメージは受けない
+            // NOTE: 村人は驚くだけでダメージは受けない
             if (!owner->Components().Catch<GameCore::Npc::IFriendlyNpc>().expired())
                 return nullptr;
 
@@ -57,7 +57,7 @@ namespace GamePlay::Magic
     {
         if (const auto target = caster.AimTarget().lock())
         {
-            // 部位グループはコライダーを持たず、Transform も本体の原点にある
+            // NOTE: 部位グループはコライダーを持たず、Transform も本体の原点にある
             const auto collider = target->Components().Catch<Physics::ICollider>().lock();
             return collider
                 ? collider->CenterOfMassPosition().value_or(target->Transform().GetWorldPos())
@@ -105,7 +105,7 @@ namespace GamePlay::Magic
                           const std::shared_ptr<GameObject::IGameObject>& hitObject,
                           const GameCore::Damage::PhysicsPower power)
     {
-        // 手足のコライダーに当たっても本体にダメージが入るようにする
+        // NOTE: 手足のコライダーに当たっても本体にダメージが入るようにする
         const auto owner = Physics::FindBodyOwner(hitObject);
         if (!owner || !IsSpellApplicableTarget(*owner))
             return;

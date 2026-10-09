@@ -51,7 +51,8 @@ namespace GamePlay::Ui
         const auto cameraGroup = CatchCameraGroup();
         const bool isLockedOn  = cameraGroup && cameraGroup->IsLockedOn();
 
-        // 対象が死亡して weak_ptr が切れた場合も、ロック解除と同じく解除演出にする。別の敵へ切り替えたら確定演出をやり直す
+        // NOTE: 対象が死亡して weak_ptr が切れた場合も、ロック解除と同じく解除演出にする
+        // NOTE: 別の敵へ切り替えたら確定演出をやり直す
         const auto target     = isLockedOn ? cameraGroup->LockOnTarget().lock() : nullptr;
         const bool isEngaged  = target != nullptr;
         if (isEngaged && (!wasEngaged_ || target != lockedTarget_.lock()))
@@ -63,7 +64,7 @@ namespace GamePlay::Ui
         }
         else if (!isEngaged && wasEngaged_)
         {
-            // lockedTarget_ は残し、生きていれば解除演出中も対象に追従させる
+            // NOTE: lockedTarget_ は残し、生きていれば解除演出中も対象に追従させる
             phase_ = Phase::Releasing;
             PlayRelease();
         }
@@ -84,7 +85,7 @@ namespace GamePlay::Ui
         if (candidate)
             candidateTarget_ = candidate;
 
-        // 候補が消えた後も、最後の位置でフェードアウトさせる
+        // NOTE: 候補が消えた後も、最後の位置でフェードアウトさせる
         if (candidate)
             candidateFade_.PlayForward();
         else
@@ -117,7 +118,7 @@ namespace GamePlay::Ui
         if (!IsEnable())
             return;
 
-        // 対象の位置は全ての Update が終わった描画時点で取る（Update 順による1フレーム遅れを避ける）
+        // NOTE: 対象の位置は全ての Update が終わった描画時点で取る（Update 順による1フレーム遅れを避ける）
         if (candidateFade_.Value() > 0.0f)
         {
             if (const auto candidate = candidateTarget_.lock())
@@ -167,7 +168,7 @@ namespace GamePlay::Ui
 
     float LockOnReticle::DistanceScaleRate(const glm::vec3& worldPos) const
     {
-        // 1ユニットが何ピクセルに映るかを、referenceDistance_ 先での値との比にする
+        // NOTE: 1ユニットが何ピクセルに映るかを、referenceDistance_ 先での値との比にする
         const float maxRate = std::max(minDistanceScale_, maxDistanceScale_);
         const float tanHalfFov = std::tan(Platform::Render::Camera::Fov() * 0.5f);
         const int screenHeight = Platform::Draw2D::ScreenSize().y;
@@ -193,7 +194,7 @@ namespace GamePlay::Ui
             return;
 
         const glm::vec3 screenPos = Platform::Render::Camera::WorldToScreen(worldPos);
-        // z が 0..1 の外ならカメラの視界外（背後など）
+        // NOTE: z が 0..1 の外ならカメラの視界外（背後など）
         if (screenPos.z < 0.0f || screenPos.z > 1.0f)
             return;
 

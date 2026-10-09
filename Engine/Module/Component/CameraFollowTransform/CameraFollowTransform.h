@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /** @brief ワールド座標をカメラ位置に追従させる。天候パーティクルのように常に視点周りへ置きたいもの用 */
+    // NOTE: ワールド座標をカメラ位置に追従させる。常に視点の周りに置きたいもの用
     class NANAMI_API CameraFollowTransform final : public ComponentBase,
                                         public LifeCycleCallback::ILateUpdatable
     {

@@ -37,7 +37,7 @@ namespace NanamiEngine::Module::NanamiUi
         return "Unknown";
     }
 
-    // Unity の Slider 相当
+    // NOTE: Unity の Slider 相当
     class NANAMI_API Slider final : public Component::ComponentBase,
                          public LifeCycleCallback::IUserInterfaceRenderable
     {
@@ -48,9 +48,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GetGaugeSprite() const { return gaugeSprite_.get(); }
         void SetGaugeSprite(const std::shared_ptr<Asset::SpriteFile>& sprite) { gaugeSprite_ = sprite; }
 
-        // 与えた画像を、塗りと同じ伸縮・クリップで fromRate〜toRate の区間だけ描く（ブレンドモードは呼び出し側の設定を使う）
+        // NOTE: 与えた画像を塗りと同じ伸縮・クリップで fromRate〜toRate の区間だけ描く。ブレンドモードは呼び出し側の設定のまま
         void DrawFillRange(int graphHandle, float fromRate, float toRate) const;
-        // along: 伸びる方向に始端からの距離 / across: それと直交する方向の距離
+        // NOTE: along: 伸びる方向に始端からの距離 / across: それと直交する方向の距離
         [[nodiscard]] glm::vec2 FillToScreen(float along, float across) const;
         [[nodiscard]] float CalcFillLength(float fillRate) const;
         [[nodiscard]] float AlongLength() const;
@@ -59,7 +59,7 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] float GetFillEndInset() const { return fillEndInset_; }
         [[nodiscard]] bool IsRotated() const { return CalcDrawFrame().isRotated; }
         [[nodiscard]] bool IsStretchToDrawSize() const { return isStretchToDrawSize_; }
-        // 回転していないときだけ drawSize_ の範囲でクリップする（画面全体に戻すのは呼び出し側）
+        // NOTE: 回転していないときだけ drawSize_ の範囲でクリップする（画面全体に戻すのは呼び出し側）
         void ClipToDrawSize() const;
 
     private:
@@ -74,7 +74,7 @@ namespace NanamiEngine::Module::NanamiUi
             [[nodiscard]] glm::vec2 ToScreen(const glm::vec2& local) const { return origin + axisX * local.x + axisY * local.y; }
         };
 
-        // drawSize_ 内の座標（左上原点）の矩形
+        // NOTE: drawSize_ 内の座標（左上原点）の矩形
         struct NANAMI_API LocalRect
         {
             glm::vec2 min;
@@ -99,7 +99,7 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] float value_ = 1.0f;
         [[serialize(0)]] int renderOrder_ = 0;
 
-        // true: 画像を drawSize_ いっぱいに伸縮して描く / false: 従来どおり drawPosition_ 中心・等倍率で切り抜く
+        // NOTE: true: 画像を drawSize_ いっぱいに伸縮して描く / false: drawPosition_ 中心・等倍率で切り抜く
         [[serialize(1)]] bool isStretchToDrawSize_ = false;
         [[serialize(1)]] FIELD(Asset::SpriteFile) backgroundSprite_;
         [[serialize(3)]] SliderFillDirection fillDirection_ = SliderFillDirection::LeftToRight;
@@ -137,7 +137,7 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(renderOrder_));
             if (version >= 1) archive(CEREAL_NVP(isStretchToDrawSize_));
             if (version >= 1) archive(CEREAL_NVP(backgroundSprite_));
-            // v4 でトレイル・先端・目盛り・パルス・クロスフェードを GaugeEffects（ゲーム側）へ移したので読み捨てる
+            // NOTE: 旧版が持っていたゲージ演出の設定。今は使わないので読み捨てる
             if (version >= 1 && version <= 3)
             {
                 FIELD(Asset::SpriteFile) legacyTrailSprite;

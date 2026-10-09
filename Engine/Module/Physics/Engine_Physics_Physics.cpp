@@ -90,7 +90,6 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
         return RaycastHit(false, {}, {}, 0.0f, std::shared_ptr<GameObject::IGameObject>());
     }
 
-    // 衝突点
     float dist = maxDistance * result.mFraction;
     JPH::Vec3 hitPosJ = originPos + jphDirection * dist;
     glm::vec3 hitPos  = ToVec3(hitPosJ);
@@ -102,7 +101,7 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
         const JPH::Shape* shape = body.GetShape();
         const auto transform = body.GetCenterOfMassTransform();
 
-        // MultiplyPointInv が存在しなければ代替使用
+        // NOTE: Jolt のバージョンに無い API は互換関数で代用する
         JPH::Vec3 localPos =
 #ifdef JPH_USE_MULTIPLY_POINT_INV
             transform.MultiplyPointInv(hitPosJ);
@@ -112,7 +111,6 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
 
         JPH::Vec3 localNormal = shape->GetSurfaceNormal(result.mSubShapeID2, localPos);
 
-        // MultiplyVector が存在しない場合は Multiply3x3
         JPH::Vec3 worldNormal =
 #ifdef JPH_USE_MULTIPLY_VECTOR
             transform.MultiplyVector(localNormal).Normalized();
@@ -141,7 +139,7 @@ namespace NanamiEngine::Module::Physics
 {
     namespace
     {
-        // shapeをorigin(回転なし)からdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す
+        // NOTE: shapeをorigin(回転なし)からdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す
         RaycastHit CastShapeClosest(
             const JPH::Shape& shape,
             const glm::vec3& origin,
@@ -164,7 +162,7 @@ namespace NanamiEngine::Module::Physics
                 ToJPHVec3(normalizedDirection * maxDistance));
 
             JPH::ShapeCastSettings settings;
-            // 片面メッシュ(地形など)を裏側からすり抜けないよう、裏面にも当てる
+            // NOTE: 片面メッシュ(地形など)を裏側からすり抜けないよう、裏面にも当てる
             settings.SetBackFaceMode(JPH::EBackFaceMode::CollideWithBackFaces);
             settings.mReturnDeepestPoint = true;
 
@@ -212,7 +210,7 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::SphereC
     const LayerMask layerMask)
 {
     const JPH::SphereShape sphere(radius);
-    // スタック上のShapeを参照カウントで破棄させないためのガード
+    // NOTE: スタック上のShapeを参照カウントで破棄させないためのガード
     sphere.SetEmbedded();
 
     return CastShapeClosest(sphere, origin, direction, maxDistance, layerMask);
@@ -225,9 +223,9 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::BoxCast
     const float maxDistance,
     const LayerMask layerMask)
 {
-    // convex radius 0 = 角を丸めない（デフォルト値だとhalfExtentsが小さい時にassertになる）
+    // NOTE: convex radius 0 = 角を丸めない（デフォルト値だとhalfExtentsが小さい時にassertになる）
     const JPH::BoxShape box(ToJPHVec3(halfExtents), 0.0f);
-    // スタック上のShapeを参照カウントで破棄させないためのガード
+    // NOTE: スタック上のShapeを参照カウントで破棄させないためのガード
     box.SetEmbedded();
 
     return CastShapeClosest(box, origin, direction, maxDistance, layerMask);

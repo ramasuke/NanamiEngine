@@ -13,7 +13,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_SHOW_TRIGGER_COLLIDERS = true;
     constexpr auto DEFAULT_SHOW_MAIN_CAMERA_FRUSTUM     = true;
     constexpr auto DEFAULT_SHOW_VIRTUAL_CAMERA_FRUSTUMS = true;
-    // Box, Sphere, Capsule, Cylinder, StaticMesh の順。StaticMesh は描画が重いのでデフォルト OFF
+    // NOTE: ColliderShapeKind の順。StaticMesh は描画が重いので既定 OFF
     constexpr std::array<bool, static_cast<size_t>(Module::Physics::ColliderShapeKind::Count)> DEFAULT_SHOW_COLLIDER_KINDS = { true, true, true, true, false };
 
     bool DebugDrawConfiguration::showAllColliders_     = DEFAULT_SHOW_ALL_COLLIDERS;
@@ -85,7 +85,7 @@ namespace NanamiEngine::Core::Application::Configuration
         const Module::Physics::Layer layer,
         const bool isSensor)
     {
-        // ProjectConfig に ON が保存されたままでも、ゲームビルドでは描画しない
+        // NOTE: ProjectConfig に ON が保存されたままでも、ゲームビルドでは描画しない
         if (APPLICATION_MODE != ApplicationMode::Editor)
             return false;
 

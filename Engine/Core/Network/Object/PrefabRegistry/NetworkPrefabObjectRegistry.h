@@ -18,7 +18,7 @@ namespace NanamiEngine::Core::Network
         void Add(const std::weak_ptr<Module::GameObject::PrefabGameObject>& object);
 
         [[nodiscard]] std::weak_ptr<Module::GameObject::PrefabGameObject> Catch(const Guid& guid) const;
-        /** @brief 期限切れの weak_ptr を全部捨てる (ゲーム DLL を外す前) */
+        // NOTE: 期限切れの weak_ptr を全部捨てる (ゲーム DLL を外す前)
         std::size_t PurgeExpired();
 
     private:

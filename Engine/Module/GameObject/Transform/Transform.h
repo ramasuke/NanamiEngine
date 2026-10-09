@@ -38,8 +38,6 @@ namespace NanamiEngine::Module::GameObject
         void LookAt(const glm::vec3& targetPos);
         void LookAtY(const glm::vec3& targetPos);
 
-        // LibCore::Tween::Vec3Tween DoMove(glm::vec3 targetPos, float duration_msecs) const;
-        
         void Translate(const glm::vec3& delta);
         void Rotate(const glm::quat& deltaRot);
 
@@ -51,7 +49,7 @@ namespace NanamiEngine::Module::GameObject
         
         void SetParent(const std::weak_ptr<IGameObject>& parent, bool keepWorldScale = true);
 
-        // siblingIndex は自分を除去する前の子リストでの挿入位置 (同一親内の補正は内部で行う)
+        // NOTE: siblingIndex は自分を除去する前の子リストでの挿入位置 (同一親内の補正は内部で行う)
         void SetParent(const std::weak_ptr<IGameObject>& parent, std::size_t siblingIndex, bool keepWorldScale = true);
         [[nodiscard]] std::shared_ptr<IGameObject> GetParent    () const { return parent_         .lock(); }
         [[nodiscard]] std::shared_ptr<IGameObject> GetGameObject() const { return ownerGameObject_.lock(); }

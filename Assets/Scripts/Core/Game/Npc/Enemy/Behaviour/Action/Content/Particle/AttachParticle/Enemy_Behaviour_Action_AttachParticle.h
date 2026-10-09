@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** position_(ワールド座標)にパーティクルを出し、target_ に貼り付けたまま動かす */
+    // NOTE: position_(ワールド座標)にパーティクルを出し、target_ に貼り付けたまま動かす
     class AttachParticle final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

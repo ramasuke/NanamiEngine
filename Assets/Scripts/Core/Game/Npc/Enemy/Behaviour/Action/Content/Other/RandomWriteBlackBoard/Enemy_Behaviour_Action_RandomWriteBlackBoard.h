@@ -11,7 +11,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 重み付きで選んだ値を 1 つブラックボードに書いて Success（RandomSelector[WriteBlackBoard...] の代わり） */
+    // NOTE: 重み付きで選んだ値を 1 つブラックボードに書いて Success（RandomSelector[WriteBlackBoard...] の代わり）
     class RandomWriteBlackBoard final : public ActionBase
     {
     public:

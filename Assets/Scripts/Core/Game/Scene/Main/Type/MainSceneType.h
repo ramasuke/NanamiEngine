@@ -12,7 +12,7 @@ namespace GameCore::Scene::Main
         Title = 3,
         Desert = 4,
         DragonNest = 5,
-        // NOTE: 草原のシーンをイベントの強い個体で使うステージ (GrassLandSceneContext の sceneType_ で見分ける)
+        // NOTE: 草原のシーンをイベント用の強い個体で使うステージ
         GrassLandEvent = 6,
     };
 

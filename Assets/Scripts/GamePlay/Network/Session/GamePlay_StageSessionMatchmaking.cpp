@@ -15,7 +15,7 @@ namespace GamePlay::Network
     namespace
     {
         constexpr int STAGE_SESSION_SEARCH_MSECS          = 1000;
-        // 同時に入った 2 人が揃ってホストにならないよう、探す長さを人ごとにずらす
+        // NOTE: 同時に入った 2 人が揃ってホストにならないよう、探す長さを人ごとにずらす
         constexpr int STAGE_SESSION_SEARCH_JITTER_MSECS   = 500;
         constexpr int STAGE_SESSION_CONNECT_TIMEOUT_MSECS = 5000;
     }
@@ -44,7 +44,7 @@ namespace GamePlay::Network
     Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(
         const std::weak_ptr<CustomNetworkRunner> runner, const std::string stageKey, const RelayRoom room)
     {
-        // 中継サーバーに任せる。公開部屋は失敗したら LAN で探し、非公開部屋はそこで諦める
+        // NOTE: 中継サーバーに任せる。公開部屋は失敗したら LAN で探し、非公開部屋はそこで諦める
         const auto relay = RelayServerSettings::Load();
         if (room.IsPrivate() && !relay.IsEnabled())
             co_return std::string("中継サーバーを使う設定になっていないので、部屋を使えません");
@@ -68,7 +68,7 @@ namespace GamePlay::Network
 
             if (room.IsPrivate())
             {
-                // Shutdown で理由も消えるので先に読む
+                // NOTE: Shutdown で理由も消えるので先に読む
                 const std::string failure = locked->RelayFailure().value_or("中継サーバーにつながりませんでした");
                 Module::LogWarning("StageSession: 非公開の部屋に入れませんでした: " + failure);
                 locked->Shutdown();
@@ -79,7 +79,7 @@ namespace GamePlay::Network
             locked->Shutdown();
         }
 
-        // runner はステージシーンのコンポーネント。待っている間にシーンごと消えうるので、待機をまたいで握らない
+        // WARNING: runner は待っている間にシーンごと消えうるので、待機をまたいで握らない
         std::optional<Core::Network::HostEndpoint> host;
         {
             Core::Network::LanSessionFinder finder(stageKey);
@@ -113,7 +113,7 @@ namespace GamePlay::Network
             if (!locked || locked->GetConnectionState() == Core::Network::ConnectionState::Connected)
                 co_return std::nullopt;
 
-            // 見つけたホストが直前に抜けた・満員だった
+            // NOTE: 見つけたホストが直前に抜けた・満員だった
             Module::LogWarning("StageSession: " + host->address + " に参加できなかったので、自分がホストになります");
             locked->Shutdown();
             locked->StartHost(stageKey);

@@ -28,7 +28,7 @@ namespace
         return map.erase(type);
     }
 
-    /** caster の vtable が module にあるか (実体はヒープにあるので、アドレスではなく vtable で見る) */
+    // NOTE: caster の vtable が module にあるか (実体はヒープにあるので、アドレスではなく vtable で見る)
     bool IsCasterOf(const cereal::detail::PolymorphicCaster* caster, const NanamiEngine::Core::ModuleHandle module)
     {
         return NanamiEngine::Core::ModuleOfVTable(caster) == module;
@@ -52,7 +52,7 @@ namespace NanamiEngine::Module::Serialization
         auto& casters = cereal::detail::StaticObject<cereal::detail::PolymorphicCasters>::getInstance();
         const auto records = SerializationTypeRegistry::Instance().RecordsOfModule(module);
 
-        // 1. 記録から: 保存・復元の関数
+        // NOTE: 1. 記録にある型の保存・復元の関数を消す
         for (const auto& record : records)
         {
             if (record.name.empty())
@@ -64,7 +64,7 @@ namespace NanamiEngine::Module::Serialization
             report.outputBindings += EraseOutputBinding<cereal::PortableBinaryOutputArchive>(record.type);
         }
 
-        // 2. 記録から: 型の関係。cereal が推移的に足した祖先の項目も含め、派生をキーに全部消す
+        // NOTE: 2. 記録にある型の基底関係を消す (cereal が推移的に足した祖先の項目も含む)
         for (const auto& record : records)
         {
             for (auto& [base, derivedMap] : casters.map)
@@ -75,7 +75,7 @@ namespace NanamiEngine::Module::Serialization
             casters.reverseMap.erase(record.type);
         }
 
-        // 3. 保険: 記録に無くても、vtable がその DLL にある caster を含む項目は消す (経路の途中に DLL の型がある推移的な項目など)
+        // NOTE: 3. 保険: 記録に無くても、vtable がその DLL にある caster を含む項目は消す
         for (auto baseIt = casters.map.begin(); baseIt != casters.map.end();)
         {
             auto& derivedMap = baseIt->second;
@@ -97,7 +97,7 @@ namespace NanamiEngine::Module::Serialization
             baseIt = derivedMap.empty() ? casters.map.erase(baseIt) : std::next(baseIt);
         }
 
-        // 4. 記録そのものと、その DLL が作った StaticObject の実体 (bind_to_archives、caster、InputBindingCreator など)
+        // NOTE: 4. 記録そのものと、その DLL が作った StaticObject の実体を捨てる
         report.records = records.size();
         SerializationTypeRegistry::Instance().RemoveModule(module);
         report.sharedStatics = SharedStaticObjects::ReleaseOwnedBy(module);

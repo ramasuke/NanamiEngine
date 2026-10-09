@@ -17,7 +17,7 @@ namespace GamePlay::PlayerAvatar
 
     void LockOnDetectionArea::OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        //TODO: ここ消せる、gameObjectがnullなのはonTriggerExitを呼び出す管理部分のengine側のバグ
+        // NOTE: 相手が先に破棄されていると null で届く
         if (!gameObject)
             return;
 

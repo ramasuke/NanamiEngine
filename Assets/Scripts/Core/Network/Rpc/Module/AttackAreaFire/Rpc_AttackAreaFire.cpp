@@ -4,7 +4,7 @@
 
 namespace
 {
-    // 敵の攻撃発火を宛先 AttackArea で再現する。ダメージは自分が所有するアバターにだけ入る
+    // NOTE: 敵の攻撃発火を宛先 AttackArea で再現する。ダメージは自分が所有するアバターにだけ入る
     struct AttackAreaFireRpcRegistration
     {
         AttackAreaFireRpcRegistration()

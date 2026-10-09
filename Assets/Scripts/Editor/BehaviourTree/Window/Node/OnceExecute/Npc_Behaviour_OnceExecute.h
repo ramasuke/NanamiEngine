@@ -71,7 +71,7 @@ namespace Editor::Npc::Behaviour
 
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
 
-        // NOTE: RandomSelector が枝を選び直すたびに、もう一度 1 回だけ実行できるように戻す
+        // NOTE: 親が枝を選び直すたびに、もう一度 1 回だけ実行できるように戻す
         void DoResetRuntimeState() override { state_ = State::NotExecuted; }
 
 #pragma region Serialization Function

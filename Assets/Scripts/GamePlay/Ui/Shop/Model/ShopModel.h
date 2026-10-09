@@ -13,7 +13,7 @@ namespace GameCore::PlayerAvatar
 
 namespace GamePlay::Ui
 {
-    /** @brief 選んだ品を今の個数で買えない理由 */
+    // NOTE: 選んだ品を今の個数で買えない理由
     enum class ShopRefusal
     {
         None,
@@ -27,10 +27,8 @@ namespace GamePlay::Ui
         int                              price = 0;
     };
 
-    /**
-     * @brief 店の品書きと、選んでいる品・個数
-     * NOTE: 財布とポーチは借りているだけ (nullptr なら何も買えない)
-     */
+    // NOTE: 店の品書きと、選んでいる品・個数
+    // NOTE: 財布とポーチは借りているだけ (nullptr なら何も買えない)
     class ShopModel final
     {
     public:
@@ -42,22 +40,22 @@ namespace GamePlay::Ui
         [[nodiscard]] const std::vector<ShopItemEntry>& Entries() const { return entries_; }
         [[nodiscard]] BoardListCursor&       Cursor()       { return cursor_; }
         [[nodiscard]] const BoardListCursor& Cursor() const { return cursor_; }
-        /** @brief 品が1つも無ければ nullptr */
+        // NOTE: 品が1つも無ければ nullptr
         [[nodiscard]] const ShopItemEntry* Selected() const;
 
         [[nodiscard]] int Quantity() const { return quantity_; }
         [[nodiscard]] int TotalPrice() const;
-        /** @brief ポーチの空きと所持金で買える数。1つも買えなければ 0 */
+        // NOTE: ポーチの空きと所持金で買える数。1つも買えなければ 0
         [[nodiscard]] int MaxQuantity(const ShopItemEntry& entry) const;
         [[nodiscard]] ShopRefusal Refusal(const ShopItemEntry& entry) const;
         [[nodiscard]] int Owned(const ShopItemEntry& entry) const;
         [[nodiscard]] int Balance() const;
 
-        /** @return 個数が変わったら true。1 と MaxQuantity の間で止まる */
+        // NOTE: 個数が変わったら true。1 と MaxQuantity の間で止まる
         bool ChangeQuantity(int delta);
-        /** @brief 品を選び直したときに 1 へ戻す */
+        // NOTE: 品を選び直したときに 1 へ戻す
         void ResetQuantity() { quantity_ = 1; }
-        /** @brief 選んだ品を今の個数で買う @return 買えた数。買えなければ 0 */
+        // NOTE: 選んだ品を今の個数で買い、買えた数を返す。買えなければ 0
         int Purchase();
 
     private:

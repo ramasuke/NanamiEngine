@@ -12,7 +12,7 @@ namespace NanamiEngine::CineMachine
     constexpr auto SAMPLE_CAMERA_FOV = 90.0f;
     constexpr auto DISABLE_PRIORITY = -1;
 
-    /** @brief このカメラへ切り替わるときのBrainの補間 */
+    // NOTE: このカメラへ切り替わるときの補間
     struct NANAMI_API BlendIn
     {
         float            duration_secs = 0.5f;
@@ -27,16 +27,16 @@ namespace NanamiEngine::CineMachine
     public:
         [[nodiscard]] R4::ReadOnlyReactiveProperty<int> Priority() const { return priority_.AsReadOnly(); }
         void SetPriority(int priority);
-        // このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
+        // NOTE: このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
         [[nodiscard]] float Fov() const;
         void SetImmediateApply(const bool enable) { isImmediateApply_ = enable; }
-        // このカメラへ切り替わるときの補間。上書きしていなければBrainの既定の補間を使う
+        // NOTE: このカメラへ切り替わるときの補間。上書きしていなければ nullopt
         [[nodiscard]] std::optional<BlendIn> CustomBlendIn() const;
         void SetBlendIn(float duration_secs, LibCore::EaseType ease);
         void ClearBlendIn() { overrideBlendIn_ = false; }
 
         void OnDisable() { priority_.Value(DISABLE_PRIORITY); }
-        // BrainがLateUpdateで毎フレーム呼ぶ。BehaviourをStage()の順に更新する
+        // NOTE: 毎フレーム呼ばれ、Behaviour を Stage() の順に更新する
         void UpdateBehaviours() const;
         void MainCameraCallback() const;
         void OnBecameLive() const;
@@ -50,13 +50,13 @@ namespace NanamiEngine::CineMachine
         void OnDebugRender() override;
         
         R4::SerializableReactiveProperty<int> priority_ = R4::SerializableReactiveProperty(0);
-        // Brainの既定FOVではなく、このカメラ独自のFOVを使うか
+        // NOTE: 既定の FOV ではなく、このカメラ独自の FOV を使うか
         bool  overrideFov_ = false;
         float fov_         = 60.0f;
         bool              overrideBlendIn_ = false;
         float             blendIn_secs_    = 0.5f;
         LibCore::EaseType blendInEase_     = LibCore::EaseType::SmoothStep;
-        // Behaviourに関係なくBrainの追従補間をスキップする(非シリアライズ)
+        // NOTE: Behaviour に関係なく追従補間をスキップする (非シリアライズ)
         bool  isImmediateApply_ = false;
         std::vector<std::weak_ptr<IVirtualCameraBehaviour>> cameraBehaviours_;
     

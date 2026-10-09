@@ -23,7 +23,7 @@ void AnimationTree::AnimationClipNode::ReleaseAnimationModel()
     if (dxlibAnimationIndex_ == -1)
         return;
 
-    // InitForGamePlay で Animator ごと・クリップごとに MV1DuplicateModel した複製なので、ノードが自分で消す
+    // NOTE: InitForGamePlay で得たハンドルはノードごとの複製なので、ノードが自分で消す
     MV1DeleteModel(dxlibAnimationIndex_);
     dxlibAnimationIndex_ = -1;
 }
@@ -56,7 +56,7 @@ void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, 
 {
     const float clipEndTime = ClipEndTime();
 
-    // ノード進入直後（OnExitNode で 0 に戻っている）は再生区間の開始位置から始める
+    // NOTE: ノード進入直後（OnExitNode で 0 に戻っている）は再生区間の開始位置から始める
     if (during_secs_ < clipStartTime_)
         during_secs_ = clipStartTime_;
 

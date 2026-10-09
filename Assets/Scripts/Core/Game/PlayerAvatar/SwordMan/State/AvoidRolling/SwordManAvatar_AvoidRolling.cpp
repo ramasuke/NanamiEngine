@@ -33,7 +33,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             Status().DiscardDamage();
         }
 
-        // ジャスト回避が決まっていれば、残りの転がりを打ち切って反撃できる
+        // NOTE: ジャスト回避が決まっていれば、残りの転がりを打ち切って反撃できる
         if (isAvoided_ && Status().CanCounter() && MIN_ROLL_BEFORE_COUNTER_SECS <= During_secs() && Input().NormalAttack().IsPressed())
         {
             OnChangeState(SwordManAvatarStateType::CounterAttack);

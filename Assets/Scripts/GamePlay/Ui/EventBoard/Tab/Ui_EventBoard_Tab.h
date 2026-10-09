@@ -14,22 +14,22 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 掲示板の上に吊った木札の見出し1枚 (選択表示と未読バッジ) */
+    // NOTE: 掲示板の上に吊った木札の見出し1枚 (選択表示と未読バッジ)
     class EventBoardTab final : public Component::ComponentBase,
                                 public LifeCycleCallback::IAwakable
     {
     public:
-        /** @brief 吊る位置。選ばれたときはここから selectedDrop_px_ だけ下げる */
+        // NOTE: 吊る位置。選ばれたときはここから selectedDrop_px_ だけ下げる
         void Place(const glm::vec3& localPos);
         void SetLabel(const std::string& label);
         void SetSelected(bool isSelected);
-        /** @param count 0 ならバッジを隠す */
+        // NOTE: count が 0 ならバッジを隠す
         void SetBadgeCount(size_t count);
         void SubscribeOnClick(std::function<void()> onClick);
 
     private:
         void OnAwake() override;
-        /** @brief 生成直後に Set* が来ても困らないよう、自前の参照はここで揃える */
+        // NOTE: 生成直後に Set* が来ても困らないよう、自前の参照はここで揃える
         void EnsureComponents();
 
         FIELD(NanamiUi::Button) selectButton_;

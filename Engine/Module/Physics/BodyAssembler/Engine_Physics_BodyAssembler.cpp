@@ -83,7 +83,7 @@ namespace NanamiEngine::Module::Physics
             return gameObject ? gameObject->Name() : std::string("(destroyed)");
         }
 
-        /** @brief Jolt は NaN の姿勢を渡されるとその場でクラッシュするので、渡す前に弾いて発生元を記録する */
+        // NOTE: Jolt は NaN の姿勢を渡されるとその場でクラッシュするので、渡す前に弾いて発生元を記録する
         bool BodyAssemblerWarnNonFiniteTransform(
             const JPH::Vec3& position,
             const JPH::Quat& rotation,
@@ -300,7 +300,7 @@ namespace NanamiEngine::Module::Physics
 
             entry.collisionGroupId = collisionGroupId;
             entry.dirty = true;
-            // 付いている Sensor も同じ GroupID で作り直す
+            // NOTE: 付いている Sensor も同じ GroupID で作り直す
             for (auto& colliderEntry : colliders_ | std::views::values)
             {
                 if (colliderEntry.owner == rigidBodyPtr)
@@ -369,7 +369,7 @@ namespace NanamiEngine::Module::Physics
         const bool isSensor = ColliderBodyAccess::IsSensor(*collider);
         if (entry.owner && !isSensor)
         {
-            // RigidBody の Body の一部なので、RigidBody 側を作り直す
+            // NOTE: RigidBody の Body の一部なので、RigidBody 側を作り直す
             if (const auto owner = rigidBodies_.find(entry.owner); owner != rigidBodies_.end())
                 owner->second.dirty = true;
             return;
@@ -458,7 +458,7 @@ namespace NanamiEngine::Module::Physics
                 continue;
             }
 
-            // 形状の位置はモデル原点のズレ補正も含めて各 Collider が決める。ここで Transform から計算し直さない
+            // NOTE: 形状の位置はモデル原点のズレ補正も含めて各 Collider が決める。ここで Transform から計算し直さない
             const auto [colliderPosition, colliderRotation] = ColliderBodyAccess::WorldTransform(*collider);
             colliderEntry.relativePosition = inverseBodyRotation * (colliderPosition - bodyPosition);
             colliderEntry.relativeRotation = (inverseBodyRotation * colliderRotation).Normalized();
@@ -597,7 +597,7 @@ namespace NanamiEngine::Module::Physics
         if (it == rigidBodies_.end() || it->second.bodyId.IsInvalid())
             return;
 
-        // Compound では重心と原点がずれるので、重心ではなく原点の位置を書き戻す
+        // NOTE: Compound では重心と原点がずれるので、重心ではなく原点の位置を書き戻す
         JPH::RVec3 position;
         JPH::Quat  rotation;
         physics_.GetPhysicsSystem().GetBodyInterface().GetPositionAndRotation(it->second.bodyId, position, rotation);

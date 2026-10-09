@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Toolbar
             return std::string(u8.begin(), u8.end());
         }
 
-        /** @brief 作業ディレクトリ直下の .sln がちょうど 1 つならそれを返す */
+        // NOTE: 作業ディレクトリ直下の .sln がちょうど 1 つならそれを返す
         std::filesystem::path FindSolution()
         {
             std::error_code ec;
@@ -36,7 +36,7 @@ namespace NanamiEngine::Core::Toolbar
             return count == 1 ? found : std::filesystem::path();
         }
 
-        /** @brief .sln の中でエンジン (NanamiEngine / NanamiHost) 以外の .vcxproj がちょうど 1 つならそれ = ゲームプロジェクト */
+        // NOTE: .sln 内のエンジン (NanamiEngine / NanamiHost) 以外の .vcxproj がちょうど 1 つなら、それがゲームプロジェクト
         std::filesystem::path FindGameProject(const std::filesystem::path& solution)
         {
             std::ifstream stream(solution);
@@ -45,7 +45,7 @@ namespace NanamiEngine::Core::Toolbar
             int count = 0;
             while (std::getline(stream, line))
             {
-                // Project("{...}") = "Name", "Path\Name.vcxproj", "{guid}"
+                // NOTE: Project("{...}") = "Name", "Path\Name.vcxproj", "{guid}"
                 if (line.rfind("Project(", 0) != 0)
                     continue;
                 const std::size_t equal = line.find('=');

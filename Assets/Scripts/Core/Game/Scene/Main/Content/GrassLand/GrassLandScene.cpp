@@ -55,7 +55,7 @@ namespace GameCore::Scene::Main
 
     Coroutine::Task<EnterResult> GrassLandScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
     {
-        // Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
+        // NOTE: Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
         Context()->Init();
 
         // NOTE: 浮遊石はもう拠点の島へ飛び去っている。イベント用のステージには物語の石を出さない
@@ -97,7 +97,7 @@ namespace GameCore::Scene::Main
             }
         }
 
-        // カバーが明ける前に画を作っておく
+        // NOTE: カバーが明ける前に画を作っておく
         arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<GrassLandSceneContext>>(
             playerAvatar_, Context(), Story::StoryFlag::GrassLandOverviewSeen);
         arrivalMovie_->Begin();
@@ -118,7 +118,7 @@ namespace GameCore::Scene::Main
     {
         isStageCleared_ = true;
 
-        // 初めて立てたときだけ。倒し直しでは石はもう無い
+        // NOTE: 初めて立てたときだけ。倒し直しでは石はもう無い
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
 

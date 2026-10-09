@@ -16,14 +16,14 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Abort;
         isRequested_ = true;
 
-        // 権威側限定Tickなら、他ピアも同じシーンへ遷移させる(自分の遷移要求より先に送っておく)
+        // NOTE: 権威側限定Tickなら、他ピアも同じシーンへ遷移させる(自分の遷移要求より先に送っておく)
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::ChangeMainSceneRpc::Send(
                 context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, Scene::Main::SceneType::MainIsland, true);
         }
 
-        // ボスを倒して戻るので、ロード画面の地図に踏破の印を押す
+        // NOTE: ボスを倒して戻るので、ロード画面の地図に踏破の印を押す
         Game::Instance().Scenes().RequestChangeScene(
             Scene::Main::SceneType::MainIsland,
             Scene::Main::SceneTransitionOptions{ .isStageCleared = true });

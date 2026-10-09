@@ -1,6 +1,6 @@
 ﻿#include "Engine_Module_SharedStaticObject.h"
 
-// NOTE: dllexport comes from the declaration in the cereal patch
+// NOTE: nanami_shared_static_object の dllexport は cereal パッチ側の宣言に付いている
 #include "cereal/cereal.hpp"
 
 #include <mutex>
@@ -30,7 +30,7 @@ namespace
     }
 }
 
-// static_object.hpp のパッチが呼ぶ。エンジン DLL が export する唯一の入口
+// NOTE: エンジン DLL が export する唯一の入口。cereal 側のパッチからの呼び出し専用
 namespace cereal::detail
 {
     void* nanami_shared_static_object(char const* key, void* (*create)(), void (*destroy)(void*))
@@ -48,7 +48,7 @@ namespace cereal::detail
         const auto [it, inserted] = table.slots.try_emplace(key, Slot{ object, destroy, owner });
         if (!inserted)
         {
-            // 別スレッドが先に作っていた
+            // NOTE: 別スレッドが先に作っていた
             destroy(object);
             return it->second.object;
         }

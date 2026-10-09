@@ -8,9 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** 一番近いプレイヤーの周りを desiredRadius_ を保って回る。向きと時間は毎回ランダム
-     * NOTE: 進めなければ一度だけ反転し、それでも駄目なら Success。radiusShrinkPerSec_ > 0 なら minRadius_ まで詰め寄る
-     */
+    // NOTE: 一番近いプレイヤーの周りを desiredRadius_ を保って回る。向きと時間は毎回ランダム
+    // NOTE: 進めなければ一度だけ反転し、それでも駄目なら Success。radiusShrinkPerSec_ > 0 なら minRadius_ まで詰め寄る
     class CircleAroundPlayer final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
@@ -26,7 +25,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] int   animationNumber_ = -1;
         [[serialize(1)]] float radiusShrinkPerSec_ = 0.0f;
         [[serialize(1)]] float minRadius_          = 0.0f;
-        // NOTE: 実際の移動量が期待値のこの割合を下回った状態が stuck_secs_ 続いたら詰まりとみなす
+        // NOTE: 実際の移動量が期待値のこの割合を下回る状態が stuckThreshold_secs_ 続いたら詰まりとみなす
         [[serialize(2)]] float stuckProgressRate_  = 0.2f;
         [[serialize(2)]] float stuckThreshold_secs_ = 0.3f;
 

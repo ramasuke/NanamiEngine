@@ -10,14 +10,12 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ゲームオーバー画面の選択肢1枚。選ばれると縁の焼けた絵に替わり熾火が脈打つ
-     */
+    // NOTE: ゲームオーバー画面の選択肢1枚。選ばれると縁の焼けた絵に替わり熾火が脈打つ
     class GameOverButton final : public Component::ComponentBase,
                                  public LifeCycleCallback::IAwakable
     {
     public:
-        /** @param appearRate 0で見えない、1で出切った状態 */
+        // NOTE: appearRate は 0 で見えず、1 で出切った状態
         void SetAppearRate(float appearRate);
         void SetHighlighted(bool isHighlighted);
         void Tick(float deltaSecs);
@@ -43,7 +41,7 @@ namespace GamePlay::Ui
 
         std::weak_ptr<NanamiUi::Button> button_;
         float appearRate_ = 0.0f;
-        /** 0 で普段の札、1 で選ばれた札。選び直すと今の濃さから折り返す */
+        // NOTE: 0 で普段の札、1 で選ばれた札。選び直すと今の濃さから折り返す
         LibCore::Tween::TweenPlayer<float> highlightTween_;
         bool isHighlighted_ = false;
         float emberPhase_ = 0.0f;

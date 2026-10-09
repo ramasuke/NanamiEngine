@@ -71,7 +71,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
     bool MagicCasterAvatarStateBase::TryBeginCast() const
     {
         std::optional<int> slot;
-        // ジャスト回避直後の受付中は基本魔法の代わりにカウンター魔法を撃つ
+        // NOTE: ジャスト回避直後の受付中は基本魔法の代わりにカウンター魔法を撃つ
         if (Input().Cast().IsPressed())
             slot = CanCounterCast() ? SPELL_COUNTER_SLOT : SPELL_BASIC_SLOT;
         else
@@ -160,7 +160,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (!target)
             return;
 
-        // 部位は真上にあることもあるので、高さを消してから渡す(RotateTowards の長さ判定をすり抜けて水平成分 0 を正規化しないように)
+        // NOTE: 部位が真上にあると水平成分 0 を正規化してしまうので、高さを消してから渡す
         glm::vec3 toAim = ILockOnTarget::PositionOf(*target) - Transform().GetWorldPos();
         toAim.y = 0.0f;
         Actions().RotateTowards(toAim, Status().GetAimRotateSpeed());

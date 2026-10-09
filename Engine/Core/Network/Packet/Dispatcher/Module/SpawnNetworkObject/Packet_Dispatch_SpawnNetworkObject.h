@@ -36,9 +36,7 @@ namespace NanamiEngine::Core::Network
             glm::vec3 position,
             glm::quat rotation);
 
-        /**
-         * policy: 所有者離脱時の扱い。owner: 初期所有者 (受信側は spawn パケットの送信者)
-         */
+        // NOTE: policy: 所有者離脱時の扱い。owner: 初期所有者 (受信側は spawn パケットの送信者)
         std::vector<NetworkObjectId> AllocateIdsAndRegister(
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
             OwnerLeavePolicy policy,
@@ -48,7 +46,7 @@ namespace NanamiEngine::Core::Network
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
             OwnerLeavePolicy policy,
             struct PlayerId owner);
-        /** ルート以下のネットワークノードをレジストリから外してから GameObject を破棄する */
+        // NOTE: ルート以下のネットワークノードをレジストリから外してから GameObject を破棄する
         void DespawnAndUnregister(const std::shared_ptr<Module::GameObject::IGameObject>& root);
 
     protected:
@@ -56,7 +54,7 @@ namespace NanamiEngine::Core::Network
         void OnReceive(const Packet& packet) override;
 
     private:
-        // ルートと子孫(DFS順)から NetworkGameObject か INetworkAwakable を持つノードを集める
+        // NOTE: ルートと子孫(DFS順)から NetworkGameObject か INetworkAwakable を持つノードを集める
         // WARNING: 送信側と受信側で同じ順・同じ数になる前提で ID を割り当てる
         [[nodiscard]] std::vector<std::shared_ptr<Module::GameObject::IGameObject>> CollectNetworkGameObjects(
             const std::shared_ptr<Module::GameObject::IGameObject>& root) const;

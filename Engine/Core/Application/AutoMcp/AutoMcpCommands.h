@@ -10,7 +10,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 {
     class AutoMcpServer;
 
-    /** @brief コマンドを実行するフレームタイミング */
+    // NOTE: コマンドを実行するフレームタイミング
     enum class AutoMcpPhase
     {
         FrameBegin,
@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         std::function<void(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)> handler;
     };
 
-    /** @brief screenshot以外の全コマンドの表 */
+    // NOTE: screenshot以外の全コマンドの表
     class NANAMI_API AutoMcpCommandTable final
     {
         friend class AutoMcpServer;

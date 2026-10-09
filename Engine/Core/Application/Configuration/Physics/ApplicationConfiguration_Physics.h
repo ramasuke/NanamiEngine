@@ -24,15 +24,15 @@ namespace NanamiEngine::Core::Application::Configuration
         [[nodiscard]] static int   GetCollisionSteps();
         static void                SetCollisionSteps(int steps);
 
-        // 面に沿ってほぼ止まっている接触に使う合成摩擦。0なら静止摩擦自体を使わない
+        // NOTE: 面に沿ってほぼ止まっている接触に使う合成摩擦。0なら静止摩擦自体を使わない
         [[nodiscard]] static float GetStaticFriction();
         static void                SetStaticFriction(float friction);
 
-        // これ未満の面方向相対速度を「止まっている」とみなす
+        // NOTE: これ未満の面方向相対速度を「止まっている」とみなす
         [[nodiscard]] static float GetStaticFrictionSpeed();
         static void                SetStaticFrictionSpeed(float speed);
 
-        // これより急な面は静止摩擦の対象外にして、従来どおり滑らせる
+        // NOTE: これより急な面は静止摩擦の対象外にして、従来どおり滑らせる
         [[nodiscard]] static float GetStaticFrictionMaxSlopeDeg();
         static void                SetStaticFrictionMaxSlopeDeg(float degree);
 

@@ -55,7 +55,7 @@ namespace GameCore::Scene::Main
 
     Coroutine::Task<EnterResult> DrySandScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
     {
-        // Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
+        // WARNING: Context の FIELD は読み込んだシーン内の GameObject を指す。読み込みが済むまで触らない
         Context()->Init();
 
         // NOTE: 浮遊石はもう拠点の島へ飛び去っている
@@ -81,7 +81,7 @@ namespace GameCore::Scene::Main
             Context()->PlayerSpawnPoint(),
             Context()->PlayerSpawnRotation());
 
-        // 敵はホストだけがスポーンし、クライアントは EnemySpawnDispatcher が再現する
+        // NOTE: 敵はホストだけがスポーンする
         if (networkRunner.IsServer())
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
@@ -94,7 +94,7 @@ namespace GameCore::Scene::Main
             }
         }
 
-        // カバーが明ける前に画を作っておく
+        // NOTE: カバーが明ける前に画を作っておく
         arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<DrySandSceneContext>>(
             playerAvatar_, Context(), Story::StoryFlag::DesertOverviewSeen);
         arrivalMovie_->Begin();
@@ -115,7 +115,7 @@ namespace GameCore::Scene::Main
     {
         isStageCleared_ = true;
 
-        // 初めて立てたときだけ。倒し直しでは石はもう無い
+        // NOTE: 初めて立てたときだけ。倒し直しでは石はもう無い
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
 

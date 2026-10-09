@@ -65,7 +65,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return gameWindow;
         }
 
-        /** @brief 生成したコンポーネントは現在のメインウィンドウのライフサイクルに登録されるので、先に GameWindow へ切り替える */
+        // NOTE: 生成したコンポーネントは現在のメインウィンドウのライフサイクルに登録されるので、先に GameWindow へ切り替える
         std::shared_ptr<MainWindow::GameWindow> ActivateGameWindow(JsonValue& result, JsonAllocator& allocator)
         {
             auto gameWindow = RequireGameWindow();
@@ -239,7 +239,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return name ? LibCore::Dxlib::ShiftJisToUtf8(name) : std::string();
         }
 
-        /** @brief contentPath_ は "Assets\\Art\\..." 形式なので、区切りと大文字小文字をそろえて比較する */
+        // NOTE: contentPath_ は "Assets\\Art\\..." 形式なので、区切りと大文字小文字をそろえて比較する
         std::string NormalizeAssetPath(std::string path)
         {
             std::ranges::replace(path, '\\', '/');
@@ -296,7 +296,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 if (path == wanted)
                     return file;
 
-                // "SwordMan.mv1" のようにファイル名や途中からのパスだけでも引けるようにする
+                // NOTE: "SwordMan.mv1" のようにファイル名や途中からのパスだけでも引けるようにする
                 if (path.size() > wanted.size() && path.ends_with(wanted) && path[path.size() - wanted.size() - 1] == '/')
                     suffixMatches.push_back(file);
             }
@@ -353,7 +353,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             throw AutoMcpError(requestedName + " に一致するクリップが " + std::to_string(partialMatches.size()) + " 個あります。完全な名前か clipIndex を指定してください");
         }
 
-        /** @brief yaw 0 / pitch 0 で +Z 側から -Z 向きに見る。pitch が正なら見下ろす */
+        // NOTE: yaw 0 / pitch 0 で +Z 側から -Z 向きに見る。pitch が正なら見下ろす
         glm::vec3 ViewDirectionFromAngles(const float yawDegrees, const float pitchDegrees)
         {
             const float yaw   = glm::radians(yawDegrees);
@@ -364,12 +364,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
         glm::quat LookRotation(const glm::vec3& direction)
         {
             const glm::vec3 up = std::abs(direction.y) > 0.999f ? glm::vec3(0.0f, 0.0f, 1.0f) : glm::vec3(0.0f, 1.0f, 0.0f);
-            // Editor3DCamera の前方は +Z
+            // NOTE: Editor3DCamera の前方は +Z
             return glm::quatLookAtLH(direction, up);
         }
     }
 
-    /** @brief コマンド実装。AutoMcpEngineAccess 経由でエンジン側の非公開部分に触れる */
+    // NOTE: コマンド実装。AutoMcpEngineAccess 経由でエンジン側の非公開部分に触れる
     class AutoMcpCommandHandlers final
     {
     public:
@@ -412,10 +412,8 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return value;
         }
 
-        /**
-         * JSON から作り直した GameObject で既存のものを置き換える。
-         * NOTE: 同じ GUID だと追加と削除が打ち消し合うので TryReplaceGameObject は使わない
-         */
+        // NOTE: JSON から作り直した GameObject で既存のものを置き換える
+        // NOTE: 同じ GUID だと追加と削除が打ち消し合うので TryReplaceGameObject は使わない
         static void ReplaceGameObject(const FoundGameObject& target, const GameObjectPtr& replacement)
         {
             const GameObjectPtr previous = target.gameObject;
@@ -439,7 +437,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
             replacement->InitGameObject(parent ? std::weak_ptr<IGameObject>(parent) : std::weak_ptr<IGameObject>(), replacement);
 
-            // worldMatrix_ は JSON に保存された値のままなので、ローカル値と親から計算し直させる
+            // NOTE: worldMatrix_ は JSON に保存された値のままなので、ローカル値と親から計算し直させる
             const glm::vec3 localPosition = replacement->Transform().GetLocalPos();
             replacement->Transform().SetLocalPos(localPosition);
 
@@ -866,7 +864,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             AddHotReloadState(result, allocator);
         }
 
-        // NOTE: 差し替え自体は ApplicationBase::Run の ScreenFlip 後
+        // NOTE: 要求だけ出す。差し替え自体はフレームの切れ目で行われる
         static void CommandHotReloadReload(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             auto& gameModule = HotReload::GameModule::Instance();
@@ -940,7 +938,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
                 const glm::vec3 direction = glm::normalize(offset);
                 const glm::vec3 up = std::abs(direction.y) > 0.999f ? glm::vec3(0.0f, 0.0f, 1.0f) : glm::vec3(0.0f, 1.0f, 0.0f);
-                // Editor3DCamera の前方は +Z
+                // NOTE: Editor3DCamera の前方は +Z
                 gameWindow->SetCameraRotation(glm::quatLookAtLH(direction, up));
             }
 
@@ -979,7 +977,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 changes.emplace_back(&flag, args.RequireBool(key));
         }
 
-        /** @brief true/false なら全部、{"名前": bool} なら名前ごと (大文字小文字は区別しない) に切り替える */
+        // NOTE: true/false なら全部、{"名前": bool} なら名前ごと (大文字小文字は区別しない) に切り替える
         template <typename EnumT>
         static void CollectDebugDrawFlags(const JsonArgs& args, const char* key, const std::span<const char* const> names, bool& (*flag)(EnumT), DebugDrawChanges& changes)
         {
@@ -1019,10 +1017,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeDebugDraw(result, allocator);
         }
 
-        /** @brief 既定では ProjectConfig/DebugDraw に保存しない (git 管理下なので)。save で Config 画面の変更と同じく保存する */
+        // NOTE: 既定では ProjectConfig/DebugDraw に保存しない (git 管理下なので)。save で Config 画面の変更と同じく保存する
         static void CommandDebugDrawSet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            // 途中の引数が不正でも一部だけ反映されないよう、全部読んでから書き込む
+            // NOTE: 途中の引数が不正でも一部だけ反映されないよう、全部読んでから書き込む
             DebugDrawChanges changes;
             CollectDebugDrawFlag (args, "colliders", AutoMcpEngineAccess::DebugDrawAllColliders(), changes);
             CollectDebugDrawFlags(args, "shapes",    NanamiEngine::Module::Physics::COLLIDER_SHAPE_KIND_NAMES, &AutoMcpEngineAccess::DebugDrawColliderKind, changes);
@@ -1226,7 +1224,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("truncated", isTruncated, allocator);
         }
 
-        /** @brief 再読み込みしたアセットの非同期ロードは次フレームの OnEnableAsset から始まるので、ここでは loadingResourceCount を返さない */
+        // NOTE: 再読み込み後の非同期ロードは次フレームから始まるので、loadingResourceCount は返さない
         static void CommandAssetsReload(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const int previousAssetCount = static_cast<int>(AllAssets().size());
@@ -1240,7 +1238,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         {
             const Mv1FilePtr file   = ResolveMv1(args, "guid", "path");
             const auto       window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
-            // ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、AddContent より先に切り替える (Mv1File::OnDoubleClick と同じ)
+            // NOTE: ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するので、AddContent より先に切り替える
             ApplicationBase::OnChangeWindow(window);
             window->AddContent(file);
             DescribeModelViewState(*window, result, allocator);
@@ -1376,7 +1374,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             else if (args.FindMember("animationGuid") != nullptr || args.FindMember("animationPath") != nullptr)
                 AutoMcpEngineAccess::SetSlotAnimationFile(slot, ResolveMv1(args, "animationGuid", "animationPath"));
 
-            // クリップを選ぶと再生区間と時間がリセットされるので、区間・時間より先に選ぶ
+            // NOTE: クリップを選ぶと再生区間と時間がリセットされるので、区間・時間より先に選ぶ
             if (args.FindMember("clipName") != nullptr || args.FindMember("clipIndex") != nullptr)
             {
                 const int modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();

@@ -14,11 +14,10 @@ namespace NanamiEngine::Module::GameObject
 
         // NOTE: 標準メニューの後ろに order 昇順で並ぶ。登録元モジュールは draw の置かれているモジュール
         static bool RegisterMenu(DrawMenuFunc draw, int order = 0);
-        /** @brief module が登録したメニューを消す。戻り値は消した数 */
+        // NOTE: module が登録したメニューを消す。戻り値は消した数
         static std::size_t UnregisterModule(Core::ModuleHandle module);
 
-        ///addされる場合はoutComponentにComponentBaseのポインタを入れる
-        ///addされない場合はnullptrを入れる
+        // NOTE: 追加されたら outComponent にそのポインタを、されなければ nullptr を入れる
         template <typename T>
         static void OnDrawTryAddComponentGui(std::shared_ptr<Component::ComponentBase>& outComponent)
         {

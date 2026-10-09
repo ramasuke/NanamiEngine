@@ -8,9 +8,7 @@
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    /**
-     * @note 実行中のAnimatorのAnimationTreeをリアルタイムに覗くPopupWindow
-     */
+    // NOTE: 実行中の Animator の AnimationTree をリアルタイムに覗く
     class NANAMI_API RunningAnimationTreeWindow final : public IPopupWindow
     {
     public:

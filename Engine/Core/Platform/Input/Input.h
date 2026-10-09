@@ -5,11 +5,11 @@
 
 #include "vec2.hpp"
 
-// キーボード / マウス / ゲームパッドの生入力の DxLib を出さない入口
+// NOTE: キーボード / マウス / ゲームパッドの生入力の DxLib を出さない入口
 // NOTE: 列挙の値は DxLib の定数と同じ (.cpp で static_assert)
 namespace NanamiEngine::Platform::Input
 {
-    /** DirectInput のキーコード (DxLib の KEY_INPUT_*) */
+    // NOTE: DirectInput のキーコード (DxLib の KEY_INPUT_*)
     enum class Key : int
     {
         Escape = 0x01,
@@ -30,7 +30,7 @@ namespace NanamiEngine::Platform::Input
         Insert = 0xD2, Delete = 0xD3,
     };
 
-    /** マウスボタン (DxLib の MOUSE_INPUT_*、ビットマスク) */
+    // NOTE: マウスボタン (DxLib の MOUSE_INPUT_*、ビットマスク)
     enum class MouseButton : int
     {
         Left   = 0x0001,
@@ -38,7 +38,7 @@ namespace NanamiEngine::Platform::Input
         Middle = 0x0004,
     };
 
-    /** XInput のボタン番号 (DxLib の XINPUT_BUTTON_*、GamepadState::buttons の添字) */
+    // NOTE: XInput のボタン番号 (DxLib の XINPUT_BUTTON_*、GamepadState::buttons の添字)
     enum class GamepadButton : int
     {
         DPadUp = 0, DPadDown = 1, DPadLeft = 2, DPadRight = 3,
@@ -56,37 +56,37 @@ namespace NanamiEngine::Platform::Input
         std::int16_t             thumbLX = 0, thumbLY = 0, thumbRX = 0, thumbRY = 0; // -32768..32767
 
         [[nodiscard]] bool IsDown(const GamepadButton button) const { return buttons[static_cast<int>(button)]; }
-        /** @brief ボタン・トリガー (deadZone 超) ・スティック (deadZone 超) のどれかが触られているか */
+        // NOTE: ボタン・トリガー (deadZone 超) ・スティック (deadZone 超) のどれかが触られているか
         [[nodiscard]] bool IsAnyDown(std::uint8_t triggerDeadZone = 30, std::int16_t thumbDeadZone = 8000) const;
     };
 
     namespace Keyboard
     {
         [[nodiscard]] NANAMI_API bool IsDown(Key key);
-        /** @brief キーボードのどれかが押されているか (マウス・パッドは見ない) */
+        // NOTE: キーボードのどれかが押されているか (マウス・パッドは見ない)
         [[nodiscard]] NANAMI_API bool IsAnyDown();
-        /** @brief 数字キー (上段 1..0 とテンキー) のどちらかで digit (0..9) が押されているか */
+        // NOTE: 数字キー (上段 1..0 とテンキー) のどちらかで digit (0..9) が押されているか
         [[nodiscard]] NANAMI_API bool IsDigitDown(int digit);
     }
 
     namespace Mouse
     {
-        /** @brief 押されているボタンのビットマスク (MouseButton の値の OR) */
+        // NOTE: 押されているボタンのビットマスク (MouseButton の値の OR)
         [[nodiscard]] NANAMI_API int        Buttons();
         [[nodiscard]] NANAMI_API bool       IsDown(MouseButton button);
         [[nodiscard]] NANAMI_API glm::ivec2 Position();
-        /** @brief ホイールの累積回転量。reset=true で読んだ後に 0 に戻す */
+        // NOTE: ホイールの累積回転量。reset=true で読んだ後に 0 に戻す
         [[nodiscard]] NANAMI_API int        WheelRotation(bool reset = false);
     }
 
     namespace Gamepad
     {
-        /** @param index 0 = 1 つ目のパッド */
+        // NOTE: index 0 が 1 つ目のパッド
         [[nodiscard]] NANAMI_API GamepadState Get(int index = 0);
     }
 
-    /** @brief キーボード・マウス・パッドのどれかが押されているか (DxLib の CheckHitKeyAll()) */
+    // NOTE: キーボード・マウス・パッドのどれかが押されているか (DxLib の CheckHitKeyAll())
     [[nodiscard]] NANAMI_API bool IsAnyDeviceDown();
-    /** @brief メインウィンドウがアクティブか */
+    // NOTE: メインウィンドウがアクティブか
     [[nodiscard]] NANAMI_API bool IsWindowActive();
 }

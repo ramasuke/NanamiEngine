@@ -7,7 +7,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::BossSandstorm::DoTick(const TickContext& context)
     {
-        // NOTE: Sequence は後ろの枝が終わるまで毎フレーム Tick し直すので、変わるときだけ送る
+        // NOTE: 親ノードから毎フレーム Tick し直されるので、変わるときだけ送る
         if (GamePlay::Weather::Sandstorm::IsSummoned() == isSummon_)
             return TickStatus::Success;
 

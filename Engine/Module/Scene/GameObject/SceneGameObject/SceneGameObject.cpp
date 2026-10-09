@@ -41,7 +41,7 @@ void Scene::SceneGameObject::InitForCopied(const std::shared_ptr<IGameObject>& o
 
 void Scene::SceneGameObject::InvokeInitAwakeCallbacks()
 {
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    // NOTE: ライフサイクルに積まれた分を取り出してから呼び、同じコールバックが二重に呼ばれないようにする
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
     {
@@ -61,7 +61,7 @@ void Scene::SceneGameObject::InvokeInitAwakeCallbacks()
 
 void Scene::SceneGameObject::InvokeInitStartCallbacks()
 {
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    // NOTE: ライフサイクルに積まれた分を取り出してから呼び、同じコールバックが二重に呼ばれないようにする
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
     {
@@ -82,10 +82,10 @@ void Scene::SceneGameObject::SetEnable(const bool enable)
 
 std::shared_ptr<GameObject::IGameObject> Scene::SceneGameObject::CopyForInstantiate()
 {
-    // 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
+    // NOTE: 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
 
-    // 1) this をバイナリアーカイブに保存
+    // NOTE: バイナリアーカイブを往復させて複製する
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);
@@ -130,7 +130,7 @@ void Scene::SceneGameObject::ImplementDestroy()
         child->ImplementDestroy();
     }
     Transform().SetParent(std::weak_ptr<IGameObject>{});
-    // ownPtr_.reset() で自身が解放され得るので、その前に InitGameObject で行った登録を外す
+    // NOTE: ownPtr_.reset() で自身が解放され得るので、その前に InitGameObject で行った登録を外す
     Core::Application::ApplicationBase::ObjectRegistry().Unregister(guid_, *this);
     ownPtr_.reset();
 }
@@ -204,14 +204,12 @@ void Scene::SceneGameObject::OnDrawTreeGui(const bool drawChildren)
 
     if (ImGui::Selectable(name_.c_str(), false, ImGuiSelectableFlags_AllowDoubleClick, buttonSize))
     {
-        // 左クリック時の処理（元々の処理）
         for (auto* inspector : Core::Application::ApplicationBase::PopupWindows().Catch<Core::PopupWindow::InspectorWindow>())
         {
             inspector->TryAddDisplayObject(ownPtr_);
         }
     }
 
-    // 右クリックされた時のポップアップ
     if (ImGui::BeginPopupContextItem(("Popup_" + name_).c_str()))
     {
         if (ImGui::MenuItem("Copy"))
@@ -228,7 +226,7 @@ void Scene::SceneGameObject::OnDrawTreeGui(const bool drawChildren)
 
     const bool hovered = ImGui::IsItemHovered();
 
-    // ホバー中にドラッグ開始できるようにする
+    // NOTE: ホバー中にドラッグ開始できるようにする
     if (hovered && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
     {
         ImGui::SetDragDropPayload(Core::FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE, &ownPtr_, sizeof(ownPtr_));

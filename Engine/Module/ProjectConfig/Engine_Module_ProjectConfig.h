@@ -69,7 +69,7 @@ namespace NanamiEngine::Module::ProjectConfig
         }
         catch (const Exception::SerializationException& e)
         {
-            // 設定ファイルの破損はデフォルト値で継続するが、黙って握りつぶさず警告を残す
+            // NOTE: 設定ファイルの破損はデフォルト値で継続するが、黙って握りつぶさず警告を残す
             LogWarning("ProjectConfig: " + std::string(e.what()) + " -> デフォルト値を使用します");
             return defaultValue;
         }

@@ -19,7 +19,7 @@ namespace GamePlay::Npc::Enemy
         const Physics::Manifold&,
         const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        // ダメージ0の投射物は演出専用なので被弾リアクションも起こさない
+        // NOTE: ダメージ0の投射物は演出専用なので被弾リアクションも起こさない
         if (power_.Value() <= 0)
             return;
 

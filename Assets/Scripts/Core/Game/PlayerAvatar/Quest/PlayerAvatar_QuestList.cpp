@@ -9,7 +9,7 @@ namespace GameCore::PlayerAvatar::Quest
 {
     void QuestList::StartAll(const QuestContext& context) const
     {
-        // 開始したそばから達成して Remove されうるので、写しを回す
+        // NOTE: 開始したそばから達成して Remove されうるので、写しを回す
         const auto quests = quests_;
         for (const auto& quest : quests)
         {

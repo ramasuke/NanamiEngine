@@ -21,7 +21,7 @@ namespace GamePlay::Ui
     class IItemBarSource;
     class ItemSlot;
 
-    // 画面右下のアイテム欄
+    // NOTE: 画面右下のアイテム欄
     class ItemBar final : public Component::ComponentBase,
                           public LifeCycleCallback::IUpdatable
     {
@@ -31,17 +31,16 @@ namespace GamePlay::Ui
     private:
         void OnUpdate() override;
 
-        /// 見せる枠数に足りない分だけ枠を生成し、帯の位置を合わせ直す
+        // NOTE: 見せる枠数に足りない分だけ枠を生成し、帯の位置を合わせ直す
         void SpawnSlots(const GameCore::PlayerAvatar::ItemPouch& pouch);
-        /// 枠の中身を作り直す。
         void RefreshContent(const GameCore::PlayerAvatar::ItemPouch& pouch);
         void PresentSlots(const GameCore::PlayerAvatar::ItemPouch& pouch) const;
         void FadeOutSlots() const;
         void ApplyStripSlide() const;
-        /// 前の選択から今の選択まで、回り込みを含めて近い向きに何枠動いたか
+        // NOTE: 前の選択から今の選択まで、回り込みを含めて近い向きに何枠動いたか
         [[nodiscard]] int SelectionStep(const GameCore::PlayerAvatar::ItemPouch& pouch) const;
         void ApplyDeviceGlyphs() const;
-        /// 左から i 番目の枠が映すポーチの添字。選択中が中央に来るように回す
+        // NOTE: 左から i 番目の枠が映すポーチの添字。選択中が中央に来るように回す
         [[nodiscard]] std::size_t PouchIndexOf(const GameCore::PlayerAvatar::ItemPouch& pouch, std::size_t slotIndex) const;
         [[nodiscard]] std::size_t CenterSlotIndex() const { return visibleCount_ / 2; }
 
@@ -60,14 +59,14 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) keyUseSprite_;
 
         [[serialize(0)]] int   maxVisibleSlots_ = 5;
-        /// 枠の間隔。HorizontalLayoutGroup の cellSize_.x と揃えること(帯の右端を固定するのに使う)
+        // NOTE: 枠の間隔。帯の右端を固定するために HorizontalLayoutGroup の cellSize_.x と揃える
         [[serialize(0)]] float slotPitch_px_ = 98.0f;
         [[serialize(0)]] float selectedScale_ = 1.0f;
         [[serialize(0)]] float unselectedScale_ = 0.66f;
         [[serialize(0)]] int   dimAlpha_ = 200;
-        /// 使い切った枠の薄さ
+        // NOTE: 使い切った枠の薄さ
         [[serialize(0)]] float emptyAlphaRate_ = 0.4f;
-        /// 使えない State のときの薄さ
+        // NOTE: 使えない State のときの薄さ
         [[serialize(0)]] float unusableAlphaRate_ = 0.6f;
         [[serialize(0)]] float fadeDuration_secs_ = 0.25f;
         [[serialize(0)]] float selectPulseDuration_secs_ = 0.3f;

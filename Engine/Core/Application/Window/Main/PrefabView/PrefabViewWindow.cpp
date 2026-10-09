@@ -10,7 +10,6 @@
 
 namespace
 {
-    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
     bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
     {
         if (needle.empty())
@@ -58,7 +57,6 @@ void Core::MainWindow::PrefabViewWindow::OnDrawGui(MainWindowDrawGuiContext cont
     }
     const std::string prefabSearchText = prefabSearchBuffer_;
 
-    // i 番目を識別するためのカウンタ
     size_t index = 0;
     std::optional<size_t> removeIndex = std::nullopt;
 
@@ -77,7 +75,7 @@ void Core::MainWindow::PrefabViewWindow::OnDrawGui(MainWindowDrawGuiContext cont
         }
         else
         {
-            // 検索中は階層を無視して、子孫まで含めた全GameObjectから名前がマッチするものをフラットに一覧表示する
+            // NOTE: 検索中は階層を無視し、子孫まで含めて名前が一致するものをフラットに並べる
             const auto drawIfMatches = [&prefabSearchText](const std::shared_ptr<GameObject::IGameObject>& target)
             {
                 if (target && ContainsCaseInsensitive(target->Name(), prefabSearchText))

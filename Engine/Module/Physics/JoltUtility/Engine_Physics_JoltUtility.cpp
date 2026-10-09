@@ -71,10 +71,9 @@ glm::vec3 NanamiEngine::Module::Physics::GetAngularVelocity(const JPH::BodyID& b
         .GetPhysicsSystem()
         .GetBodyInterface();
 
-    // Jolt → rad/s
+    // NOTE: Jolt の角速度は rad/s なので deg/s に直す
     const JPH::Vec3 angVelRad = bodyInterface.GetAngularVelocity(bodyId);
 
-    // rad → deg
     return glm::degrees(ToVec3(angVelRad));
 }
 
@@ -87,7 +86,6 @@ void NanamiEngine::Module::Physics::SetAngularVelocity(
         .GetPhysicsSystem()
         .GetBodyInterface();
 
-    // deg → rad
     const glm::vec3 rad = glm::radians(angularVelocity);
 
     bodyInterface.SetAngularVelocity(bodyId, ToJPHVec3(rad));

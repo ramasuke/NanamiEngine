@@ -15,20 +15,14 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief ステージ選択の「部屋」の行の見た目。番号で入るときは数字の枠を出す
-     */
+    // NOTE: ステージ選択の「部屋」の行の見た目。番号で入るときは数字の枠を出す
     class StageSelectRoomUi final : public Component::ComponentBase
     {
     public:
-        /** @brief 番号の桁数。枠の数もこれに合わせて prefab を組んである */
+        // NOTE: 番号の桁数。枠の数もこれに合わせて prefab を組んである
         [[nodiscard]] int CodeLength() const { return codeLength_; }
 
-        /**
-         * @brief いまの行き方と番号を書く
-         * @param cursor 番号を入れている桁(番号で入る以外は負)
-         * @param isCodeReady 番号が桁数ぶん揃っているか(ヒントの出し分けに使う)
-         */
+        // NOTE: いまの行き方と番号を書く。cursor は入力中の桁 (番号で入る以外は負)、isCodeReady は番号が揃っているか
         void ShowRoom(Network::RelayRoom::Mode mode, const std::string& code, int cursor, bool isCodeReady);
 
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiUi::MouseState> OnLeftArrowClicked() const { return leftArrowButton_->OnClick(); }
@@ -49,10 +43,10 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) digitSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) digitFocusSprite_;
         [[serialize(0)]] int codeLength_ = 6;
-        // 行き方ごとの言葉。RelayRoom::Mode の順 (相席する / 部屋を作る / 番号で入る)
+        // NOTE: 行き方ごとの言葉。RelayRoom::Mode の順 (相席する / 部屋を作る / 番号で入る)
         [[serialize(0)]] std::vector<std::string> modeNames_;
         [[serialize(0)]] std::vector<std::string> modeNotes_;
-        // 操作ヒント。行き方ごと + 番号がまだ揃っていないとき
+        // NOTE: 操作ヒント。行き方ごと + 番号がまだ揃っていないとき
         [[serialize(0)]] std::vector<std::string> modeHints_;
         [[serialize(0)]] std::string codeIncompleteHint_;
 

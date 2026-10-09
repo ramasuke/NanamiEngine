@@ -14,7 +14,7 @@ namespace NanamiEngine::Module::Asset
     public:
         explicit AnimationTreeFile(std::string contentPath = "");
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
-        /** AnimationTree を読み込んで返す。ファイルが壊れている場合はエラーを記録して nullptr を返す */
+        // NOTE: AnimationTree を読み込んで返す。ファイルが壊れている場合はエラーを記録して nullptr を返す
         [[nodiscard]] std::shared_ptr<AnimationTree::AnimationTree> OnLoadCopyContent() const;
         [[nodiscard]] std::string GetContentPath() const override;
         

@@ -16,10 +16,8 @@ namespace NanamiEngine::Module::AnimationTree
                           const std::function<void(const std::shared_ptr<IAnimationNode>&)>& onRemoveCurrentNode,
                           const std::function<void(AnimationNodePath*, float)>& onAddNextCurrentNodePath);
         void OnUpdateNodeAnimationBlend(float timeScale);
-        ///TODO: 初期化時に設定するようにした方が良い(カプセル化)
         void SetFromNode  (const std::shared_ptr<IAnimationNode>& node);
         void SetFromNodeForGraphEditorGui(const std::shared_ptr<IAnimationNode>& visualNode, const std::shared_ptr<IAnimationNode>& node);
-        ///TODO: 初期化時に設定するようにした方が良い(カプセル化) 
         void SetTargetNode(const std::shared_ptr<IAnimationNode>& node);
         void RemoveCurrentNodePath();
 
@@ -54,7 +52,7 @@ namespace NanamiEngine::Module::AnimationTree
         [[serialize(0)]] Guid fromNodeGuid_;
         [[serialize(0)]] Guid nextNodeGuid_;
         [[serialize(1)]] Guid visualFromNodeGuid_;
-        // false: クリップの終端を待たず、条件を満たした瞬間に遷移する(怯みなどの割り込み用)
+        // NOTE: false: クリップの終端を待たず、条件を満たした瞬間に遷移する(怯みなどの割り込み用)
         [[serialize(2)]] bool hasExitTime_ = true;
 #pragma region Serialization Function
 public:

@@ -11,7 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 掲示板に並べるお知らせ1件。表示用の文字列は開いた時刻で作っておく */
+    // NOTE: 掲示板に並べるお知らせ1件。表示用の文字列は開いた時刻で作っておく
     struct NoticeBoardEntry
     {
         std::shared_ptr<Asset::Announcement> announcement;
@@ -20,7 +20,7 @@ namespace GamePlay::Ui
         std::string dateTimeText;
     };
 
-    /** お知らせ一覧のModel。掲載時刻を過ぎたものを新しい順に並べ、選んだら既読にする */
+    // NOTE: お知らせ一覧のModel。掲載時刻を過ぎたものを新しい順に並べ、選んだら既読にする
     class NoticeBoardModel final
     {
     public:
@@ -35,7 +35,7 @@ namespace GamePlay::Ui
         [[nodiscard]] const BoardListCursor& Cursor() const { return cursor_; }
         [[nodiscard]] size_t UnreadCount() const;
 
-        /** @return 新しく既読にしたら true */
+        // NOTE: 新しく既読にしたら true
         bool MarkSelectedRead();
 
     private:

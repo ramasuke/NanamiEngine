@@ -5,7 +5,7 @@
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
 {
-    // 攻撃・移動から Idle に戻ってもロックオンは解除しない
+    // NOTE: 攻撃・移動から Idle に戻ってもロックオンは解除しない
     ChangeCameraByLockOn();
 
     if (!ExpiredCamera() && CameraGroup().FollowFromBehind().lock())

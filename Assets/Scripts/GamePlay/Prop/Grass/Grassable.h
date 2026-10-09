@@ -3,7 +3,7 @@
 
 namespace GamePlay::Prop
 {
-    // GrassField の配置モードで草を生やせる地面の目印。Raycast が当たるようコライダーと同じ GameObject に付ける
+    // NOTE: 草を生やせる地面の目印。Raycast が当たるようコライダーと同じ GameObject に付ける
     class Grassable final : public Component::ComponentBase
     {
 #pragma region Serialization Function

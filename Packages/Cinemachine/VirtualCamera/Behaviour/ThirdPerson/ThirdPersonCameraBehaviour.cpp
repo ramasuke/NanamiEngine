@@ -63,7 +63,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (!target_)
             return;
 
-        // NOTE: Brain は有効/無効を見ずに呼ぶので、ここで止める。Follow/LookAt は最後の offset のまま追従する
+        // NOTE: 無効でも呼ばれるのでここで止める。Follow/LookAt は最後の offset のまま追従する
         if (!IsEnable())
         {
             isMouseDeltaStale_ = true;
@@ -162,7 +162,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::vec3 offset(0, 0, distance_);
         const glm::vec3 rotatedOffset = glm::vec3(rot * glm::vec4(offset, 1.0f));
 
-        // 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
+        // NOTE: 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
         const glm::vec3 adjustedOffset = ResolveCameraCollision(rotatedOffset);
 
         follow_->followOffset_ = (lookAtPos + adjustedOffset) - targetPos;
@@ -174,24 +174,24 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (distance <= 0.0f)
             return desiredOffset;
 
-        // 追従対象の注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
+        // NOTE: 追従対象の注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
         const glm::vec3 origin    = IVirtualCameraTarget::PositionOf(*target_.get()) + lookAtOffsetPos_;
         const glm::vec3 direction = desiredOffset / distance;
 
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
         Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
 
-        // Ray だと壁際で Near 平面がめり込むので、collisionRadius_ の球で位置を決める
+        // NOTE: Ray だと壁際で Near 平面がめり込むので、collisionRadius_ の球で位置を決める
         Module::Physics::RaycastHit hit = Module::Physics::SphereCast(origin, collisionRadius_, direction, distance, mask);
         if (hit.Hit() && hit.Distance() <= 0.0f)
         {
-            // 始点(注視点)の時点で球が既に壁に重なっている場合、球では位置が決まらないためRayにフォールバックする
+            // NOTE: 始点で既に球が壁に重なっていると位置が決まらないので、Ray にフォールバックする
             hit = Module::Physics::Raycast(origin, direction, distance, mask);
         }
         if (!hit.Hit())
             return desiredOffset;
 
-        // 障害物の少し手前にカメラを配置する
+        // NOTE: 障害物の少し手前にカメラを配置する
         const float adjustedDistance = std::max(0.0f, hit.Distance() - collisionBuffer_);
 
         return direction * adjustedDistance;
@@ -199,7 +199,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateLookAtTargetBehaviour() const
     {
-        // pitchでも回すと見上げた時に注視点がカメラ側へ回り込み、プレイヤーが画面外へ出るためyawのみ
+        // NOTE: pitchでも回すと見上げた時に注視点がカメラ側へ回り込み、プレイヤーが画面外へ出るためyawのみ
         const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_, glm::vec3(0,1,0));
 
         const auto rotatedOffset = glm::vec3(rotY * glm::vec4(lookAtOffsetPos_, 1.0f));

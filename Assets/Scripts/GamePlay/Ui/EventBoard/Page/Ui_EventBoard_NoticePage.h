@@ -17,9 +17,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の「お知らせ」の頁。左にお知らせの札を並べ、右の便箋に選んだお知らせの本文を出す。
-     */
+    // NOTE: 掲示板の「お知らせ」の頁。お知らせの札の一覧と、選んだお知らせの便箋
     class EventBoardNoticePage final : public Component::ComponentBase
     {
     public:
@@ -30,7 +28,7 @@ namespace GamePlay::Ui
         void Bind(const NoticeBoardModel& model) const;
 
     private:
-        /** @param entry nullptr なら「お知らせなし」を出す */
+        // NOTE: entry が nullptr なら「お知らせなし」を出す
         void ShowDetail(const NoticeBoardEntry* entry) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;
@@ -46,7 +44,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailTitleText_;
         [[serialize(0)]] std::vector<FIELD(NanamiUi::TextRenderer)> detailBodyLines_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) emptyText_;
-        /** AnnouncementKind の順 */
+        // NOTE: AnnouncementKind の順
         [[serialize(0)]] std::vector<FIELD(Asset::SpriteFile)> kindHankoSprites_;
 
         EventBoardRowPool<EventBoardNoticeRow> rows_;

@@ -5,7 +5,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief facility_ が直っていれば解放 */
+    // NOTE: facility_ が直っていれば解放
     class FacilityRestoredCondition final : public ICondition
     {
     public:

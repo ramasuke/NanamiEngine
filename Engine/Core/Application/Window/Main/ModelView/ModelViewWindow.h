@@ -15,9 +15,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::MainWindow
 {
-    /**
-     * @brief .mv1 を ModelRenderer 付きの GameObject として表示するビューア
-     */
+    // NOTE: .mv1 を ModelRenderer 付きの GameObject として表示するビューア
     class NANAMI_API ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
@@ -25,7 +23,7 @@ namespace NanamiEngine::Core::MainWindow
     public:
         ModelViewWindow();
         void AddContent(const std::shared_ptr<Module::Asset::Mv1File>& content) override;
-        /** @brief 開いているモデルのうち guid のものを表示対象にする */
+        // NOTE: 開いているモデルのうち guid のものを表示対象にする
         void Select(const Guid& guid);
 
     private:
@@ -37,7 +35,7 @@ namespace NanamiEngine::Core::MainWindow
         void OpenInAnimationView(const std::shared_ptr<Module::Asset::Mv1File>& model) const;
 
         ModelPreviewStage   stage_;
-        // Guid は既定コンストラクタで新規発行されるため「未選択」は optional で表す
+        // NOTE: Guid は既定コンストラクタで新規発行されるため「未選択」は optional で表す
         std::optional<Guid> selectedGuid_;
     };
 

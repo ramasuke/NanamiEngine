@@ -18,9 +18,7 @@ namespace GamePlay::Ui
 {
     class BillBoardNpcChatIcon;
 
-    /**
-     * @brief 次にすることをNavigationMemoryに記録する。
-     */
+    // NOTE: 次にすることを NavigationMemory に記録する
     class NavigationPresenter final : public Component::ComponentBase,
                                       public LifeCycleCallback::IStartable,
                                       public LifeCycleCallback::IUpdatable
@@ -33,7 +31,7 @@ namespace GamePlay::Ui
         void OnUpdate() override;
         void OnDestroy() override;
         void Evaluate(const std::shared_ptr<GameCore::Scene::SceneContextBase>& context);
-        /** @brief 驚きアイコンを出させる相手を target の会話アイコンに付け替える */
+        // NOTE: 驚きアイコンを出させる相手を target の会話アイコンに付け替える
         void PointSurpriseAt(const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& target);
 
         [[serialize(0)]] FIELD(Asset::NavigationGuide) guide_;

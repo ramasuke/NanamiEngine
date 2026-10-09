@@ -45,7 +45,7 @@ namespace GameCore::Npc
         if (!lockOnPoint)
             return Transform().GetWorldPos();
 
-        // ツールで追加した子の worldMatrix_ は読み込み直後に古いことがあるため、ローカル行列を自分まで積み上げる
+        // NOTE: ツールで追加した子の worldMatrix_ は読み込み直後に古いことがあるため、ローカル行列を自分まで積み上げる
         const auto self = Entity().lock();
         glm::vec4 position(lockOnPoint->Transform().GetLocalPos(), 1.0f);
         for (auto parent = lockOnPoint->Transform().GetParent(); parent && parent != self; parent = parent->Transform().GetParent())
@@ -70,7 +70,7 @@ namespace GameCore::Npc
 
     void EnemyBase::OnUpdate()
     {
-        // NetworkBehaviourTree が付与されており、かつ有効な NetworkObjectId を持つ個体だけ権威側限定でTickする。
+        // NOTE: NetworkBehaviourTree 付きで有効な NetworkObjectId を持つ個体だけ、権威側限定で Tick する
         const bool isAuthorityGated = hasNetworkBehaviourTree_
             && GetNetworkObjectId() != NanamiEngine::Core::Network::NetworkObjectId::Invalid();
 
@@ -79,7 +79,7 @@ namespace GameCore::Npc
             currentStatus_->Get().ManualUpdate();
             if (behaviour_)
             {
-                // ゲート内では isAuthorityGated == true ⇔ 自分が権威(他ピアはTickしていない)
+                // NOTE: ここでは isAuthorityGated が true なら自分が権威 (他ピアは Tick していない)
                 behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, showHealthGaugeProvider_, GetNetworkObjectId(), isAuthorityGated,
                                 pendingFlinchPower_);
                 // NOTE: Flinch を持たないツリーや届かない枝で、古い怯みが後から効かないよう毎 Tick 捨てる

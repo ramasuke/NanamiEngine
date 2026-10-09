@@ -9,9 +9,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 狩り場初到着の空撮の字幕。島の名前は中央に大きく、見どころの名前は下に小さく出す
-     */
+    // NOTE: 狩り場初到着の空撮の字幕。島の名前は中央に大きく、見どころの名前は下に小さく出す
     class StageArrivalCaption final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable
     {
@@ -19,7 +17,7 @@ namespace GamePlay::Ui
         void ShowIsland  (const std::string& title, const std::string& subtitle);
         void ShowLandmark(const std::string& title, const std::string& subtitle);
         void Hide();
-        /** @brief 消えきったら GameObject ごと片付ける */
+        // NOTE: 消えきったら GameObject ごと片付ける
         void HideAndDestroy();
         [[nodiscard]] float FadeOut_secs() const { return fadeOut_secs_; }
 

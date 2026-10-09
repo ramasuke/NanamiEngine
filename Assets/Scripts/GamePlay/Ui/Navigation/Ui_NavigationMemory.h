@@ -10,11 +10,11 @@ namespace GamePlay::Ui
     class NavigationMemory final : public SingletonBase<NavigationMemory>
     {
     public:
-        /** @brief 最後に字幕で出した目的文 */
+        // NOTE: 最後に字幕で出した目的文
         [[nodiscard]] const std::string& AnnouncedTitle() const { return announcedTitle_; }
         void SetAnnouncedTitle(std::string title) { announcedTitle_ = std::move(title); }
 
-        /** @brief 今の目的。当てはまる段が無いか、シーンの切り替え中なら空 */
+        // NOTE: 今の目的。当てはまる段が無いか、シーンの切り替え中なら空
         [[nodiscard]] const std::optional<NavigationObjective>& Current() const { return current_; }
         void SetCurrent(std::optional<NavigationObjective> current) { current_ = std::move(current); }
 

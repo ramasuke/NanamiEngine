@@ -34,11 +34,11 @@ namespace GameCore::Network
             : CustomDispatcherBase(defaultDispatchers, playerIdProvider, packetSender)
             , enemyFactory_(enemyFactory)
     {
-        // NOTE: 中継サーバー経由ではホストかどうかが接続後に決まるので、ここでは IsServer() で絞らない(通知はホストにしか来ない)
+        // NOTE: 中継経由ではホストかどうかが接続後に決まるので IsServer() で絞らない (通知はホストにしか来ない)
         newPlayerSubscription_ = PacketSender().OnConnectPlayer().Subscribe(
             [this](const Core::Network::PlayerId joined)
             {
-                // 既に破棄された敵の履歴は再送せずに捨てる
+                // NOTE: 既に破棄された敵の履歴は再送せずに捨てる
                 for (auto it = spawnPacketHistory_.begin(); it != spawnPacketHistory_.end();)
                 {
                     if (DefaultDispatch().FindNetworkObject(it->rootId).lock())
@@ -66,12 +66,12 @@ namespace GameCore::Network
         const glm::vec3 position,
         const glm::quat rotation)
     {
-        // プレハブの解決と生成後の配線は EnemyFactory に任せる。受信側も同じ Summon を通る
+        // NOTE: プレハブの解決と生成後の配線は EnemyFactory に任せる。受信側も同じ Summon を通る
         const auto gameObject = enemyFactory_.Summon(kind, prefab, position, rotation).lock();
         if (!gameObject)
             return nullptr;
 
-        // 敵は Spawn したプレイヤーが離脱しても残し、所有権をホストへ移す
+        // NOTE: 敵は Spawn したプレイヤーが離脱しても残し、所有権をホストへ移す
         const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject, Core::Network::OwnerLeavePolicy::Transfer, PlayerId());
 
         Core::Network::Packet packet = Core::Network::Packet::Create(static_cast<Core::Network::PacketType>(EPacketType::SpawnEnemy));

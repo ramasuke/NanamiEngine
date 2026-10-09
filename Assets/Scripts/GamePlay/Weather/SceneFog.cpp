@@ -22,7 +22,7 @@ namespace GamePlay::Weather
 
     void SceneFog::Apply() const
     {
-        // NOTE: 嵐のフォグと取り合わないよう、WeatherService に参照されていればそちらに任せる
+        // NOTE: 嵐のフォグと取り合わないよう、外から駆動されている間は任せる
         if (drivenExternally_)
             return;
 

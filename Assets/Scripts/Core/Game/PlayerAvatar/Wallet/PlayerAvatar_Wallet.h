@@ -6,7 +6,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /// プレイヤーの所持金。ポーチと違いセーブに乗せるので Status が持つ
+    // NOTE: プレイヤーの所持金。セーブに乗せる
     class Wallet final
     {
     public:
@@ -15,12 +15,12 @@ namespace GameCore::PlayerAvatar
 
         [[nodiscard]] StatusParameter::Money Balance   () const { return balance_.Value(); }
         [[nodiscard]] bool                   CanAfford (const StatusParameter::Money price) const { return balance_.Value() >= price; }
-        /** @brief 購読した時点で現在値が流れる */
+        // NOTE: 購読した時点で現在値が流れる
         [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Money> Observe() const { return balance_.AsReadOnly(); }
 
-        /** @brief 0以下は無視する */
+        // NOTE: 0以下は無視する
         void Earn(StatusParameter::Money amount);
-        /** @brief 足りなければ何もせず false */
+        // NOTE: 足りなければ何もせず false
         bool TrySpend(StatusParameter::Money price);
 
     private:

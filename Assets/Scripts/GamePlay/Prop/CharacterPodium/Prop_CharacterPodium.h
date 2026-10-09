@@ -10,16 +10,14 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 酒場の展示台。名簿に載るキャラの実モデルを台の上に立て、選んだ一体だけを見せる。
-     */
+    // NOTE: 酒場の展示台。名簿に載るキャラの実モデルを台の上に立て、選んだ一体だけを見せる
     class CharacterPodium final : public Component::ComponentBase,
                                   public LifeCycleCallback::IStartable
     {
     public:
         [[nodiscard]] const std::vector<std::shared_ptr<Asset::CharacterData>>& Characters() const { return characters_; }
 
-        /** @brief 選ばれた一体だけを見せる。範囲外なら全部隠す */
+        // NOTE: 選ばれた一体だけを見せる。範囲外なら全部隠す
         void ShowCharacter(size_t index) const;
         void FocusCamera  () const;
         void RestoreCamera() const;

@@ -47,7 +47,6 @@ namespace NanamiEngine::Core::MainWindow
         isAssetReleasePending_ = true;
         Application::ApplicationBase::ResetPhysics();
 
-        //NOTE:
         constexpr int skipFrame = 60;
         for (int totalSkipFrame = 0; totalSkipFrame < skipFrame; totalSkipFrame++)
         {
@@ -63,7 +62,7 @@ namespace NanamiEngine::Core::MainWindow
             return false;
         }
 
-        // 前回のシーンを今回の読み込み結果と取り違えないように
+        // NOTE: 前回のシーンを今回の読み込み結果と取り違えないように
         lastAsyncLoadedScene_.reset();
         return true;
     }
@@ -96,7 +95,7 @@ namespace NanamiEngine::Core::MainWindow
         if (!scene)
             return;
 
-        // AddContent を通さないと FIELD が解決されないので、ChangeMainScene より先に呼ぶ
+        // NOTE: AddContent を通さないと FIELD が解決されないので、ChangeMainScene より先に呼ぶ
         AddContent     (scene);
         ChangeMainScene(scene);
         lastAsyncLoadedScene_ = scene;
@@ -104,7 +103,7 @@ namespace NanamiEngine::Core::MainWindow
 
     void GameWindow::ReleaseUnusedAssetsIfPending()
     {
-        // 読み込み中に解放すると、読み込み中のシーンだけが使うアセットまで捨ててしまう
+        // NOTE: 読み込み中に解放すると、読み込み中のシーンだけが使うアセットまで捨ててしまう
         if (!isAssetReleasePending_ || IsSceneLoading())
             return;
 
@@ -400,7 +399,7 @@ namespace NanamiEngine::Core::MainWindow
     {
         using Application::Configuration::GameWindowConfiguration;
 
-        // ImGui ウィンドウの下、DxLib の 3D 描画の上に重ねる
+        // NOTE: ImGui ウィンドウの下、DxLib の 3D 描画の上に重ねる
         ImDrawList& drawList = *ImGui::GetBackgroundDrawList();
         for (const auto& scene : Scenes())
         {
@@ -414,7 +413,7 @@ namespace NanamiEngine::Core::MainWindow
 
                 const glm::vec3 worldPos  = gameObject->Transform().GetWorldPos();
                 const VECTOR    screenPos = ConvWorldPosToScreenPos(VGet(worldPos.x, worldPos.y, worldPos.z));
-                // z が 0..1 の外ならカメラの視界外（背後など）
+                // NOTE: z が 0..1 の外ならカメラの視界外（背後など）
                 if (screenPos.z < 0.0f || screenPos.z > 1.0f)
                     return;
 

@@ -9,7 +9,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    /** @brief PacketTypeの生バイト値から人間が読める名前を解決するレジストリ */
+    // NOTE: PacketTypeの生バイト値から人間が読める名前を解決するレジストリ
     class NANAMI_API PacketTypeNameRegistry final : public SingletonBase<PacketTypeNameRegistry>
     {
     public:

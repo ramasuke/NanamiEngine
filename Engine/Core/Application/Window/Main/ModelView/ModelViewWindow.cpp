@@ -44,7 +44,7 @@ namespace NanamiEngine::Core::MainWindow
 
         stage_.DrawViewportGui();
 
-        // ウィンドウ切り替えは一覧描画の後に行う
+        // NOTE: ウィンドウ切り替えは一覧描画の後に行う
         std::shared_ptr<Module::Asset::Mv1File> openAnimationView;
         if (selectedGuid_ && ImGui::Button("Open in AnimationView"))
             openAnimationView = contents_.at(*selectedGuid_);
@@ -52,7 +52,7 @@ namespace NanamiEngine::Core::MainWindow
         ImGui::Separator();
         ImGui::Text("Models");
 
-        // 一覧描画中に contents_ を書き換えないよう、閉じる操作はループ後に行う
+        // NOTE: 一覧描画中に contents_ を書き換えないよう、閉じる操作はループ後に行う
         std::optional<Guid> closeGuid;
         for (const auto& [guid, file] : contents_)
         {
@@ -86,7 +86,7 @@ namespace NanamiEngine::Core::MainWindow
 
     void ModelViewWindow::OnSave()
     {
-        // ビューアなので保存対象は無い
+        // NOTE: ビューアなので保存対象は無い
     }
 
     void ModelViewWindow::CloseContent(const Guid& guid)
@@ -109,7 +109,7 @@ namespace NanamiEngine::Core::MainWindow
     void ModelViewWindow::OpenInAnimationView(const std::shared_ptr<Module::Asset::Mv1File>& model) const
     {
         const auto window = Application::ApplicationBase::MainWindows().Catch<AnimationViewWindow>();
-        // ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、AddContent より先に切り替える
+        // NOTE: ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、AddContent より先に切り替える
         Application::ApplicationBase::OnChangeWindow(window);
         window->AddContent(model);
     }

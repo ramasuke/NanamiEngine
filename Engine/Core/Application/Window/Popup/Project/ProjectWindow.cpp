@@ -22,7 +22,6 @@
 
 namespace
 {
-    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
     bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
     {
         if (needle.empty())
@@ -37,7 +36,6 @@ namespace
         return !std::ranges::search(haystack, needle, equalsIgnoreCase).empty();
     }
 
-    /** @brief ファイル名のstem部分として使用できない文字を含んでいないか判定する */
     bool IsValidFileStem(const std::string_view stem)
     {
         if (stem.empty())
@@ -47,13 +45,12 @@ namespace
         return stem.find_first_of(forbidden) == std::string_view::npos;
     }
 
-    /** @brief 大文字小文字を無視して2つの文字列が等しいか判定する */
     bool EqualsCaseInsensitive(const std::string_view lhs, const std::string_view rhs)
     {
         return lhs.size() == rhs.size() && ContainsCaseInsensitive(lhs, rhs);
     }
 
-    /** @brief 同じディレクトリ内に同名(大文字小文字無視)のファイルが既に存在するか判定する */
+    // NOTE: 同じディレクトリに同名 (大文字小文字無視) のファイルが既にあるか
     bool IsStemTaken(
         NanamiEngine::Core::FileSystem::Directory& directory,
         const NanamiEngine::Core::FileSystem::File& file,
@@ -70,7 +67,6 @@ namespace
         return false;
     }
 
-    /** @brief 指定したguidのアセットを持つファイルが属するディレクトリを再帰的に探す */
     NanamiEngine::Core::FileSystem::Directory* FindDirectoryContainingAsset(
         NanamiEngine::Core::FileSystem::Directory& directory,
         const ::Guid& guid)
@@ -90,7 +86,6 @@ namespace
         return nullptr;
     }
 
-    /** @brief 指定したパスのディレクトリを再帰的に探す */
     NanamiEngine::Core::FileSystem::Directory* FindDirectoryByPath(
         NanamiEngine::Core::FileSystem::Directory& directory,
         const std::string& path)
@@ -107,7 +102,7 @@ namespace
         return nullptr;
     }
 
-    /** @brief ancestorがtargetの祖先（または同一）か、区切り文字の違いを無視して判定する */
+    // NOTE: 区切り文字の違いを無視して祖先 (または同一) か判定する
     bool IsAncestorOrSame(const std::filesystem::path& ancestor, const std::filesystem::path& target)
     {
         auto ancestorIt = ancestor.begin();
@@ -120,7 +115,6 @@ namespace
         return true;
     }
 
-    /** @brief 指定したディレクトリをWindowsのExplorerで開く */
     void OpenDirectoryInExplorer(const NanamiEngine::Core::FileSystem::Directory& directory)
     {
         try
@@ -145,7 +139,6 @@ namespace
         }
     }
 
-    /** @brief IDEで開く対象のソースファイルか拡張子で判定する */
     bool IsCodeFile(const NanamiEngine::Core::FileSystem::File& file)
     {
         constexpr std::string_view codeExtensions[] = { ".cpp", ".h", ".hpp", ".c", ".cc", ".cxx", ".inl" };
@@ -157,7 +150,6 @@ namespace
         });
     }
 
-    /** @brief 指定したファイルをConfigで選択中のコードエディタで開く */
     void OpenFileInCodeEditor(const NanamiEngine::Core::FileSystem::File& file)
     {
         using NanamiEngine::Core::Application::Configuration::CodeEditorConfiguration;
@@ -189,7 +181,6 @@ namespace
         }
     }
 
-    /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック・リネーム）を描画する */
     void DrawFileEntry(
         NanamiEngine::Core::FileSystem::Directory& owningDirectory,
         NanamiEngine::Core::FileSystem::File& file,
@@ -233,7 +224,7 @@ namespace
             }
             else if (ImGui::IsItemDeactivated())
             {
-                // Escapeまたはフォーカスロストでキャンセル
+                // NOTE: Escape またはフォーカスロストでキャンセル
                 renameState.targetPath.clear();
             }
 
@@ -256,7 +247,6 @@ namespace
             ImGui::SetScrollHereY(0.3f);
         }
 
-        // 右クリックメニュー
         if (ImGui::BeginPopupContextItem())
         {
             if (IsCodeFile(file))
@@ -277,7 +267,7 @@ namespace
                 }
                 catch (const NanamiEngine::Module::Exception::NanamiException& exception)
                 {
-                    // Copy はコピー元を読み直すため（SceneFile / PrefabGameObjectFile::CopiedInit）、壊れたファイルはここで失敗する
+                    // NOTE: Copy はコピー元を読み直すので、壊れたファイルはここで失敗する
                     NanamiEngine::Module::LogError("ProjectWindow: コピーに失敗しました: " + std::string(exception.what()));
                 }
             }
@@ -293,8 +283,7 @@ namespace
             ImGui::EndPopup();
         }
 
-        // ドラッグ開始処理
-        // 未登録の拡張子や読み込みに失敗したファイル（content_ == nullptr）はドラッグ対象にしない
+        // NOTE: 未登録の拡張子や読み込みに失敗したファイルはドラッグ対象にしない
         if (file.GetContent() && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {
             draggingHand.SetDraggingItem(file.GetContent()->GetGuid());
@@ -341,7 +330,7 @@ Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(con
     ImGui::Checkbox("isLock", &isLockedContent_);
     OnDrawToolbar();
 
-    // フォルダ名・ファイル名の検索ボックス
+    // NOTE: フォルダ名・ファイル名の検索ボックス
     const bool hasSearchText = searchBuffer_[0] != '\0';
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (hasSearchText ? 55.0f : 0.0f));
     ImGui::InputTextWithHint("##ProjectSearch", "Search...", searchBuffer_, sizeof(searchBuffer_));
@@ -367,14 +356,14 @@ Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(con
     }
     else
     {
-        // 左: 名前がマッチするフォルダ / 右: 名前がマッチするファイル（どちらも全階層から）
+        // NOTE: 左: 名前がマッチするフォルダ / 右: 名前がマッチするファイル（どちらも全階層から）
         OnDrawSearchedDirectoryTree(assetsDirectory, searchText);
         ImGui::NextColumn();
         DrawSearchedFiles(assetsDirectory, context.FileDraggingHand(), searchText, highlightedAssetGuid_, scrollToHighlightPending);
     }
     ImGui::Columns(1);
 
-    // Revealによるツリー自動展開/スクロールは1フレームだけ適用し、以降は畳めるようにする
+    // NOTE: Reveal によるツリー自動展開/スクロールは 1 フレームだけ適用し、以降は畳めるようにする
     pendingRevealDirectoryPath_.clear();
 
     ImGui::End();
@@ -395,13 +384,13 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
     ImGui::AlignTextToFramePadding();
     const float cursorY = ImGui::GetCursorPosY();
 
-    // 矢印部分だけ TreeNode にする
+    // NOTE: 矢印部分だけ TreeNode にする
     const bool open = ImGui::TreeNodeEx(
         "##arrow",
         ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_OpenOnArrow
     );
 
-    // ラベル部分を Selectable として描画（フル幅に拡張）
+    // NOTE: ラベル部分を Selectable として描画（フル幅に拡張）
     ImGui::SameLine();
     ImGui::SetCursorPosY(cursorY);
 
@@ -413,7 +402,7 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
     const ImVec2 buttonMin = cursorPos;
     const auto buttonMax = ImVec2(cursorPos.x + buttonSize.x, cursorPos.y + buttonSize.y);
 
-    // デフォルトの選択色を無効化
+    // NOTE: デフォルトの選択色を無効化
     ImGui::PushStyleColor(ImGuiCol_Header       , ImVec4(0, 0, 0, 0));
     ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleColor(ImGuiCol_HeaderActive , ImVec4(0, 0, 0, 0));
@@ -426,14 +415,12 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
 
     ImGui::PopStyleColor(3);
 
-    // ホバー時の背景描画
     if (hovered)
     {
         const ImU32 color = ImGui::GetColorU32(ImGuiCol_HeaderHovered);
         ImGui::GetWindowDrawList()->AddRectFilled(buttonMin, buttonMax, color);
     }
 
-    // 子ノード描画
     if (open)
     {
         ImGui::TreePush("##arrow");

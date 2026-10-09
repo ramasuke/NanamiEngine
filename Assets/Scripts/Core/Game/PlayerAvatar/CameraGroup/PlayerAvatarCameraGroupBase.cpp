@@ -37,7 +37,7 @@ namespace GameCore::PlayerAvatar
 
         auto shakeCamera = followCamera.Catch<CineMachine::Behaviour::ShakeCameraBehaviour>().lock();
         lockOnCamera_->Components().Catch<CineMachine::Behaviour::LockOnCameraBehaviour>().lock()->SetFollowTarget(playerAvatarObject);
-        // ロックオン開始まではカメラ優先度を最低にしておき、FollowFromBehind の妨げにならないようにする
+        // NOTE: ロックオン開始まで優先度を最低にして、FollowFromBehind の妨げにしない
         lockOnCamera_->OnDisable();
     }
 
@@ -47,7 +47,7 @@ namespace GameCore::PlayerAvatar
             return;
 
         lockOnCamera_->Components().Catch<CineMachine::Behaviour::LockOnCameraBehaviour>().lock()->SetLockOnTarget(target, target);
-        // ロック中の切り替えではカメラはそのまま
+        // NOTE: ロック中の切り替えではカメラはそのまま
         if (!isLockedOn_)
             ChangeCamera(LockOnCamera());
         lockOnTarget_ = target;

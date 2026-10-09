@@ -5,10 +5,8 @@
 
 namespace NanamiEngine::ControlLock
 {
-    /**
-     * @brief スコープを抜けるとロックを返す。コルーチンのローカルや、Component でないクラスのメンバに使う
-     * @note  R4::Disposable はデストラクタで Dispose しないので、寿命で返したいときはこれで包む
-     */
+    // NOTE: スコープを抜けるとロックを返す。コルーチンのローカルや、Component でないクラスのメンバに使う
+    // NOTE: R4::Disposable はデストラクタで Dispose しないので、寿命で返したいときはこれで包む
     class NANAMI_NO_API ScopedLock final
     {
     public:
@@ -34,7 +32,7 @@ namespace NanamiEngine::ControlLock
         }
         ~ScopedLock() = default;
 
-        /** @brief 持っているロックを返してから、新しいロックを持つ */
+        // NOTE: 持っているロックを返してから、新しいロックを持つ
         void Set(const R4::Disposable& token)
         {
             token_.Set(token);

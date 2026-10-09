@@ -29,7 +29,7 @@ namespace GamePlay::Prop
 
         if (cbHandle_ == -1)
         {
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
+            // NOTE: 読み込み中のハンドルになると GetBuffer/Set で完了待ちに入って固まるので同期で作る
             cbHandle_ = Platform::Render::ConstantBuffer::Create(Component::CUSTOM_SHADER_CB_SIZE);
         }
 

@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Module::StaticReflection
 {
-    /** DrawCategoryMenu の 1 項目。category は "A::B" で入れ子になり、空ならトップレベルに並ぶ */
+    // NOTE: DrawCategoryMenu の 1 項目。category は "A::B" で入れ子になり、空ならトップレベルに並ぶ
     struct NANAMI_API CategoryMenuItem
     {
         std::string           category;

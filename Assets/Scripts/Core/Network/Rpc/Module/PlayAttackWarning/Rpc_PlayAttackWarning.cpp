@@ -7,7 +7,7 @@
 
 namespace
 {
-    // 敵の攻撃予兆: 送り先の敵のボーンに、guid の IEnemyWarningEffectProvider で予兆を出す。見た目と音だけ
+    // NOTE: 敵の攻撃予兆: 送り先の敵のボーンに、guid の IEnemyWarningEffectProvider で予兆を出す。見た目と音だけ
     struct PlayAttackWarningRpcRegistration
     {
         PlayAttackWarningRpcRegistration()

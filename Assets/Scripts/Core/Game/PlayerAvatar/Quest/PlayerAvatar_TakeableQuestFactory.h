@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::Quest
 
 namespace GameCore::PlayerAvatar
 {
-    /// 職業を問わないクエスト(メインストーリー・依頼)を名前から作る。掲示板と NPC のエディタが列挙する
+    // NOTE: 職業を問わないクエスト(メインストーリー・依頼)を名前から作る
     class TakeableQuestFactory final : public SingletonBase<TakeableQuestFactory>
     {
     public:

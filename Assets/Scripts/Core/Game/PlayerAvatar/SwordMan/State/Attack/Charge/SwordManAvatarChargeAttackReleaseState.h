@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
-    /** @brief 最大まで溜めたため攻撃を解放するステート。攻撃範囲は NormalAttackArea を使う */
+    // NOTE: 最大まで溜めたため攻撃を解放するステート。攻撃範囲は NormalAttackArea を使う
     class SwordManAvatarChargeAttackReleaseState final : public SwordManAvatarStateBase
     {
     public:

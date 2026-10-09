@@ -13,14 +13,12 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 一覧の行を表示窓の分だけ縦に並べ、窓がずれたら中身を貼り替えて使い回す
-     */
+    // NOTE: 一覧の行を表示窓の分だけ縦に並べ、窓がずれたら中身を貼り替えて使い回す
     template<typename RowT>
     class EventBoardRowPool final
     {
     public:
-        /** @brief 行を count 枚作る。作り済みなら何もしない */
+        // NOTE: 行を count 枚作る。作り済みなら何もしない
         void Build(
             const FIELD(Asset::PrefabGameObjectFile)& rowPrefab,
             const FIELD(GameObject::IGameObject)& rowsRoot,
@@ -45,7 +43,7 @@ namespace GamePlay::Ui
         [[nodiscard]] bool   IsBuilt() const { return !rows_.empty(); }
         [[nodiscard]] size_t Size   () const { return rows_.size(); }
 
-        /** @brief 生きている行ごとに onRow(行, 表示窓の中での番号) を呼ぶ */
+        // NOTE: 生きている行ごとに onRow(行, 表示窓の中での番号) を呼ぶ
         template<typename F>
         void ForEach(F&& onRow) const
         {
@@ -56,7 +54,7 @@ namespace GamePlay::Ui
             }
         }
 
-        /** @brief 行がクリックされたら、その行の表示窓の中での番号を渡す */
+        // NOTE: 行がクリックされたら、その行の表示窓の中での番号を渡す
         void SubscribeOnClick(std::function<void(size_t)> onClick) const
         {
             ForEach([&onClick](RowT& row, const size_t i)
@@ -68,10 +66,7 @@ namespace GamePlay::Ui
             });
         }
 
-        /**
-         * @brief 表示窓に入っている分を bindRow(行, 項目) で行へ貼り、上下に続きがあれば矢印を出す
-         * @return 貼った行の数
-         */
+        // NOTE: 表示窓に入っている分を bindRow(行, 項目) で行へ貼り、上下に続きがあれば矢印を出す。貼った行の数を返す
         template<typename EntryT, typename BindRowT>
         size_t Bind(
             const std::vector<EntryT>& entries,
@@ -100,7 +95,7 @@ namespace GamePlay::Ui
             return shownRows;
         }
 
-        /** @brief 項目をそのまま RowT::Bind に渡す */
+        // NOTE: 項目をそのまま RowT::Bind に渡す
         template<typename EntryT>
         size_t Bind(
             const std::vector<EntryT>& entries,

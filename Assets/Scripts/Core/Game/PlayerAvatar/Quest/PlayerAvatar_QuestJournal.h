@@ -12,7 +12,7 @@
 
 namespace GameCore::PlayerAvatar::Quest
 {
-    /** @brief 職業を問わないクエストの受注と達成記録。職業をまたいで1冊 */
+    // NOTE: 職業を問わないクエストの受注と達成記録。職業をまたいで1冊
     class QuestJournal final : public SingletonBase<QuestJournal>,
                                public ICompleteQuestGroup
     {
@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::Quest
         QuestJournal();
         ~QuestJournal() override;
 
-        /** @brief 保存されている内容で上書きして始め直す。保存していない受注・達成は消える */
+        // NOTE: 保存されている内容で上書きして始め直す。保存していない受注・達成は消える
         void Reload();
         void Save() const;
         
@@ -34,7 +34,7 @@ namespace GameCore::PlayerAvatar::Quest
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
         [[nodiscard]] bool IsBoardQuestCompleted(const std::string& boardQuestGuid) const;
         
-        /** @return 初めての達成なら true */
+        // NOTE: 初めての達成なら true
         bool MarkCompleted(const QuestType& quest);
         
         [[nodiscard]] NanamiEngine::R4::Observable<Reward::Rewards> OnRewarded() const { return onRewarded_.AsObservable(); }
@@ -44,7 +44,7 @@ namespace GameCore::PlayerAvatar::Quest
 
     private:
         [[nodiscard]] QuestContext Context();
-        /** @return 初めての達成なら true */
+        // NOTE: 初めての達成なら true
         bool MarkBoardQuestCompleted(const std::string& boardQuestGuid);
 
         QuestList           takingQuests_;

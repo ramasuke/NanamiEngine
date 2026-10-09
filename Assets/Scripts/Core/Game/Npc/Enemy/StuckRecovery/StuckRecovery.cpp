@@ -158,7 +158,7 @@ namespace GameCore::Npc::Enemy
             return;
         }
 
-        // 押し出し中に動けても、はまった場所から抜けたとは限らない
+        // NOTE: 押し出し中に動けても、はまった場所から抜けたとは限らない
         if (nudgeRemain_secs_ > 0.0f)
             return;
 
@@ -269,7 +269,7 @@ namespace GameCore::Npc::Enemy
             const glm::vec3 toPlayer = Flat(playerPos - target);
             if (glm::dot(toPlayer, toPlayer) > 1e-6f)
             {
-                // forward は -Z
+                // NOTE: モデルの前方向は -Z
                 const float yaw = std::atan2(-toPlayer.x, -toPlayer.z);
                 self.Transform().SetWorldRot(glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f)));
             }

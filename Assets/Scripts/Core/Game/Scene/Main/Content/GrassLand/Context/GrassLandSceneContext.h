@@ -28,62 +28,61 @@ namespace GameCore::Scene
         [[nodiscard]] std::shared_ptr<Asset::SoundFile> BGM() const { return bgm_.get(); }
         [[nodiscard]] GamePlay::Network::CustomNetworkRunner& NetworkRunner() const { return *networkRunner_.get(); }
         [[nodiscard]] std::weak_ptr<GamePlay::Network::CustomNetworkRunner> WeakNetworkRunner() const { return networkRunner_.get(); }
-        /** enemySpawnPointsRoot_ の子孫のうち EnemySpawnPoint を持つもの。湧かせる種別は各地点が持つ */
+        // NOTE: enemySpawnPointsRoot_ の子孫のうち EnemySpawnPoint を持つもの。湧かせる種別は各地点が持つ
         [[nodiscard]] std::vector<std::shared_ptr<Npc::Enemy::EnemySpawnPoint>> EnemySpawnPoints() const;
 
-        /** @note Follow/LookAt の target は PlayerSpawn Pos のマーカーにしておくこと */
+        // WARNING: Follow/LookAt の target はプレイヤーのスポーン地点のマーカーにしておくこと
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalCamera() const { return arrivalCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CinemachineCameraBrain>   CameraBrain  () const { return cameraBrain_  .get(); }
-        /** 到着演出でスポーン地点に立てるポータル。プレハブのルートのスケールが開ききったときの大きさになる */
+        // NOTE: 到着演出でスポーン地点に立てるポータル。プレハブのルートのスケールが開ききったときの大きさになる
         [[nodiscard]] Asset::PrefabGameObjectFile& ArrivalPortalPrefab() const { return *arrivalPortalPrefab_.get(); }
         [[nodiscard]] bool HasArrivalPortalPrefab() const { return static_cast<bool>(arrivalPortalPrefab_); }
-        /** ロード画面が明けてからポータルが開き始めるまで */
+        // NOTE: ロード画面が明けてからポータルが開き始めるまで
         [[nodiscard]] int ArrivalPortalOpenDelay_msecs () const { return arrivalPortalOpenDelay_msecs_;  }
         [[nodiscard]] int ArrivalPortalOpen_msecs      () const { return arrivalPortalOpen_msecs_;       }
-        /** ポータルが開ききってから、プレイヤーが歩いて出てきて立ち止まるまで */
+        // NOTE: ポータルが開ききってから、プレイヤーが歩いて出てきて立ち止まるまで
         [[nodiscard]] int ArrivalWalk_msecs            () const { return arrivalWalk_msecs_;             }
-        /** 歩き始めてからポータルが閉じ始めるまで。プレイヤーが抜けきってから閉じるように取る */
+        // NOTE: 歩き始めてからポータルが閉じ始めるまで。プレイヤーが抜けきってから閉じるように取る
         [[nodiscard]] int ArrivalPortalCloseDelay_msecs() const { return arrivalPortalCloseDelay_msecs_; }
         [[nodiscard]] int ArrivalPortalClose_msecs     () const { return arrivalPortalClose_msecs_;      }
-        /** 立ち止まってから三人称カメラへ返すまで */
+        // NOTE: 立ち止まってから三人称カメラへ返すまで
         [[nodiscard]] int ArrivalHold_msecs            () const { return arrivalHold_msecs_;             }
-        /** ポータルの中心の地面からの高さ。膜の下側がプレイヤーの足元を隠せるよう、半径より少し低くする */
+        // NOTE: ポータルの中心の地面からの高さ。膜の下側がプレイヤーの足元を隠せるよう、半径より少し低くする
         [[nodiscard]] float ArrivalPortalHeight   () const { return arrivalPortalHeight_;    }
-        /** 歩き出す位置をポータルの膜からどれだけ奥に取るか。体が膜から出ていると開く前に見えてしまう */
+        // NOTE: 歩き出す位置をポータルの膜からどれだけ奥に取るか。体が膜から出ていると開く前に見えてしまう
         [[nodiscard]] float ArrivalWalkStartBehind() const { return arrivalWalkStartBehind_; }
-        /** 歩き出す位置から立ち止まる位置までの距離。尺で割った速さが歩行速度に近いと足が滑らない */
+        // NOTE: 歩き出す位置から立ち止まる位置までの距離。尺で割った速さが歩行速度に近いと足が滑らない
         [[nodiscard]] float ArrivalWalkDistance   () const { return arrivalWalkDistance_;    }
-        /** カメラの始点。ポータルの足元から見た(横, カメラ直下の地面からの高さ, 歩く向き) */
+        // NOTE: カメラの始点。ポータルの足元から見た(横, カメラ直下の地面からの高さ, 歩く向き)
         [[nodiscard]] const glm::vec3& ArrivalCameraStart() const { return arrivalCameraStart_; }
-        /** カメラの終点。プレイヤーが横を通り過ぎたあと、斜め後ろから見送る位置に置くと三人称への戻りが短い */
+        // NOTE: カメラの終点。プレイヤーが横を通り過ぎたあと、斜め後ろから見送る位置に置くと三人称への戻りが短い
         [[nodiscard]] const glm::vec3& ArrivalCameraEnd  () const { return arrivalCameraEnd_;   }
-        /** 歩いているプレイヤーの、足元から注視点までの高さ */
+        // NOTE: 歩いているプレイヤーの、足元から注視点までの高さ
         [[nodiscard]] float ArrivalLookAtHeight() const { return arrivalLookAtHeight_; }
-        /** 島を見下ろす空撮の尺。0なら空撮せず、ポータルのショットから始める */
+        // NOTE: 島を見下ろす空撮の尺。0なら空撮せず、ポータルのショットから始める
         [[nodiscard]] int ArrivalOverview_msecs       () const { return arrivalOverview_msecs_;        }
-        /** 空撮の終点からポータルのショットの始点まで降りてくる尺 */
+        // NOTE: 空撮の終点からポータルのショットの始点まで降りてくる尺
         [[nodiscard]] int ArrivalOverviewDescend_msecs() const { return arrivalOverviewDescend_msecs_; }
-        /** 空撮のカメラが2台とも置かれているか */
         [[nodiscard]] bool HasArrivalOverviewCamera() const { return arrivalOverviewStartCamera_ && arrivalOverviewEndCamera_; }
-        /** 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く */
+        // NOTE: 空撮はこのカメラへ切ってから、終わりのカメラへ Brain の補間で動く。どちらも島の中心のマーカーを LookAt で向く
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewStartCamera() const { return arrivalOverviewStartCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> ArrivalOverviewEndCamera  () const { return arrivalOverviewEndCamera_  .get(); }
-        /** 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない */
+        // NOTE: 初めて着いたときの空撮の1ショット目に出す島の名前と一言。名前が空なら字幕を出さない
         [[nodiscard]] const std::string& ArrivalIslandTitle   () const { return arrivalIslandTitle_;    }
         [[nodiscard]] const std::string& ArrivalIslandSubtitle() const { return arrivalIslandSubtitle_; }
-        /** 空撮のあとに巡る島の見どころ。最後の見どころからポータルへ降りるので、ポータルに近いものを最後に並べる */
+        // NOTE: 空撮のあとに巡る島の見どころ。最後の見どころからポータルへ降りるので、ポータルに近いものを最後に並べる
         [[nodiscard]] const std::vector<GrassLand::StageArrivalTourShot>& ArrivalTourShots() const { return arrivalTourShots_; }
-        /** 空撮の字幕 (StageArrivalCaption を持つプレハブ) */
+        // NOTE: 空撮の字幕 (StageArrivalCaption を持つプレハブ)
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> ArrivalCaptionPrefab() const { return arrivalCaptionPrefab_.get(); }
-        /** このステージのクリア条件。どちらかが -1 なら無し */
+        // NOTE: このステージのクリア条件。どちらかが -1 なら無し
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
-        /** この context を使う SceneType。同じ草原のシーンをイベント用のステージ (GrassLandEvent) でも使う */
+        // NOTE: この context を使う SceneType。同じ草原のシーンをイベント用のステージ (GrassLandEvent) でも使う
         [[nodiscard]] Main::SceneType SceneType() const { return static_cast<Main::SceneType>(sceneType_); }
-        /** @return kind の敵を湧かせるときに使う prefab。差し替えがなければ nullptr (EnemyFactory の kind の prefab) */
+        // NOTE: kind の敵を湧かせるときに使う prefab。差し替えがなければ nullptr
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> EnemyPrefabOverride(Npc::Enemy::EnemyKind kind) const;
 
-        /** 村の跡に落ちている緑の浮遊石。大顎を倒すと飛び去り、それ以降は出さない */
+        // NOTE: 村の跡に落ちている緑の浮遊石。大顎を倒すと飛び去り、それ以降は出さない
         [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> FloatingStone() const { return floatingStone_.get(); }
 
     private:
@@ -105,7 +104,7 @@ namespace GameCore::Scene
         [[serialize(9)]] glm::vec3 arrivalCameraStart_            = glm::vec3(22.0f, 3.5f, 24.0f);
         [[serialize(9)]] glm::vec3 arrivalCameraEnd_              = glm::vec3(18.0f, 2.5f, 36.0f);
         [[serialize(9)]] float     arrivalLookAtHeight_           = 12.0f;
-        // NOTE: tools.scene で設定できるよう EnemyKind / Story::StoryFlag を int で持つ
+        // NOTE: 外部ツールから設定できるよう EnemyKind / Story::StoryFlag を int で持つ
         [[serialize(11)]] int      clearEnemyKind_                = -1;
         [[serialize(11)]] int      clearStoryFlag_                = -1;
         [[serialize(14)]] FIELD(GamePlay::Prop::FloatingStone) floatingStone_;
@@ -117,9 +116,9 @@ namespace GameCore::Scene
         [[serialize(16)]] FIELD(Asset::PrefabGameObjectFile) arrivalCaptionPrefab_;
         [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewStartCamera_;
         [[serialize(17)]] FIELD(CineMachine::CineMachineVirtualCamera) arrivalOverviewEndCamera_;
-        // NOTE: tools.scene で設定できるよう SceneType / EnemyKind を int で持つ
+        // NOTE: 外部ツールから設定できるよう SceneType / EnemyKind を int で持つ
         [[serialize(18)]] int sceneType_ = static_cast<int>(Main::SceneType::GrassLand);
-        /** この種別の敵を enemyOverridePrefab_ で湧かせる (イベントの強い個体)。-1 なら差し替えない */
+        // NOTE: この種別の敵を enemyOverridePrefab_ で湧かせる (イベントの強い個体)。-1 なら差し替えない
         [[serialize(18)]] int enemyOverrideKind_ = -1;
         [[serialize(18)]] FIELD(Asset::PrefabGameObjectFile) enemyOverridePrefab_;
 
@@ -169,11 +168,11 @@ namespace GameCore::Scene
             archive(cereal::base_class<SceneContextBase>(this));
             if (version >= 1) archive(CEREAL_NVP(bgm_));
             if (version >= 2) archive(CEREAL_NVP(networkRunner_));
-            // v5〜v6 は湧かせる敵をプレハブ直指定で持っていた。今は EnemyFactory 側にあるので読み捨てる
+            // NOTE: 旧版の敵プレハブの直指定。今は使わないので読み捨てる
             [[serialize(5)]] FIELD(Asset::PrefabGameObjectFile) enemyPrefab_;
             if (version >= 5 && version <= 6) archive(CEREAL_NVP(enemyPrefab_));
             if (version >= 6) archive(CEREAL_NVP(enemySpawnPointsRoot_));
-            // v7〜v9 は全地点で同じ種別を湧かせていた。今は地点ごとの EnemySpawnPoint が持つので読み捨てる
+            // NOTE: 旧版の全地点共通の敵種別。今は各地点が持つので読み捨てる
             [[serialize(7)]] Npc::Enemy::EnemyKind enemyKind_ = Npc::Enemy::EnemyKind::Hyena;
             if (version >= 7 && version <= 9) archive(CEREAL_NVP(enemyKind_));
             if (version >= 8)
@@ -184,7 +183,7 @@ namespace GameCore::Scene
             }
             if (version == 8)
             {
-                // v8 は地中からせり上がる演出のショットを球面座標で持っていた。歩いて出てくる演出とは噛み合わないので読み捨てる
+                // NOTE: 旧版のせり上がり演出のショット。今は使わないので読み捨てる
                 [[serialize(8)]] int       arrivalShotDuring_msecs_  = 0;
                 [[serialize(8)]] glm::vec3 arrivalShotStart_         = glm::vec3(0.0f);
                 [[serialize(8)]] glm::vec3 arrivalShotEnd_           = glm::vec3(0.0f);
@@ -218,7 +217,7 @@ namespace GameCore::Scene
             }
             if (version >= 12 && version <= 13)
             {
-                // v12〜v13 は石・カメラ・パーティクルを別々に持っていた。今は石の FloatingStone が持つので読み捨てる
+                // NOTE: 旧版の浮遊石の演出パーツ。今は FloatingStone が持つので読み捨てる
                 [[serialize(12)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldStone;
                 [[serialize(12)]] FIELD(CineMachine::CineMachineVirtualCamera)         oldStoneCamera;
                 [[serialize(12)]] FIELD(Asset::PrefabGameObjectFile)                   oldLiftOffParticle;
@@ -241,7 +240,7 @@ namespace GameCore::Scene
             }
             if (version >= 15 && version <= 16)
             {
-                // v15〜v16 は空撮の位置をワールド座標で持っていた。今はマーカーを置くので読み捨てる
+                // NOTE: 旧版のワールド座標の空撮位置。今はマーカーを置くので読み捨てる
                 [[serialize(15)]] glm::vec3 arrivalOverviewCameraStart_ = glm::vec3(0.0f);
                 [[serialize(15)]] glm::vec3 arrivalOverviewCameraEnd_   = glm::vec3(0.0f);
                 [[serialize(15)]] glm::vec3 arrivalOverviewLookAt_      = glm::vec3(0.0f);

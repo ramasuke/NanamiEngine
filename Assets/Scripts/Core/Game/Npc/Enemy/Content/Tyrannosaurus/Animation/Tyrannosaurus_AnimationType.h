@@ -2,7 +2,7 @@
 
 namespace GameCore::Npc::Enemy::Tyrannosaurus
 {
-    // Animation indices in T-Rex.mv1; Take001 / Still are empty takes.
+    // NOTE: T-Rex.mv1 のアニメーション番号。Take001 / Still は空のテイク
     enum class AnimationType : int
     {
         WalkSlowLoop         = 0,

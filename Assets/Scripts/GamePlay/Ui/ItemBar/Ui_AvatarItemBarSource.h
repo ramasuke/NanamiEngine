@@ -5,7 +5,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief State が宣言する操作から、アイテム欄を出すか・使えるかだけを拾う */
+    // NOTE: State が宣言する操作から、アイテム欄を出すか・使えるかだけを拾う
     template <typename TransitionVisitorT>
     class ItemBarActionCollector final : public TransitionVisitorT
     {
@@ -31,7 +31,7 @@ namespace GamePlay::Ui
         bool isUsable_ = false;
     };
 
-    /// PlayerAvatarBase を継承したアバター用。TransitionVisitorT はそのアバターの State が受け取る Visitor
+    // NOTE: PlayerAvatarBase を継承したアバター用。TransitionVisitorT はそのアバターの State が受け取る Visitor
     template <typename AvatarT, typename TransitionVisitorT>
     class AvatarItemBarSource final : public IItemBarSource
     {

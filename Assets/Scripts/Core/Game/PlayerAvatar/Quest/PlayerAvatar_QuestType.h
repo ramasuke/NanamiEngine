@@ -4,7 +4,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    // セーブや掲示板データには int で残るので、新しい値は必ず末尾に足す
+    // WARNING: セーブや掲示板データには int で残るので、新しい値は必ず末尾に足す
     enum class QuestType : int
     {
         SwordManActionInstructTutorial = 0,
@@ -12,16 +12,16 @@ namespace GameCore::PlayerAvatar
         Kill10Slimes,
         FindLostRing,
 
-        // 汎用依頼
+        // NOTE: 汎用依頼
         GrasslandHyenaCull,
         HyenaHuntWeek1,
         RockyTyrant,
         DesertLostCargo,
 
-        // メインストーリー
+        // NOTE: メインストーリー
         GrassLandTyrant,
 
-        // 砂漠 (docs/Story.md 第2章)
+        // NOTE: 砂漠
         DesertSkeletonDragon,
         DesertScorpionCull,
     };

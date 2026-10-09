@@ -3,9 +3,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    /**
-     * Asset関連をまとめたHelper
-     */
+    // NOTE: アセットの読み込み状況の問い合わせ
     class NANAMI_API Asset final
     {
     public:

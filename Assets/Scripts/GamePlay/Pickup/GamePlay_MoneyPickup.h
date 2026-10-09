@@ -5,13 +5,11 @@
 
 namespace GamePlay::Pickup
 {
-    /**
-     * @brief 落ちているお金。プレイヤーの PickupArea に拾われると、拾った人の財布へ入る
-     */
+    // NOTE: 落ちているお金。拾った人の財布へ入る
     class MoneyPickup final : public PickupItemBase
     {
     public:
-        /** @brief 生成直後に呼ぶ。額を決め、sideDirection 側へ跳ね上げる */
+        // NOTE: 生成直後に呼ぶ。額を決め、sideDirection 側へ跳ね上げる
         void Drop(GameCore::StatusParameter::Money amount, const glm::vec3& sideDirection);
 
     private:

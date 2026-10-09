@@ -27,7 +27,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         void OnDrawGui() override;
 
     private:
-        // 右スティックは弾いたと分かるくらい倒した時だけ切り替える
+        // NOTE: 右スティックは弾いたと分かるくらい倒した時だけ切り替える
         static constexpr short LOCK_ON_SWITCH_STICK_THRESHOLD = 24000;
 
         Input<glm::vec2> move_         = MakeInputAction<PlayerAvatar::Input::InputMove>();

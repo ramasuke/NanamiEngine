@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Network
         , instanceRegistry_(instanceRegistry)
         , syncTransform_(syncTransform)
     {
-        // 新規参加者へ所有者テーブルを送る
+        // NOTE: 新規参加者へ所有者テーブルを送る
         newPeerSubscription_ = networkSystem_.OnConnectPlayer().Subscribe(
             [this](const struct PlayerId joined)
             {
@@ -35,7 +35,7 @@ namespace NanamiEngine::Core::Network
 
     void SessionDispatcher::ReceivePacket(const Packet& packet)
     {
-        // Relay サーバーでも再ブロードキャストしない(ホストは Send + 自分の受信キューで配っている)
+        // NOTE: Relay サーバーでも再ブロードキャストしない(ホストは Send + 自分の受信キューで配っている)
         switch (static_cast<DefaultPacketType>(packet.Type()))
         {
         case DefaultPacketType::PlayerLeft:
@@ -73,12 +73,11 @@ namespace NanamiEngine::Core::Network
 
         for (const auto& [id, policy] : owned)
         {
-            // 受信済みの古いスナップショットに新所有者が引き戻されないよう捨てる
+            // NOTE: 受信済みの古いスナップショットに新所有者が引き戻されないよう捨てる
             syncTransform_.Forget(id);
 
             if (policy == OwnerLeavePolicy::Destroy)
             {
-                //破棄するべきオブジェクト破棄
                 const auto object = instanceRegistry_.Find(id).lock();
                 if (object && !object->Transform().GetParent())
                     object->OnDestroy();

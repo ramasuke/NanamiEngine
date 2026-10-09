@@ -20,7 +20,7 @@ namespace LibCore::Dxlib
         return { vector.x, vector.y, vector.z };
     }
 
-    // DxLib は行ベクトル、glm は列ベクトル規約なので、格納位置をそのまま写せば同じ変換になる
+    // NOTE: DxLib は行ベクトル、glm は列ベクトル規約なので、格納位置をそのまま写せば同じ変換になる
     MATRIX ToDxMatrix(const glm::mat4& matrix)
     {
         MATRIX dxMatrix;

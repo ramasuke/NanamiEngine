@@ -54,7 +54,7 @@ namespace GamePlay::Npc::Friendly
         if (!player || !owner || &owner->Transform() != &player->PlayerTransform())
             return;
 
-        // 走ってぶつかってきた時と、自分が歩いていてぶつかった時だけ反応する
+        // NOTE: 走ってぶつかってきた時と、自分が歩いていてぶつかった時だけ反応する
         const float playerSpeed = HorizontalLength(player->RigidBody().LinearVelocity());
         if (playerSpeed < bumpSpeedThreshold_ && !IsMoving())
             return;
@@ -73,7 +73,7 @@ namespace GamePlay::Npc::Friendly
 
     void FriendlyNpcReaction::StartReaction(const ReactionKind kind, const glm::vec3& shakeDirection)
     {
-        // ぶつかられた反応中に斬られたら被弾に切り替える。逆は無視
+        // NOTE: ぶつかられた反応中に斬られたら被弾に切り替える。逆は無視
         if (reaction_ && (reaction_->kind == ReactionKind::Hit || kind == ReactionKind::Bump))
         {
             if (kind == ReactionKind::Hit)
@@ -105,7 +105,7 @@ namespace GamePlay::Npc::Friendly
             }
         }
 
-        // 剣の当たりはこの後 ShakeHitTargets が上書きする。魔法とぶつかりはここで揺らす
+        // NOTE: 剣の当たりはこの後、攻撃側の揺れで上書きされる。魔法とぶつかりはここで揺らす
         if (const auto shakeReceiver = Components().Catch<PlayerAvatar::PlayerHitShakeReceiver>().lock())
         {
             glm::vec3 direction(shakeDirection.x, 0.0f, shakeDirection.z);
@@ -182,7 +182,7 @@ namespace GamePlay::Npc::Friendly
         if (lookAtBone)
             lookAtBone->SetTarget(isNear || isChatting ? std::optional(PlayerLookPosition(*player)) : std::nullopt);
 
-        // 歩いている間の向きは BehaviourTree の移動に任せる
+        // NOTE: 歩いている間の向きは BehaviourTree の移動に任せる
         if (isChatting && canTurnBody_ && !IsMoving())
             TurnBodyTowards(playerPos, chatTurnSpeed_radPerSec_);
     }
@@ -231,7 +231,7 @@ namespace GamePlay::Npc::Friendly
     {
         const glm::vec3 playerPos = player.PlayerTransform().GetWorldPos();
 
-        // プレイヤーの頭ボーンを見る。取れなければ自分の頭と同じ高さを見る
+        // NOTE: プレイヤーの頭ボーンを見る。取れなければ自分の頭と同じ高さを見る
         const auto* playerComponent = dynamic_cast<const Component::ComponentBase*>(&player);
         const auto  modelRenderer   = playerComponent ? playerComponent->Components().Catch<Component::ModelRenderer>().lock() : nullptr;
         const int   modelHandle     = modelRenderer ? modelRenderer->modelDxLibHandle_ : -1;
@@ -258,7 +258,7 @@ namespace GamePlay::Npc::Friendly
 
     std::shared_ptr<Component::Animator> FriendlyNpcReaction::ReadyAnimator() const
     {
-        // AnimationTree が無い Animator の Param は落ちるので触らない
+        // WARNING: AnimationTree が無い Animator の Param は落ちるので触らない
         const auto animator = Components().Catch<Component::Animator>().lock();
         return animator && animator->GetAnimationTree() ? animator : nullptr;
     }

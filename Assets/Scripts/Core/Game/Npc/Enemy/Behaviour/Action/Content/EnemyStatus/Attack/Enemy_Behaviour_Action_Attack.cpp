@@ -31,13 +31,12 @@ namespace GameCore::Npc::Enemy::Behaviour
             isWarned_ = true;
         }
 
-        // 発生タイミングで一度攻撃
         if (!isAttacked_ && during_secs_ >= normalAttackOccurrenceDuration_secs_)
         {
             auto& attackArea = context.CatchPrefabObject<AttackArea>(attackAreaName_);
             attackArea.PhysicsAttack(context.EnemyGameObject(), attackPower_);
 
-            // 他ピアのAttackArea も発火させる
+            // NOTE: 他ピアのAttackArea も発火させる
             if (context.IsNetworkAuthority())
             {
                 GameCore::Network::AttackAreaFireRpc::Send(

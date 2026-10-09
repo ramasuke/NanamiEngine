@@ -51,7 +51,7 @@ namespace GamePlay::Ui
             return;
         const auto rowsObject = rows_.get();
 
-        // 生成順を行の添字として使うので、生成に失敗した行も詰めずに残す
+        // NOTE: 生成順を行の添字として使うので、生成に失敗した行も詰めずに残す
         for (std::size_t i = 0; i < count; ++i)
         {
             const auto rowObject = Scene::GameObject::Instantiate(*rowPrefab_.get(), rowsObject).lock();
@@ -111,7 +111,7 @@ namespace GamePlay::Ui
     {
         const bool isActive = request.isShown && request.isUsable;
         const bool isLabelChanged = request.isShown && row.label != request.label;
-        // 入力機器の切替で絵だけが変わった時は、光らせずに差し替える
+        // NOTE: 入力機器の切替で絵だけが変わった時は、光らせずに差し替える
         const bool isGlyphChanged = request.isShown && row.glyph != request.glyph;
         if (isActive && (!row.isActive || isLabelChanged))
             ControlGuidePlayPulse(row.pulse, pulseDuration_secs_);
@@ -119,7 +119,7 @@ namespace GamePlay::Ui
             row.pulse.Tick(deltaTime);
         row.isActive = isActive;
 
-        // 消えていく行は直前の中身のままフェードさせる
+        // NOTE: 消えていく行は直前の中身のままフェードさせる
         if (isLabelChanged || isGlyphChanged)
         {
             row.glyph          = request.glyph;
@@ -140,7 +140,7 @@ namespace GamePlay::Ui
 
     void ControlGuide::PresentRow(ControlGuideRow& view, RowState& row, const RowRequest& request, const bool isCleared) const
     {
-        // 出始めた行はすぐ有効にして枠を確保し、消える行はフェードし終えてから無効にしてレイアウトから外す
+        // NOTE: 出始めた行はすぐ有効にして枠を確保し、消える行はフェードし終えてから無効にしてレイアウトから外す
         const float guideAlpha = guideFade_.Value();
         const float visibility = row.visibility.Value();
         const float focusRate  = row.focusRate.Value();
@@ -165,12 +165,12 @@ namespace GamePlay::Ui
         }
 
         const float usableAlphaRate = std::lerp(static_cast<float>(dimAlpha_) / 255.0f, 1.0f, row.usableRate.Value());
-        // 指されている行は常に最前面の明るさ、それ以外はフォーカス中だけさらに沈める
+        // NOTE: 指されている行は常に最前面の明るさ、それ以外はフォーカス中だけさらに沈める
         const float focusDimRate = std::lerp(1.0f - unfocusedDimRate_ * anyFocusRate_, 1.0f, focusRate);
         const float bodyAlpha  = 255.0f * guideAlpha * visibility * (std::max)(usableAlphaRate, focusRate) * focusDimRate;
         const float pulseAlpha = row.pulse.Value() * guideAlpha * visibility;
         const float hidden     = 1.0f - visibility;
-        // 行の枠もフェードと一緒に smoothstep で伸び縮みさせ、上下の行を跳ねさせない
+        // NOTE: 行の枠もフェードと一緒に smoothstep で伸び縮みさせ、上下の行を跳ねさせない
         const float slotRate   = visibility * visibility * (3.0f - 2.0f * visibility);
 
         const float focusAlpha  = focusRate * guideAlpha * visibility;

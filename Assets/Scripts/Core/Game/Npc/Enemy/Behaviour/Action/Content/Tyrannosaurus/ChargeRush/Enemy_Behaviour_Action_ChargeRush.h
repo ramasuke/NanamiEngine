@@ -16,10 +16,8 @@ namespace GamePlay::Prop
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @note 刺さった先が ChargeBreakPillar なら柱を倒し、柱のダメージを自分に入れる
-     * @note aimAtIntroPillar_ ならプレイヤーではなく登場演出用の柱へ向き直り、プレイヤーには当てない
-     */
+    // NOTE: 刺さった先が ChargeBreakPillar なら柱を倒し、柱のダメージを自分に入れる
+    // NOTE: aimAtIntroPillar_ ならプレイヤーではなく登場演出用の柱へ向き直り、プレイヤーには当てない
     class ChargeRush final : public ActionBase
     {
         enum class Phase

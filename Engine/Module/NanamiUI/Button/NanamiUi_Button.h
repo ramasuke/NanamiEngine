@@ -25,9 +25,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] R4::Observable<R4::Unit  > OnHoverExit() const { return onHoverExit.AsObservable(); }
         [[nodiscard]] R4::Observable<R4::Unit  > OnRelease  () const { return onRelease  .AsObservable(); }
 
-        /** @return いま入力を受けてよいか */
+        // NOTE: その Button がいま入力を受けてよいかを返す
         using InputGate = bool (*)(const Button& button);
-        /** @brief 入力を受ける Button を外から絞る。未設定なら全ての Button が受ける */
+        // NOTE: 入力を受ける Button を外から絞る。未設定なら全ての Button が受ける
         static void SetInputGate(InputGate gate);
 
     private:

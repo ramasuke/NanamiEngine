@@ -11,8 +11,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::RotateOnPlayer::DoTick(const TickContext& context)
     {
         auto& transform = context.EnemyTransform();
-        
-        // Player への方向
+
         glm::vec3 targetDir = context.Player()->PlayerTransform().GetWorldPos() - transform.GetWorldPos();
         targetDir.y = 0.0f;
         if (glm::length2(targetDir) < 0.0001f)
@@ -20,7 +19,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         targetDir = glm::normalize(targetDir);
 
-        // Enemy forward（モデル前方向は -Z）
+        // NOTE: モデルの前方向は -Z
         glm::vec3 currentForward = transform.GetWorldRot() * glm::vec3(0, 0, -1);
         currentForward.y = 0.0f;
 
@@ -32,13 +31,12 @@ namespace GameCore::Npc::Enemy::Behaviour
         const float dot = glm::clamp(glm::dot(currentForward, targetDir), -1.0f, 1.0f);
         const float angleDeg = glm::degrees(std::acos(dot));
 
-        // もう十分向いている → 回る必要なし
         if (angleDeg <= toleranceDeg_)
             return TickStatus::Failure;
 
         const glm::quat currentRot = transform.GetWorldRot();
 
-        // 正反対（180度）対策
+        // NOTE: 正反対 (180 度) は回転軸が定まらないので Y 軸で回す
         if (dot < -0.9999f)
         {
             const glm::quat deltaRot = glm::angleAxis(glm::pi<float>(), glm::vec3(0, 1, 0));
@@ -48,7 +46,6 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Running;
         }
 
-        // 通常回転
         const glm::quat deltaRot = glm::rotation(currentForward, targetDir);
         const float angleRad = glm::angle(deltaRot);
 

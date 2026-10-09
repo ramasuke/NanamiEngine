@@ -6,12 +6,12 @@
 
 namespace GamePlay::Magic
 {
-    // 設置の魔法（壁・罠）のプレハブに付ける。寿命が来たら消える
+    // NOTE: 設置の魔法（壁・罠）のプレハブに付ける。寿命が来たら消える
     class MagicPlacement final : public Component::ComponentBase,
                                  public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief 生成直後に呼ぶ */
+        // NOTE: 生成直後に呼ぶ
         void Place(float lifeTime_secs);
 
     private:

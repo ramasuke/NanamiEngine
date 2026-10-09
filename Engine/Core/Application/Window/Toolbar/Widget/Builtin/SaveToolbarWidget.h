@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief シーンとアセットの保存。再生中は出さない */
+    // NOTE: シーンとアセットの保存。再生中は出さない
     class NANAMI_API SaveToolbarWidget final : public IEditorToolbarWidget
     {
     public:

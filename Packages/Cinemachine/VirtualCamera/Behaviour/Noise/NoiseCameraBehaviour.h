@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    // 手持ちカメラのような微小な揺れ (Basic Multi Channel Perlin 相当) を常時加える
+    // NOTE: 手持ちカメラのような微小な揺れ (Basic Multi Channel Perlin 相当) を常時加える
     class NANAMI_API NoiseCameraBehaviour final : public Component::ComponentBase,
                                        public IVirtualCameraBehaviour
     {

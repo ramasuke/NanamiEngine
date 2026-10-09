@@ -11,15 +11,11 @@ namespace GameCore::Scene::Main
         explicit MainIslandScene(const std::weak_ptr<MainIslandSceneContext>& context, GameSceneBaseContext baseContext);
         ~MainIslandScene() override;
 
-        /**
-         * @brief 操作中のアバターを、同じ場所に別キャラで作り直す
-         * NOTE: ローカルの再生成だけ (ネットワーク中の切り替えは未対応)
-         */
+        // NOTE: 操作中のアバターを、同じ場所に別キャラで作り直す
+        // NOTE: ローカルの再生成だけ (ネットワーク中の切り替えは未対応)
         void SwitchPlayerAvatar(PlayerAvatar::PlayerAvatarType type);
 
-        /**
-         * @brief 島が巣へ引かれていく演出を流して DragonNest へ移る。演出中は何もしない
-         */
+        // NOTE: 島が巣へ引かれていく演出を流して DragonNest へ移る。演出中は何もしない
         void BeginNestDeparture();
         
     private:
@@ -29,11 +25,9 @@ namespace GameCore::Scene::Main
         void Enter    () override;
         void DoExit  () override;
         void OnDrawGui() override;
-        /** @brief 拠点が読めなければタイトルへ戻す */
+        // NOTE: 拠点が読めなければタイトルへ戻す
         [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }
-        /**
-         * @brief 狩り場のご褒美を出す。初めて戻ったときは演出から
-         */
+        // NOTE: 狩り場のご褒美を出す。初めて戻ったときは演出から
         void ApplyStageRewards();
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;

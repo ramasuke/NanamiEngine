@@ -13,13 +13,12 @@ namespace NanamiEngine::Module::Component
                                      public LifeCycleCallback::IStartable
     {
     public:
-        // offset_ と offsetRotation_ は ColliderBase に定義済み
         glm::vec3 scale_ = {1.0f, 1.0f, 1.0f};
-        // maxSimplifyError_ はワールド単位の絶対距離、minTriangleRatio_ は簡略化で残す三角形数の下限(元の数に対する割合)
+        // NOTE: maxSimplifyError_ はワールド単位の距離、minTriangleRatio_ は残す三角形数の下限(元の数に対する割合)
         bool  simplifyEnabled_   = true;
         float maxSimplifyError_  = 5.0f;
         float minTriangleRatio_  = 0.05f;
-        // NOTE: 設定すると ModelRenderer の見た目ではなくこのモデルから判定を作る(半壊版の瓦礫を判定に含めない等)
+        // NOTE: 設定すると ModelRenderer の見た目ではなくこのモデルから判定を作る
         FIELD(Asset::Mv1File) collisionMv1File_;
 
     private:
@@ -31,7 +30,7 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] std::pair<JPH::Vec3, JPH::Quat> CalcWorldTransformInternal() const override;
         [[nodiscard]] bool BuildShape() const;
 
-        // エディタでは OnAwake が呼ばれないため、OnDebugDraw から遅延生成できるよう mutable にしている
+        // NOTE: エディタでは OnAwake が呼ばれないため、OnDebugDraw から遅延生成できるよう mutable にしている
         mutable JPH::RefConst<JPH::Shape> shape_;
         mutable size_t sourceTriangleCount_ = 0;
         mutable size_t shapeTriangleCount_  = 0;

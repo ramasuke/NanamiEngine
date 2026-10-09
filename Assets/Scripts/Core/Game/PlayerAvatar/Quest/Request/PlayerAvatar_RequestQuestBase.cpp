@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
     {
         records_ = &context.records;
         const int current = CurrentRecord(context.records);
-        // ロードし直した受注中の依頼は、受注したときの基準をそのまま使う
+        // NOTE: ロードし直した受注中の依頼は、受注したときの基準をそのまま使う
         if (!startRecord_)
             startRecord_ = current;
 
@@ -28,7 +28,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
             CheckComplete(currentRecord, completedQuests);
         });
 
-        // 受注の前から条件を満たしていることはないが、requiredCount_ が 0 以下の依頼書でもすぐ終わるように
+        // NOTE: requiredCount_ が 0 以下の依頼書でもすぐ終わるように
         CheckComplete(current, completedQuests);
     }
 

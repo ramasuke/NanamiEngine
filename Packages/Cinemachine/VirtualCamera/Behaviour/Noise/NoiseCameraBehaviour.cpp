@@ -18,7 +18,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void NoiseCameraBehaviour::OnBecameLive()
     {
-        // カメラが切り替わった瞬間に揺れが急に乗らないよう、0からフェードインさせる。
+        // NOTE: カメラが切り替わった瞬間に揺れが急に乗らないよう、0 からフェードインさせる
         weight_ = 0.0f;
     }
 

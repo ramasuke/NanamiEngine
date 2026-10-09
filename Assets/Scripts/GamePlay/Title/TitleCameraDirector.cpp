@@ -64,7 +64,7 @@ namespace GamePlay::Title
             return;
         }
 
-        // 終わり際に暗くなり、次のショットの出だしで明ける
+        // NOTE: 終わり際に暗くなり、次のショットの出だしで明ける
         const float halfDip = dipDuration_secs_ * 0.5f;
         if (halfDip <= 0.0f)
             return;
@@ -87,7 +87,7 @@ namespace GamePlay::Title
         if (!camera || !endCamera)
             return;
 
-        // 始めの姿勢へは切り、終わりのカメラへはショットの長さをかけて補間する。動き出しと止まり際を緩めてクレーンのように見せる
+        // NOTE: 始めの姿勢へは切り、終わりのカメラへはショットの長さをかけて補間する。緩急を付けてクレーンのように見せる
         if (auto* brain = CineMachine::CinemachineCameraBrain::Instance())
             brain->SnapToVirtualCamera(*camera);
         endCamera->SetBlendIn(shot.duration_secs, LibCore::EaseType::InOutSine);

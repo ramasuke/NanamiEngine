@@ -31,7 +31,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
     namespace
     {
-        // ImGui の入力は UTF-8 なので、ACP ではなく UTF-8 として wide 文字列にする
+        // NOTE: ImGui の入力は UTF-8 なので、ACP ではなく UTF-8 として wide 文字列にする
         std::wstring Utf8ToWide(const std::string& utf8)
         {
             return std::filesystem::path(std::u8string(utf8.begin(), utf8.end())).wstring();
@@ -42,7 +42,7 @@ namespace NanamiEngine::Core::Application::Configuration
             return L"\"" + file.wstring() + L"\"";
         }
 
-        /** @brief std::string を InputText で編集し、編集が確定したフレームで true を返す */
+        // NOTE: std::string を InputText で編集し、編集が確定したフレームで true を返す
         bool InputString(const char* label, std::string& value)
         {
             char buffer[512] = {};

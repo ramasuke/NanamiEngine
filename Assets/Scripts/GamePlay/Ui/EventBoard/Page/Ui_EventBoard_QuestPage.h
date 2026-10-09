@@ -19,9 +19,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の「依頼」の頁。左に依頼書の札を並べ、右に選んだ依頼書を広げる
-     */
+    // NOTE: 掲示板の「依頼」の頁。依頼書の札の一覧と、選んだ依頼書の詳細
     class EventBoardQuestPage final : public Component::ComponentBase
     {
     public:
@@ -32,9 +30,9 @@ namespace GamePlay::Ui
         void Bind(const QuestBoardModel& model) const;
 
     private:
-        /** @param entry nullptr なら「依頼なし」を出す */
+        // NOTE: entry が nullptr なら「依頼なし」を出す
         void ShowDetail(const QuestBoardEntry* entry) const;
-        /** @brief ステージのサムネイル (大きさはまちまち) を写真枠いっぱいに縮める */
+        // NOTE: ステージのサムネイル (大きさはまちまち) を写真枠いっぱいに縮める
         void FitPhotoToFrame(int photoHandle) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;
@@ -67,7 +65,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] Color32 takingStateColor_  = Color32(146, 38, 30);
         [[serialize(0)]] Color32 defaultStateColor_ = Color32(48, 30, 20);
         [[serialize(1)]] FIELD(Asset::SpriteFile) lockedSealSprite_;
-        /** @brief 写真枠の内側の大きさ。サムネイルはこれを覆う倍率に縮める */
+        // NOTE: 写真枠の内側の大きさ。サムネイルはこれを覆う倍率に縮める
         [[serialize(2)]] glm::vec2 detailPhotoSize_px_ = glm::vec2(400.0f, 240.0f);
 
         EventBoardRowPool<EventBoardQuestRow> rows_;

@@ -4,33 +4,33 @@
 
 namespace GameCore::Story
 {
-    // NOTE: セーブには int で残るので、docs/Story.md
+    // WARNING: セーブに int で残るので、新しい値は必ず末尾に足す。一覧は docs/Story.md
     enum class StoryFlag : int
     {
-        // 序章でドラゴンを撃退し、拠点の島に降りた
+        // NOTE: 序章でドラゴンを撃退し、拠点の島に降りた
         PrologueCleared = 0,
-        // 教官から島の復興を任された
+        // NOTE: 教官から島の復興を任された
         RestorationStarted,
-        // 草原の大顎を倒し、緑の浮遊石を取り戻した
+        // NOTE: 草原の大顎を倒し、緑の浮遊石を取り戻した
         GrassLandCleared,
-        // 緑の浮遊石が拠点の島の底に戻った(戻ってくる演出を見た)
+        // NOTE: 緑の浮遊石が拠点の島の底に戻った(戻ってくる演出を見た)
         GreenStoneReturned,
-        // 緑の浮遊石の力で、噴水の島と階段が拠点の島の横へ戻ってきた(戻ってくる演出を見た)
+        // NOTE: 緑の浮遊石の力で、噴水の島と階段が拠点の島の横へ戻ってきた(戻ってくる演出を見た)
         FountainIslandReturned,
-        // 砂漠の骸竜 (光の浮遊石に起こされた守り竜の亡骸) を倒し、光の浮遊石を取り戻した
+        // NOTE: 砂漠の骸竜 (光の浮遊石に起こされた守り竜の亡骸) を倒し、光の浮遊石を取り戻した
         DesertCleared,
-        // 城塞の手前で座り込んでいた隊商の護衛を見つけ、泉へ帰した
+        // NOTE: 城塞の手前で座り込んでいた隊商の護衛を見つけ、泉へ帰した
         DesertGuardRescued,
-        // 光の浮遊石が拠点の島の底に戻った(戻ってくる演出を見た)
+        // NOTE: 光の浮遊石が拠点の島の底に戻った(戻ってくる演出を見た)
         LightStoneReturned,
-        // 教官から、島が古竜の巣へ引かれていると聞いた (巣へ渡れるようになる)
+        // NOTE: 教官から、島が古竜の巣へ引かれていると聞いた (巣へ渡れるようになる)
         NestVoyageStarted,
-        // 巣で古竜を倒し、積まれていた心臓が空へ散った
+        // NOTE: 巣で古竜を倒し、積まれていた心臓が空へ散った
         AncientDragonDefeated,
-        // 古竜を倒した後の話 (エピローグ) を教官から聞いた
+        // NOTE: 古竜を倒した後の話 (エピローグ) を教官から聞いた
         EpilogueHeard,
         
-        // 草原・砂漠・巣に初めて着いたときの演出を見た
+        // NOTE: 草原・砂漠・巣に初めて着いたときの演出を見た
         GrassLandOverviewSeen,
         DesertOverviewSeen,
         DragonNestOverviewSeen,

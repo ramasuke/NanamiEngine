@@ -4,7 +4,7 @@
 
 namespace GameCore::PlayerAvatar::MagicCaster::State
 {
-    // その場で止まってアイテムを使う。どのモーションかはステートごとに決まり(リモートにはステート番号だけが届くため)、時刻はアイテムが持つ
+    // NOTE: その場で止まってアイテムを使う。モーションはステートごとに固定 (リモートにはステート番号しか届かない)
     class UseItemState final : public MagicCasterAvatarStateBase
     {
     public:

@@ -8,10 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * target_ の ModelRenderer のモデルを model_ に差し替える
-     * NOTE: 差し替えは読み込みを待って裏で行うので、Tick はすぐ Success を返す
-     */
+    // NOTE: target_ の ModelRenderer のモデルを model_ に差し替える
+    // NOTE: 差し替えは読み込みを待って裏で行うので、Tick はすぐ Success を返す
     class SwapModel final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

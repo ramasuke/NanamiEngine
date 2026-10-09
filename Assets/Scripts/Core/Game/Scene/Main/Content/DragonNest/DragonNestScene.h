@@ -13,7 +13,7 @@ namespace GameCore::Scene::GrassLand
 
 namespace GameCore::Scene::Main
 {
-    /** 古竜の巣 (SceneType::DragonNest)。嵐の目に浮かぶ竜の墓場 (docs/Story.md 終章「嵐の巣」) */
+    // NOTE: 古竜の巣 (SceneType::DragonNest)。嵐の目に浮かぶ竜の墓場
     class DragonNestScene final : public GameMainSceneBase<DragonNestSceneContext>
     {
     public:
@@ -35,7 +35,7 @@ namespace GameCore::Scene::Main
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<DragonNestSceneContext>> arrivalMovie_;
         Story::StageClearWatcher stageClearWatcher_;
-        /** @brief このステージでボスを倒したか。抜けるときに体力を満タンにして保存する */
+        // NOTE: このステージでボスを倒したか。抜けるときに体力を満タンにして保存する
         bool isStageCleared_ = false;
     };
 }

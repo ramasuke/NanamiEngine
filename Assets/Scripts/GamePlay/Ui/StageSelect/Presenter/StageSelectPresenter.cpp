@@ -273,7 +273,7 @@ namespace GamePlay::Ui
             return;
         }
 
-        // 番号が揃うまでは出発させない
+        // NOTE: 番号が揃うまでは出発させない
         if (!IsRoomReady())
         {
             Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Refuse);

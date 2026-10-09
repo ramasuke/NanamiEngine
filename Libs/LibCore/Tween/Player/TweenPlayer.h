@@ -9,26 +9,26 @@
 
 namespace LibCore::Tween
 {
-    // 秒を tweeny の区間長(uint16_t の ms)に変換する
+    // NOTE: 秒を tweeny の区間長(uint16_t の ms)に変換する
     // NOTE: 0ms は NaN になるので最小 1ms
     inline uint16_t Ms(const float secs)
     {
         return static_cast<uint16_t>(std::clamp(secs * 1000.0f, 1.0f, 65535.0f));
     }
 
-    // 毎フレーム Tick して使う tween の再生器
+    // NOTE: 毎フレーム Tick して使う tween の再生器
     template <typename T>
     class TweenPlayer
     {
     public:
-        // 最初から再生する
+        // NOTE: 最初から再生する
         void Play(tweeny::tween<T> tween)
         {
             Set(std::move(tween));
             isPlaying_ = true;
         }
 
-        // 始点に置いて止めておく。往復フェードは Set してから PlayForward / PlayBackward
+        // NOTE: 始点に置いて止めておく。往復フェードは Set してから PlayForward / PlayBackward
         void Set(tweeny::tween<T> tween)
         {
             tween_ = std::move(tween);
@@ -38,7 +38,7 @@ namespace LibCore::Tween
             isPlaying_ = false;
         }
 
-        // 終わったフレームだけ true を返す
+        // NOTE: 終わったフレームだけ true を返す
         bool Tick(const float deltaTime)
         {
             if (!isPlaying_ || !tween_)
@@ -52,25 +52,25 @@ namespace LibCore::Tween
             return true;
         }
 
-        // 今の進行度から順方向へ再生する(終端にいれば何もしない)
+        // NOTE: 今の進行度から順方向へ再生する(終端にいれば何もしない)
         void PlayForward()
         {
             SetDirection(true);
         }
 
-        // 今の進行度から逆方向へ再生する(始点にいれば何もしない)
+        // NOTE: 今の進行度から逆方向へ再生する(始点にいれば何もしない)
         void PlayBackward()
         {
             SetDirection(false);
         }
 
-        // 停止する。Value は今の値のまま
+        // NOTE: 停止する。Value は今の値のまま
         void Stop()
         {
             isPlaying_ = false;
         }
 
-        // 再生方向の終端へ飛ばす
+        // NOTE: 再生方向の終端へ飛ばす
         void Complete()
         {
             if (!tween_)
@@ -123,7 +123,7 @@ namespace LibCore::Tween
             return IsForward() ? tween_->currentTimePoint() >= tween_->duration() : tween_->currentTimePoint() == 0;
         }
 
-        // Coroutine::TweenClock と同じく、ms 未満の端数を次のフレームへ繰り越す
+        // NOTE: Coroutine::TweenClock と同じく、ms 未満の端数を次のフレームへ繰り越す
         [[nodiscard]] int32_t AdvanceMs(const float deltaTime)
         {
             remainderMs_ += deltaTime * 1000.0f;

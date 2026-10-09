@@ -15,7 +15,7 @@ namespace NanamiEngine::Module::Component
                             public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief 読み込み時のマテリアル色に乗算する色。天候で空を曇らせるのに使う */
+        // NOTE: 読み込み時のマテリアル色に乗算する色
         void SetTint(const glm::vec3& tint);
 
     private:
@@ -29,7 +29,7 @@ namespace NanamiEngine::Module::Component
 
         FIELD(Asset::Mv1File) skyDomeModel_;
         int skyDomeModelDxLibHandle_ = -1;
-        //NOTE: 未使用。描画カメラ位置に追従するようになった。保存済みシーンとの互換のため残している
+        // NOTE: 旧版のカメラ参照。今は使わないが保存済みシーンとの互換のため残す
         FIELD(CineMachine::CinemachineCameraBrain) mainCamera_;
 
         glm::vec3 tint_ = glm::vec3(1.0f);

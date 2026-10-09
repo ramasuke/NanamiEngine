@@ -46,15 +46,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(mode_));
             archive(CEREAL_NVP(targetObject_));
         }
-        
-        // template<class Archive>
-        // void serialize(Archive& archive)
-        // {
-        //     archive(CEREAL_NVP(offset_));
-        //     // archive(CEREAL_NVP(offsetRotation_));
-        //     archive(CEREAL_NVP(mode_));
-        //     archive(CEREAL_NVP(targetObject_));
-        // }
     };
 }
 

@@ -6,7 +6,7 @@
 
 namespace GameCore::StatusParameter
 {
-    //NOTE: 値オブジェクト
+    // NOTE: 値オブジェクト
     struct MoveSpeed final
     {
         explicit MoveSpeed(float value = 0.0f);

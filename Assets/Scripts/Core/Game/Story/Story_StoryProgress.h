@@ -37,9 +37,7 @@ namespace GameCore::Story
         }
     };
 
-    /**
-     * @brief 物語の進み具合と島の復興状況
-     */
+    // NOTE: 物語の進み具合と島の復興状況
     class StoryProgress final : public SingletonBase<StoryProgress>
     {
     public:
@@ -48,14 +46,14 @@ namespace GameCore::Story
         void Reload();
 
         [[nodiscard]] bool IsSet(StoryFlag flag) const;
-        /** @return 初めて立てたなら true */
+        // NOTE: 初めて立てたなら true
         bool Set(StoryFlag flag);
 
         [[nodiscard]] bool IsRestored(Facility facility) const;
-        /** @return 初めて直したなら true */
+        // NOTE: 初めて直したなら true
         bool Restore(Facility facility);
 
-        /** @brief フラグか施設が変わったときに流れる */
+        // NOTE: フラグか施設が変わったときに流れる
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnChanged() const { return onChanged_.AsObservable(); }
 
         void OnDrawGui();

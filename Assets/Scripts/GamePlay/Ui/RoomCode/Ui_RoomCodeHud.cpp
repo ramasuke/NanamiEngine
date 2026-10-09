@@ -7,7 +7,7 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        /** @brief 通信していないシーンでも置けるよう、ランナーが居ないときは空 */
+        // NOTE: 通信していないシーンでも置けるよう、ランナーが居ないときは空
         std::string CurrentRoomCode()
         {
             const auto* runner = dynamic_cast<Network::CustomNetworkRunner*>(
@@ -24,7 +24,7 @@ namespace GamePlay::Ui
 
     void RoomCodeHud::OnUpdate()
     {
-        // 部屋に入るのはシーンに入ったあとなので、番号は少し遅れて決まる
+        // NOTE: 部屋に入るのはシーンに入ったあとなので、番号は少し遅れて決まる
         if (const std::string code = CurrentRoomCode(); code != shownCode_)
             Show(code);
     }

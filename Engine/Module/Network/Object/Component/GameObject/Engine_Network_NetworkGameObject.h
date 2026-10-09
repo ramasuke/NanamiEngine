@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    /** Network上で共通のPrefabとして扱うために使用するクラス */
+    // NOTE: ネットワーク上で同じオブジェクトとして扱うための ID を持たせるコンポーネント
     class NANAMI_API NetworkGameObject final : public Component::ComponentBase,
                                     public Core::Network::INetworkObject
     {

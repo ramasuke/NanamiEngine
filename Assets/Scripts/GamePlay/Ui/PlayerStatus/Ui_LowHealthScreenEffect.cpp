@@ -21,7 +21,7 @@ namespace GamePlay::Ui
         ResetDownedFade(isDowned_);
 
         subscription_.Dispose();
-        // OnChangeHealth は Set 直後に流れるので、この時点の IsDeath は新しいHPを反映している
+        // NOTE: OnChangeHealth は Set 直後に流れるので、この時点の IsDeath は新しいHPを反映している
         subscription_.Set(model.OnChangeHealth().Subscribe([this, &model](const GameCore::StatusParameter::Health health)
             {
                 OnChangeHealth(health, model.IsDeath());
@@ -82,7 +82,7 @@ namespace GamePlay::Ui
         healthRate_ = maxHealth_.Value() > 0 ? health / maxHealth_ : 0.0f;
         isDowned_   = isDeath;
 
-        // 被弾と同時に1拍打たせ、鼓動の位相を被弾に揃える
+        // NOTE: 被弾と同時に1拍打たせ、鼓動の位相を被弾に揃える
         const float targetDanger = CalcDanger(healthRate_);
         if (health < lastHealth_ && !isDowned_ && targetDanger > MIN_VISIBLE_DANGER)
         {

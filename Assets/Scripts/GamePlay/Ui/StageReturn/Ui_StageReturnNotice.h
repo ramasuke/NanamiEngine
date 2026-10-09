@@ -45,7 +45,7 @@ namespace GamePlay::Ui
         void OnStart () override;
         void OnUpdate() override;
 
-        /** @brief 呼び出し側の OnStart が先に走って Open されても、元の位置を取り損ねないように */
+        // NOTE: 呼び出し側の OnStart が先に走って Open されても、元の位置を取り損ねないように
         void EnsureStarted();
         void UpdateEnter(float deltaSecs);
         void UpdateStamp(float deltaSecs);

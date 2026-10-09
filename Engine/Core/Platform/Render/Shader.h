@@ -7,7 +7,7 @@
 #include "mat4x4.hpp"
 #include "../../../Module/Color/Color32.h"
 
-// カスタムシェーダー描画の DxLib を出さない入口。ハンドルはすべて DxLib の int
+// NOTE: カスタムシェーダー描画の DxLib を出さない入口。ハンドルはすべて DxLib の int
 namespace NanamiEngine::Platform::Render
 {
     enum class ShaderStage : int
@@ -16,7 +16,7 @@ namespace NanamiEngine::Platform::Render
         Pixel  = 1,
     };
 
-    /** 頂点色 (DxLib の COLOR_U8 と同じ b, g, r, a の順) */
+    // NOTE: 頂点色 (DxLib の COLOR_U8 と同じ b, g, r, a の順)
     struct NANAMI_API VertexColor8
     {
         std::uint8_t b = 255, g = 255, r = 255, a = 255;
@@ -25,7 +25,7 @@ namespace NanamiEngine::Platform::Render
         [[nodiscard]] static VertexColor8 Gray(const std::uint8_t value, const std::uint8_t alpha = 255) { return { value, value, value, alpha }; }
     };
 
-    /** シェーダー用 3D 頂点 (DxLib の VERTEX3DSHADER) */
+    // NOTE: シェーダー用 3D 頂点 (DxLib の VERTEX3DSHADER)
     struct NANAMI_API ShaderVertex3D
     {
         glm::vec3    position{};
@@ -41,9 +41,9 @@ namespace NanamiEngine::Platform::Render
 
     namespace ConstantBuffer
     {
-        /** @brief 定数バッファを同期で作る (非同期読み込みが有効でも完了待ちにならない)。失敗で -1 */
+        // NOTE: 定数バッファを同期で作る (非同期読み込みが有効でも完了待ちにならない)。失敗で -1
         [[nodiscard]] NANAMI_API int   Create(int sizeInBytes);
-        /** @brief CPU 側の書き込み先。書いたら Update を呼ぶ */
+        // NOTE: CPU 側の書き込み先。書いたら Update を呼ぶ
         [[nodiscard]] NANAMI_API void* Map(int handle);
         NANAMI_API void                Update(int handle);
         NANAMI_API void                Delete(int handle);
@@ -52,7 +52,7 @@ namespace NanamiEngine::Platform::Render
 
     namespace VertexBuffer
     {
-        /** @brief ShaderVertex3D 用の頂点バッファ。失敗で -1 */
+        // NOTE: ShaderVertex3D 用の頂点バッファ。失敗で -1
         [[nodiscard]] NANAMI_API int Create(int vertexCount);
         NANAMI_API bool              SetData(int handle, const ShaderVertex3D* vertices, int count, int offset = 0);
         NANAMI_API void              Delete(int handle);
@@ -60,16 +60,16 @@ namespace NanamiEngine::Platform::Render
 
     namespace IndexBuffer
     {
-        /** @brief 32bit インデックスバッファ。失敗で -1 */
+        // NOTE: 32bit インデックスバッファ。失敗で -1
         [[nodiscard]] NANAMI_API int Create(int indexCount);
         NANAMI_API bool              SetData(int handle, const std::uint32_t* indices, int count, int offset = 0);
         NANAMI_API void              Delete(int handle);
     }
 
-    /** @brief -1 で標準シェーダーに戻す */
+    // NOTE: -1 で標準シェーダーに戻す
     NANAMI_API void SetVertexShader(int handle);
     NANAMI_API void SetPixelShader(int handle);
-    /** @brief 設定中の頂点 / ピクセルシェーダーで三角形リストを描く */
+    // NOTE: 設定中の頂点 / ピクセルシェーダーで三角形リストを描く
     NANAMI_API void DrawIndexedTriangles(int vertexBufferHandle, int indexBufferHandle);
 
     namespace RenderState

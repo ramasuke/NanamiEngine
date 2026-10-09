@@ -32,7 +32,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
     [[nodiscard]] NANAMI_API JsonValue MakeVec3(const glm::vec3& value, JsonAllocator& allocator);
     [[nodiscard]] NANAMI_API JsonValue MakeQuat(const glm::quat& value, JsonAllocator& allocator);
 
-    /** @brief コマンド引数 の読み取り。不正な型はAutoMcpError */
+    // NOTE: コマンド引数の読み取り。不正な型は AutoMcpError
     class NANAMI_API JsonArgs final
     {
     public:
@@ -46,7 +46,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         [[nodiscard]] double      RequireNumber(const char* name) const;
         [[nodiscard]] int         OptionalInt(const char* name, int fallback) const;
         [[nodiscard]] bool        TryGetVec3(const char* name, glm::vec3& out) const;
-        /** @brief [x, y, z, w] の順で受け取る */
+        // NOTE: [x, y, z, w] の順で受け取る
         [[nodiscard]] bool        TryGetQuat(const char* name, glm::quat& out) const;
 
     private:

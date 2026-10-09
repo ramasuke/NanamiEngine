@@ -4,7 +4,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    /// チュートリアルと操作ガイドをつなぐだけの受け渡し口。Status が持つ
+    // NOTE: チュートリアルと操作ガイドをつなぐだけの受け渡し口
     class ControlGuideFocus final : public IControlGuideFocusRequest,
                                     public IControlGuideFocusPresentation
     {

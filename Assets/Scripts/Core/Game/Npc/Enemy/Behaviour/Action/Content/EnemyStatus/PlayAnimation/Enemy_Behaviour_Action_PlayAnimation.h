@@ -15,7 +15,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] int animatorSetParamNumber_ = 0;
         [[serialize(2)]] WaitSeconds waitAnimationSound_secs_;
         [[serialize(2)]] PlaySE animationSound_;
-        /** @brief 0 なら即 Success。>0 ならこの秒数 Running を返す（後ろに WaitSeconds を置く代わり） */
+        // NOTE: 0 なら即 Success。>0 ならこの秒数 Running を返す（後ろに WaitSeconds を置く代わり）
         [[serialize(3)]] float holdSeconds_ = 0.0f;
         bool isSoundPending_ = true;
         float hold_secs_ = 0.0f;

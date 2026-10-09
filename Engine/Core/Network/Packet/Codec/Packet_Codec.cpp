@@ -33,7 +33,7 @@ namespace NanamiEngine::Core::Network
         const DeliveryMode deliveryMode = static_cast<DeliveryMode>(buffer.ReadRaw<uint8_t>(offset));
         const uint32_t     payloadSize  = buffer.ReadRaw<uint32_t>(offset);
 
-        // ヘッダが宣言するペイロード長が実際の受信サイズを超えていないか検証する（受信データは信頼できない）
+        // NOTE: ヘッダが宣言するペイロード長が実際の受信サイズを超えていないか検証する（受信データは信頼できない）
         if (payloadSize > buffer.Size() - offset)
         {
             throw Module::Exception::PacketDeserializeException(

@@ -29,31 +29,30 @@ namespace NanamiEngine::Core::Network
 
         virtual ~PacketDispatcherBase() = default;
 
-        // IsServer() + ServerType で OnServerRelayReceive / OnServerAuthoritativeReceive / OnReceive へ振り分ける
+        // NOTE: IsServer() + ServerType で OnServerRelayReceive / OnServerAuthoritativeReceive / OnReceive へ振り分ける
         virtual void ReceivePacket(const Packet& packet);
 
     protected:
-        /** サンドボックスパターン */
+        // NOTE: 派生クラス向けの補助 (サンドボックスパターン)
         void SendPacket(const Packet& packet) const;
         [[nodiscard]] PrefabObjectRegistry& NetworkObjectRegistry() const;
         [[nodiscard]] PlayerId PlayerId() const;
         [[nodiscard]] bool IsServer() const;
 
-        // Relay モード時にサーバーが呼ぶ。デフォルト: SendPacket（broadcast）+ OnReceive。
+        // NOTE: Relay モード時のサーバー側受信。既定は SendPacket (broadcast) + OnReceive
         virtual void OnServerRelayReceive(const Packet& packet);
 
-        // Authoritative モード時にサーバーが呼ぶ。デフォルト: OnReceive のみ（broadcast しない）
+        // NOTE: Authoritative モード時のサーバー側受信。既定は OnReceive のみ (broadcast しない)
         virtual void OnServerAuthoritativeReceive(const Packet& packet);
 
-        // クライアント受信 / サーバー共通ゲームロジック。
-        // 派生クラスでオーバーライドし、Packetを受け取った際の処理を記述
+        // NOTE: クライアント受信とサーバー共通のゲームロジック。派生クラスで Packet を受け取った処理を書く
         virtual void OnReceive(const Packet& packet);
 
     private:
         const IPlayerIdProvider& playerIdProvider_;
         IPacketSender& packetSender;
 
-        //PacketDispatcher Ctor generate macro
+        // NOTE: 派生クラスの既定コンストラクタを定義するマクロ
         #define DEFINE_PACKET_DEFAULT_CONSTRUCTOR(DerivedClass) \
         explicit DerivedClass(const IPlayerIdProvider& playerIdProvider, IPacketSender& packetSender) \
         : PacketDispatcherBase(playerIdProvider, packetSender) {}

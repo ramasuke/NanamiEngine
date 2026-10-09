@@ -42,7 +42,7 @@ namespace GamePlay::Ui
 
     void SampleTitleScene::OnGameStart()
     {
-        // 更新が済んでいなければ荷札を出し直す。
+        // NOTE: 更新が済んでいなければ荷札を出し直す
         if (const auto assetUpdate = assetUpdate_.lock(); assetUpdate && !assetUpdate->TryStartGame())
             return;
 

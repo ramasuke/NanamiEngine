@@ -19,9 +19,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の「復興」
-     */
+    // NOTE: 掲示板の「復興」の頁。普請の札の一覧と、選んだ普請の詳細
     class EventBoardRestorationPage final : public Component::ComponentBase
     {
     public:
@@ -32,7 +30,7 @@ namespace GamePlay::Ui
         void Bind(const RestorationBoardModel& model) const;
 
     private:
-        /** @param entry nullptr なら「まだ普請の段取りがない」を出す */
+        // NOTE: entry が nullptr なら「まだ普請の段取りがない」を出す
         void ShowDetail(const RestorationBoardEntry* entry, int balance) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;

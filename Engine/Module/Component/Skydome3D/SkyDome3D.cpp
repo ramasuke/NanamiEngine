@@ -66,7 +66,7 @@ void Component::SkyDome3D::ApplyTint()
     if (skyDomeModelDxLibHandle_ == -1)
         return;
 
-    //NOTE: 読み込み時の色に乗算する。素の色を上書きしないので、モデル側の陰影がそのまま残る
+    // NOTE: 読み込み時の色に乗算する。素の色を上書きしないので、モデル側の陰影がそのまま残る
     const int materialNum = static_cast<int>(baseDifColors_.size());
     for (int i = 0; i < materialNum; ++i)
     {
@@ -85,11 +85,11 @@ void Component::SkyDome3D::OnUpdate()
 
 void Component::SkyDome3D::OnRender()
 {
-    //NOTE: Brain の LateUpdate 後に確定した描画カメラ位置に置く。Update で置くと1フレーム遅れ、参照切れでも止まる
+    // NOTE: カメラ位置が確定した描画時に置く。Update で置くと 1 フレーム遅れる
     MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
         GetCameraPosition(), Transform().GetWorldRot(), Transform().GetWorldScale()));
 
-    //NOTE: フォグを掛けたまま描くとドームが遠景色一色に潰れるので、空だけ外して描く
+    // NOTE: フォグを掛けたまま描くとドームが遠景色一色に潰れるので、空だけ外して描く
     const int useFog = GetFogEnable();
     SetFogEnable(FALSE);
     MV1DrawModel(skyDomeModelDxLibHandle_);

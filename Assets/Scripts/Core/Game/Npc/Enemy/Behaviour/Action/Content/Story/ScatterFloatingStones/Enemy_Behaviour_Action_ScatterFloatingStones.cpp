@@ -61,7 +61,7 @@ namespace GameCore::Npc::Enemy::Behaviour
                 auto& transform = flight.stone->Transform();
                 if (elapsed_secs < hoverStart_secs)
                 {
-                    // 地面を割ってせり上がり、回りながら減速する
+                    // NOTE: 地面を割ってせり上がり、回りながら減速する
                     const float t = StoryMovie::EaseOutCubic(StoryMovie::Rate(elapsed_secs, shot.rise_secs));
                     transform.SetWorldPos(glm::mix(flight.buriedPos, flight.risenPos, t));
                     transform.SetWorldRot(StoryMovie::Yaw(180.0f * t) * flight.baseRot);
@@ -74,7 +74,7 @@ namespace GameCore::Npc::Enemy::Behaviour
                 }
                 else
                 {
-                    // 水平は加速しながら、高さは一定の速さで上がるので、弧を描いて空へ抜ける
+                    // NOTE: 水平は加速しながら、高さは一定の速さで上がるので、弧を描いて空へ抜ける
                     const float rate = StoryMovie::Rate(elapsed_secs - flyStart_secs, shot.fly_secs);
                     transform.SetWorldPos(flight.risenPos
                         + flight.direction * (shot.flyDistance * StoryMovie::EaseInCubic(rate))

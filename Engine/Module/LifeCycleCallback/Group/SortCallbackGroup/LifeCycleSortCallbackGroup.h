@@ -51,14 +51,12 @@ namespace NanamiEngine::Core::Application
     template <LifeCycleCallbackType T, typename Compare>
     void LifeCycleSortCallbackGroup<T, Compare>::OnUpdatePushedContents()
     {
-        // 削除
         while (!removeContentQueue_.empty())
         {
             contents_.erase(removeContentQueue_.front());
             removeContentQueue_.pop();
         }
         
-        // 追加
         while (!addContentQueue_.empty())
         {
             auto& wp = addContentQueue_.front();

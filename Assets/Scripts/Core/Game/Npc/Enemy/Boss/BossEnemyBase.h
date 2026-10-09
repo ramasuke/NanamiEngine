@@ -16,7 +16,7 @@ namespace GameCore::Npc
     public:
         [[nodiscard]] const std::string& BossName() const { return bossName_; }
         [[nodiscard]] Enemy::EnemyStatus& Status() { return NetworkStatus()->Get(); }
-        // ゲージUIとPresenterは EnemyFactory が生成するので、生成後にここへ差し込まれる
+        // NOTE: ゲージ UI は外で生成され、生成後にここへ差し込まれる
         void SetHealthGaugePresenter(const std::weak_ptr<GamePlay::Ui::BossHealthGaugePresenter>& presenter);
         void ShowBossHealthGauge() override;
 
@@ -48,7 +48,7 @@ namespace GameCore::Npc
         void load(Archive& archive, const std::uint32_t version)
         {
             archive(cereal::base_class<EnemyBase>(this));
-            // v0 はゲージのプレハブを個体が持っていた。今は EnemyFactory 側にあるので読み捨てる
+            // NOTE: 旧版のゲージのプレハブ。今は使わないので読み捨てる
             [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bossHealthGaugePrefab_;
             if (version == 0) archive(CEREAL_NVP(bossHealthGaugePrefab_));
             archive(CEREAL_NVP(bossName_));

@@ -6,10 +6,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 光の心臓 (Prop::StormHeart) が揺らいだら、砂嵐を止めて倒れ込み、伏せて、起き上がる
-     * @note 揺らいでいなければ Failure。気絶の間は Running
-     */
+    // NOTE: 光の心臓 (Prop::StormHeart) が揺らいだら、砂嵐を止めて倒れ込み、伏せて、起き上がる
+    // NOTE: 揺らいでいなければ Failure。気絶の間は Running
     class HeartStun final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

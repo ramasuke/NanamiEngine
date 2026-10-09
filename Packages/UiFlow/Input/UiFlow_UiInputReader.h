@@ -9,28 +9,26 @@ namespace NanamiEngine::UiFlow
 {
     class UiScreen;
 
-    /**
-     * @brief メニュー操作の入力を読む。押した瞬間・押し続け・リピートを返す
-     * @note  問い合わせたときに 1 フレームに 1 回だけ読み直すので、Update を呼ぶ必要はない
-     */
+    // NOTE: メニュー操作の入力を読む。押した瞬間・押し続け・リピートを返す
+    // NOTE: 問い合わせたときに 1 フレームに 1 回だけ読み直すので、Update を呼ぶ必要はない
     class NANAMI_API UiInputReader final
     {
     public:
         void SetMap(UiActionMap map);
         [[nodiscard]] UiActionMap& Map() { return map_; }
         void SetRepeat(float delay_secs, float interval_secs);
-        /** @brief いま押されている入力を、一度離されるまで無視する */
+        // NOTE: いま押されている入力を、一度離されるまで無視する
         void WaitForRelease();
 
         [[nodiscard]] bool IsPressed (UiAction action);
         [[nodiscard]] bool IsHeld    (UiAction action);
         
-        /** @brief 押した瞬間と、押し続けて delay を過ぎてからは interval ごとに true */
+        // NOTE: 押した瞬間と、押し続けて delay を過ぎてからは interval ごとに true
         [[nodiscard]] bool IsRepeated(UiAction action);
 
-        /** @brief キー・マウス・パッドのどれかを押した瞬間 */
+        // NOTE: キー・マウス・パッドのどれかを押した瞬間
         [[nodiscard]] bool IsAnyPressed();
-        /** @brief 押した瞬間の数字キー (0-9)。無ければ -1 */
+        // NOTE: 押した瞬間の数字キー (0-9)。無ければ -1
         [[nodiscard]] int  PressedDigit();
 
     private:
@@ -46,7 +44,7 @@ namespace NanamiEngine::UiFlow
             float repeat_secs = 0.0f;
         };
 
-        /** @brief screen が最前面で開いているときだけ入力を返すようにする */
+        // NOTE: screen が最前面で開いているときだけ入力を返すようにする
         void SetGate(const UiScreen* screen);
         void Poll();
         void Step(ActionState& state, bool isDown, float deltaTime) const;

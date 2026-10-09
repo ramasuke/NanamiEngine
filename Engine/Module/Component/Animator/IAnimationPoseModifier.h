@@ -3,7 +3,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /** @brief 同じ GameObject の Animator がアニメーションを適用した直後に呼ばれ、ボーン姿勢を上書きできる */
+    // NOTE: 同じ GameObject のアニメーション適用直後に呼ばれ、ボーン姿勢を上書きできる
     class NANAMI_API IAnimationPoseModifier
     {
     public:

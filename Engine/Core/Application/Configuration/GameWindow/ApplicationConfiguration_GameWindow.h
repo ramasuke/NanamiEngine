@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    /** @brief GameWindow 上に GameObject のマークを描くかの設定 */
+    // NOTE: GameWindow 上に GameObject のマークを描くかの設定
     class NANAMI_API GameWindowConfiguration final
     {
     public:

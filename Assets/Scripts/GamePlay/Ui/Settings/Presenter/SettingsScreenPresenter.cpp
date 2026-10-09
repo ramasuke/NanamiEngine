@@ -110,7 +110,7 @@ namespace GamePlay::Ui
         if (count <= 1)
             return;
 
-        // 端で止めず、ぐるりと回す (2択なら押すたびに入れ替わる)。wrap が無い行は端で止める
+        // NOTE: 端で止めず、ぐるりと回す (2択なら押すたびに入れ替わる)。wrap が無い行は端で止める
         const int current = item.get();
         const int next    = item.wrap ? (current + delta + count) % count : std::clamp(current + delta, 0, count - 1);
         if (next == current)

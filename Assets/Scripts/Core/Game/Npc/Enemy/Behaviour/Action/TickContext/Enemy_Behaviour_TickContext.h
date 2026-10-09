@@ -97,22 +97,21 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
 
         [[nodiscard]] std::optional<Damage::FlinchPower>& PendingFlinchPower() const { return pendingFlinchPower_; }
-        // ツリーの Tick 毎に 1 増える。
-        // 前回の Tick で呼ばれなかったアクションの判定に使う
+        // NOTE: ツリーの Tick 毎に 1 増える。前回の Tick で呼ばれなかったアクションの判定に使う
         [[nodiscard]] std::uint64_t TickIndex() const { return tickIndex_; }
-        // ボスHPゲージを持たない敵は nullptr
+        // NOTE: ボスHPゲージを持たない敵は nullptr
         [[nodiscard]] IShowHealthGaugeProvider* ShowHealthGaugeProvider() const { return showHealthGaugeProvider_; }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] static const std::vector<std::weak_ptr<IPlayerAvatar>>& AllPlayer();
-        // 水平距離で一番近いプレイヤーの位置。プレイヤーがいなければ false
+        // NOTE: 水平距離で一番近いプレイヤーの位置。プレイヤーがいなければ false
         [[nodiscard]] bool NearestPlayerPosition(const glm::vec3& from, glm::vec3& out) const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
         [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi() const;
 
-        // この敵の NetworkObjectId。ネットワーク生成されていない個体は Invalid()
+        // NOTE: この敵の NetworkObjectId。ネットワーク生成されていない個体は Invalid()
         [[nodiscard]] Core::Network::NetworkObjectId NetworkObjectId() const { return networkObjectId_; }
-        // 権威側だけが Tick している (一回限りの副作用は RPC で他ピアへ複製する)
+        // NOTE: 権威側だけが Tick している (一回限りの副作用は RPC で他ピアへ複製する)
         [[nodiscard]] bool IsNetworkAuthority() const { return isNetworkAuthority_; }
 
 

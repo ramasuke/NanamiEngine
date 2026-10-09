@@ -17,9 +17,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板の「催し」の頁。左に告知の札を並べ、右のポスターに選んだ告知を出す。
-     */
+    // NOTE: 掲示板の「催し」の頁。告知の札の一覧と、選んだ告知のポスター
     class EventBoardEventPage final : public Component::ComponentBase
     {
     public:
@@ -30,7 +28,7 @@ namespace GamePlay::Ui
         void Bind(const EventBoardModel& model) const;
 
     private:
-        /** @param entry nullptr なら「予定なし」を出す */
+        // NOTE: entry が nullptr なら「予定なし」を出す
         void ShowDetail(const EventBoardEntry* entry) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;

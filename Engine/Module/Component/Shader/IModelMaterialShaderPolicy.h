@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    // ModelRendererが材質ごとの描画切り替えに使う受け渡し用データ。
+    // NOTE: 材質ごとの描画切り替えの受け渡し用データ
     struct NANAMI_API MaterialShaderPass
     {
         int  vsHandle       = -1;
@@ -18,16 +18,16 @@ namespace NanamiEngine::Module::Component
         bool disableCulling = false; // この材質を使うメッシュを両面描画にする
     };
 
-    // 同じ GameObject の兄弟コンポーネントが実装し、材質名ごとの描画パスを ModelRenderer に渡す
+    // NOTE: 同じ GameObject の兄弟コンポーネントが実装し、材質名ごとの描画パスをモデル描画側へ渡す
     class NANAMI_API IModelMaterialShaderPolicy
     {
     public:
         virtual ~IModelMaterialShaderPolicy() = default;
 
-        // 引き受けるなら outPass を埋めて true を返す。定数バッファもここで更新する (通常パス専用)
+        // NOTE: 引き受けるなら outPass を埋めて true を返す。定数バッファもここで更新する (通常パス専用)
         [[nodiscard]] virtual bool TryGetMaterialShaderPass(const std::string& materialName, MaterialShaderPass& outPass) = 0;
 
-        // 影パス専用。定数バッファの更新が二重に走らないよう、副作用を持たせないこと。
+        // WARNING: 影パス専用。定数バッファの更新が二重に走らないよう、副作用を持たせない
         [[nodiscard]] virtual bool ShouldDrawShadow(const std::string& materialName) = 0;
     };
 }

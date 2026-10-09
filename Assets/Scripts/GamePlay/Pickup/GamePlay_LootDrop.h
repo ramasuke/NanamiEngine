@@ -12,9 +12,9 @@ namespace NanamiEngine::Module::Asset
 
 namespace GamePlay::Pickup
 {
-    /** @brief お金を毎回、アイテムを行ごとの確率で独立に抽選して origin から散らす */
+    // NOTE: お金を毎回、アイテムを行ごとの確率で独立に抽選して origin から散らす
     void DropLoot(const Asset::DropTable& table, const glm::vec3& origin);
 
-    /** @brief item の拾い物プレハブを count 個分として1つ出し、ランダムな向きへ跳ね上げる。プレハブ未設定なら何もしない */
+    // NOTE: item の拾い物プレハブを count 個分として1つ出す。プレハブ未設定なら何もしない
     void DropItem(const std::shared_ptr<Asset::ItemData>& item, int count, const glm::vec3& origin);
 }

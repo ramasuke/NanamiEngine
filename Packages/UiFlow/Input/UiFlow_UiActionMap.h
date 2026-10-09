@@ -7,13 +7,12 @@
 
 namespace NanamiEngine::UiFlow
 {
-    /** @brief 論理アクションと物理入力の対応。画面ごとの違いは Default() に足し引きして作る */
+    // NOTE: 論理アクションと物理入力の対応。画面ごとの違いは Default() に足し引きして作る
     class NANAMI_API UiActionMap final
     {
     public:
         static constexpr std::int16_t DEFAULT_STICK_THRESHOLD = 12000;
 
-        /** @brief 標準の割り当て */
         [[nodiscard]] static UiActionMap Default();
 
         UiActionMap& Set      (UiAction action, UiBinding binding);

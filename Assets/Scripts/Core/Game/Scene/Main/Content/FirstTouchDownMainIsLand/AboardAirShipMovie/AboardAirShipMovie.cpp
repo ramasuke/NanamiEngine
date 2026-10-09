@@ -88,7 +88,6 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         if (ShouldStop())
             co_return;
         
-        // 1度目の飛行機の移動
         const auto firstMoveTween = tweeny::from(Context()->AirShip()->Transform().GetWorldPos())
                                     .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())
                                     .during(Context()->AirShipFirstMoveDuring_msecs())
@@ -106,7 +105,6 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         if (ShouldStop())
             co_return;
     
-        // 2度目の飛行機の移動と回転
         const auto secondMoveTween = tweeny::from(
                 Context()->AirShip()->Transform().GetWorldPos(),
                 Context()->AirShip()->Transform().GetWorldRot())
@@ -165,7 +163,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         playerAvatar_.lock()->PlayerTransform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
         Context()->SecondVirtualCamera()->OnDisable();
 
-        // 船と島を外から映し、主人公から追従カメラへつなぐカット
+        // NOTE: 船と島を外から映し、主人公から追従カメラへつなぐカット
         co_await AirShipMovieOpeningShotsAsync();
         if (ShouldStop())
             co_return;
@@ -209,7 +207,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         if (!camera)
             co_return;
 
-        // 子の End のカメラへ、カットの長さをかけて Brain の補間で動かす
+        // NOTE: 子の End のカメラへ、カットの長さをかけて Brain の補間で動かす
         const auto children = shot->Transform().GetChildren();
         auto endCamera = children.empty() ? nullptr : children.front()->Components().Catch<CineMachine::CineMachineVirtualCamera>().lock();
         if (!endCamera)

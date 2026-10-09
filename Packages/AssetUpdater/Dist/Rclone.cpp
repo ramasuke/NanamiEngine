@@ -16,7 +16,7 @@ namespace NanamiEngine::AssetUpdater::Dist
     {
         constexpr int RCLONE_DIR_NOT_FOUND = 3;
 
-        /** CommandLineToArgvW が元どおりに分けられるよう引用する */
+        // NOTE: CommandLineToArgvW が元どおりに分けられるよう引用する
         void RcloneAppendArgument(std::wstring& commandLine, const std::wstring& argument)
         {
             if (!commandLine.empty())
@@ -190,7 +190,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         const bool started = CreateProcessW(nullptr, commandLine.data(), nullptr, nullptr, TRUE, CREATE_NO_WINDOW | CREATE_SUSPENDED,
                                             nullptr, nullptr, &startupInfo, &processInfo);
         const DWORD startError = GetLastError();
-        // 子プロセスの終了でパイプが閉じるよう、こちらの書き込み側は閉じておく
+        // NOTE: 子プロセスの終了でパイプが閉じるよう、こちらの書き込み側は閉じておく
         outWrite.Reset();
         errWrite.Reset();
         if (!started)

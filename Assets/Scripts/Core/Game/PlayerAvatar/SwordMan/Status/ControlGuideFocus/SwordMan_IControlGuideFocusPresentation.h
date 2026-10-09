@@ -6,7 +6,7 @@
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    /// 指示を受けて描く側（操作ガイド）
+    // NOTE: 指示を受けて描く側（操作ガイド）
     class IControlGuideFocusPresentation
     {
     public:

@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::Network
         size_t offset = 0;
         const auto networkObjectId = packet.Data().Read<NetworkObjectId>(offset);
 
-        // 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
+        // NOTE: 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
         if (instanceRegistry_.OwnerOf(networkObjectId) == PlayerId())
             return;
 

@@ -62,7 +62,7 @@ namespace NanamiEngine::Module::Component
             const float     share        = (std::max)(bones_[i].weight, 0.0f) / totalWeight;
             const glm::quat boneRotation = glm::slerp(glm::quat(1.0f, 0.0f, 0.0f, 0.0f), worldLook, share);
 
-            // 親ボーンの上書きが反映された姿勢を取り、自分の位置を支点に回してから親基準のローカル行列に戻す
+            // NOTE: 親ボーンの上書きが反映された姿勢を取り、自分の位置を支点に回してから親基準のローカル行列に戻す
             const glm::mat4 boneMatrix  = LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, boneIndex));
             const int       parentIndex = MV1GetFrameParent(modelHandle, boneIndex);
             const glm::mat4 parentMatrix = parentIndex >= 0
@@ -84,7 +84,7 @@ namespace NanamiEngine::Module::Component
         if (!boneIndicesDirty_ && boneIndicesModelHandle_ == modelHandle)
             return;
 
-        // 同じモデルでボーンを差し替えたときは古いボーンの上書きを外す
+        // NOTE: 同じモデルでボーンを差し替えたときは古いボーンの上書きを外す
         if (boneIndicesModelHandle_ == modelHandle)
             ResetUserMatrices(modelHandle);
 
@@ -155,7 +155,7 @@ namespace NanamiEngine::Module::Component
             if (ImGui::Button("Add"))
                 bones_.push_back({});
 
-            // 名前を変えたら引き直す
+            // NOTE: 名前を変えたら引き直す
             boneIndicesDirty_ = true;
             ImGui::TreePop();
         }

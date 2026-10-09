@@ -17,7 +17,7 @@ namespace GamePlay::Ui
         if (const auto text = modeText_.get())
             text->SetText(TextFor(modeNames_, mode));
 
-        // 番号で入るときだけ枠を出し、ほかは説明文を出す(同じ行に重ねてあるので、どちらか片方だけ)
+        // NOTE: 番号で入るときだけ枠を出し、ほかは説明文を出す(同じ行に重ねてあるので、どちらか片方だけ)
         if (const auto note = noteText_.get())
             note->SetText(isJoin ? EMPTY_TEXT : TextFor(modeNotes_, mode));
         if (const auto digits = digitsRoot_.get())

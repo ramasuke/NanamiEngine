@@ -12,7 +12,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 目的地の目印。画面内なら光の玉、画面外なら画面端に蛍の列を出す */
+    // NOTE: 目的地の目印。画面内なら光の玉、画面外なら画面端に蛍の列を出す
     class NavigationMarker final : public Component::ComponentBase,
                                    public LifeCycleCallback::IUpdatable,
                                    public LifeCycleCallback::IUserInterfaceRenderable
@@ -31,9 +31,9 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile)   orbSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile)   fireflySprite_;
         [[serialize(0)]] FIELD(Asset::TtfFontFile)  font_;
-        /** @brief 距離の表示に使う。人の背丈がおよそ 19 ユニット */
+        // NOTE: 距離の表示に使う。人の背丈がおよそ 19 ユニット
         [[serialize(0)]] float                      metersPerUnit_ = 0.1f;
-        /** @brief これより近い(ユニット)と目印を出さない。NPC なら頭上の驚きアイコンで足りる */
+        // NOTE: これより近い(ユニット)と目印を出さない。NPC なら頭上の驚きアイコンで足りる
         [[serialize(0)]] float                      hideDistance_ = 45.0f;
         [[serialize(0)]] float                      fadeDistance_ = 25.0f;
         [[serialize(0)]] float                      orbReferenceDistance_ = 120.0f;
@@ -47,7 +47,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float                      lineGap_px_ = 22.0f;
         [[serialize(0)]] Color32                    nameColor_ = Color32(255, 255, 247);
         [[serialize(0)]] Color32                    distanceColor_ = Color32(210, 228, 223);
-        /** @brief 画面端の蛍を置く、画面の縁からの距離 */
+        // NOTE: 画面端の蛍を置く、画面の縁からの距離
         [[serialize(0)]] float                      edgeMargin_px_ = 56.0f;
         [[serialize(0)]] int                        edgeFireflyCount_ = 3;
         [[serialize(0)]] float                      edgeFireflySpacing_px_ = 20.0f;
@@ -56,9 +56,9 @@ namespace GamePlay::Ui
         [[serialize(0)]] float                      fade_secs_ = 0.3f;
 
         float time_secs_ = 0.0f;
-        /** @brief 出ている度合い 0..1。目的が無い・静かにする間は 0 へ */
+        // NOTE: 出ている度合い 0..1。目的が無い・静かにする間は 0 へ
         float visibility_ = 0.0f;
-        /** @brief プレイヤーから目的地の足元まで(ユニット) */
+        // NOTE: プレイヤーから目的地の足元まで(ユニット)
         float distance_ = 0.0f;
 
 #pragma region Serialization Function

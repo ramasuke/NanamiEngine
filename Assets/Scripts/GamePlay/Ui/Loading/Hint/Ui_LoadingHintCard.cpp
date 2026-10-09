@@ -7,7 +7,7 @@
 
 namespace
 {
-    /** @brief パッドに触られているか。ロード中は入力が無いので「出発」を押した瞬間の状態を拾う */
+    // NOTE: パッドに触られているか。ロード中は入力が無いので「出発」を押した瞬間の状態を拾う
     bool LoadingHintIsGamepadActive()
     {
         const auto xInput = NanamiEngine::Platform::Input::Gamepad::Get();

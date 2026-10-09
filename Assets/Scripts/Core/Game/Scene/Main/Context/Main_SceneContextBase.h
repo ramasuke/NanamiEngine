@@ -28,7 +28,7 @@ namespace GameCore::Scene
         void SetNavigationObjective(const std::string& id, bool active);
         [[nodiscard]] std::shared_ptr<Asset::SceneFile> LoadSceneFile() const { return loadSceneFile_.get(); }
         [[nodiscard]] glm::vec3 PlayerSpawnPoint() const;
-        /** @brief スポーン地点のマーカーの向き。プレイヤーはこの -Z を向いて出てくる */
+        // NOTE: スポーン地点のマーカーの向き。プレイヤーはこの -Z を向いて出てくる
         [[nodiscard]] glm::quat PlayerSpawnRotation() const;
         [[nodiscard]] Asset::PlayerAvatarFactory&        PlayerAvatarFactory() const { return *playerAvatarFactory_.get(); }
 

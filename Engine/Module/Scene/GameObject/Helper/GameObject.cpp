@@ -10,7 +10,7 @@
 
 namespace
 {
-    /** Prefab の内容が読み込めていない（.prefab が壊れている等）場合は null を返し、エラーを記録する */
+    // NOTE: Prefab の内容が読み込めていない（.prefab が壊れている等）場合は null を返し、エラーを記録する
     std::shared_ptr<GameObject::PrefabGameObject> CatchPrefabContentForInstantiate(Asset::PrefabGameObjectFile& prefab)
     {
         const auto content = prefab.Content();

@@ -45,7 +45,8 @@ namespace GameCore::PathFinding
             {
                 searchTimer_ = (std::max)(0.0f, searchIntervalSec);
                 isSearching_ = true;
-                // NOTE: 前回のスレッドは結果を書き終えているので join は待たない。scratch_ は探索スレッド専用
+                // NOTE: 前回のスレッドは結果を書き終えているので join は待たない
+                // WARNING: scratch_ は探索スレッド専用。メインスレッドからは触らない
                 if (pathThread_.joinable())
                     pathThread_.join();
 
@@ -75,7 +76,6 @@ namespace GameCore::PathFinding
 
     void HeightGridAstar::HeapPush(OpenNode* heap, std::size_t& size, const OpenNode& node)
     {
-        // 末尾に置いて、親より f が小さい間は上へ入れ替える
         std::size_t i = size++;
         heap[i] = node;
         while (i > 0)
@@ -90,7 +90,6 @@ namespace GameCore::PathFinding
 
     HeightGridAstar::OpenNode HeightGridAstar::HeapPop(OpenNode* heap, std::size_t& size)
     {
-        // 根(f 最小)を取り出し、末尾を根へ移して、子のうち小さい方より大きい間は下へ入れ替える
         const OpenNode top = heap[0];
         heap[0] = heap[--size];
         std::size_t i = 0;
@@ -152,7 +151,7 @@ namespace GameCore::PathFinding
             return std::sqrt(dx * dx + dz * dz);
         };
 
-        // 作業用配列はセル数が変わったとき(別の HeightGridMap を渡されたとき)だけ確保し直す
+        // NOTE: 作業用配列はセル数が変わったとき(別の HeightGridMap を渡されたとき)だけ確保し直す
         const std::size_t cellCount = static_cast<std::size_t>(W) * static_cast<std::size_t>(H);
         if (scratch.gScore.size() != cellCount)
         {
@@ -165,7 +164,7 @@ namespace GameCore::PathFinding
         if (scratch.heap.size() < HEIGHT_GRID_ASTAR_INITIAL_HEAP_CAPACITY)
             scratch.heap.resize(HEIGHT_GRID_ASTAR_INITIAL_HEAP_CAPACITY);
 
-        // 今回の探索の番号。stamp が一周して 0 に戻ると、前の周で書いたセルと区別できなくなるので全部消してから 1 に戻す
+        // NOTE: 今回の探索の番号。一周して 0 に戻ると前の周のセルと区別できないので、全部消してから 1 に戻す
         if (++scratch.searchStamp == 0)
         {
             std::fill_n(scratch.openStamp  .data(), cellCount, 0u);
@@ -174,7 +173,7 @@ namespace GameCore::PathFinding
         }
         const std::uint32_t stamp = scratch.searchStamp;
 
-        // ここから先はイテレータを作らないよう、作業用配列も探索方向も生ポインタで触る
+        // NOTE: ここから先はイテレータを作らないよう、作業用配列も探索方向も生ポインタで触る
         float*         gScore       = scratch.gScore     .data();
         int*           cameFrom     = scratch.cameFrom   .data();
         std::uint32_t* openStamp    = scratch.openStamp  .data();
@@ -196,7 +195,7 @@ namespace GameCore::PathFinding
         {
             const OpenNode current = HeapPop(heap, heapSize);
 
-            // 同じセルを安いコストで積み直すと古い方もヒープに残る。確定済みのセルが出てきたら読み飛ばす
+            // NOTE: 同じセルを安いコストで積み直すと古い方もヒープに残る。確定済みのセルが出てきたら読み飛ばす
             const int ci = index(current.x, current.z);
             if (closedStamp[ci] == stamp) continue;
             closedStamp[ci] = stamp;
@@ -234,7 +233,7 @@ namespace GameCore::PathFinding
                 if (closedStamp[ni] == stamp)
                     continue;
 
-                // openStamp が今回でないセルは gScore が前の探索の値なので、未訪問(コスト無限大)として扱う
+                // NOTE: openStamp が今回でないセルは gScore が前の探索の値なので、未訪問(コスト無限大)として扱う
                 const float tentative = curScore + horiz;
                 if (openStamp[ni] != stamp || tentative < gScore[ni])
                 {
@@ -242,7 +241,7 @@ namespace GameCore::PathFinding
                     cameFrom [ni] = ci;
                     openStamp[ni] = stamp;
 
-                    // 容量が足りなくなったときだけ vector を広げる。ロックを取るのはここだけで、倍々なので回数はわずか
+                    // NOTE: 足りなくなったときだけ倍々に広げる。探索中に vector を触る (Debug ではロックを取る) のはここだけ
                     if (heapSize == heapCapacity)
                     {
                         scratch.heap.resize(heapCapacity * 2);

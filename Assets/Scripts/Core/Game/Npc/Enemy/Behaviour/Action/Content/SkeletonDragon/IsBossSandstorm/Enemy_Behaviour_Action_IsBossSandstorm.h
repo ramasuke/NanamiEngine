@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 骸竜の砂嵐が吹いている (isActive_ が false なら、吹いていない) か */
+    // NOTE: 骸竜の砂嵐が吹いているか (isActive_ が false なら止んでいるか) を判定する
     class IsBossSandstorm final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::Application
             const COLOR_F difColor = {Config::GetLightDifR(), Config::GetLightDifG(), Config::GetLightDifB(), 1.0f};
             SetLightDifColor(difColor);
 
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の設定で完了待ちに入る
+            // NOTE: 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の設定で完了待ちに入る
             const int useASyncLoad = GetUseASyncLoadFlag();
             SetUseASyncLoadFlag(FALSE);
             shadowMapDxLibHandle_ = MakeShadowMap(Config::GetShadowMapWidth(), Config::GetShadowMapHeight());
@@ -43,7 +43,7 @@ namespace NanamiEngine::Core::Application
         if (shadowMapDxLibHandle_ == -1)
             return;
 
-        // 範囲の手前側がカメラに来るよう、中心を前方へずらす
+        // NOTE: 範囲の手前側がカメラに来るよう、中心を前方へずらす
         const float  halfSize = Configuration::AppConfiguration::GetShadowAreaHalfSize();
         const VECTOR center   = VAdd(GetCameraPosition(), VScale(GetCameraFrontVector(), halfSize));
         const VECTOR extent   = VGet(halfSize, halfSize, halfSize);
@@ -54,7 +54,7 @@ namespace NanamiEngine::Core::Application
     { 
         const bool isLoadingResource = Module::Asset::Asset::IsLoadingResource();
 
-        // 暖機と各グループへの追加反映を止め、コライダーが揃うまで物理を進めない
+        // NOTE: 暖機と各グループへの追加反映を止め、コライダーが揃うまで物理を進めない
         if (!isLoadingResource)
         {
             initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });

@@ -5,9 +5,7 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 拠点の露店。店の画面を開いている間だけ、露店と店主を映すカメラへ寄せる。
-     */
+    // NOTE: 拠点の露店。店の画面を開いている間だけ、露店と店主を映すカメラへ寄せる
     class MerchantStall final : public Component::ComponentBase
     {
     public:

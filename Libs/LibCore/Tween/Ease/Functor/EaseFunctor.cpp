@@ -22,6 +22,6 @@ glm::quat LibCore::Tween::EaseFunctor::operator()(const float time, const glm::q
 
 NanamiEngine::Color32 LibCore::Tween::EaseFunctor::operator()(const float time, const NanamiEngine::Color32& a, const NanamiEngine::Color32& b) const
 {
-    // FromVec3 が 0..1 に clamp するので、Back 系の行き過ぎでも 0..255 に収まる
+    // NOTE: FromVec3 が 0..1 に clamp するので、Back 系の行き過ぎでも 0..255 に収まる
     return NanamiEngine::Color32::FromVec3(glm::mix(a.ToVec3(), b.ToVec3(), Ease(time)));
 }

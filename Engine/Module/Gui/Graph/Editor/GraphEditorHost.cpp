@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::Gui::Graph
 {
     namespace
     {
-        /** @brief これより小さいキャンバスでは Fit しない（ウィンドウ出現直後は 0 サイズで、ズーム率が 0 になるため） */
+        // NOTE: これより小さいキャンバスでは Fit しない（ウィンドウ出現直後は 0 サイズで、ズーム率が 0 になるため）
         constexpr float K_MIN_FIT_CANVAS_SIZE = 32.0f;
         constexpr ImU32 K_READ_ONLY_BACKGROUND = IM_COL32(30, 34, 40, 255);
         constexpr ImU32 K_EDIT_BACKGROUND      = IM_COL32(34, 34, 38, 255);
@@ -68,7 +68,7 @@ namespace NanamiEngine::Module::Gui::Graph
 
         GraphEditor::Show(delegate, options_, viewState_, true, &fit);
 
-        // Fit は最大 1 倍までしか拡大しないが、最小ズームは下回り得るので揃える
+        // NOTE: Fit は最大 1 倍までしか拡大しないが、最小ズームは下回り得るので揃える
         viewState_.mFactorTarget = ImClamp(viewState_.mFactorTarget, options_.mMinZoom, options_.mMaxZoom);
     }
 

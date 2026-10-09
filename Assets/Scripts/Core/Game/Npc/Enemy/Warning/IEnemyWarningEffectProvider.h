@@ -18,12 +18,11 @@ namespace GameCore::Npc::Enemy
     public:
         virtual ~IEnemyWarningEffectProvider() = default;
 
-        /** 攻撃が当たる何秒前に出すか */
+        // NOTE: 攻撃が当たる何秒前に出すか
         [[nodiscard]] virtual float WarningLead_secs() const = 0;
 
         [[nodiscard]] virtual const Guid& WarningGuid() const = 0;
 
-        /** enemyのboneNameに予兆を出す。*/
         virtual void PlayWarning(
             const std::shared_ptr<GameObject::IGameObject>& enemy,
             const std::string& boneName,

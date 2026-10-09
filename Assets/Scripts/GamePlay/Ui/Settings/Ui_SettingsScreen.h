@@ -50,7 +50,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float tabPitch_px_         = 74.0f;
         [[serialize(0)]] float rowPitch_px_         = 60.0f;
         [[serialize(0)]] int   maxVisibleRows_      = 6;
-        /** つまみが動ける縦の幅 (つまみの上端の移動量) */
+        // NOTE: つまみが動ける縦の幅 (つまみの上端の移動量)
         [[serialize(0)]] float scrollTravel_px_     = 300.0f;
         [[serialize(0)]] float enterSlide_px_       = 24.0f;
         [[serialize(0)]] float enterDuration_secs_  = 0.18f;

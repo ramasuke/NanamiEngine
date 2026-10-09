@@ -5,7 +5,7 @@
 
 namespace GameCore::StatusParameter
 {
-    //NOTE: 値オブジェクト
+    // NOTE: 値オブジェクト
     struct Stamina final
     {
         explicit Stamina(float value = 0.0f);

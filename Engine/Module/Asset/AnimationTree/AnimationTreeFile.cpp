@@ -21,7 +21,7 @@ std::shared_ptr<AnimationTree::AnimationTree> Asset::AnimationTreeFile::OnLoadCo
     }
     catch (const NanamiEngine::Module::Exception::SerializationException& exception)
     {
-        // 壊れた AnimationTree は「無い」ものとして扱う。Animator 側は animationTree_ の null チェックで動作を続ける
+        // NOTE: 壊れた AnimationTree は「無い」ものとして扱う
         NanamiEngine::Module::LogError("AnimationTreeFile: " + std::string(exception.what()));
         return nullptr;
     }

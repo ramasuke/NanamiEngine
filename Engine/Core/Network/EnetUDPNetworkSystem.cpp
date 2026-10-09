@@ -90,7 +90,7 @@ namespace NanamiEngine::Core::Network
     {
         if (host_)
         {
-            // クライアントは切断を通知してから閉じる(ホスト側がタイムアウトを待たずに DISCONNECT を受け取れる)
+            // NOTE: クライアントは切断を通知してから閉じる(ホスト側がタイムアウトを待たずに DISCONNECT を受け取れる)
             DisconnectGracefully(host_, peer_);
             enet_host_destroy(host_);
         }
@@ -127,7 +127,6 @@ namespace NanamiEngine::Core::Network
                         event.peer->data = EncodePeerData(assignedId);
                         enet_peer_timeout(event.peer, 0, PEER_TIMEOUT_MIN_MS, PEER_TIMEOUT_MAX_MS);
 
-                        //設定されたIDを通知するパケット
                         Packet p = Packet::Create(DefaultPacketType::AssignPlayerId);
                         p.Data().Write(assignedId);
 
@@ -152,7 +151,7 @@ namespace NanamiEngine::Core::Network
                     }
                     catch (const Module::Exception::PacketDeserializeException& exception)
                     {
-                        // ヘッダが不正な長さのパケットは捨てて受信ループを続ける
+                        // NOTE: ヘッダが不正な長さのパケットは捨てて受信ループを続ける
                         Module::LogWarning("EnetUDPNetworkSystem: 受信パケットを破棄しました: " + std::string(exception.what()));
                     }
 
@@ -162,7 +161,7 @@ namespace NanamiEngine::Core::Network
 
             case ENET_EVENT_TYPE_DISCONNECT:
                 {
-                    // event.data == 0 ならタイムアウト(相手が enet_peer_disconnect を呼ばずに消えた)
+                    // NOTE: event.data == 0 ならタイムアウト(相手が enet_peer_disconnect を呼ばずに消えた)
                     const PlayerId leftId = DecodePeerData(event.peer->data);
                     Module::Log("Disconnect peer=" + leftId.ToString() + " data=" + std::to_string(event.data));
 
@@ -173,7 +172,7 @@ namespace NanamiEngine::Core::Network
                     }
                     else if (event.peer == peer_)
                     {
-                        // PlayerId をもらう前に切れたなら接続失敗(相手が居ない・満員など)
+                        // NOTE: PlayerId をもらう前に切れたなら接続失敗(相手が居ない・満員など)
                         state_ = state_ == ConnectionState::Connecting
                             ? ConnectionState::Failed
                             : ConnectionState::Disconnected;
@@ -214,7 +213,7 @@ namespace NanamiEngine::Core::Network
             return;
         }
 
-        // 未接続(ホスト喪失・接続前)のときは送らずに捨てる。enet_peer_send は失敗時にパケットを解放しない
+        // NOTE: 未接続(ホスト喪失・接続前)のときは送らずに捨てる。enet_peer_send は失敗時にパケットを解放しない
         const bool sent = peer_ && peer_->state == ENET_PEER_STATE_CONNECTED && enet_peer_send(peer_, ch, p) == 0;
         if (!sent)
             enet_packet_destroy(p);
@@ -252,7 +251,7 @@ namespace NanamiEngine::Core::Network
         if (leftId == PlayerId::Invalid())
             return;
 
-        // 離脱者の所有物はホスト(自分)が引き継ぐ。全クライアントへ配り、自分も同じディスパッチ経路で処理する
+        // NOTE: 離脱者の所有物はホスト(自分)が引き継ぐ。全クライアントへ配り、自分も同じディスパッチ経路で処理する
         Packet packet = Packet::Create(DefaultPacketType::PlayerLeft);
         packet.Data().Write(leftId);
         packet.Data().Write(playerId_);

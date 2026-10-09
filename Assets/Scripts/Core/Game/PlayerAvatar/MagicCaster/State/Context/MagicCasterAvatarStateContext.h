@@ -74,10 +74,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] Magic::IMagicCaster&                     Caster                 () const { return *caster_.lock(); }
         [[nodiscard]] bool ExpiredLockOnDetectionArea() const { return lockOnDetectionArea_.expired(); }
         [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return *lockOnDetectionArea_.lock(); }
-        /** @brief プレハブで未設定なら nullptr */
+        // NOTE: プレハブで未設定なら nullptr
         [[nodiscard]] std::shared_ptr<Component::ParticleSystem> SuccessAvoidRollingParticle() const { return successAvoidRollingParticle_.lock(); }
 
-        /** @brief Cast State に入る直前に、撃つ枠と魔法を置く */
+        // NOTE: 詠唱に入る直前に、撃つ枠と魔法を預けておく
         void SetPendingCast(int slot, const std::shared_ptr<const Magic::IMagicSpell>& spell) { pendingSpellSlot_ = slot; pendingSpell_ = spell; }
         [[nodiscard]] int PendingSpellSlot() const { return pendingSpellSlot_; }
         [[nodiscard]] std::shared_ptr<const Magic::IMagicSpell> PendingSpell() const { return pendingSpell_; }

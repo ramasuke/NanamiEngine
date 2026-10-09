@@ -12,10 +12,8 @@ namespace NanamiEngine::Module::Component
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 砂漠の枝玉。砂嵐(Weather::Sandstorm)の間は風下へ転がり、ときどき跳ねる。凪では減速して止まる
-     * @note 同じ GameObject の Dynamic な RigidBody と、Sensor でない球の Collider が要る。離れすぎたら風上へ戻る
-     */
+    // NOTE: 砂漠の枝玉。砂嵐(Weather::Sandstorm)の間は風下へ転がり、ときどき跳ねる。凪では減速して止まる
+    // NOTE: 同じ GameObject の Dynamic な RigidBody と、Sensor でない球の Collider が要る。離れすぎたら風上へ戻る
     class Tumbleweed final : public Component::ComponentBase,
                              public LifeCycleCallback::IAwakable,
                              public LifeCycleCallback::IBeginPhysics
@@ -35,16 +33,16 @@ namespace GamePlay::Prop
         [[serialize(0)]] float hopSpeed_         = 28.0f;
         [[serialize(0)]] float hopMin_secs_      = 0.8f;
         [[serialize(0)]] float hopMax_secs_      = 2.2f;
-        // 凪で水平速度と回転が 1 秒あたりに残る割合
+        // NOTE: 凪で水平速度と回転が 1 秒あたりに残る割合
         [[serialize(0)]] float calmKeepPerSecond_ = 0.35f;
-        // 置き場所から風下へこれだけ離れたら、置き場所の風上へ戻す
+        // NOTE: 置き場所から風下へこれだけ離れたら、置き場所の風上へ戻す
         [[serialize(0)]] float roamDistance_     = 450.0f;
         [[serialize(0)]] float returnHeight_     = 25.0f;
         [[serialize(0)]] float fallLimit_        = 300.0f;
 
         std::weak_ptr<NanamiEngine::Module::Component::RigidBody> rigidBody_;
         glm::vec3 home_ = glm::vec3(0.0f);
-        // 1つずつ速さを変えて、群れが揃って動かないようにする
+        // NOTE: 1つずつ速さを変えて、群れが揃って動かないようにする
         float speedScale_ = 1.0f;
         float hopTimer_secs_ = 0.0f;
         std::mt19937 random_{std::random_device{}()};

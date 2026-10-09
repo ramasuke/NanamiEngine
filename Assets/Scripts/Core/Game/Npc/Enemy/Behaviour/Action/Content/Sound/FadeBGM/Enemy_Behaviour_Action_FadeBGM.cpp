@@ -14,7 +14,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (bgm_)
             GamePlay::Sound::SoundPlayer::PlayBgm(bgm_.get(), fadeIn_secs_);
 
-        // 権威側限定Tickなら、他ピアも同じように切り替えさせる
+        // NOTE: 権威側限定Tickなら、他ピアも同じように切り替えさせる
         if (context.IsNetworkAuthority())
         {
             const std::optional<Guid> bgmGuid = bgm_ ? std::optional<Guid>(bgm_->GetGuid()) : std::nullopt;

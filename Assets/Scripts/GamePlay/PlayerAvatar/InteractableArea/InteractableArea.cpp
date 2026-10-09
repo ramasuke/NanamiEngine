@@ -54,7 +54,7 @@ namespace GamePlay::PlayerAvatar
     
     void InteractableArea::OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        //TODO: ここ消せる、gameObjectがnullなのはonTriggerExitを呼び出す管理部分のengine側のバグ
+        // NOTE: 相手が先に破棄されていると null で届く
         if (!gameObject)
             return;
         
@@ -91,7 +91,6 @@ namespace GamePlay::PlayerAvatar
 
         ImGui::Separator();
 
-        //配列の中身表示
         if (ImGui::TreeNode("Stored Targets"))
         {
             int index = 0;
@@ -124,7 +123,6 @@ namespace GamePlay::PlayerAvatar
 
         ImGui::Separator();
 
-        //最近傍
         if (const auto nearest = CatchInteractTarget().lock())
         {
             const glm::vec3 direction = nearest->InteractableTransform().GetWorldPos() - Transform().GetWorldPos();

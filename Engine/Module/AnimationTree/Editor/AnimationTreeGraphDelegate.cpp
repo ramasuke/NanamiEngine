@@ -68,7 +68,7 @@ namespace NanamiEngine::Module::AnimationTree
         if (!path)
             return;
 
-        // 旧形式（visualFromNodeGuid_ 無し）のファイルは visualFromNode_ が空なので、実際の遷移元で代用する
+        // NOTE: 旧形式のファイルは visualFromNode_ が空なので、実際の遷移元で代用する
         std::shared_ptr<IAnimationNode> from = path->GetVisualFromNode();
         if (!from)
             from = isFromAnyState ? std::static_pointer_cast<IAnimationNode>(tree_->visualAnyStateNode_) : path->GetFromNode();
@@ -81,7 +81,7 @@ namespace NanamiEngine::Module::AnimationTree
         links_.push_back(LinkEntry{ path, fromIndex, toIndex, isFromAnyState });
     }
 
-    // GraphEditor は AllowedLink(遷移先, 遷移元) の順で呼ぶ
+    // WARNING: GraphEditor は AllowedLink(遷移先, 遷移元) の順で渡してくる
     bool AnimationTreeGraphDelegate::AllowedLink(const GraphEditor::NodeIndex from, const GraphEditor::NodeIndex to)
     {
         const GraphEditor::NodeIndex target = from;
@@ -137,7 +137,7 @@ namespace NanamiEngine::Module::AnimationTree
         path->SetTargetNode(target);
         (isFromAnyState ? tree_->fromAnyStateNodeNodePaths_ : tree_->fromNodeNodePaths_).push_back(path);
 
-        // 同じ Show 呼び出しの中で GetLinkCount / GetLink が続くので、キャッシュにも即反映する
+        // NOTE: 同じ Show 呼び出しの中で GetLinkCount / GetLink が続くので、キャッシュにも即反映する
         links_.push_back(LinkEntry{ path, inputNodeIndex, outputNodeIndex, isFromAnyState });
     }
 
@@ -166,7 +166,7 @@ namespace NanamiEngine::Module::AnimationTree
 
         DrawNodeDetail(drawList, rectangle, node->GraphNodeDetail(), K_DETAIL_TEXT_COLOR);
 
-        // 実行中の再生状態。末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
+        // NOTE: 実行中の再生状態。末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
         const auto& currentNodes = tree_->currentNodes_;
         const auto  it = std::ranges::find(currentNodes, node);
         if (it == currentNodes.end())
@@ -296,7 +296,7 @@ namespace NanamiEngine::Module::AnimationTree
         if (node && ImGui::MenuItem("Show in Inspector"))
             Gui::Graph::ShowInInspector(node);
 
-        // Entry / AnyState はツリーに必ず 1つ必要
+        // NOTE: Entry / AnyState はツリーに必ず 1つ必要
         const bool isClip = node && dynamic_cast<AnimationClipNode*>(node.get()) != nullptr;
         if (ImGui::MenuItem("Delete Node", "Del", false, !readOnly_ && isClip))
             DeleteNode(node);
@@ -345,7 +345,6 @@ namespace NanamiEngine::Module::AnimationTree
         tree_->nodes_.erase(guid);
         selectedNodes_.erase(guid);
 
-        // このノードに出入りする遷移を削除
         auto referencesNode = [&](const std::shared_ptr<AnimationNodePath>& path)
         {
             if (!path)

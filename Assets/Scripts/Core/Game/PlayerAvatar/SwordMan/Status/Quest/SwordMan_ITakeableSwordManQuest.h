@@ -38,7 +38,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         virtual void OnDrawGui() = 0;
         [[nodiscard]] virtual const PlayerAvatar::QuestType& QuestType() const = 0;
         
-        /** @brief 達成時にプレイヤーへ入る額 */
+        // NOTE: 達成時にプレイヤーへ入る額
         [[nodiscard]] const StatusParameter::Money& RewardMoney() const { return rewardMoney_; }
 
         template<class Archive> void save(Archive& archive, const std::uint32_t version) const { archive(CEREAL_NVP(rewardMoney_)); }

@@ -24,7 +24,7 @@ namespace NanamiEngine::Module::Component
             return vert;
         }
 
-        // 裏面は巻き順を反転した三角形を積む (カリング方向に依存せず両面から見える)
+        // NOTE: 裏面は巻き順を反転した三角形を積む (カリング方向に依存せず両面から見える)
         std::vector<VERTEX3D> BuildQuadVertices(const float width, const float height, const bool doubleSided)
         {
             const float hw = width  * 0.5f;
@@ -41,7 +41,6 @@ namespace NanamiEngine::Module::Component
             std::vector<VERTEX3D> verts;
             verts.reserve(doubleSided ? 12 : 6);
 
-            // 表面
             verts.push_back(MakeVertex(topLeft,     frontNormal, white, 0.0f, 0.0f));
             verts.push_back(MakeVertex(topRight,    frontNormal, white, 1.0f, 0.0f));
             verts.push_back(MakeVertex(bottomLeft,  frontNormal, white, 0.0f, 1.0f));
@@ -52,7 +51,6 @@ namespace NanamiEngine::Module::Component
             if (doubleSided)
             {
                 const VECTOR backNormal = VGet(0.0f, 0.0f, 1.0f);
-                // 裏面(巻き順を反転)
                 verts.push_back(MakeVertex(topLeft,     backNormal, white, 0.0f, 0.0f));
                 verts.push_back(MakeVertex(bottomLeft,  backNormal, white, 0.0f, 1.0f));
                 verts.push_back(MakeVertex(topRight,    backNormal, white, 1.0f, 0.0f));
@@ -79,7 +77,7 @@ namespace NanamiEngine::Module::Component
 
         if (cbHandle_ == -1)
         {
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
+            // WARNING: 非同期読み込みのまま作ると GetBuffer/Set で完了待ちに入って固まるので、同期で作る
             const int useASyncLoad = GetUseASyncLoadFlag();
             SetUseASyncLoadFlag(FALSE);
             cbHandle_ = CreateShaderConstantBuffer(CUSTOM_SHADER_CB_SIZE);

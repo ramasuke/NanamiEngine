@@ -26,13 +26,11 @@ static bool ExtractMeshFromDxModel(
     JPH::TriangleList triangles;
     triangles.reserve(20000);
 
-    // トライアングルリストを走査
     for (int tl = 0; tl < listCount; tl++)
     {
         const int polyCount = MV1GetTriangleListPolygonNum(modelHandle, tl);
         if (polyCount <= 0) continue;
 
-        // ポリゴンを走査
         for (int p = 0; p < polyCount; p++)
         {
             VECTOR vpos[3];
@@ -54,7 +52,7 @@ static bool ExtractMeshFromDxModel(
         }
     }
 
-    // 隣接三角形の辺を共有させる(アクティブエッジ判定と簡略化に必要)ため、近接頂点を溶接してインデックス化する
+    // NOTE: 隣接三角形の辺を共有させる(アクティブエッジ判定と簡略化に必要)ため、近接頂点を溶接してインデックス化する
     outVerts.clear();
     outTris .clear();
     JPH::Indexify(triangles, outVerts, outTris);
@@ -116,7 +114,7 @@ namespace NanamiEngine::Module::Component
         const glm::quat baseRot  = glm::normalize(transform.GetWorldRot());
         const glm::quat finalRot = glm::normalize(baseRot * glm::quat(glm::radians(offsetRotation_)));
 
-        // メッシュ原点とモデルの見た目のズレを補正する値として配置済みのため、offset_ はワールドスケールを掛けずワールド単位で扱う
+        // NOTE: offset_ はメッシュ原点と見た目のズレを補正する値なので、ワールドスケールを掛けずワールド単位で扱う
         const glm::vec3 worldPos = transform.GetWorldPos() + baseRot * offset_;
 
         return {
@@ -161,7 +159,7 @@ namespace NanamiEngine::Module::Component
 
         const size_t sourceTriangleCount = tris.size();
 
-        // 簡略化の誤差をワールド単位で扱うため、スケールは簡略化より先に焼き込む
+        // NOTE: 簡略化の誤差をワールド単位で扱うため、スケールは簡略化より先に焼き込む
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
         for (auto& v : verts)
         {
@@ -195,7 +193,7 @@ namespace NanamiEngine::Module::Component
         if (!shape_)
             return;
 
-        // Compound では重心と原点がずれるので、重心ではなく形状の原点の位置で描く
+        // NOTE: Compound では重心と原点がずれるので、重心ではなく形状の原点の位置で描く
         const auto [position, rotation] = SimulatedWorldTransform().value_or(CalcWorldTransformInternal());
 
         JPH::Shape::GetTrianglesContext context;

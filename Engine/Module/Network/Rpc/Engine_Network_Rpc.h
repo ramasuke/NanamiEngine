@@ -48,10 +48,8 @@ namespace NanamiEngine::Module::Network
         cereal::PortableBinaryInputArchive(ifstream)(value);
     };
 
-    /**
-     * 対象NetworkObjectIdのコンポーネントのメソッドを1つ呼ぶRPC
-     * WARNING: 直接使わず必ずRpcDef経由で使う
-     */
+    // NOTE: 対象NetworkObjectIdのコンポーネントのメソッドを1つ呼ぶRPC
+    // WARNING: 直接使わず必ずRpcDef経由で使う
     template<typename... Args>
     requires (RPCPackable<Args> && ...)
     class Rpc final
@@ -91,7 +89,7 @@ namespace NanamiEngine::Module::Network
                 }, NANAMI_CURRENT_MODULE());
         }
 
-        // 事前シリアライズ済み/長さプレフィックス無しの生バイト列をそのまま渡す
+        // NOTE: 事前シリアライズ済み/長さプレフィックス無しの生バイト列をそのまま渡す
         template<typename E>
         requires(std::is_enum_v<E> || std::is_integral_v<E>)
         static void SendRaw(
@@ -126,9 +124,7 @@ namespace NanamiEngine::Module::Network
         }
     };
 
-    /**
-     * RpcTypeとArgsを束ね、送受信側のArgsの食い違いをビルドエラーにする
-     */
+    // NOTE: RpcTypeとArgsを束ね、送受信側のArgsの食い違いをビルドエラーにする
     template<auto RpcType, typename... Args>
     struct RpcDef final
     {

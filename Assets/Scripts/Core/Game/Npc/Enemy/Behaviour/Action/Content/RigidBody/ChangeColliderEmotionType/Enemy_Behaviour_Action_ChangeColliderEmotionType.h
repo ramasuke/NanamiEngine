@@ -14,7 +14,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         void DoDrawGui() override;
 
         [[serialize(0)]] Physics::MotionType emotionType_ = Physics::MotionType::Dynamic;
-        // キー名はシリアライズ済みデータとの互換のため colliders_ のまま
+        // NOTE: キー名はシリアライズ済みデータとの互換のため colliders_ のまま
         [[serialize(0)]] std::vector<FieldGameObject<Component::RigidBody>> colliders_;
         
 #pragma region Serialization Function

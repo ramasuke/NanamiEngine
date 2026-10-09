@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::BlackBoard
     class NANAMI_API ParameterGroup final
     {
     public:
-        ///Tで指定した型のAnimationParameterを取得
+        // NOTE: 名前と型 T が一致するパラメータ。無ければ nullptr
         template <typename T>
         std::shared_ptr<AnimationTree::AnimationParameter<T>> Catch(const std::string& name) const;
 

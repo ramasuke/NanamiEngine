@@ -23,7 +23,7 @@ namespace GamePlay::Debug
     {
         namespace Clock = GameCore::Condition::Clock;
 
-        /** @brief .meta から guid_ を抜き出す。読めなければ空 */
+        // NOTE: .meta から guid_ を抜き出す。読めなければ空
         std::string ReadMetaGuid(const std::filesystem::path& metaPath)
         {
             std::ifstream stream(metaPath, std::ios::binary);
@@ -34,10 +34,8 @@ namespace GamePlay::Debug
             return std::regex_search(text, match, GUID_PATTERN) ? match[1].str() : std::string();
         }
 
-        /**
-         * @brief .eventNotice を全部集める。開始の早い順
-         * NOTE: 型でアセットを列挙する API が無いので、.meta の guid から実体を引く
-         */
+        // NOTE: .eventNotice を全部集める。開始の早い順
+        // NOTE: 型でアセットを列挙する API が無いので、.meta の guid から実体を引く
         std::vector<std::shared_ptr<NanamiEngine::Module::Asset::EventNotice>> CollectEventNotices()
         {
             namespace fs = std::filesystem;
@@ -67,7 +65,7 @@ namespace GamePlay::Debug
             return notices;
         }
 
-        /** @brief データと同じ "YYYY-MM-DD HH:MM"(日本時間) で出す */
+        // NOTE: データと同じ "YYYY-MM-DD HH:MM"(日本時間) で出す
         std::string FormatBoardTime(const std::chrono::sys_seconds time)
         {
             const auto local = time + GameCore::Condition::BOARD_TIME_UTC_OFFSET;

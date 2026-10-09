@@ -14,12 +14,12 @@ namespace GameCore::PlayerAvatar::Record
 {
     static constexpr auto RECORD_BOOK_SAVE_KEY = "RecordBook";
 
-    /** @brief 記録帳の中身。LocalPrefs/RecordBook.json にこの形で残る */
+    // NOTE: 記録帳の中身。LocalPrefs にこの形で残る
     struct RecordBookData
     {
-        /** 敵の種別 → 倒した数 */
+        // NOTE: 敵の種別 → 倒した数
         [[serialize(0)]] std::map<Npc::Enemy::EnemyKind, int>  defeated_;
-        /** ItemData の guid → 手に入れた数 */
+        // NOTE: ItemData の guid → 手に入れた数
         [[serialize(0)]] std::unordered_map<Guid, int, GuidHash> acquired_;
 
         template<class Archive>
@@ -37,9 +37,7 @@ namespace GameCore::PlayerAvatar::Record
         }
     };
 
-    /**
-     * 数えるたびに LocalPrefs へ書き出す
-     */
+    // NOTE: 数えるたびに LocalPrefs へ書き出す
     class RecordBook final : public SingletonBase<RecordBook>,
                              public IRecordBook
     {
@@ -47,12 +45,12 @@ namespace GameCore::PlayerAvatar::Record
         RecordBook();
 
 #if NANAMI_DEBUG_SHEET_ENABLED
-        /** @brief DebugSheet のセーブ初期化用。保存されている内容で上書きする */
+        // NOTE: 保存されている内容で上書きする
         void Reload();
 #endif
 
         void RecordDefeat (Npc::Enemy::EnemyKind kind);
-        /** @brief 0以下は無視する */
+        // NOTE: 0以下は無視する
         void RecordAcquire(const Guid& item, int count);
 
         [[nodiscard]] int DefeatedCount(Npc::Enemy::EnemyKind kind) const override;

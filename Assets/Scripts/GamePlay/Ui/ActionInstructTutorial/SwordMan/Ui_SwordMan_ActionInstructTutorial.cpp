@@ -99,7 +99,7 @@ namespace GamePlay::Ui
         if (bodyText_)  bodyText_ ->SetText(steps_[stepIndex].Body ());
         if (clearText_) clearText_->SetText(clearedText_);
 
-        // 初めて出すときだけ、指された行の高さへ飛ばしておく
+        // NOTE: 初めて出すときだけ、指された行の高さへ飛ばしておく
         if (wasHidden)
         {
             const std::optional<glm::vec2> anchor = guideFocus_ ? guideFocus_->FocusAnchor() : std::optional<glm::vec2>{};

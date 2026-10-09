@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Module::Physics
 {
-    // BodyAssembler だけが Collider の非公開データを読むための Attorney
+    // NOTE: Body を組み立てる側にだけ Collider の非公開データを読ませる Attorney
     class NANAMI_API ColliderBodyAccess final
     {
         friend class BodyAssembler;

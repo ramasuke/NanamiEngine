@@ -20,9 +20,9 @@ namespace GamePlay::Ui
         constexpr const char* ASSET_UPDATE_MANIFEST_URL    = "https://pub-10484db77a4e4777b87c30443f6136c0.r2.dev/manifest.json";
         constexpr int         ASSET_UPDATE_HTTP_TIMEOUT_MS = 5000;
 
-        // エディタの Preview で使う偽の荷
+        // NOTE: エディタの Preview で使う偽の荷
         constexpr float ASSET_UPDATE_PREVIEW_DOWNLOAD_SECS = 6.0f;
-        // 受け取り終えてから入れ終えた札に移るまで
+        // NOTE: 受け取り終えてから入れ終えた札に移るまで
         constexpr float ASSET_UPDATE_PREVIEW_UNPACK_SECS = 1.0f;
         constexpr std::uint64_t ASSET_UPDATE_PREVIEW_BYTES = 327'576'781;   // 312.4 MB
         constexpr std::uint64_t ASSET_UPDATE_PREVIEW_FILES = 147;
@@ -268,7 +268,7 @@ namespace GamePlay::Ui
 
     void AssetUpdatePresenter::Quit() const
     {
-        // 読み込み済みのアセットは古いままなので、このまま遊ばせずに終了し、起動し直してもらう
+        // NOTE: 読み込み済みのアセットは古いままなので、このまま遊ばせずに終了し、起動し直してもらう
         Core::Application::ApplicationBase::RequestClose();
     }
 

@@ -32,7 +32,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         auto& rigidBody = context.EnemyRigidBody();
         rigidBody.SetLinearVelocity(glm::vec3(0.0f, rigidBody.LinearVelocity().y, 0.0f));
 
-        // NOTE: Sequence は毎フレーム先頭から Tick し直すので、倒れる・伏せる・起きるの切り替えはこのノードの中で進める
+        // NOTE: 親ノードから毎フレーム Tick し直されるので、倒れる・伏せる・起きるの切り替えはこのノードの中で進める
         const int state = elapsed_secs_ < start_secs_              ? stunStartState_
                         : elapsed_secs_ < start_secs_ + idle_secs_ ? stunIdleState_
                         :                                            stunOverState_;

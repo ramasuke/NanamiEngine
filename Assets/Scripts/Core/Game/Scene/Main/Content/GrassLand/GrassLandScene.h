@@ -29,13 +29,13 @@ namespace GameCore::Scene::Main
         void Enter    () override;
         void DoExit() override;
         void OnDrawGui() override;
-        /** @brief 大顎を倒したら、村の跡の浮遊石が空へ飛び去る */
+        // NOTE: 大顎を倒したら、村の跡の浮遊石が空へ飛び去る
         void OnStageClear(Story::StoryFlag flag);
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<GrassLandSceneContext>> arrivalMovie_;
         Story::StageClearWatcher stageClearWatcher_;
-        /** @brief このステージでボスを倒したか。抜けるときに体力を満タンにして保存する */
+        // NOTE: このステージでボスを倒したか。抜けるときに体力を満タンにして保存する
         bool isStageCleared_ = false;
     };
 }

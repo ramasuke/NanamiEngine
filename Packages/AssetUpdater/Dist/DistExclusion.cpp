@@ -7,20 +7,20 @@ namespace NanamiEngine::AssetUpdater::Dist
 {
     namespace
     {
-        // exe にコンパイルされるので配る必要が無い
+        // NOTE: exe にコンパイルされるので配る必要が無い
         constexpr std::string_view DIST_EXCLUDED_DIRECTORIES[] = { "assets/scripts" };
 
-        // どの階層でもこの名前のディレクトリの下は配信しない (変換前の原本置き場)
+        // NOTE: どの階層でもこの名前のディレクトリの下は配信しない (変換前の原本置き場)
         // WARNING: .blend には作業した PC のユーザー名とフルパスが入る
         constexpr std::string_view DIST_EXCLUDED_DIRECTORY_NAMES[] = { "_source" };
 
         constexpr std::string_view DIST_EXCLUDED_SUFFIXES[] =
         {
-            ".meta",     // 本体エントリに畳むので単独では出さない
-            ".fbx",      // モデルの原本。実行時は .mv1 だけ要る
-            ".blend",    // 同上。作業した PC のユーザー名とフルパスが入っている
-            ".blend1",   // Blender の自動バックアップ
-            ".efkproj",  // エフェクトの原本。実行時は .efkefc だけ要る
+            ".meta",     
+            ".fbx",      
+            ".blend",   
+            ".blend1",  
+            ".efkproj", 
             ".h",
             ".cpp",
             ".bak",
@@ -43,13 +43,14 @@ namespace NanamiEngine::AssetUpdater::Dist
 
         if (std::ranges::find(DIST_EXCLUDED_NAMES, name) != std::end(DIST_EXCLUDED_NAMES))
             return true;
+        
         for (const std::string_view suffix : DIST_EXCLUDED_SUFFIXES)
         {
             if (lowered.ends_with(suffix))
                 return true;
         }
 
-        // NOTE: 最後の要素 (ファイル名) はディレクトリ名として見ない
+        // NOTE: ファイル名はディレクトリ名として見ない
         if (slash != std::string::npos)
         {
             size_t begin = 0;

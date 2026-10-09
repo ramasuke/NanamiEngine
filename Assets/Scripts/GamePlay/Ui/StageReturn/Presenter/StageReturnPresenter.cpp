@@ -89,7 +89,7 @@ namespace GamePlay::Ui
         if (!screen_->Open())
             return;
 
-        // 誤って決めても帰らないよう、開いたときは「まだ残る」
+        // NOTE: 誤って決めても帰らないよう、開いたときは「まだ残る」
         selection_ = StageReturnNoticeUi::STAY_INDEX;
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
         view_->Open(IsHostLeavingOthers(), selection_);

@@ -6,7 +6,7 @@ namespace NanamiEngine::CineMachine
 {
     class CinemachineCameraBrain;
 
-    // VirtualCameraが1フレーム内でBehaviourを回す順番。入力・オフセット計算 → 位置 → 向き
+    // NOTE: VirtualCameraが1フレーム内でBehaviourを回す順番。入力・オフセット計算 → 位置 → 向き
     enum class VirtualCameraStage
     {
         Driver,
@@ -18,11 +18,11 @@ namespace NanamiEngine::CineMachine
     {
     public:
         virtual ~IVirtualCameraBehaviour() = default;
-        // Brainが毎フレーム、VirtualCamera経由でStage()の順に呼ぶ
+        // NOTE: 毎フレーム Stage() の順に呼ばれる
         virtual void OnCameraUpdate() { }
         [[nodiscard]] virtual VirtualCameraStage Stage() const { return VirtualCameraStage::Body; }
         virtual void MainCameraCallback() { }
-        // このVirtualCameraがBrainのアクティブカメラに切り替わったフレームに呼ばれる。
+        // NOTE: このカメラがアクティブに切り替わったフレームに呼ばれる
         virtual void OnBecameLive() { }
         virtual bool WantsImmediateApply() const { return false; }
 

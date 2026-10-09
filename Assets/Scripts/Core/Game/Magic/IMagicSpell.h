@@ -18,7 +18,7 @@ namespace GameCore::Magic
 {
     class IMagicCaster;
 
-    // 魔法1つ分。ステート・ステータス・HUD はこれだけを見て、中で何が起きるかは知らない
+    // NOTE: 魔法1つ分。使う側はこれだけを見て、中で何が起きるかは知らない
     class IMagicSpell
     {
     public:
@@ -28,12 +28,12 @@ namespace GameCore::Magic
         [[nodiscard]] virtual std::shared_ptr<Asset::SoundFile>  CastSound             () const = 0;
         [[nodiscard]] virtual float                              ManaCost              () const = 0;
         [[nodiscard]] virtual float                              Cooldown_secs         () const = 0;
-        /** @brief Cast State に入ってから撃つまでの秒数 */
+        // NOTE: Cast State に入ってから撃つまでの秒数
         [[nodiscard]] virtual float                              CastFireTime_secs     () const = 0;
-        /** @brief Cast State 全体の長さ */
+        // NOTE: Cast State 全体の長さ
         [[nodiscard]] virtual float                              CastTotalDuration_secs() const = 0;
         [[nodiscard]] virtual MagicCastMotion                    CastMotion            () const = 0;
-        /** @brief Cast State の頭から撃ち手の足元に出す演出。モーションの手の動きに合わせて作ってある。無ければ nullptr */
+        // NOTE: Cast State の頭から撃ち手の足元に出す演出。無ければ nullptr
         [[nodiscard]] virtual std::shared_ptr<Asset::PrefabGameObjectFile> CastEffectPrefab() const = 0;
         [[nodiscard]] virtual const Guid&                        SpellGuid             () const = 0;
         [[nodiscard]] virtual MagicCastTarget Aim(const IMagicCaster& caster) const = 0;

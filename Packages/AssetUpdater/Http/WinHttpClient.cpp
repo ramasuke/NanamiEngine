@@ -23,7 +23,7 @@ namespace NanamiEngine::AssetUpdater
             return std::string(stage) + " に失敗しました (GetLastError=" + std::to_string(GetLastError()) + ")";
         }
 
-        /** セッション・接続・リクエストはどれも WinHttpCloseHandle で閉じる */
+        // NOTE: セッション・接続・リクエストはどれも WinHttpCloseHandle で閉じる
         class WinHttpClientHandle final
         {
         public:
@@ -52,7 +52,7 @@ namespace NanamiEngine::AssetUpdater
             std::string error;
         };
 
-        /** 200 以外は本文を読まずに返す。onChunk が false を返したら読むのをやめる */
+        // NOTE: 200 以外は本文を読まずに返す。onChunk が false を返したら読むのをやめる
         WinHttpClientResponse WinHttpClientRequest(const HINTERNET session,
                                                    const std::string& url,
                                                    const std::function<bool(const char*, std::size_t)>& onChunk)
@@ -182,7 +182,7 @@ namespace NanamiEngine::AssetUpdater
             return;
         }
 
-        // 既定の解決・接続タイムアウトは分単位で、サーバーに届かないとタイトル画面が長く待たされる
+        // NOTE: 既定の解決・接続タイムアウトは分単位で、サーバーに届かないと呼び出し側が長く待たされる
         WinHttpSetTimeouts(session_, timeoutMilliSeconds, timeoutMilliSeconds, timeoutMilliSeconds, timeoutMilliSeconds);
     }
 

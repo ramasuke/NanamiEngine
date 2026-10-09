@@ -21,7 +21,7 @@ namespace Coroutine
             , tween_(std::move(tween))
         {}
 
-        // setter 経由でしか書けない値用(例: TextRenderer::SetTextColor)。T は tween から推論する
+        // NOTE: setter 経由でしか書けない値用(例: TextRenderer::SetTextColor)。T は tween から推論する
         WaitForTweenV(std::type_identity_t<std::function<void(const T&)>> apply, tweeny::tween<T> tween)
             : apply_(std::move(apply))
             , tween_(std::move(tween))

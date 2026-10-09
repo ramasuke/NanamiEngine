@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::Component
     {
         bool TryGetCameraPos(glm::vec3& outPos)
         {
-            //NOTE: 編集中は CinemachineCameraBrain が起動していないので、エディタカメラを見る
+            // NOTE: 編集中は CinemachineCameraBrain が起動していないので、エディタカメラを見る
             if (!Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
             {
                 outPos = Core::Application::ApplicationBase::GameWindow()->GetCameraPosition();

@@ -16,7 +16,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
 
 namespace GamePlay::Ui
 {
-    // State が宣言する遷移と操作から、どの行に何を出すかを決める (魔法の枠はスペルパレットが出す)
+    // NOTE: State が宣言する遷移と操作から、どの行に何を出すかを決める (魔法の枠はスペルパレットが出す)
     class MagicCasterControlGuide final : public Component::ComponentBase,
                                           public LifeCycleCallback::IUpdatable
     {
@@ -24,10 +24,10 @@ namespace GamePlay::Ui
         void Initialize(const std::weak_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar>& magicCasterAvatar);
 
     private:
-        /// State が宣言する遷移と操作を、ガイドの行へ振り分ける
+        // NOTE: State が宣言する遷移と操作を、ガイドの行へ振り分ける
         class RequestCollector;
 
-        // 押す操作そのもの。実際に出す絵は接続中の入力機器で選ぶ
+        // NOTE: 押す操作そのもの。実際に出す絵は接続中の入力機器で選ぶ
         enum class Glyph : std::uint8_t
         {
             Move,
@@ -53,7 +53,7 @@ namespace GamePlay::Ui
             Board,
         };
 
-        // 下から並ぶ順。行はこの順に生成する
+        // NOTE: 下から並ぶ順。行はこの順に生成する
         enum class Row : std::uint8_t
         {
             Move,
@@ -77,7 +77,7 @@ namespace GamePlay::Ui
 
         void OnUpdate() override;
 
-        /// 調べる行の文言を、いちばん近い対象に合わせる
+        // NOTE: 調べる行の文言を、いちばん近い対象に合わせる
         void ApplyInteractLabel(const std::shared_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar>& magicCasterAvatar);
 
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GlyphSprite(Glyph glyph) const;

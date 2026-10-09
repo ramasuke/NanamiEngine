@@ -40,7 +40,7 @@ namespace NanamiEngine::Core::Network
         void StartClient(const HostEndpoint& host);
         [[nodiscard]] PlayerId GetPlayerId() const override;
         [[nodiscard]] bool IsServer() const override;
-        /** ホストのみ: 離脱者の所有物を自分が引き継ぐ PlayerLeft を全員へ配り、自分の受信キューにも積む */
+        // NOTE: ホストのみ: 離脱者の所有物を自分が引き継ぐ PlayerLeft を全員へ配り、自分の受信キューにも積む
         void NotifyPlayerLeft(PlayerId leftId);
         void SetPlayerId(PlayerId playerId) override;
         R4::Observable<PlayerId> OnConnectPlayer() override;
@@ -56,7 +56,7 @@ namespace NanamiEngine::Core::Network
         std::queue<Packet> receivedQueue_;
         PlayerId playerId_ = PlayerId::Invalid();
 
-        // ホストのみ使用: 次に割り当てる PlayerId(ホスト自身が 0 を取る)と接続中 peer の一覧
+        // NOTE: ホストのみ使用: 次に割り当てる PlayerId(ホスト自身が 0 を取る)と接続中 peer の一覧
         int nextPlayerId_ = 0;
         std::map<PlayerId, _ENetPeer*> peers_;
 

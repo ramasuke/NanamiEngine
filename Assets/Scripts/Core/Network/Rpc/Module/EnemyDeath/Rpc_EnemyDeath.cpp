@@ -4,7 +4,7 @@
 
 namespace
 {
-    // 権威側で死亡確定した敵を他ピアでもローカル破棄する (OnDeath は非権威側で呼ばれないため)
+    // NOTE: 権威側で死亡確定した敵を他ピアでもローカル破棄する (OnDeath は非権威側で呼ばれないため)
     struct EnemyDeathRpcRegistration
     {
         EnemyDeathRpcRegistration()

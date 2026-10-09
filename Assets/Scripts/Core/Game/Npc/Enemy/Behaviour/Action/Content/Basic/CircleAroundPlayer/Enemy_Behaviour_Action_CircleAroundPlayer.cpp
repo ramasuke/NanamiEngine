@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     namespace
     {
-        // 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
+        // NOTE: 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
         constexpr float INTERRUPT_GAP_SECS = 0.2f;
     }
 
@@ -45,7 +45,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         }
         else if (delta > 0.0f)
         {
-            // 前フレームに指示した速度に対して実際どれだけ進めたか
+            // NOTE: 前フレームに指示した速度に対して実際どれだけ進めたか
             glm::vec3 moved = selfPos - lastPosition_;
             moved.y = 0.0f;
             const float expected = moveSpeed_ * delta;
@@ -89,7 +89,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             radius = (std::max)(desiredRadius_ - radiusShrinkPerSec_ * during_secs_, minRadius_);
         }
 
-        // 接線方向 + 半径を保つための補正
+        // NOTE: 接線方向 + 半径を保つための補正
         const glm::vec3 tangent = glm::cross(glm::vec3(0, 1, 0), toPlayerDir) * direction_;
         glm::vec3 moveDir = tangent + toPlayerDir * ((distance - radius) * radiusGain_ / (std::max)(radius, 1e-3f));
         moveDir.y = 0.0f;

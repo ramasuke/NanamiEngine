@@ -13,10 +13,8 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /**
-     * @brief 自分と子孫の Collider(Sensor 以外)を1つの Body にまとめて動かす
-     * @note 子孫に別の RigidBody があれば、そこから下はその RigidBody の持ち物になる
-     */
+    // NOTE: 自分と子孫の Collider(Sensor 以外)を1つの Body にまとめて動かす
+    // NOTE: 子孫に別の RigidBody があれば、そこから下はその RigidBody の持ち物になる
     class NANAMI_API RigidBody final : public ComponentBase,
                             public LifeCycleCallback::IAwakable,
                             public LifeCycleCallback::IBeginPhysics,
@@ -53,7 +51,7 @@ namespace NanamiEngine::Module::Component
         [[serialize(0)]] float                mass_        = 1.0f;
         [[serialize(0)]] bool                 isGravity_   = true;
         [[serialize(0)]] Physics::Constraints constraints_ = Physics::Constraints::None;
-        // 手足のように親の RigidBody の一部として動く Body。親と衝突せず、当たり判定の持ち主は親になる(Physics::FindBodyOwner)
+        // NOTE: 親の RigidBody の一部として動く Body。親と衝突せず、当たり判定の持ち主も親になる
         [[serialize(1)]] bool                 isPartOfParent_ = false;
 
 #pragma region Serialization Function

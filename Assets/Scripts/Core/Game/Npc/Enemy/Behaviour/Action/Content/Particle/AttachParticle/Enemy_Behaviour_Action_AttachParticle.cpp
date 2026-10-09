@@ -7,7 +7,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::AttachParticle::DoTick(const TickContext& context)
     {
-        // プレハブ未設定は「演出無し」として扱う
+        // NOTE: プレハブ未設定は「演出無し」として扱う
         if (!particlePrefab_)
             return TickStatus::Success;
 

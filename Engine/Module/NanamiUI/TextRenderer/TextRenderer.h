@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::NanamiUi
         void SetWorldMode(bool isWorld);
         void SetTextAlign(TextAlign align);
         void SetBlendRate(int blendRate);
-        /// Transform の拡大率を掛ける前の、最も長い行の幅(px)。フォントが無ければ 0
+        // NOTE: Transform の拡大率を掛ける前の、最も長い行の幅(px)。フォントが無ければ 0
         [[nodiscard]] float MeasureTextWidth() const;
 
     private:
@@ -41,11 +41,9 @@ namespace NanamiEngine::Module::NanamiUi
 
         int blendRate_ = 255;
 
-        // キャッシュ
         std::string cachedSjis_;
         bool isDirty_ = true;
 
-        // MakeScreen
         int textScreen_ = -1;
         int screenW_ = 256;
         int screenH_ = 64;
@@ -76,7 +74,7 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
             if (version >= 2) archive(CEREAL_NVP(textAlign_));
-            // version 3 だけが持っていた縁取り設定（TtfFontFile の edgeSize_/edgeColor_ に移行）は読み捨てる
+            // NOTE: 旧版の縁取り設定。フォント側へ移したので読み捨てる
             if (version == 3)
             {
                 bool legacyIsOutlineEnabled = false;

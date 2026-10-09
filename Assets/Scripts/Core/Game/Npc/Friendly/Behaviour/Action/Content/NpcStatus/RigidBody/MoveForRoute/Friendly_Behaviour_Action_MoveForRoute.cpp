@@ -39,7 +39,7 @@ namespace
 
         if (dot < -0.9999f)
         {
-            // 180度反転対策
+            // NOTE: 正反対 (180 度) は回転軸が定まらないので Y 軸で回す
             targetRot =
                 glm::angleAxis(glm::pi<float>(), glm::vec3(0, 1, 0)) *
                 currentRot;
@@ -77,7 +77,6 @@ namespace GameCore::Npc::Friendly::Behaviour
         toTarget.y = 0.0f;
 
         const float distance = glm::length(toTarget);
-        // 到達判定
         if (distance <= arriveDistance_)
         {
             currentRouteIndex_++;
@@ -92,14 +91,12 @@ namespace GameCore::Npc::Friendly::Behaviour
             return TickStatus::Running;
         }
 
-        // 回転
         RotateTowardsDirY(
             context.NpcTransform(),
             toTarget,
             turnRotateSpeed_
         );
 
-        // 移動
         const glm::vec3 moveDir = glm::normalize(toTarget);
 
         glm::vec3 velocity = rigidBody.LinearVelocity();

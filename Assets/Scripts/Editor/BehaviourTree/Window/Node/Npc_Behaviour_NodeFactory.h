@@ -19,12 +19,10 @@ namespace Editor::Npc::Behaviour
         using CreateFunc = std::function<std::shared_ptr<NodeBase>()>;
 
         void ChangeBehaviourTreeType(BehaviourTreeType type);
-        /// ノード型登録
         void Register(const std::string& typeName, CreateFunc createFunction);
         void RegisterAction(const BehaviourTreeType& type, CreateFunc createFunction);
-        /// ノード生成
         [[nodiscard]] std::shared_ptr<NodeBase> Create(const std::string& typeName) const;
-        /// 登録済み型一覧（エディタ用）
+        // NOTE: 現在のツリー種別の ActionNode も含む
         [[nodiscard]] std::unordered_map<std::string, CreateFunc> CreatableNodes() const;
 
     private:

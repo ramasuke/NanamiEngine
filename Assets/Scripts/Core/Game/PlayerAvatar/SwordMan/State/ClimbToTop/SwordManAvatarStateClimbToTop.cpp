@@ -6,7 +6,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarStateClimbToTop::DoEnter()
     {
-        // ClimbingAsync();
     }
 
     void SwordManAvatarStateClimbToTop::DoFixedUpdate()
@@ -22,17 +21,4 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         
     }
-
-    // Coroutine::Task<void> SwordManAvatarStateClimbToTop::ClimbingAsync()
-    // {
-    //     const auto featToPlayerDirection =  FeatStepPos() - Transform().GetWorldPos();
-    //     const auto featToPlayerTopDirection = glm::vec3(featToPlayerDirection.x, 0.0f, featToPlayerDirection.z); 
-    //     
-    //     const auto firstMoveTween = tweeny::from(Context()->AirShip()->TransformRef().GetWorldPos())
-    //                                 .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())
-    //                                 .during(Context()->AirShipFirstMoveDuring_msecs())
-    //                                 .via(Tween::Ease(EaseType::Linear));
-    //     
-    //     co_await Coroutine::WaitForTween(Context()->AirShip()->TransformRef(), firstMoveTween);
-    // }
 }

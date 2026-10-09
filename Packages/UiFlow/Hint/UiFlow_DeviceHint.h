@@ -16,10 +16,8 @@ namespace NanamiEngine::Module::NanamiUi
 
 namespace NanamiEngine::UiFlow
 {
-    /**
-     * @brief 操作ヒントの札を、いま使われている入力機器のものへ差し替える。札の Renderer と同じ GameObject に付ける
-     * @note  その機器の Sprite が未設定なら、いまの絵のままにする
-     */
+    // NOTE: 操作ヒントの札を、いま使われている入力機器のものへ差し替える。札の Renderer と同じ GameObject に付ける
+    // NOTE: その機器の Sprite が未設定なら、いまの絵のままにする
     class NANAMI_API DeviceHint final : public Component::ComponentBase,
                                         public LifeCycleCallback::IStartable,
                                         public LifeCycleCallback::IUpdatable

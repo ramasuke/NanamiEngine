@@ -13,7 +13,7 @@ namespace GameCore::Scene::GrassLand
 
 namespace GameCore::Scene::Main
 {
-    /** 砂漠地帯 (SceneType::Desert)。オアシスの隊商と、砂に沈んだ城塞の骸竜 (docs/Story.md 第2章) */
+    // NOTE: 砂漠地帯 (SceneType::Desert)。オアシスの隊商と、砂に沈んだ城塞の骸竜
     class DrySandScene final : public GameMainSceneBase<DrySandSceneContext>
     {
     public:
@@ -30,13 +30,13 @@ namespace GameCore::Scene::Main
         void Enter    () override;
         void DoExit() override;
         void OnDrawGui() override;
-        /** @brief 骸竜を倒したら、神殿前の広場の光の浮遊石が空へ飛び去る */
+        // NOTE: 骸竜を倒したら、神殿前の広場の光の浮遊石が空へ飛び去る
         void OnStageClear(Story::StoryFlag flag);
 
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<DrySandSceneContext>> arrivalMovie_;
         Story::StageClearWatcher stageClearWatcher_;
-        /** @brief このステージでボスを倒したか。抜けるときに体力を満タンにして保存する */
+        // NOTE: このステージでボスを倒したか。抜けるときに体力を満タンにして保存する
         bool isStageCleared_ = false;
     };
 }

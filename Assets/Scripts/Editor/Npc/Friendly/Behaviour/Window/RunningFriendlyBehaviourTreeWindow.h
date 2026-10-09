@@ -7,7 +7,7 @@
 
 namespace Editor::Npc::Friendly
 {
-    /** @note 実行中の FriendlyNpc の BehaviourTree をリアルタイムに覗く PopupWindow */
+    // NOTE: 実行中の FriendlyNpc の BehaviourTree をリアルタイムに覗く PopupWindow
     class RunningFriendlyBehaviourTreeWindow final : public Core::PopupWindow::IPopupWindow
     {
     public:

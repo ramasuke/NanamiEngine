@@ -9,9 +9,7 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /**
-     * @brief 店の画面を出し、その画面に露店を渡す
-     */
+    // NOTE: 店の画面を出し、その画面に露店を渡す
     class OpenShop final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

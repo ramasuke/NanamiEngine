@@ -17,7 +17,7 @@ namespace NanamiEngine::Core::Application::Display
         constexpr auto WINDOW_MODE_PREFS_PATH = "Display/";
         constexpr auto WINDOW_MODE_PREFS_KEY  = "WindowMode";
 
-        /** SetWindowStyleMode の値 */
+        // NOTE: SetWindowStyleMode の値
         constexpr int WINDOW_STYLE_DEFAULT    = 0;
         constexpr int WINDOW_STYLE_BORDERLESS = 2;
 
@@ -43,7 +43,7 @@ namespace NanamiEngine::Core::Application::Display
 
         void ApplyFullscreenSettings()
         {
-            // 描画解像度はそのままモニターの解像度へ拡大する
+            // NOTE: 描画解像度はそのままモニターの解像度へ拡大する
             SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
             SetFullScreenScalingMode   (DX_FSSCALINGMODE_BILINEAR);
         }

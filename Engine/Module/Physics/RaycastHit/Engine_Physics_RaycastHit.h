@@ -24,7 +24,7 @@ namespace NanamiEngine::Module::Physics
         [[nodiscard]] bool Hit() const;
         [[nodiscard]] const glm::vec3& Position() const { return position_; }
         [[nodiscard]] const glm::vec3& Normal() const { return normal_; }
-        // 始点から衝突までの移動距離。SphereCast/BoxCastでは接触点ではなく「形状の中心が止まる位置」までの距離
+        // NOTE: 始点から衝突までの移動距離。SphereCast/BoxCastでは接触点ではなく「形状の中心が止まる位置」までの距離
         [[nodiscard]] float Distance() const { return distance_; }
         [[nodiscard]] GameObject::IGameObject& HitObject() const { return *hitObject_.lock(); }
 

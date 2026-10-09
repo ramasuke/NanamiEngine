@@ -9,6 +9,6 @@ namespace NanamiEngine::Module::GameObject
 
 namespace GamePlay::Network
 {
-    /** @return gameObject の NetworkGameObject の id。オンラインでない、またはネットワーク生成されていなければ Invalid */
+    // NOTE: gameObject のネットワーク上の id。オンラインでない、またはネットワーク生成されていなければ Invalid
     Core::Network::NetworkObjectId NetworkObjectIdOf(GameObject::IGameObject& gameObject);
 }

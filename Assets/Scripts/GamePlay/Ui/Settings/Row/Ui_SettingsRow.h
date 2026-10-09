@@ -10,9 +10,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 設定画面の一覧の1行。選択中は帯と左右の矢印を出す
-     */
+    // NOTE: 設定画面の一覧の1行。選択中は帯と左右の矢印を出す
     class SettingsRowUi final : public Component::ComponentBase
     {
     public:

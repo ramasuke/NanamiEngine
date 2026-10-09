@@ -27,7 +27,7 @@ namespace NanamiEngine::Module::Asset
 
     void SpriteAnimationFile::LoadSprite()
     {
-        // Save のたびに OnSaveCallback から読み直されるので、前回分を解放してから読み込む
+        // NOTE: Save のたびに OnSaveCallback から読み直されるので、前回分を解放してから読み込む
         ReleaseSprites();
 
         switch (sourceType_)

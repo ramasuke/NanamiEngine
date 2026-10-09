@@ -222,7 +222,7 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
 
-        /** DxLib の SetZBufferBitDepth が受け付けるのは 16 / 24 / 32 のみ */
+        // NOTE: DxLib の SetZBufferBitDepth が受け付けるのは 16 / 24 / 32 のみ
         constexpr int zBufferBitDepths[] = { 16, 24, 32 };
         int zBufferIndex = 1;
         for (int i = 0; i < IM_ARRAYSIZE(zBufferBitDepths); ++i)
@@ -310,7 +310,7 @@ namespace NanamiEngine::Core::Application::Configuration
         ImGui::SetNextItemWidth(200);
         if (ImGui::InputFloat2("Near / Far", editorNearFar))
         {
-            //NOTE: Near が 0 以下や Far 以上だと SetCameraNearFar が効かない
+            // NOTE: Near が 0 以下や Far 以上だと SetCameraNearFar が効かない
             SetEditorCameraNear((std::max)(editorNearFar[0], 0.01f));
             SetEditorCameraFar ((std::max)(editorNearFar[1], GetEditorCameraNear() + 1.0f));
             Save();

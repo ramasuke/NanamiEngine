@@ -45,7 +45,7 @@ namespace NanamiEngine::Scene
             {
                 errorMessage_ = "unknown exception";
             }
-            // 途中まで積まれた GameObject も、破棄はメインスレッドに任せる
+            // NOTE: 途中まで積まれた GameObject も、破棄はメインスレッドに任せる
             phase_.store(errorMessage_.empty() ? Phase::Ready : Phase::Failed, std::memory_order_release);
         });
         return true;
@@ -58,7 +58,7 @@ namespace NanamiEngine::Scene
 
         JoinWorker();
         Module::LogError("AsyncSceneLoader: シーンの読み込みに失敗しました (" + filePath_ + "): " + errorMessage_);
-        // DiscardContent が Idle へ戻すので、失敗したことは別に覚えておかないと外から観測できない
+        // NOTE: DiscardContent が Idle へ戻すので、失敗したことは別に覚えておかないと外から観測できない
         hasFailedSinceLastBegin_.store(true, std::memory_order_release);
         DiscardContent();
     }
@@ -99,7 +99,7 @@ namespace NanamiEngine::Scene
         if (phase == Phase::Ready)
         {
             JoinWorker();
-            // 差し替え後に初めて描画するときに同期ロードで止まらないよう、読み終えてから差し替える
+            // NOTE: 差し替え後に初めて描画するときに同期ロードで止まらないよう、読み終えてから差し替える
             Module::Asset::AssetPreloader::RequestLoads(dependencyGuids_);
             phase_.store(Phase::Preloading, std::memory_order_release);
             return nullptr;

@@ -13,7 +13,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     namespace
     {
-        // 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
+        // NOTE: 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
         constexpr float INTERRUPT_GAP_SECS = 0.2f;
     }
 
@@ -50,7 +50,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         }
         const float absAngle = std::abs(angle);
 
-        // 一度歩き出したら向き終わるまで歩き続ける(しきい値付近でアニメが切り替わり続けないように)
+        // NOTE: 一度歩き出したら向き終わるまで歩き続ける(しきい値付近でアニメが切り替わり続けないように)
         const bool canWalkTurn = turnMoveSpeed_ > 0.0f && turnAnimationNumber_ >= 0;
         if (hasAngle && canWalkTurn && absAngle > turnWalkAngle_)
             isWalkTurning_ = true;
@@ -76,7 +76,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         velocity.y = rigidBody.LinearVelocity().y;
         rigidBody.SetLinearVelocity(velocity);
 
-        // その場旋回も一度始めたらほぼ向き終わるまで同じ側を維持する
+        // NOTE: その場旋回も一度始めたらほぼ向き終わるまで同じ側を維持する
         if (!hasAngle || isWalkTurning_ || absAngle <= (std::max)(faceToleranceDeg_, turnInPlaceEndDeg_))
             turnInPlaceSign_ = 0;
         else if (turnInPlaceSign_ == 0 && absAngle > turnInPlaceAngle_)

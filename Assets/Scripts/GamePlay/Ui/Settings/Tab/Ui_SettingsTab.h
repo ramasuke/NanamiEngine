@@ -10,7 +10,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 設定画面の左に縦に並ぶカテゴリの札1枚。選んでいる札は明るい札に差し替える */
+    // NOTE: 設定画面の左に縦に並ぶカテゴリの札1枚。選んでいる札は明るい札に差し替える
     class SettingsTabUi final : public Component::ComponentBase
     {
     public:

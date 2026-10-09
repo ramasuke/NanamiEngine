@@ -19,7 +19,7 @@ namespace GameCore::Decoration
 
     struct DecorationSaveData
     {
-        /** DecorationData の guid */
+        // NOTE: DecorationData の guid
         std::set<std::string> owned;
 
         template<class Archive>
@@ -35,9 +35,7 @@ namespace GameCore::Decoration
         }
     };
 
-    /**
-     * @brief 持っている島の飾り。StoryProgress と同じく手元の PC にだけ保存し、マルチプレイでは共有しない
-     */
+    // NOTE: 持っている島の飾り。手元の PC にだけ保存し、マルチプレイでは共有しない
     class DecorationCollection final : public SingletonBase<DecorationCollection>
     {
     public:
@@ -46,13 +44,13 @@ namespace GameCore::Decoration
         void Reload();
 
         [[nodiscard]] bool IsOwned(const Guid& decoration) const;
-        /** @return 初めて手に入れたなら true */
+        // NOTE: 初めて手に入れたなら true
         bool Add(const Guid& decoration);
-        /** @return 持っていて手放したなら true */
+        // NOTE: 持っていて手放したなら true
         bool Remove(const Guid& decoration);
         [[nodiscard]] const std::set<std::string>& Owned() const { return data_.owned; }
 
-        /** @brief 増えたか減ったときに流れる */
+        // NOTE: 増えたか減ったときに流れる
         [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnChanged() const { return onChanged_.AsObservable(); }
 
     private:

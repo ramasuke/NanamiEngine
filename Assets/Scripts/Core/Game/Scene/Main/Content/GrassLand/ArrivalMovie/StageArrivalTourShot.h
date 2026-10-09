@@ -10,14 +10,12 @@
 
 namespace GameCore::Scene::GrassLand
 {
-    /**
-     * @brief 到着空撮で見どころを1か所映すショット。startCamera へ切ってから endCamera へ補間する
-     */
+    // NOTE: 到着空撮で見どころを1か所映すショット。startCamera へ切ってから endCamera へ補間する
     struct StageArrivalTourShot
     {
-        /** 見どころの名前。見出しなので全角スペースで字間を空ける (「村 の 跡」) */
+        // NOTE: 見どころの名前。見出しなので全角スペースで字間を空ける (「村 の 跡」)
         std::string title;
-        /** 名前の下に出す一言 */
+        // NOTE: 名前の下に出す一言
         std::string subtitle;
         FIELD(NanamiEngine::CineMachine::CineMachineVirtualCamera) startCamera;
         FIELD(NanamiEngine::CineMachine::CineMachineVirtualCamera) endCamera;
@@ -47,7 +45,7 @@ namespace GameCore::Scene::GrassLand
             archive(CEREAL_NVP(subtitle));
             if (version == 0)
             {
-                // v0 はカメラの位置をワールド座標で持っていた。今はシーンに置いたカメラを使うので読み捨てる (tools/art/movie_markers.py が置き換えた)
+                // NOTE: 旧版のワールド座標のカメラ位置。今はシーンに置いたカメラを使うので読み捨てる
                 glm::vec3 cameraStart, cameraEnd, lookAt;
                 archive(CEREAL_NVP(cameraStart));
                 archive(CEREAL_NVP(cameraEnd));

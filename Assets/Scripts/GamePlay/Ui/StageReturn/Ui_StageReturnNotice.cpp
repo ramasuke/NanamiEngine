@@ -52,7 +52,7 @@ namespace GamePlay::Ui
         enterTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(enterDuration_secs_)).via(Ease(EaseType::OutCubic)));
         UpdateEnter(0.0f);
 
-        // 開いたときの行には判子を押し直さず、最初から押してある
+        // NOTE: 開いたときの行には判子を押し直さず、最初から押してある
         SetSelection(selection);
         stampScaleTween_.Stop();
         if (const auto stamp = pressingStamp_.lock())
@@ -107,7 +107,7 @@ namespace GamePlay::Ui
 
     void StageReturnNoticeUi::PressStamp(const std::shared_ptr<NanamiUi::BlendImageRenderer>& stamp)
     {
-        // 押している途中の判子は大きさを戻してから次を押す
+        // NOTE: 押している途中の判子は大きさを戻してから次を押す
         if (const auto pressing = pressingStamp_.lock(); pressing && stampScaleTween_.IsPlaying())
             pressing->Transform().SetLocalScale(stampBaseScale_);
         stampScaleTween_.Stop();
@@ -120,7 +120,7 @@ namespace GamePlay::Ui
         stampBaseScale_ = stamp->Transform().GetLocalScale();
         stampScaleTween_.Play(tweeny::from(stampStartScale_).to(1.0f)
             .during(Ms(stampDuration_secs_)).via(Ease(EaseType::OutCubic)));
-        // 朱は押す時間の前半で乗り切る
+        // NOTE: 朱は押す時間の前半で乗り切る
         stampAlphaTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(stampDuration_secs_ * 0.5f)));
         UpdateStamp(0.0f);
     }

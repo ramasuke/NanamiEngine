@@ -3,7 +3,7 @@
 
 namespace
 {
-    // 権威側の BT で出したボスHPゲージを、他ピアの同じ NetworkObjectId のボスでも出す
+    // NOTE: 権威側の BT で出したボスHPゲージを、他ピアの同じ NetworkObjectId のボスでも出す
     struct ShowBossHealthGaugeRpcRegistration
     {
         ShowBossHealthGaugeRpcRegistration()

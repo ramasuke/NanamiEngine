@@ -5,10 +5,8 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 遠景の浮島をゆっくり上下させ、わずかに傾ける。置いた位置と向きを中心に揺れる
-     * @note 当たり判定は動かさない前提 (遠景用)。位相は GameObject ごとにずらすので、並べても揃って動かない
-     */
+    // NOTE: 遠景の浮島をゆっくり上下させ、わずかに傾ける。置いた位置と向きを中心に揺れる
+    // NOTE: 当たり判定は動かさない前提 (遠景用)。位相は GameObject ごとにずらすので、並べても揃って動かない
     class FloatingDrift final : public Component::ComponentBase,
                                 public LifeCycleCallback::IAwakable,
                                 public LifeCycleCallback::IUpdatable

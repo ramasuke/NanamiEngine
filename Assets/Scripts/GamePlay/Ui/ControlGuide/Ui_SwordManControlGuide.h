@@ -24,10 +24,10 @@ namespace GamePlay::Ui
         void Initialize(const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar);
 
     private:
-        /// State が宣言する遷移と操作を、ガイドの行へ振り分ける
+        // NOTE: State が宣言する遷移と操作を、ガイドの行へ振り分ける
         class RequestCollector;
 
-        // 押す操作そのもの。実際に出す絵は接続中の入力機器で選ぶ
+        // NOTE: 押す操作そのもの。実際に出す絵は接続中の入力機器で選ぶ
         enum class Glyph : std::uint8_t
         {
             Move,
@@ -63,7 +63,7 @@ namespace GamePlay::Ui
             Board,
         };
 
-        // 下から並ぶ順。行はこの順に生成する
+        // NOTE: 下から並ぶ順。行はこの順に生成する
         enum class Row : std::uint8_t
         {
             Move,
@@ -89,14 +89,14 @@ namespace GamePlay::Ui
 
         void OnUpdate() override;
 
-        /// 調べる行の文言を、いちばん近い対象に合わせる
+        // NOTE: 調べる行の文言を、いちばん近い対象に合わせる
         void ApplyInteractLabel(const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar);
-        /// チュートリアルが指した行は、State が出していなくても薄く出す
+        // NOTE: チュートリアルが指した行は、State が出していなくても薄く出す
         void ApplyFocusRequest(GameCore::PlayerAvatar::SwordMan::SwordManControlGuideFocus target);
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GlyphSprite(Glyph glyph) const;
         [[nodiscard]] const std::string& LabelText(Label label) const;
         [[nodiscard]] static Row FocusRow(GameCore::PlayerAvatar::SwordMan::SwordManControlGuideFocus target);
-        /// 吹き出しを出す側が行の位置を知れるように、指している行の画面座標を返す
+        // NOTE: 吹き出しを出す側が行の位置を知れるように、指している行の画面座標を返す
         void ReportFocusAnchor(const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar, Row focusedRow) const;
 
         [[serialize(3)]] FIELD(Ui::ControlGuide) controlGuide_;
@@ -191,9 +191,8 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v3 で行の生成と見せ方を ControlGuide へ移した
             if (version >= 3) archive(CEREAL_NVP(controlGuide_));
-            // v2 でグリフをキー名から操作名に付け替え、ゲームパッド用の絵を足した
+            // NOTE: 旧版はグリフをキー名で持っていたので、操作名へ読み替える
             if (version < 2)
             {
                 archive(cereal::make_nvp("wasdSprite_", keyMoveSprite_));

@@ -8,7 +8,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief OS カーソルの代わりのカーソル。ゲームビルドで、UiFlow の最前面の画面にボタンが出ている間だけ表示する */
+    // NOTE: OS カーソルの代わりのカーソル。ゲームビルドで、UiFlow の最前面の画面にボタンが出ている間だけ表示する
     class GameCursor final : public Component::ComponentBase,
                              public LifeCycleCallback::IStartable,
                              public LifeCycleCallback::IUpdatable
@@ -26,15 +26,14 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(GameObject::IGameObject) visualRoot_;
         [[serialize(0)]] FIELD(NanamiUi::ImageAnimationRenderer) idle_;
         [[serialize(0)]] FIELD(NanamiUi::ImageAnimationRenderer) press_;
-        // クリックのアニメを出している時間
+        // NOTE: クリックのアニメを出している時間
         [[serialize(0)]] float pressDuration_secs_ = 0.24f;
-        // 全体の大きさ
         [[serialize(1)]] float baseScale_ = 0.55f;
-        // 押している間の縮小率
+        // NOTE: 押している間の縮小率
         [[serialize(1)]] float holdScale_ = 0.8f;
-        // 離した瞬間に跳ねる大きさ
+        // NOTE: 離した瞬間に跳ねる大きさ
         [[serialize(1)]] float releaseScale_ = 1.2f;
-        // 目標の大きさへ寄る速さ
+        // NOTE: 目標の大きさへ寄る速さ
         [[serialize(1)]] float scaleSpeed_ = 18.0f;
 
         bool isVisible_ = false;

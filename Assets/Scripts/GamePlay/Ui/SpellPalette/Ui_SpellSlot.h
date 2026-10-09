@@ -12,7 +12,7 @@
 
 namespace GamePlay::Ui
 {
-    // 魔法陣の1枠。置き場所と大きさは SpellPalette が毎フレーム決め、枠内の配置は子オブジェクトの Transform が決める
+    // NOTE: 魔法陣の1枠。置き場所と大きさは外から毎フレーム渡され、枠内の配置は子オブジェクトの Transform が決める
     class SpellSlot final : public Component::ComponentBase
     {
     public:
@@ -30,10 +30,10 @@ namespace GamePlay::Ui
         };
 
         void SetSpell(const std::weak_ptr<Asset::SpriteFile>& icon, const std::string& costText);
-        /// 消費 MP の色は都度補間できないので、足りなくなった瞬間・足りた瞬間にだけ差し替える
+        // NOTE: 消費 MP の色は都度補間できないので、足りなくなった瞬間・足りた瞬間にだけ差し替える
         void SetManaLack(bool isLacking);
         void SetCooldownText(const std::string& text);
-        /** @brief ボタン表示の画像と、枠の中心から見た向き。外側の頂点に置く */
+        // NOTE: ボタン表示の画像と、枠の中心から見た向き。外側の頂点に置く
         void SetGlyph(const std::weak_ptr<Asset::SpriteFile>& glyph, const glm::vec2& direction);
         void Apply(const Appearance& appearance);
 
@@ -52,7 +52,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) glyph_;
         [[serialize(0)]] Color32 costColor_ = Color32(214, 192, 255);
         [[serialize(0)]] Color32 costLackColor_ = Color32(255, 120, 104);
-        /// 枠の中心からボタン表示までの距離（菱形の頂点）
+        // NOTE: 枠の中心からボタン表示までの距離（菱形の頂点）
         [[serialize(0)]] float glyphDistance_ = 33.3f;
 
         bool isPartsCaught_ = false;

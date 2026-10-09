@@ -9,9 +9,7 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /**
-     * @brief キャラ選択の画面を出し、その画面に展示台を渡す
-     */
+    // NOTE: キャラ選択の画面を出し、その画面に展示台を渡す
     class OpenCharacterSelect final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

@@ -10,7 +10,7 @@
 
 namespace GamePlay::Magic
 {
-    // 撃ち手の手元から狙った方向へ、光線や吐息をしばらく出し続ける
+    // NOTE: 撃ち手の手元から狙った方向へ、光線や吐息をしばらく出し続ける
     class ChannelSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:
@@ -18,13 +18,13 @@ namespace GamePlay::Magic
         void Execute(const GameCore::Magic::IMagicCaster& caster, const GameCore::Magic::MagicCastTarget& target) const override;
 
     private:
-        /** @brief MagicChannel と、-Z 方向へ伸びたセンサーを持つプレハブ */
+        // NOTE: MagicChannel と、-Z 方向へ伸びたセンサーを持つプレハブ
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) channelPrefab_;
-        /** @brief 1回当てるごとの威力 */
+        // NOTE: 1回当てるごとの威力
         [[serialize(0)]] GameCore::Damage::PhysicsPower power_ = GameCore::Damage::PhysicsPower(6);
         [[serialize(0)]] float duration_secs_     = 1.5f;
         [[serialize(0)]] float tickInterval_secs_ = 0.25f;
-        /** @brief ロックオンしていない時に狙う距離 */
+        // NOTE: ロックオンしていない時に狙う距離
         [[serialize(0)]] float range_ = 150.0f;
 
 #pragma region Serialization Function

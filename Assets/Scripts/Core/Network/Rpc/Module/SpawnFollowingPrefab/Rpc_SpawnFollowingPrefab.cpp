@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: 送り先の NetworkGameObject の位置にプレハブを出し、付いて行かせる。パーティクル等の見た目専用
+    // NOTE: 汎用演出RPC: 送り先の NetworkGameObject の位置にプレハブを出し、付いて行かせる。パーティクル等の見た目専用
     struct SpawnFollowingPrefabRpcRegistration
     {
         SpawnFollowingPrefabRpcRegistration()

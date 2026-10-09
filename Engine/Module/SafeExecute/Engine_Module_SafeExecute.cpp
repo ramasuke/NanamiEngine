@@ -16,7 +16,7 @@ namespace NanamiEngine::Module
 {
     namespace
     {
-        // MSVC の C++ 例外の SEH コード。外側の try/catch へ素通りさせる
+        // NOTE: MSVC の C++ 例外の SEH コード。外側の try/catch へ素通りさせる
         constexpr unsigned long kCxxExceptionCode = 0xE06D7363;
 
         std::string DescribeSehCode(const unsigned long code)
@@ -44,7 +44,7 @@ namespace NanamiEngine::Module
             return mutex;
         }
 
-        // プロセス内で一度だけ初期化する(以降のSym*呼び出しはSymMutex()で必ず保護すること。
+        // WARNING: プロセス内で一度だけ初期化する。以降の Sym* 呼び出しは SymMutex() で保護すること
         bool EnsureSymbolsInitialized()
         {
             static const bool initialized = []()
@@ -64,7 +64,7 @@ namespace NanamiEngine::Module
             return base;
         }
 
-        // SEHフィルタ式から(=unwind前に)呼ぶ想定。ロック・std::string・ostringstream
+        // WARNING: SEH フィルタ式の中 (unwind 前) から呼ぶこと
         void AppendStackTrace(const CONTEXT& contextAtFault, std::string& outStackTrace)
         {
             std::lock_guard lock(SymMutex());
@@ -145,7 +145,7 @@ namespace NanamiEngine::Module
     }
 
     std::atomic<bool> SafeExecutor::crashRecoveryEnabled_{false};
-    std::atomic<bool> SafeExecutor::debuggerFailFastEnabled_{true}; // デフォルトON
+    std::atomic<bool> SafeExecutor::debuggerFailFastEnabled_{true};
 
     bool SafeExecutor::IsCrashRecoveryEnabled()
     {

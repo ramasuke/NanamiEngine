@@ -11,7 +11,7 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief 調べると株が消えて item_ が飛び出す薬草。採ったことは保存しない */
+    // NOTE: 調べると株が消えて item_ が飛び出す薬草。採ったことは保存しない
     class HerbPatch final : public Component::ComponentBase,
                             public LifeCycleCallback::IStartable,
                             public GameCore::PlayerAvatar::IPlayerInteractable

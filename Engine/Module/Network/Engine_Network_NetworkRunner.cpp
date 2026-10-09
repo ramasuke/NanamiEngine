@@ -58,7 +58,7 @@ namespace NanamiEngine::Module::Network
 
     void NetworkRunnerBase::Shutdown()
     {
-        //NOTE: ディスパッチャーは networkSystem_ を参照しているので先に消す
+        // NOTE: ディスパッチャーは networkSystem_ を参照しているので先に消す
         lanAdvertiser_.reset();
         if (networkSystem_)
             DoShutdown();

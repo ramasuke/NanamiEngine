@@ -50,7 +50,6 @@ namespace GameCore::Scene::Main
         if (isRetry_)
             FirstTouchDownMainIsLand::AboardAirShipMovie::DockImmediately(context);
 
-        /** Player生成処理 */
         playerAvatar_ = context.PlayerAvatarFactory().LoadInitedPlayerAvatar(
             PlayerAvatar::PlayerAvatarType::SwordMan,
             context.PlayerSpawnPoint(),
@@ -65,7 +64,6 @@ namespace GameCore::Scene::Main
             co_return EnterResult::Ok();
         }
 
-        // 船を降りるまでのMovie開始
         aboardAirShipMovie_ = std::make_shared<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
         Coroutine::StartCoroutine(FirstTouchDownMainIsLand::AboardAirShipMovie::PlayAsync(aboardAirShipMovie_));
         co_return EnterResult::Ok();

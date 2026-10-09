@@ -16,7 +16,7 @@ namespace
         return glm::dot(delta, delta) <= MAX_MATCH_DISTANCE * MAX_MATCH_DISTANCE;
     }
 
-    // 設置物の演出RPC: 送り手のピアで壊れた設置物を、他ピアでも同じ位置のものを壊して揃える
+    // NOTE: 設置物の演出RPC: 送り手のピアで壊れた設置物を、他ピアでも同じ位置のものを壊して揃える
     struct PropRpcRegistration
     {
         PropRpcRegistration()
@@ -36,7 +36,7 @@ namespace
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
 
-            // 他のピアで揺らいだ光の心臓を、骸竜を持つホストで揺らいだことにする
+            // NOTE: 他のピアで揺らいだ光の心臓を、骸竜を持つホストで揺らいだことにする
             GameCore::Network::StormHeartShakenRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
                 [](NanamiEngine::Module::Network::NetworkGameObject&)
                 {

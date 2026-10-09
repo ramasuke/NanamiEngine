@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief 登録済みの MainWindow に切り替えるメニュー */
+    // NOTE: 登録済みの MainWindow に切り替えるメニュー
     class NANAMI_API MainWindowMenuToolbarWidget final : public IEditorToolbarWidget
     {
     public:

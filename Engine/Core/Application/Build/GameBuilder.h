@@ -25,7 +25,7 @@ namespace NanamiEngine::Core::Application::Build
         Canceled,
     };
 
-    /** @brief 直近のビルドの結果 */
+    // NOTE: 直近のビルドの結果
     struct NANAMI_API BuildReport
     {
         BuildOutcome             outcome = BuildOutcome::None;
@@ -42,9 +42,9 @@ namespace NanamiEngine::Core::Application::Build
         GameBuilder(const GameBuilder&)            = delete;
         GameBuilder& operator=(const GameBuilder&) = delete;
 
-        /** @brief Build Settings の内容で MSBuild を起動する */
+        // NOTE: Build Settings の内容で MSBuild を起動する
         bool Begin(BuildAction action);
-        /** @brief 毎フレーム呼ぶ。MSBuild が終わっていたら、成功時はその場でパッケージまで済ませる*/
+        // NOTE: 毎フレーム呼ぶ。MSBuild が終わっていたら、成功時はその場でパッケージまで済ませる
         void Update();
         void Cancel();
         [[nodiscard]] bool               IsBusy      () const;
@@ -52,18 +52,18 @@ namespace NanamiEngine::Core::Application::Build
         [[nodiscard]] const BuildReport& LastReport  () const;
 
     private:
-        /** @brief Begin で取った Build Settings の写し。ビルド中に設定を変えても影響しない */
+        // NOTE: Begin で取った Build Settings の写し。ビルド中に設定を変えても影響しない
         struct NANAMI_API Paths
         {
             std::filesystem::path projectRoot;
             std::filesystem::path solution;
             std::filesystem::path outputRoot;
             std::filesystem::path msBuild;
-            /** @brief MSBuild の Configuration (Release / Debug) */
+            // NOTE: MSBuild の Configuration (Release / Debug)
             std::wstring          configuration;
             std::filesystem::path exeFileName;
             bool                  runAfterBuild = false;
-            /** @brief 出力先に installed.json を書き、配信中のアセットへの更新を有効にする */
+            // NOTE: 出力先に installed.json を書き、配信中のアセットへの更新を有効にする
             bool                  assetUpdates  = false;
         };
 
@@ -73,7 +73,7 @@ namespace NanamiEngine::Core::Application::Build
             size_t removed = 0;
         };
 
-        /** @brief プロジェクトルートからの相対パス (区切りは '/') を受け取り、同期対象なら true を返す */
+        // NOTE: プロジェクトルートからの相対パス (区切りは '/') を受け取り、同期対象なら true を返す
         using MirrorFilter = std::function<bool(const std::wstring& repositoryRelativePath)>;
 
         GameBuilder() = default;
@@ -87,11 +87,11 @@ namespace NanamiEngine::Core::Application::Build
         void ReportError(const std::string& message);
         bool RejectBegin(const std::string& message);
 
-        /** @brief source/relativeDirectory を destination/relativeDirectory へ差分同期する。filter に合うのに元に無いファイルは消す */
+        // NOTE: relativeDirectory 以下を差分同期する。filter に合うのに元に無いファイルは消す
         static void MirrorDirectory(const std::filesystem::path& sourceRoot, const std::filesystem::path& destinationRoot,
                                     const std::filesystem::path& relativeDirectory, const MirrorFilter& filter, MirrorStats& stats);
         static std::vector<std::filesystem::path> CollectRegularFiles(const std::filesystem::path& root);
-        /** @brief サイズか更新日時が違うときだけコピーし、更新日時を元に揃える。コピーしたら true */
+        // NOTE: サイズか更新日時が違うときだけコピーし、更新日時を元に揃える。コピーしたら true
         static bool CopyIfChanged(const std::filesystem::path& source, const std::filesystem::path& destination);
 
         static bool IsPackagedAsset(const std::wstring& projectRelativePath);

@@ -4,7 +4,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 会話中の NPC の目印。呼吸するように拡大縮小する */
+    // NOTE: 会話中の NPC の目印。呼吸するように拡大縮小する
     class ChatIconChattingMotion final : public Component::ComponentBase,
                                          public LifeCycleCallback::IUpdatable
     {

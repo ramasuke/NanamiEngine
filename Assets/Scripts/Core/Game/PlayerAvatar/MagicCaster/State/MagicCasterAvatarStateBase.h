@@ -37,36 +37,29 @@ namespace GameCore::PlayerAvatar::MagicCaster
             std::vector<Bone> bones;
         };
 
-        /** ---- 以下サンドボックスパターン ---- */
+        // NOTE: 以下サンドボックスパターン
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject>     CastPoint       () const { return Context().CastPoint(); }
         [[nodiscard]] Magic::IMagicCaster&                       Caster          () const { return Context().Caster(); }
         [[nodiscard]] int                                        PendingSpellSlot() const { return Context().PendingSpellSlot(); }
         [[nodiscard]] std::shared_ptr<const Magic::IMagicSpell>  PendingSpell    () const { return Context().PendingSpell(); }
-        /** @brief 枠番号（MagicCasterSpellSlot.h）の魔法。空の枠なら nullptr */
+        // NOTE: 枠番号（MagicCasterSpellSlot.h）の魔法。空の枠なら nullptr
         [[nodiscard]] std::shared_ptr<const Magic::IMagicSpell>  SpellAt(int slot) const;
 
-        /** @brief 足ボーンが接地した瞬間に足元へ土煙を出す。Walk / Run が毎フレーム呼ぶ */
+        // NOTE: 足ボーンが接地した瞬間に足元へ土煙を出す。毎フレーム呼ぶ前提
         void TryEmitFootstep(FootstepLatch& latch) const;
 
-        /**
-         * @brief 基本魔法（RT / 左クリック）か LT+ボタン（1〜4）の入力を見て、撃てるなら枠を決めて Cast へ移る
-         * @return Cast へ移ったら true
-         */
+        // NOTE: 基本魔法か持ち込み枠の入力を見て、撃てるなら枠を決めて Cast へ移る。移ったら true
         bool TryBeginCast() const;
-        /** @brief 基本魔法（RT / 左クリック）を今撃てるか */
+        // NOTE: カウンター受付中は常に true
         [[nodiscard]] bool CanCastBasicSpell() const;
         [[nodiscard]] bool CanCounterCast() const;
-        /**
-         * @brief VisitTransitions の宣言どおりに遷移する。最初に成立した遷移で止まる
-         * @return 遷移したか
-         */
+        // NOTE: VisitTransitions の宣言どおりに遷移し、最初に成立した遷移で止まる。遷移したら true
         bool UpdateTransitions() const;
-        /** @brief ロックオン中ならその対象へ向きを合わせる */
+        // NOTE: ロックオン中ならその対象へ向きを合わせる
         void FaceAimTarget() const;
-        // VisitTransitions で CycleItem / UseItem を宣言したStateだけが呼ぶ（アイテム欄の表示がその宣言を見ている）
-        /** @return 使うモーションのステートへ移ったら true。そのフレームは呼び出し元の遷移を見ない */
+        // NOTE: アイテム欄の入力を見て、使うモーションのステートへ移ったら true。そのフレームは他の遷移を見ない
         bool UpdateItemPouchInput() const;
-        /** @return 使うモーションのステートへ移ったら true */
+        // NOTE: 使うモーションのステートへ移ったら true
         bool UseSelectedPouchItem() const;
     };
 }

@@ -18,7 +18,7 @@ namespace NanamiEngine::Module::Network
 
 namespace
 {
-    // Engine既定のPacketType名を登録する
+    // NOTE: Engine既定のPacketType名を登録する
     struct DefaultPacketTypeNameRegistration
     {
         DefaultPacketTypeNameRegistration()

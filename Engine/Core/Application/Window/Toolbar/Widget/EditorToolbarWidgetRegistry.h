@@ -22,7 +22,7 @@ namespace NanamiEngine::Core::Toolbar
             std::string                           name;
             int                                   order;
             std::unique_ptr<IEditorToolbarWidget> widget;
-            /** 登録元のモジュール (exe / dll)。ゲーム DLL の差し替え時にその分だけ消す */
+            // NOTE: 登録元のモジュール (exe / dll)。ゲーム DLL の差し替え時にその分だけ消す
             ModuleHandle                          module;
         };
 
@@ -37,7 +37,7 @@ namespace NanamiEngine::Core::Toolbar
         [[nodiscard]] const std::vector<Entry>& GetWidgets() const { return entries_; }
 
         void DrawAll(EditorToolbarWidgetContext& context) const;
-        /** @brief module が登録したウィジェットを消す。戻り値は消した数 */
+        // NOTE: module が登録したウィジェットを消す。戻り値は消した数
         std::size_t UnregisterModule(ModuleHandle module);
 
     private:

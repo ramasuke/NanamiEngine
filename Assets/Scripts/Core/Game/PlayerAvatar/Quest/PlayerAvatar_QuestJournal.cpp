@@ -66,7 +66,7 @@ namespace GameCore::PlayerAvatar::Quest
 
     void QuestJournal::CompleteTakenQuest(const ITakeableQuest& quest)
     {
-        // 繰り返せる依頼は達成のたびに報酬。それ以外は初回だけで、メインストーリーは職業をまたいで QuestType で残す
+        // NOTE: 繰り返せる依頼は達成のたびに報酬。それ以外は初回だけで、メインストーリーは職業をまたいで QuestType で残す
         const auto rewards    = quest.Rewards();
         const auto& guid      = quest.BoardQuestGuid();
         const bool byType     = quest.RecordsCompletionByType() || guid.empty();

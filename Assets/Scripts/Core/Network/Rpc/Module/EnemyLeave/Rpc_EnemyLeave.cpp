@@ -4,7 +4,7 @@
 
 namespace
 {
-    // 権威側で狩り場から去った敵を、他ピアでも同じ NetworkObjectId の個体でローカル破棄する。倒したわけではないので記録帳には付けない
+    // NOTE: 権威側で狩り場から去った敵を他ピアでもローカル破棄する。倒していないので記録帳には付けない
     struct EnemyLeaveRpcRegistration
     {
         EnemyLeaveRpcRegistration()

@@ -28,7 +28,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         constexpr wchar_t DIST_JOB_CACHE_FILE[]    = L".manifest_hash_cache.json";
         constexpr size_t  DIST_JOB_SAMPLE_LIMIT    = 10;
 
-        /** 一時フォルダ。抜けるときに中身ごと消す */
+        // NOTE: 一時フォルダ。抜けるときに中身ごと消す
         class DistJobStagingDirectory final
         {
         public:
@@ -452,7 +452,7 @@ namespace NanamiEngine::AssetUpdater::Dist
                 }
             }
 
-            // マニフェストが参照するものが全部そろってからでないと、manifest.json は置かない
+            // NOTE: マニフェストが参照するものが全部そろってからでないと、manifest.json は置かない
             const std::unordered_set<std::string> uploaded = rclone.ListBlobHashes();
             size_t missing = 0;
             for (const auto& [digest, blob] : blobs)

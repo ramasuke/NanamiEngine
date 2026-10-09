@@ -15,7 +15,7 @@ namespace NanamiEngine::CineMachine::Behaviour
     {
     public:
         void SetFollowTarget(const std::shared_ptr<GameObject::IGameObject>& followTarget);
-        // 向きと画角は lockOnTarget で決め、aim(部位など)はフレーミングに加えるだけ
+        // NOTE: 向きと画角は lockOnTarget で決め、aim(部位など)はフレーミングに加えるだけ
         void SetLockOnTarget(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget,
                              const std::shared_ptr<GameObject::IGameObject>& aim);
         void ClearLockOnTarget();
@@ -25,7 +25,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         void OnAwake       () override;
         void OnCameraUpdate() override;
-        // Follow/LookAtが読むオフセットを先に書き込む
+        // NOTE: Follow/LookAtが読むオフセットを先に書き込む
         [[nodiscard]] VirtualCameraStage Stage() const override { return VirtualCameraStage::Driver; }
         
         void UpdateFraming(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget);

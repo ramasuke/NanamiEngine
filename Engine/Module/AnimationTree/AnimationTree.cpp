@@ -103,11 +103,6 @@ void AnimationTree::AnimationTree::InitForAnimator(
                                    AddCurrentNodePath(nodePath, modelHandle, timeScale);
                                });
     }
-
-    // for (const auto& fromAnyStateNodePath : fromAnyStateNodeNodePaths_)
-    // {
-    //     fromAnyStateNodePath->SetFromNode(entryNode_);
-    // }
 }
 
 std::vector<std::shared_ptr<AnimationTree::AnimationNodePath>> AnimationTree::AnimationTree::AllNodePaths() const
@@ -180,7 +175,7 @@ void AnimationTree::AnimationTree::OnDrawGraphEditorGui(const bool readOnly)
     if (!graphDelegate_)
         graphDelegate_ = std::make_shared<AnimationTreeGraphDelegate>();
 
-    // 見出しはファイル名だけにする（filePath_ は UTF-8 なので std::filesystem を通さず区切り文字で切る）
+    // NOTE: 見出しはファイル名だけにする（filePath_ は UTF-8 なので std::filesystem を通さず区切り文字で切る）
     const std::size_t separator = filePath_.find_last_of("/\\");
     const std::string fileName  = separator == std::string::npos ? filePath_ : filePath_.substr(separator + 1);
     const std::string title     = std::string(readOnly ? "AnimationTree [Running] " : "AnimationTree ") + fileName + "##" + guid_.Value();
@@ -222,7 +217,7 @@ void AnimationTree::AnimationTree::AddCurrentNodePath(AnimationNodePath* nodePat
         fromAnyStateNodePath->SetFromNode(nodePath->GetTargetNode());
     }
     currentNodePath_ = nodePath;
-    /** @note Animationが付与されていない条谷状態になる可能性があるため、Nodeを更新してAnimationを付与*/
+    // NOTE: アニメーションが付いていないフレームを作らないよう、遷移元ノードをここで一度更新する
     nodePath->GetFromNode()->OnUpdateAnimation(modelHandle, timeScale);
 }
 

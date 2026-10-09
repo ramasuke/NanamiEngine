@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    // ロックオン対象の印。位置は ILockOnCameraTarget::LockOnPosition() で渡す
+    // NOTE: ロックオン対象の印。位置は ILockOnCameraTarget::LockOnPosition() で渡す
     class ILockOnTarget : public NanamiEngine::CineMachine::ILockOnCameraTarget
     {
     public:

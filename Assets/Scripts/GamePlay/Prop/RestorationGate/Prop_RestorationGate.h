@@ -11,15 +11,13 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief facility_ が直っているかどうかで、壊れた見た目と直った見た目の GameObject を切り替える。
-     * NOTE: restoredPrefab_ は建った時だけ子に生成する (隠すだけだとコライダーが残るため)
-     */
+    // NOTE: facility_ が直っているかどうかで、壊れた見た目と直った見た目の GameObject を切り替える
+    // NOTE: restoredPrefab_ は建った時だけ子に生成する (隠すだけだとコライダーが残るため)
     class RestorationGate final : public Component::ComponentBase,
                                   public LifeCycleCallback::IStartable
     {
     public:
-        /** @brief シーンにある facility の門。無ければ nullptr */
+        // NOTE: シーンにある facility の門。無ければ nullptr
         [[nodiscard]] static std::shared_ptr<RestorationGate> Find(GameCore::Story::Facility facility);
 
         void BeginPreview();
@@ -29,7 +27,7 @@ namespace GamePlay::Prop
         void OnStart() override;
         void Apply();
 
-        // NOTE: tools.scene で設定できるよう Story::Facility を int で持つ
+        // NOTE: シーンツールから設定できるよう Story::Facility を int で持つ
         [[serialize(0)]] int facility_ = 0;
         [[serialize(0)]] FIELD(GameObject::IGameObject) brokenObject_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) restoredObject_;

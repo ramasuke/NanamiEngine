@@ -13,9 +13,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /**
-     * @brief StatusのNull Object。
-     */
+    // NOTE: StatusのNull Object
     class NullPlayerAvatarStatus final : public IPlayerAvatarStatus
     {
     public:
@@ -50,7 +48,7 @@ namespace GameCore::PlayerAvatar
         void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;
 
     private:
-        // Event()/Quest()/CompletedQuest() の参照を返すためだけのダミー
+        // NOTE: Event()/Quest()/CompletedQuest() の参照を返すためだけのダミー
         class NullQuestGroup final : public IQuestGroup
         {
         public:

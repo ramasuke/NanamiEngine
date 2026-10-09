@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::NanamiUi
                               public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        // 実行時の演出用（シリアライズしない）。0 で描画しない、1 で不透明
+        // NOTE: 実行時の演出用（シリアライズしない）。0 で描画しない、1 で不透明
         void SetAlpha(float alpha);
         void SetAngle(float angle);
         [[nodiscard]] float GetAngle() const { return angle_; }

@@ -13,12 +13,12 @@ namespace GameCore::Decoration
 
 namespace GameCore::Reward
 {
-    /** @brief 報酬の渡し先。どれも空のことがあり、空の渡し先の報酬は出さない */
+    // NOTE: 報酬の渡し先。どれも空のことがあり、空の渡し先の報酬は出さない
     struct RewardContext
     {
         PlayerAvatar::Wallet*             wallet      = nullptr;
         Decoration::DecorationCollection* decorations = nullptr;
-        /** @brief 報酬ごとの conditions_ を判定するときに見る */
+        // NOTE: 報酬ごとの conditions_ を判定するときに見る
         Condition::ConditionContext       conditions;
     };
 }

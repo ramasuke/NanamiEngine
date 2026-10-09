@@ -23,7 +23,7 @@ namespace NanamiEngine::Scene
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 
     public:
-        /** @brief .scene をデシリアライズした中間結果。InitGameObject はまだ呼ばれていない */
+        // NOTE: .scene をデシリアライズした中間結果。InitGameObject はまだ呼ばれていない
         struct NANAMI_API DeserializedContent
         {
             std::string name = "Scene";
@@ -31,21 +31,19 @@ namespace NanamiEngine::Scene
             std::vector<std::weak_ptr<Core::Object::IFieldContext>> pendingFieldContexts;
         };
 
-        /** @brief デシリアライズ済みのルート GameObject 数。ワーカーが書き、メインスレッドが読む */
+        // NOTE: デシリアライズ済みのルート GameObject 数。ワーカーが書き、メインスレッドが読む
         struct NANAMI_API DeserializeProgress
         {
             std::atomic<int> total{0};
             std::atomic<int> done {0};
         };
 
-        /**
-         * @brief .scene を読むだけで InitGameObject は呼ばない。ワーカースレッドから呼べる
-         * @warning 例外時も outContent に GameObject が残るので、メインスレッドが所有する変数を渡すこと
-         */
+        // NOTE: .scene を読むだけで InitGameObject は呼ばない。ワーカースレッドから呼べる
+        // WARNING: 例外時も outContent に GameObject が残るので、メインスレッドが所有する変数を渡すこと
         static void Deserialize(const std::string& filePath, DeserializedContent& outContent, DeserializeProgress* progress);
 
         explicit Scene(const std::string& filePath = "");
-        /** @brief Deserialize の結果から組み立てる。メインスレッド専用 */
+        // NOTE: Deserialize の結果から組み立てる。メインスレッド専用
         Scene(const std::string& filePath, DeserializedContent&& content);
         ~Scene() override;
         [[nodiscard]] std::string Name()    const           { return name_; }
@@ -62,12 +60,12 @@ namespace NanamiEngine::Scene
         void OnDrawGui() override { }
         void OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileDraggingHand);
         void OnSave();
-        /** @brief .scene と同じ JSON を stream に書く (OnSave はこれをファイルへ) */
+        // NOTE: .scene と同じ JSON を stream に書く (OnSave はこれをファイルへ)
         void SaveTo(std::ostream& stream);
-        /** @brief .scene と同じ JSON を stream から読む。label は例外メッセージ用 */
+        // NOTE: .scene と同じ JSON を stream から読む。label は例外メッセージ用
         static void Deserialize(std::istream& stream, const std::string& label, DeserializedContent& outContent, DeserializeProgress* progress);
         [[nodiscard]] std::shared_ptr<Module::GameObject::IGameObject> CatchGameObject(const Guid& id) const;
-        /** @brief 子孫も含めた全 GameObject に action を 1 回ずつ呼ぶ */
+        // NOTE: 子孫も含めた全 GameObject に action を 1 回ずつ呼ぶ
         void ForEachGameObject(const std::function<void(const std::shared_ptr<Module::GameObject::IGameObject>&)>& action) const;
 
     private:

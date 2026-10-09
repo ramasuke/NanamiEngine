@@ -11,7 +11,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::IsTargetInAttackArea::DoTick(const TickContext& context)
     {
         const auto& attackArea = context.CatchPrefabObject<AttackArea>(attackAreaName_);
-        // 壊せる小物も ITakableEnemyAttack として入ってくるので、プレイヤーだけを見る
+        // NOTE: 壊せる小物も ITakableEnemyAttack として入ってくるので、プレイヤーだけを見る
         const bool hasTarget = std::ranges::any_of(attackArea.Targets(), [](const AttackArea::AttackTarget& target)
         {
             return !target.GameObject().Components().Catch<IPlayerAvatar>().expired();

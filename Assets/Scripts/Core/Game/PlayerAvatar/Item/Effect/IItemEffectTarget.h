@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::Item
 {
-    // アイテムの効果を受ける側。効果クラスはこれだけを見るので、使い手のアバターの種類を知らない
+    // NOTE: アイテムの効果を受ける側。効果クラスはこれだけを見るので、使い手のアバターの種類を知らない
     class IItemEffectTarget
     {
     public:

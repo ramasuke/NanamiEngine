@@ -8,9 +8,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 島の心臓が抜けたら心臓の方を振り向いてから反対へ走り去り、離れたら消える。抜けるまでは Failure
-     */
+    // NOTE: 島の心臓が抜けたら心臓の方を振り向いてから反対へ走り去り、離れたら消える。抜けるまでは Failure
     class FleeFromIslandHeart final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
@@ -19,18 +17,18 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         void Face(const TickContext& context, const glm::vec3& direction) const;
         static void Leave(const TickContext& context);
 
-        /** 振り向くまでの間 (頭数ぶんばらけさせる) */
+        // NOTE: 振り向くまでの間 (頭数ぶんばらけさせる)
         [[serialize(0)]] float reactMin_secs_       = 0.2f;
         [[serialize(0)]] float reactMax_secs_       = 1.2f;
-        /** 心臓の方を向いて立ち止まる長さ */
+        // NOTE: 心臓の方を向いて立ち止まる長さ
         [[serialize(0)]] float startle_secs_        = 1.0f;
         [[serialize(0)]] float moveSpeed_           = 8.0f;
         [[serialize(0)]] float rotateSpeed_         = 540.0f;
-        /** 心臓から真っ直ぐ離れる向きを、左右へこの角度までばらけさせる */
+        // NOTE: 心臓から真っ直ぐ離れる向きを、左右へこの角度までばらけさせる
         [[serialize(0)]] float fleeSpreadDegrees_   = 35.0f;
-        /** 最寄りのプレイヤーからこれだけ離れたら消える */
+        // NOTE: 最寄りのプレイヤーからこれだけ離れたら消える
         [[serialize(0)]] float vanishDistance_      = 45.0f;
-        /** 離れきれなくても、走りはじめてからこれだけ経ったら消える */
+        // NOTE: 離れきれなくても、走りはじめてからこれだけ経ったら消える
         [[serialize(0)]] float maxFlee_secs_        = 8.0f;
         [[serialize(0)]] int   animationStartleNumber_ = -1;
         [[serialize(0)]] int   animationMoveNumber_    = -1;

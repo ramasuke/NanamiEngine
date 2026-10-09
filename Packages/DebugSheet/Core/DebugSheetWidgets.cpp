@@ -28,7 +28,7 @@ namespace NanamiEngine::DebugSheet::Widgets
             return { -FLT_MIN, Metrics::CELL_HEIGHT };
         }
 
-        /** @brief 直前のセルの右端、縦中央に文字を置く */
+        // NOTE: 直前のセルの右端、縦中央に文字を置く
         void DrawTrailingText(const char* text, const Palette::Rgba& color)
         {
             const ImVec2 min  = ImGui::GetItemRectMin();

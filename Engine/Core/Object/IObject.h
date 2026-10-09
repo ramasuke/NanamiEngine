@@ -5,13 +5,12 @@
 
 namespace NanamiEngine::Module::Object
 {
-    //TODO: これIObjectじゃなくてObjectBaseにした方が良い
     class NANAMI_API IObject
     {
     public:
         virtual ~IObject() = default;
         [[nodiscard]] virtual const Guid& GetGuid() const = 0;
-        ///Inspectorで表示されるGui
+        // NOTE: Inspector に表示する GUI
         virtual void OnDrawGui() = 0;
         
         template <class Archive>

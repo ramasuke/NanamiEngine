@@ -8,9 +8,9 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /** LAN でセッションを探す問い合わせ/返事を受けるポート(ゲームの待ち受けポートの隣) */
+    // NOTE: LAN でセッションを探す問い合わせ/返事を受けるポート(ゲームの待ち受けポートの隣)
     constexpr std::uint16_t LAN_DISCOVERY_PORT = 1235;
-    /** 1 通の上限。セッションキーはこれに収まる長さにする */
+    // NOTE: 1 通の上限。セッションキーはこれに収まる長さにする
     constexpr size_t LAN_DISCOVERY_MAX_MESSAGE_SIZE = 512;
 
     struct NANAMI_API LanSessionQuery
@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::Network
         std::uint16_t port = 0;
     };
 
-    /** LAN セッション探索の問い合わせ/返事と UDP で送るバイト列の変換。不正なデータは nullopt */
+    // NOTE: LAN セッション探索の問い合わせ/返事と UDP で送るバイト列の変換。不正なデータは nullopt
     class NANAMI_API LanSessionMessage final
     {
     public:

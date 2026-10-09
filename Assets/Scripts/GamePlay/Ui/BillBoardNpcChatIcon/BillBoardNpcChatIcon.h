@@ -5,7 +5,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief NPC の頭上アイコンの表示切替。各アイコンの演出は子の ChatIcon*Motion が受け持つ */
+    // NOTE: NPC の頭上アイコンの表示切替。各アイコンの演出は子の ChatIcon*Motion が受け持つ
     class BillBoardNpcChatIcon final : public Component::ComponentBase
     {
     public:
@@ -18,13 +18,13 @@ namespace GamePlay::Ui
         void OnExitChattable();
         void BeginReactionSurprise();
         void EndReactionSurprise();
-        /** @brief 今の目的の相手なら驚きアイコンを出す(ナビ用)。BT の Show/Hide やリアクションとは別に持ち、隠れている間は出さない */
+        // NOTE: 今の目的の相手なら驚きアイコンを出す。Show/Hide やリアクションとは別に持ち、隠れている間は出さない
         void SetObjectiveSurprise(bool enable);
 
     private:
-        /** @brief BT などが頼んだ状態・リアクション・目的を合わせてアイコンに反映する */
+        // NOTE: 頼まれた状態・リアクション・目的を合わせてアイコンに反映する
         void Apply();
-        /** @brief まだ誰も Show/Hide を呼んでいなければ、今の見た目を頼まれた状態とみなす */
+        // NOTE: まだ誰も Show/Hide を呼んでいなければ、今の見た目を頼まれた状態とみなす
         void CaptureRequestedIfNeeded();
 
         bool isShow_ = true;

@@ -6,7 +6,6 @@
 
 namespace NanamiEngine::Module::Component
 {
-    /// TODO: layer設定は未対応。後で追加予定。
     class NANAMI_API BoxCollider final : public ColliderBase
     {
     private:
@@ -35,7 +34,7 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IBeginPhysics>(this));
             archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
             archive(CEREAL_NVP(size_));
-            // v5 以前はベースクラスのフィールドをここで保存していたため移行。motion 系は RigidBody に移ったので一時変数に読む
+            // NOTE: 旧版はベースクラスの項目をここで保存していた。motion 系は RigidBody に移ったので一時変数に読む
             if (version < 6) {
                 Physics::MotionType  legacyMotionType  = Physics::MotionType::Static;
                 Physics::Constraints legacyConstraints = Physics::Constraints::None;

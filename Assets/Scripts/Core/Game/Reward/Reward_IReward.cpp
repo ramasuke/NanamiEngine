@@ -27,7 +27,7 @@ namespace GameCore::Reward
             return created;
         }
 
-        /** @return 消すボタンが押されたら true */
+        // NOTE: 消すボタンが押されたら true を返す
         bool DrawRewardNode(const std::shared_ptr<IReward>& reward)
         {
             const bool isOpen = ImGui::TreeNodeEx("##reward", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowOverlap,

@@ -19,11 +19,11 @@ namespace NanamiEngine::Core::Application
         template<typename T>
         void AddCallback(std::weak_ptr<T> add);
 
-        /** @brief FieldInitStagingScope の中にいるスレッドだけ非 nullptr を返す */
+        // NOTE: FieldInitStagingScope の中にいるスレッドだけ非 nullptr を返す
         static std::vector<std::weak_ptr<Object::IFieldContext>>* FieldInitStaging();
-        /** @brief 貯めておいた FIELD の初期化待ちを共有キューへ移す */
+        // NOTE: 貯めておいた FIELD の初期化待ちを共有キューへ移す
         void AddStagedFieldInittables(const std::vector<std::weak_ptr<Object::IFieldContext>>& staged);
-        /** @brief 呼び出し待ちを全部捨てる (ゲーム DLL を外す前。weak_ptr の制御ブロックが DLL のコードを指しているため) */
+        // NOTE: 呼び出し待ちを全部捨てる (ゲーム DLL を外す前。weak_ptr の制御ブロックが DLL のコードを指しているため)
         void Clear();
 
     private:
@@ -31,10 +31,8 @@ namespace NanamiEngine::Core::Application
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IEnablableAsset> enableAssetCallbacks_;
     };
 
-    /**
-     * @brief このスレッドで積まれた FIELD の初期化待ちを、共有キューではなく staging に貯める
-     * WARNING: 共有キューに直接積むと、未登録の GameObject を解決して参照が null のまま確定する
-     */
+    // NOTE: このスレッドで積まれた FIELD の初期化待ちを、共有キューではなく staging に貯める
+    // WARNING: 共有キューに直接積むと、未登録の GameObject を解決して参照が null のまま確定する
     class NANAMI_API FieldInitStagingScope final
     {
     public:

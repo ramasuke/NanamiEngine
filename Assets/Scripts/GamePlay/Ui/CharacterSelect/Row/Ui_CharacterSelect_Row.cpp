@@ -68,7 +68,7 @@ namespace GamePlay::Ui
             : (isHighlighted_ || isHovering_ ? selectedBillSprite_.get() : unselectedBillSprite_.get());
         billRenderer_->SetSprite(sprite);
 
-        // 蝋の封は「いま選ばれている一枚」の印なので、ロック中には出さない
+        // NOTE: 蝋の封は「いま選ばれている一枚」の印なので、ロック中には出さない
         waxSeal_->SetEnable(isHighlighted_ && !isLocked);
         Transform().SetLocalScale(isHighlighted_ ? baseScale_ * selectedScale_ : baseScale_);
     }

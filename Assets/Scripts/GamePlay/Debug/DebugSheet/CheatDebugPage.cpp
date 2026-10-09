@@ -33,7 +33,7 @@ namespace GamePlay::Debug
                 CollectItems(child, items);
         }
 
-        /** @brief Assets/ 以下の ItemData。初めて開いたときに一度だけ集める */
+        // NOTE: Assets/ 以下の ItemData。初めて開いたときに一度だけ集める
         const std::vector<std::shared_ptr<ItemData>>& Items()
         {
             static std::vector<std::shared_ptr<ItemData>> items;

@@ -8,13 +8,13 @@
 
 namespace GamePlay::Magic
 {
-    // 弾の魔法のプレハブに付ける。飛ばし方と威力は ProjectileSpellEffect が Launch で渡す
+    // NOTE: 弾の魔法のプレハブに付ける。飛ばし方と威力は Launch で受け取る
     class MagicProjectile final : public Component::ComponentBase,
                                   public LifeCycleCallback::IUpdatable,
                                   public Physics::Callback::ICollisionEnterable
     {
     public:
-        /** @brief 生成直後に呼ぶ。撃ち手と仲間のアバターには当たっても弾けない */
+        // NOTE: 生成直後に呼ぶ。撃ち手と仲間のアバターには当たっても弾けない
         void Launch(const std::weak_ptr<GameObject::IGameObject>& caster,
                     GameCore::Damage::PhysicsPower power,
                     const glm::vec3& velocity,

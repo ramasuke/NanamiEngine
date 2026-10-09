@@ -12,9 +12,7 @@ namespace NanamiEngine::AssetUpdater::Dist
 {
     class DistHashCache;
 
-    /**
-     * 配信の単位は Assets/ のツリーをそのまま鏡写しにしたもの。エントリは 2 種類ある
-     */
+    // NOTE: 配信の単位は Assets/ のツリーをそのまま鏡写しにしたもの。エントリは 2 種類ある
     struct NANAMI_API DistScanResult
     {
         std::vector<ManifestEntry> entries;
@@ -41,7 +39,7 @@ namespace NanamiEngine::AssetUpdater::Dist
 
     [[nodiscard]] NANAMI_API std::string DecodeUtf8OrCp932(const std::string& bytes, bool* outWasCp932 = nullptr);
 
-    /** ファイルシステムのパスを、リポジトリルートからの '/' 区切り UTF-8 にする */
+    // NOTE: ファイルシステムのパスを、リポジトリルートからの '/' 区切り UTF-8 にする
     [[nodiscard]] NANAMI_API std::string ToRelPosix(const std::filesystem::path& path, const std::filesystem::path& repoRoot);
     [[nodiscard]] NANAMI_API std::filesystem::path Utf8ToPath(const std::string& utf8);
 

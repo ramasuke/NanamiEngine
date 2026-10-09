@@ -23,23 +23,23 @@ namespace GamePlay::Npc::Enemy
 
         [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return recordKind_; }
         void DoUpdate() override;
-        /** @brief 足が着地した瞬間にローカルプレイヤーとの距離で減衰させたカメラシェイクを掛ける */
+        // NOTE: 足が着地した瞬間にローカルプレイヤーとの距離で減衰させたカメラシェイクを掛ける
         void TryEmitFootQuake();
         void EmitFootQuake(const glm::vec3& stepPos) const;
         void TickStuckRecovery();
 
         [[serialize(5)]] std::vector<std::string> footBoneNames_ = { "jt_Foot_L", "jt_Foot_R" };
-        /** 足元からこの高さより上がった足が降りてきたら着地とみなす */
+        // NOTE: 足元からこの高さより上がった足が降りてきたら着地とみなす
         [[serialize(5)]] float footContactHeight_ = 75.0f;
         [[serialize(5)]] float footQuakeIntensity_ = 0.5f;
         [[serialize(5)]] float footQuakeDuration_secs_ = 0.25f;
-        /** この距離までは最大強度、footQuakeOuterRadius_ で 0 */
+        // NOTE: この距離までは最大強度、footQuakeOuterRadius_ で 0
         [[serialize(5)]] float footQuakeInnerRadius_ = 800.0f;
         [[serialize(5)]] float footQuakeOuterRadius_ = 3000.0f;
         [[serialize(5)]] FIELD(Asset::SoundFile) footstepSound_;
         std::vector<FootLatch> footLatches_;
         [[serialize(6)]] GameCore::Npc::Enemy::StuckRecovery stuckRecovery_;
-        // NOTE: 討伐の記録に使う種別。イベントの強い個体の prefab では EnragedTyrannosaurus にして、本編の大顎と数えを分ける
+        // NOTE: 討伐の記録に使う種別。強化個体の prefab では EnragedTyrannosaurus にして数えを分ける
         [[serialize(7)]] GameCore::Npc::Enemy::EnemyKind recordKind_ = GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus;
 
 #pragma region Serialization Function

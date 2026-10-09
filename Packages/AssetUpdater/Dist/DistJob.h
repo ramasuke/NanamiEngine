@@ -19,13 +19,13 @@ namespace NanamiEngine::AssetUpdater::Dist
     enum class DistStep
     {
         None,
-        /** Assets/ を走査して manifest.json を書き出す */
+        // NOTE: Assets/ を走査して manifest.json を書き出す
         Build,
-        /** 何を上げるかの表示と中身の検証だけ行う */
+        // NOTE: 何を上げるかの表示と中身の検証だけ行う
         DryRun,
-        /** 参照ファイルを配信先へ上げ、最後に manifest.json を差し替える */
+        // NOTE: 参照ファイルを配信先へ上げ、最後に manifest.json を差し替える
         Release,
-        /** 公開中の manifest.json と手元の manifest.json の差分 (クライアントが落とす量) を出す */
+        // NOTE: 公開中の manifest.json と手元の manifest.json の差分 (クライアントが落とす量) を出す
         DiffLive,
         SelfTest,
     };
@@ -34,14 +34,14 @@ namespace NanamiEngine::AssetUpdater::Dist
     {
         DistStep              step = DistStep::None;
         std::string           version;
-        /** これ未満のクライアントには更新を当てない */
+        // NOTE: これ未満のクライアントには更新を当てない
         std::string           requiredClientVersion;
         DistConfig            config;
-        /** Assets/ と manifest.json のあるプロジェクトのルート */
+        // NOTE: Assets/ と manifest.json のあるプロジェクトのルート
         std::filesystem::path repoRoot;
     };
 
-    /** アセット配信の 1 ステップをワーカースレッドで動かし、出力を行ごとに溜める。終了コードは 0 = 成功、1 = 失敗 */
+    // NOTE: アセット配信の 1 ステップをワーカースレッドで動かし、出力を行ごとに溜める。終了コードは 0 = 成功、1 = 失敗
     class NANAMI_API DistJob final
     {
     public:
@@ -50,18 +50,18 @@ namespace NanamiEngine::AssetUpdater::Dist
         DistJob(const DistJob&)            = delete;
         DistJob& operator=(const DistJob&) = delete;
 
-        /** 前回の出力を捨てて始める。実行中なら false */
+        // NOTE: 前回の出力を捨てて始める。実行中なら false
         bool Start(DistRequest request);
-        /** 次のファイルの区切りか、実行中の rclone を止めた時点で終わる。終了は待たない */
+        // NOTE: 次のファイルの区切りか、実行中の rclone を止めた時点で終わる。終了は待たない
         void Cancel();
 
         [[nodiscard]] bool               IsRunning   () const;
         [[nodiscard]] bool               WasCanceled () const;
-        /** 実行中と中止のときは空 */
+        // NOTE: 実行中と中止のときは空
         [[nodiscard]] std::optional<int> ExitCode    () const;
-        /** 直近の Start からの経過時間 ("m:ss")。終了後は止まる */
+        // NOTE: 直近の Start からの経過時間 ("m:ss")。終了後は止まる
         [[nodiscard]] std::string        ElapsedLabel() const;
-        /** from 行目以降を out に足し、全体の行数を返す */
+        // NOTE: from 行目以降を out に足し、全体の行数を返す
         size_t                           CopyLines   (std::vector<std::string>& out, size_t from) const;
 
     private:
@@ -70,7 +70,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         int  RunUpload  (const DistRequest& request, bool dryRun);
         int  RunDiffLive(const DistRequest& request);
         void Print(std::string line);
-        /** Cancel が実行中の rclone を止められるよう登録する */
+        // NOTE: Cancel が実行中の rclone を止められるよう登録する
         void SetActiveRclone(Rclone* rclone);
         [[nodiscard]] bool IsCanceled() const;
         void Join();

@@ -16,7 +16,7 @@ namespace NanamiEngine::Module::BlackBoard
 
 namespace Editor::Npc::Behaviour
 {
-    /** @brief ブラックボードの int キーと値の組 */
+    // NOTE: ブラックボードの int キーと値の組
     struct BlackBoardIntEntry
     {
         std::string keyName_;
@@ -36,7 +36,7 @@ namespace Editor::Npc::Behaviour
         }
     };
 
-    /** @brief ブラックボードの条件がすべて一致したときだけ子を実行する。子が無ければ判定だけで Success */
+    // NOTE: ブラックボードの条件がすべて一致したときだけ子を実行する。子が無ければ判定だけで Success
     class BlackBoardGate final : public NodeBase
     {
     public:
@@ -61,16 +61,14 @@ namespace Editor::Npc::Behaviour
         };
 
         std::shared_ptr<NodeBase> child_;
-        /** @brief すべて一致で子を実行。1 つでも違えば Failure */
+        // NOTE: すべて一致で子を実行。1 つでも違えば Failure
         std::vector<BlackBoardIntEntry> conditions_;
-        /**
-         * @brief 子を実行し始めるときに書く
-         * NOTE: 条件は毎 Tick 判定するので、条件のキーを書き換えると次の Tick で外れる
-         */
+        // NOTE: 子を実行し始めるときに書く
+        // NOTE: 条件は毎 Tick 判定するので、条件のキーを書き換えると次の Tick で外れる
         std::vector<BlackBoardIntEntry> writesOnStart_;
-        /** @brief 子が Success を返したときに書く */
+        // NOTE: 子が Success を返したときに書く
         std::vector<BlackBoardIntEntry> writesOnSuccess_;
-        /** @brief OnceExecute と同じく、終わった後は結果を返し続ける */
+        // NOTE: 終わった後は結果を返し続ける
         bool once_ = false;
 
         State state_ = State::NotExecuted;

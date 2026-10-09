@@ -11,7 +11,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         auto& purposeCamera = context.CatchPrefabObject<CineMachine::CineMachineVirtualCamera>(prefabPurposeCamera_);
         purposeCamera.SetPriority(priority_);
 
-        // 権威側限定Tickなら、他ピアの同名子カメラも同じ優先度にする
+        // NOTE: 権威側限定Tickなら、他ピアの同名子カメラも同じ優先度にする
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::PurposeCameraRpc::Send(

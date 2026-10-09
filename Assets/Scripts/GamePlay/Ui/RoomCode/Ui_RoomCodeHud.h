@@ -11,9 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 非公開の部屋にいる間、画面の隅に部屋番号を出す (変わったときだけ書き直す)
-     */
+    // NOTE: 非公開の部屋にいる間、画面の隅に部屋番号を出す (変わったときだけ書き直す)
     class RoomCodeHud final : public Component::ComponentBase,
                               public LifeCycleCallback::IStartable,
                               public LifeCycleCallback::IUpdatable
@@ -23,12 +21,12 @@ namespace GamePlay::Ui
         void OnUpdate() override;
 
         void Show(const std::string& code);
-        /** @brief 482913 を 482 913 と読みやすく区切る */
+        // NOTE: 482913 を 482 913 と読みやすく区切る
         [[nodiscard]] std::string FormatCode(const std::string& code) const;
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) visualRoot_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) codeText_;
-        // 何桁ごとに区切って読みやすくするか (0 で区切らない)
+        // NOTE: 何桁ごとに区切って読みやすくするか (0 で区切らない)
         [[serialize(0)]] int codeGroupSize_ = 3;
         [[serialize(0)]] std::string codeGroupSeparator_ = " ";
 

@@ -13,6 +13,6 @@ namespace GameCore::PlayerAvatar
 
 ATTACK_AREA_CLASS_VERSION(GameCore::PlayerAvatar::ITakablePlayerAttack)
 #pragma region SerializationMacro
-// NOTE: 2 = 基底が NetworkComponent になった版(GamePlay::AttackArea の load が参照する)
+// NOTE: 2 = 基底が NetworkComponent になった版。派生の load が見る
 CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAttackArea, 2);
 #pragma endregion

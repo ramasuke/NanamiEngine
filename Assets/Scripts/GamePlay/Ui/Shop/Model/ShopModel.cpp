@@ -87,7 +87,7 @@ namespace GamePlay::Ui
             return 0;
 
         const int bought = pouch_->Add(selected->item, quantity_);
-        // 残りの上限が今の個数より小さくなったら合わせる
+        // NOTE: 残りの上限が今の個数より小さくなったら合わせる
         quantity_ = std::clamp(quantity_, 1, std::max(1, MaxQuantity(*selected)));
         return bought;
     }

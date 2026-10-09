@@ -25,7 +25,7 @@ namespace GamePlay::Ui
 {
     class SpellSlot;
 
-    // 画面左下の魔法陣。2ページを LT+RB（右クリック）で入れ替え、外周の弧が MP
+    // NOTE: 画面左下の魔法陣。2ページを LT+RB（右クリック）で入れ替え、外周の弧が MP
     class SpellPalette final : public Component::ComponentBase,
                                public LifeCycleCallback::IUpdatable
     {
@@ -36,14 +36,14 @@ namespace GamePlay::Ui
         void OnUpdate() override;
 
         void SpawnSlots();
-        /// 枠のアイコンと消費 MP を作り直す。装備が変わったときだけ呼ぶ
+        // NOTE: 枠のアイコンと消費 MP を作り直す。装備が変わったときだけ呼ぶ
         void RefreshSpells();
         void ApplyDeviceGlyphs();
         void PresentSlots(float groupAlpha);
         void PresentNames(float groupAlpha) const;
         void PresentMana(float groupAlpha) const;
         void FadeOut();
-        /// 向き（0=上 1=右 2=下 3=左）ごとの手前の置き場所と奥の置き場所
+        // NOTE: 向き（0=上 1=右 2=下 3=左）ごとの手前の置き場所と奥の置き場所
         [[nodiscard]] glm::vec3 FrontAnchorPos(int direction) const;
         [[nodiscard]] glm::vec3 BackAnchorPos (int direction) const;
         [[nodiscard]] int FrontPage() const { return pageSwap_.Value() >= 0.5f ? 1 : 0; }
@@ -86,16 +86,16 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) padPageSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) keyPageSprite_;
 
-        /// MP の弧。manaFill_ の startPercent_ / spanPercent_ と同じ弧を角度で持つ（先端の光を置くのに使う）
+        // NOTE: MP の弧。manaFill_ の startPercent_ / spanPercent_ と同じ弧を角度で持つ（先端の光を置くのに使う）
         [[serialize(0)]] float manaArcRadius_ = 138.0f;
         [[serialize(0)]] float manaArcStartDeg_ = 210.0f;
         [[serialize(0)]] float manaArcSpanDeg_ = 300.0f;
-        /// LT を離している間の濃さ
+        // NOTE: LT を離している間の濃さ
         [[serialize(0)]] float idleAlphaRate_ = 0.75f;
-        /// 奥のページ（斜め）の大きさと濃さ
+        // NOTE: 奥のページ（斜め）の大きさと濃さ
         [[serialize(0)]] float backScale_ = 0.56f;
         [[serialize(0)]] float backAlphaRate_ = 0.6f;
-        /// MP が足りない魔法のアイコンの濃さ
+        // NOTE: MP が足りない魔法のアイコンの濃さ
         [[serialize(0)]] float manaLackIconRate_ = 0.45f;
         [[serialize(0)]] float fadeDuration_secs_ = 0.2f;
         [[serialize(0)]] float pageSwapDuration_secs_ = 0.15f;
@@ -111,7 +111,7 @@ namespace GamePlay::Ui
         bool  isSpawned_      = false;
         bool  isSpellsDirty_  = true;
         bool  isDeviceDirty_  = true;
-        // 開いた瞬間・頁が変わった瞬間に音を鳴らすための前フレームの状態
+        // NOTE: 開いた瞬間・頁が変わった瞬間に音を鳴らすための前フレームの状態
         bool  wasOpen_        = false;
         bool  wasSecondPage_  = false;
         bool  hasReadInput_   = false;

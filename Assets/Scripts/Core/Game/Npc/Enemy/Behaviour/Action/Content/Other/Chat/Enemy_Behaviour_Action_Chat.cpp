@@ -9,7 +9,6 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::Chat::DoTick(const TickContext& context)
     {
-        // 会話開始
         if (!isPreviewTickChatting_)
         {
             isChatting_ = true;
@@ -22,7 +21,6 @@ namespace GameCore::Npc::Enemy::Behaviour
             }
         }
 
-        // 会話が終了
         if (isFinishedChat_)
         {
             isPreviewTickChatting_ = false;
@@ -31,7 +29,6 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Success;
         }
 
-        // 会話中
         if (isChatting_)
         {
             isPreviewTickChatting_ = true;

@@ -22,7 +22,7 @@ namespace NanamiEngine::Core::Application::Launch
 {
     namespace
     {
-        // コマンドライン引数
+        // NOTE: exe 名を除いたコマンドライン引数
         std::vector<std::wstring> CommandLineArguments()
         {
             std::vector<std::wstring> arguments;
@@ -89,7 +89,7 @@ namespace NanamiEngine::Core::Application::Launch
 
     int RunApplication()
     {
-        //起動時の Scene 破損など回復できないエラーはダイアログを出して終了する
+        // NOTE: 起動時の Scene 破損など回復できないエラーはダイアログを出して終了する
         try
         {
             std::unique_ptr<ApplicationBase> application = nullptr;

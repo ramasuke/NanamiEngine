@@ -13,7 +13,7 @@
 
 namespace NanamiEngine::Module::LocalPrefs::Editor
 {
-    // 型ごとの ImGui ウィジェット描画。未対応の型は型名を表示するだけ
+    // NOTE: 型ごとの ImGui ウィジェット描画。未対応の型は型名を表示するだけ
     template<typename T>
     void DrawLocalPrefWidget(const std::string& label, T& value)
     {
@@ -57,28 +57,25 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
     class NANAMI_API LocalPrefsRegistry final
     {
     public:
-        // 列挙時にエディタ側が受け取る、各設定項目のメタデータ
+        // NOTE: 登録された設定項目 1 つ分のメタデータ
         struct NANAMI_API PrefInfo final
         {
             std::string key;
             std::string typeName;
             std::string subPath;
             
-            // 型を知らなくても、レジストリ側から共通で叩ける操作
+            // NOTE: 型を知らなくても、レジストリ側から共通で叩ける操作
             std::function<void()> saveDefault;
-            // 編集・保存 UI を描画する。値は初回だけファイルから読み、以降は内部 state を使う
+            // NOTE: 編集・保存 UI を描画する。値は初回だけファイルから読み、以降は内部 state を使う
             std::function<void()> drawEditGui;
-            // 登録元のモジュール
+            // NOTE: 登録元のモジュール
             Core::ModuleHandle module;
         };
 
-        // シングルトンインスタンスの取得
         static LocalPrefsRegistry& GetInstance();
-        // マクロの初期化ロジックから呼び出される登録関数
         void Register(PrefInfo info);
-        // module が登録した項目を消す。戻り値は消した数
+        // NOTE: module が登録した項目を消す。戻り値は消した数
         std::size_t UnregisterModule(Core::ModuleHandle module);
-        // エディタ側で「登録された項目をループで列挙する」ためのゲッター
         [[nodiscard]] const std::vector<PrefInfo>& GetPrefsList() const;
 
     private:
@@ -86,7 +83,7 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         std::vector<PrefInfo> m_prefsList;
     };
 
-    // REGISTER_LOCAL_PREF_WITH_PATH の本体。makeDefault はデフォルト値が必要になったときに呼ぶ
+    // NOTE: 登録マクロの本体。makeDefault はデフォルト値が必要になったときに呼ぶ
     template<typename T, typename MakeDefault>
     bool RegisterLocalPref(std::string key, std::string subPath, std::string typeName,
                            MakeDefault makeDefault, Core::ModuleHandle module)
@@ -100,7 +97,7 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         {
             SaveWithPath<T>(subPath, key, makeDefault());
         };
-        // NOTE: std::function needs a copyable lambda, and T may be move-only (MagicCasterAvatarStatus)
+        // NOTE: std::function はコピー可能なラムダを要るので、ムーブ専用かもしれない T は shared_ptr 越しに持つ
         info.drawEditGui = [key, subPath, makeDefault, state = std::make_shared<std::optional<T>>()]()
         {
             if (!state->has_value())
@@ -131,10 +128,8 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
 #define NANAMI_LOCAL_PREF_CONCAT_(a, b) a##b
 #define NANAMI_LOCAL_PREF_CONCAT(a, b)  NANAMI_LOCAL_PREF_CONCAT_(a, b)
 
-/**
- * LocalPrefs の項目をエディタのツールバーへ静的登録する。
- * NOTE: .cpp のグローバル / namespace スコープに書く (末尾の ; は不要)
- */
+// NOTE: LocalPrefs の項目をエディタのツールバーへ静的登録する
+// NOTE: .cpp のグローバル / namespace スコープに書く (末尾の ; は不要)
 #define REGISTER_LOCAL_PREF_WITH_PATH(Type, KeyName, DefaultValue, SubPath)                    \
     static const bool NANAMI_LOCAL_PREF_CONCAT(nanamiLocalPrefRegistered_, __COUNTER__) =      \
         ::NanamiEngine::Module::LocalPrefs::Editor::RegisterLocalPref<Type>(                   \

@@ -10,13 +10,11 @@
 
 namespace GamePlay::Pickup
 {
-    /**
-     * @brief 落ちているアイテム。ポーチに入りきらない間は地面に残る
-     */
+    // NOTE: 落ちているアイテム。ポーチに入りきらない間は地面に残る
     class ItemPickup final : public PickupItemBase
     {
     public:
-        /** @brief 生成直後に呼ぶ。中身を決め、sideDirection 側へ跳ね上げる */
+        // NOTE: 生成直後に呼ぶ。中身を決め、sideDirection 側へ跳ね上げる
         void Drop(const std::shared_ptr<Asset::ItemData>& item, int count, const glm::vec3& sideDirection);
 
     private:
@@ -26,7 +24,7 @@ namespace GamePlay::Pickup
 
         [[serialize(0)]] FIELD(Asset::ItemData) item_;
         [[serialize(0)]] int count_ = 1;
-        /** 回して上下させる見た目の子。ルートは回転を止めてあるので、足元の光は水平のまま */
+        // NOTE: 回して上下させる見た目の子。ルートは回転を止めてあるので、足元の光は水平のまま
         [[serialize(0)]] FIELD(GameObject::IGameObject) model_;
         [[serialize(0)]] float spinSpeed_degPerSec_ = 45.0f;
         [[serialize(0)]] float bobHeight_           = 0.32f;

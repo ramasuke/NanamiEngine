@@ -26,7 +26,7 @@ namespace NanamiEngine::Core::Network
 
     NetworkObjectId SpawnNetworkObject::CreateNetworkObjectId()
     {
-        // 上位バイトは採番の名前空間。各ピアが独立に採番しても衝突しないようにするためのもの
+        // NOTE: 上位バイトは採番の名前空間。各ピアが独立に採番しても衝突しないようにするためのもの
         const uint32_t namespaceBits = static_cast<uint8_t>(PlayerId().Value());
         const NetworkObjectId assignedId(namespaceBits << 16 | nextNetworkObjectId_++ & 0xFFFF);
         return assignedId;
@@ -71,7 +71,7 @@ namespace NanamiEngine::Core::Network
         {
             instanceRegistry_.RegisterWithId(ids[i], nodes[i], policy, owner);
 
-            // NetworkGameObject が無い子オブジェクトは NetworkComponent へ直接 NetworkAwake する
+            // NOTE: NetworkGameObject が無いノードは INetworkAwakable へ直接 NetworkAwake する
             if (const auto networkGameObject = nodes[i]->Components().Catch<Module::Network::NetworkGameObject>().lock())
             {
                 networkGameObject->SetNetworkObjectId(ids[i]);
@@ -115,7 +115,7 @@ namespace NanamiEngine::Core::Network
         for (const auto& node : CollectNetworkGameObjects(root))
             instanceRegistry_.UnregisterObject(node);
 
-        // 破棄は GameWindow の削除キューに積まれ、子オブジェクトも一緒に破棄される
+        // NOTE: 破棄は削除キュー経由で、子オブジェクトも一緒に破棄される
         root->OnDestroy();
     }
 
@@ -135,7 +135,7 @@ namespace NanamiEngine::Core::Network
         const glm::vec3 position,
         const glm::quat rotation)
     {
-        // .prefab の読み込みに失敗している場合は Content() が null
+        // NOTE: .prefab の読み込みに失敗している場合は Content() が null
         const auto prefabContent = prefabFile.Content();
         if (!prefabContent)
         {

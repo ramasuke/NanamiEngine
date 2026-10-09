@@ -17,7 +17,7 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief 調べると箱が揺れてからフタが開き、開き切ったら dropTable_ を散らす宝箱。開けたことは保存しない */
+    // NOTE: 調べると箱が揺れてからフタが開き、開き切ったら dropTable_ を散らす宝箱。開けたことは保存しない
     class TreasureChest final : public Component::ComponentBase,
                                 public LifeCycleCallback::IStartable,
                                 public LifeCycleCallback::IUpdatable,
@@ -39,22 +39,22 @@ namespace GamePlay::Prop
         void SpillLoot();
 
         [[serialize(0)]] FIELD(Asset::DropTable) dropTable_;
-        /** ヒンジ位置が原点のフタ。ローカル X 軸回りに回す */
+        // NOTE: ヒンジ位置が原点のフタ。ローカル X 軸回りに回す
         [[serialize(0)]] FIELD(GameObject::IGameObject) lid_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) dropPoint_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) openParticle_;
         [[serialize(0)]] FIELD(Asset::SoundFile) openSound_;
         [[serialize(0)]] FIELD(Ui::BillBoardNpcChatIcon) chatIcon_;
-        /** 未開封の間だけ流す光。開けたら止める */
+        // NOTE: 未開封の間だけ流す光。開けたら止める
         [[serialize(1)]] FIELD(Component::ParticleSystem) idleParticle_;
         [[serialize(0)]] float openAngle_deg_     = -105.0f;
         [[serialize(0)]] float openDuration_secs_ = 0.45f;
-        /** 開ける前に lid_ と一緒に揺らす箱の本体 */
+        // NOTE: 開ける前に lid_ と一緒に揺らす箱の本体
         [[serialize(2)]] FIELD(GameObject::IGameObject) body_;
         [[serialize(2)]] float shakeDuration_secs_ = 0.55f;
         [[serialize(2)]] float shakeAngle_deg_     = 5.0f;
         [[serialize(2)]] float shakeFrequency_hz_  = 9.0f;
-        // 揺れで跳ねる高さ (ローカル)
+        // NOTE: 揺れで跳ねる高さ (ローカル)
         [[serialize(3)]] float shakeHop_           = 0.12f;
 
         struct ClosedPose

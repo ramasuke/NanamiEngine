@@ -6,7 +6,7 @@
 
 namespace GamePlay::Sound
 {
-    // 生成されてから delay_secs_ 後に、この位置で SE を1回鳴らす。着弾や詠唱など、エフェクトのプレハブに音を持たせる用
+    // NOTE: 生成から delay_secs_ 後にこの位置で SE を1回鳴らす。エフェクトのプレハブに音を持たせる用
     class SpawnSound final : public Component::ComponentBase,
                              public LifeCycleCallback::IUpdatable
     {

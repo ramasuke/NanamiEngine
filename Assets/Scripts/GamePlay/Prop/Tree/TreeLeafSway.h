@@ -12,7 +12,7 @@
 
 namespace GamePlay::Prop
 {
-    // ModelRenderer の葉のマテリアルだけに風揺れシェーダーを供給する
+    // NOTE: ModelRenderer の葉のマテリアルだけに風揺れシェーダーを供給する
     // NOTE: 揺れの重みと位相は .mv1 の TEXCOORD1 にベイク済み
     class TreeLeafSway final : public Component::ComponentBase,
                                public Component::IShaderConstantBufferHost,
@@ -24,7 +24,7 @@ namespace GamePlay::Prop
         [[nodiscard]] bool ShouldDrawShadow        (const std::string& materialName) override;
 
     private:
-        // Tree_VS.hlsl / Tree_PS.hlsl の TreeWindBuffer と同じ並び
+        // WARNING: Tree_VS.hlsl / Tree_PS.hlsl の TreeWindBuffer と同じ並びにする
         struct TreeWindCB
         {
             float wind[4];

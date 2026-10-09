@@ -18,7 +18,7 @@ namespace NanamiEngine::R4
 
         [[nodiscard]] const rxcpp::composite_subscription& Subscription() const { return subscription_; }
         [[nodiscard]] bool IsCancellationRequested() const;
-        //NOTE: キャンセル時に呼ばれる。既にキャンセル済みならその場で呼ばれる
+        // NOTE: キャンセル時に呼ばれる。既にキャンセル済みならその場で呼ばれる
         void Register(std::function<void()> callback) const;
 
     private:

@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::Application::Build
 {
     namespace
     {
-        // AssetUpdater::Dist::IsExcludedFromDistribution と揃える。ただし .meta は実行時に要るので配る
+        // NOTE: AssetUpdater::Dist::IsExcludedFromDistribution と揃える。ただし .meta は実行時に要るので配る
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORIES[]      = { L"assets/scripts" };
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORY_NAMES[] = { L"_source" };
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_EXTENSIONS[]      = { L".fbx", L".blend", L".blend1", L".efkproj", L".h", L".cpp", L".bak" };
@@ -31,7 +31,7 @@ namespace NanamiEngine::Core::Application::Build
 
         constexpr std::wstring_view GAME_BUILD_PACKAGED_PROJECT_CONFIGS[] = { L"ProjectConfig/Application", L"ProjectConfig/Network", L"ProjectConfig/Physics" };
 
-        // AssetUpdatePresenter が作業ディレクトリ直下から読む
+        // NOTE: ゲームが作業ディレクトリ直下から読む
         constexpr wchar_t GAME_BUILD_INSTALLED_STATE_FILE[] = L"installed.json";
 
         constexpr wchar_t GAME_BUILD_LOG_FILE[]       = L"GameBuild.log";
@@ -113,7 +113,7 @@ namespace NanamiEngine::Core::Application::Build
             const std::filesystem::path logDirectory = BuildLogDirectory(paths);
             std::filesystem::create_directories(logDirectory);
 
-            // コンソール出力は CP932 なので受け取らず、UTF-8 のファイルログから読む
+            // NOTE: コンソール出力は CP932 なので受け取らず、UTF-8 のファイルログから読む
             const std::wstring commandLine = L"\"" + paths.msBuild.wstring() + L"\" \"" + paths.solution.wstring() + L"\""
                 L" -p:Configuration=" + paths.configuration + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
                 L" -p:NanamiApplicationMode=Game"
@@ -237,7 +237,7 @@ namespace NanamiEngine::Core::Application::Build
         const std::wstring          workingDirectory = paths_.outputRoot.wstring();
         std::wstring                commandLine      = L"\"" + exePath.wstring() + L"\"";
 
-        // ゲームは Assets/ と ProjectConfig/ を作業ディレクトリから読む
+        // NOTE: ゲームは Assets/ と ProjectConfig/ を作業ディレクトリから読む
         STARTUPINFOW        startupInfo = {};
         PROCESS_INFORMATION processInfo = {};
         startupInfo.cb = sizeof(startupInfo);
@@ -265,7 +265,7 @@ namespace NanamiEngine::Core::Application::Build
         try
         {
             CopyIfChanged(builtExe, paths_.outputRoot / paths_.exeFileName);
-            // exe の隣の DLL も持っていく
+            // NOTE: exe の隣の DLL も持っていく
             for (const auto& entry : std::filesystem::directory_iterator(builtExe.parent_path()))
             {
                 if (entry.is_regular_file() && entry.path().extension() == L".dll")
@@ -283,7 +283,7 @@ namespace NanamiEngine::Core::Application::Build
         MirrorDirectory(paths_.projectRoot, paths_.outputRoot, L"Assets", IsPackagedAsset, stats);
         for (const auto directory : GAME_BUILD_PACKAGED_PROJECT_CONFIGS)
             MirrorDirectory(paths_.projectRoot, paths_.outputRoot, directory, copyAll, stats);
-        // 製品名と起動シーン。ProjectConfig/Build/ 直下の MSBuild のパスなどはエディタ専用なので配らない
+        // NOTE: 製品名と起動シーン。ProjectConfig/Build/ 直下の MSBuild のパスなどはエディタ専用なので配らない
         MirrorDirectory(paths_.projectRoot, paths_.outputRoot, Configuration::BuildConfiguration::RuntimeConfigDirectory(), copyAll, stats);
 
         Module::Log("GameBuilder: アセットと設定を同期しました (コピー " + std::to_string(stats.copied) + " 件 / 削除 " + std::to_string(stats.removed) + " 件)");
@@ -295,7 +295,7 @@ namespace NanamiEngine::Core::Application::Build
         const std::filesystem::path installedState = paths_.outputRoot / GAME_BUILD_INSTALLED_STATE_FILE;
         if (!paths_.assetUpdates)
         {
-            // 前回のビルドの installed.json が残っていると、無効にしたはずの更新が走る
+            // NOTE: 前回のビルドの installed.json が残っていると、無効にしたはずの更新が走る
             std::filesystem::remove(installedState);
             return true;
         }
@@ -333,7 +333,7 @@ namespace NanamiEngine::Core::Application::Build
             if (!filter(key))
                 continue;
 
-            // 大文字小文字だけ変わったファイルを、コピー直後に古い名前として消さないよう小文字で持つ
+            // NOTE: 大文字小文字だけ変わったファイルを、コピー直後に古い名前として消さないよう小文字で持つ
             keptKeys.insert(GameBuildToLower(key));
             if (CopyIfChanged(file, destinationRoot / relative))
                 ++stats.copied;
@@ -361,7 +361,7 @@ namespace NanamiEngine::Core::Application::Build
         {
             if (it->is_directory())
             {
-                // ジャンクションの先を同期や削除の対象にしない
+                // NOTE: ジャンクションの先を同期や削除の対象にしない
                 if (GetFileAttributesW(it->path().c_str()) & FILE_ATTRIBUTE_REPARSE_POINT)
                     it.disable_recursion_pending();
                 continue;
@@ -386,7 +386,7 @@ namespace NanamiEngine::Core::Application::Build
         std::filesystem::create_directories(destination.parent_path());
         std::filesystem::copy_file(source, destination, std::filesystem::copy_options::overwrite_existing);
         
-        // MSBuild の差分ビルドは更新日時で判断するので、元のファイルに揃える
+        // NOTE: MSBuild の差分ビルドは更新日時で判断するので、元のファイルに揃える
         std::filesystem::last_write_time(destination, sourceTime);
         return true;
     }
@@ -422,7 +422,7 @@ namespace NanamiEngine::Core::Application::Build
         const auto normalize = [](const std::filesystem::path& target)
         {
             std::filesystem::path normalized = std::filesystem::weakly_canonical(target);
-            // "Build/Game/" のような末尾の区切りが空の要素として残ると、比較が素通りしてしまう
+            // NOTE: "Build/Game/" のような末尾の区切りが空の要素として残ると、比較が素通りしてしまう
             if (!normalized.has_filename() && normalized.has_relative_path())
                 normalized = normalized.parent_path();
             

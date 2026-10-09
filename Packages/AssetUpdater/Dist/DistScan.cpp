@@ -51,7 +51,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         }
 
 
-        /** 大文字小文字を無視した、パス要素ごとの並び (tools/dist の sorted(rglob) と同じ順) */
+        // NOTE: 大文字小文字を無視した、パス要素ごとの並び
         std::vector<std::string> DistScanSortKey(const std::filesystem::path& relative)
         {
             std::vector<std::string> key;
@@ -156,7 +156,7 @@ namespace NanamiEngine::AssetUpdater::Dist
         {
             if (it->is_directory(error))
             {
-                // ジャンクションの先は配信の対象にしない
+                // NOTE: ジャンクションの先は配信の対象にしない
                 if (GetFileAttributesW(it->path().c_str()) & FILE_ATTRIBUTE_REPARSE_POINT)
                     it.disable_recursion_pending();
                 continue;

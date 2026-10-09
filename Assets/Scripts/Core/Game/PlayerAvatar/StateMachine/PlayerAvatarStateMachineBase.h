@@ -146,7 +146,7 @@ namespace GameCore::PlayerAvatar
         }
 
     protected:
-        /** @brief currentState を操作ロックで止めてよいか */
+        // NOTE: currentState を操作ロックで止めてよいか
         [[nodiscard]] virtual bool YieldsToControlLock() const = 0;
 
         NanamiEngine::R4::Observable<std::shared_ptr<IPlayerAvatarState>> CurrentState()
@@ -157,7 +157,7 @@ namespace GameCore::PlayerAvatar
     private:
         bool isEnable_ = false; 
         const StateMap states_;
-        // 同じステートへの遷移も通知するので、更新は Value(v) ではなく OnNext(v)
+        // WARNING: 同じステートへの遷移も通知するので、更新は Value(v) ではなく OnNext(v)
         NanamiEngine::R4::ReactiveProperty<std::shared_ptr<IPlayerAvatarState>> currentState_;
         StateTypeT       currentStateType_;
         const StateTypeT initialState_;

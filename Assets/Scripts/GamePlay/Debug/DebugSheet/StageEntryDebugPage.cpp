@@ -39,7 +39,7 @@ namespace GamePlay::Debug
             return "-";
         }
 
-        /** 数字だけ・最大 ROOM_CODE_LENGTH 桁の部屋コード入力 */
+        // NOTE: 数字だけ・最大 ROOM_CODE_LENGTH 桁の部屋コード入力
         void InputRoomCode(std::string& code)
         {
             std::array<char, NanamiRelay::ROOM_CODE_LENGTH + 1> buffer{};

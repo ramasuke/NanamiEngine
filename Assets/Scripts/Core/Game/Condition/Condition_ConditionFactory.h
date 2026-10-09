@@ -11,7 +11,7 @@ namespace GameCore::Condition
 {
     class ICondition;
 
-    /// 解放条件を名前から作る。インスペクタの「条件を足す」が列挙する
+    // NOTE: 解放条件を名前から作る。登録したものがインスペクタで足せる条件になる
     class ConditionFactory final : public SingletonBase<ConditionFactory>
     {
     public:

@@ -17,9 +17,7 @@ namespace NanamiEngine::Module::Component
 
 namespace GamePlay::Weather
 {
-    /**
-     * @brief 砂漠の砂嵐
-     */
+    // NOTE: 砂漠の砂嵐
     class Sandstorm final : public Component::ComponentBase,
                             public LifeCycleCallback::IAwakable,
                             public LifeCycleCallback::IUpdatable,
@@ -32,7 +30,7 @@ namespace GamePlay::Weather
         void StartStorm();
         void StopStorm ();
 
-        /** @brief 骸竜が呼ぶ砂嵐。周期を止めて砂嵐にし、EndSummoned か summonedMax_secs_ で凪に戻す */
+        // NOTE: 召喚された砂嵐。周期を止めて砂嵐にし、EndSummoned か summonedMax_secs_ で凪に戻す
         static void BeginSummoned();
         static void EndSummoned  ();
         [[nodiscard]] static bool IsSummoned();
@@ -70,7 +68,7 @@ namespace GamePlay::Weather
         [[serialize(0)]] float stormMax_secs_  = 40.0f;
         [[serialize(0)]] float blend_secs_     = 6.0f;
         
-        // 入場直後に砂嵐を浴びせないため、最初の凪はこの秒数から始める
+        // NOTE: 入場直後に砂嵐を浴びせないため、最初の凪はこの秒数から始める
         [[serialize(0)]] float firstCalm_secs_ = 40.0f;
 
         [[serialize(0)]] NanamiEngine::Color32 stormFogColor_   = NanamiEngine::Color32(196, 160, 112);
@@ -84,16 +82,16 @@ namespace GamePlay::Weather
 
         [[serialize(0)]] float particleYawOffsetDeg_  = 0.0f;
 
-        // 物は風下へこの速さまで加速する
+        // NOTE: 物は風下へこの速さまで加速する
         [[serialize(0)]] float pushSpeed_        = 40.0f;
         [[serialize(0)]] float pushAcceleration_ = 60.0f;
         
-        // プレイヤーの移動は毎ステップ水平速度を上書きするので、1ステップで足す量がそのまま流される速さになる
+        // NOTE: プレイヤーの移動は毎ステップ水平速度を上書きするので、1ステップで足す量がそのまま流される速さになる
         [[serialize(0)]] float playerPushSpeed_  = 12.0f;
         [[serialize(0)]] float rescan_secs_      = 1.0f;
 
         [[serialize(1)]] float summonBlend_secs_ = 2.5f;
-        // 心臓が揺らがないまま、この秒数で骸竜の砂嵐は止む
+        // NOTE: EndSummoned が来なくても、この秒数で召喚された砂嵐は止む
         [[serialize(1)]] float summonedMax_secs_ = 60.0f;
 
         float intensity_       = 0.0f;

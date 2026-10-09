@@ -38,7 +38,7 @@ namespace NanamiEngine::Core::PopupWindow
         [[nodiscard]] std::vector<WindowT*> Catch();
         void OnDraw(FileSystem::EditorDraggingHand& draggingHand);
 
-        /** @brief クラスが module にあるウィンドウを閉じて捨てる (ゲーム DLL を外す前)。戻り値は捨てた数 */
+        // NOTE: クラスが module にあるウィンドウを閉じて捨てる (ゲーム DLL を外す前)。戻り値は捨てた数
         std::size_t RemoveWindowsOfModule(const ModuleHandle module)
         {
             return std::erase_if(popupWindows_, [module](const auto& pair)
@@ -80,7 +80,7 @@ namespace NanamiEngine::Core::PopupWindow
         {
             MakeWindow<WindowT>();
 
-            // 再検索して追加（1つだけ生成される前提）
+            // NOTE: 再検索して追加（1つだけ生成される前提）
             for (const auto& window : popupWindows_ | std::views::values)
             {
                 if (auto* casted = dynamic_cast<WindowT*>(window.get()); casted)

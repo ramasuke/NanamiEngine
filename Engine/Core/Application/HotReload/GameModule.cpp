@@ -101,7 +101,7 @@ namespace NanamiEngine::Core::Application::HotReload
         if (!std::filesystem::is_directory(stagingRoot_, errorCode))
             return;
         
-        // 読み込み中のフォルダは消せないので、消せるものだけ消す
+        // NOTE: 読み込み中のフォルダは消せないので、消せるものだけ消す
         for (const auto& entry : std::filesystem::directory_iterator(stagingRoot_, errorCode))
         {
             std::filesystem::remove_all(entry.path(), errorCode);
@@ -126,7 +126,7 @@ namespace NanamiEngine::Core::Application::HotReload
             outError = "ゲーム DLL をコピーできません: " + PathToUtf8(dll) + " (" + errorCode.message() + ")";
             return false;
         }
-        // PDB は DLL に埋め込まれたファイル名で探されるので、同じ名前で隣に置く
+        // NOTE: PDB は DLL に埋め込まれたファイル名で探されるので、同じ名前で隣に置く
         const std::filesystem::path sourcePdb = std::filesystem::path(source_).replace_extension(L".pdb");
         if (std::filesystem::is_regular_file(sourcePdb, errorCode))
         {
@@ -155,10 +155,10 @@ namespace NanamiEngine::Core::Application::HotReload
         const ModuleHandle oldModule = current_;
         const auto  gameWindow = ApplicationBase::GameWindow();
 
-        // 0. Play 中は状態を持ち越さない。
+        // NOTE: Play 中の状態は持ち越さない
         const bool wasPlaying = gameWindow->IsPlayMode() || gameWindow->IsPlaying();
         
-        //編集中なら開いているシーンを写す
+        // NOTE: 編集中なら開いているシーンを写す
         std::vector<MainWindow::GameWindow::SceneSnapshot> snapshots;
         if (!wasPlaying)
         {
@@ -170,7 +170,7 @@ namespace NanamiEngine::Core::Application::HotReload
             ApplicationBase::OnChangeWindow<MainWindow::GameWindow>();
         }
 
-        // 1-3. Game.dll のコードを指すものを全部捨てる
+        // NOTE: 古い DLL のコードを指すものを全部捨てる
         gameWindow->UnloadAllScenes();
         UiFlow::ScreenStack::Instance().Clear();
         ControlLock::Service::Instance().Clear();
@@ -181,7 +181,6 @@ namespace NanamiEngine::Core::Application::HotReload
         ApplicationBase::ObjectRegistry().PurgeExpired();
         ApplicationBase::NetworkPrefabObjectRegistry().PurgeExpired();
 
-        // 4. 登録の解除
         std::size_t unregistered = 0;
         unregistered += Module::Asset::AssetFactory::Instance().UnregisterModule(oldModule);
         unregistered += MainWindow::MainWindowFactory::Instance().UnregisterModule(oldModule);
@@ -195,7 +194,7 @@ namespace NanamiEngine::Core::Application::HotReload
 #endif
         const auto serialization = Module::Serialization::SerializationModuleUnloader::Unregister(oldModule);
 
-        // 5. 取り残しの確認。残っていれば FreeLibrary せず保険モードと同じ扱いにする
+        // NOTE: 古い DLL への参照が残っていれば FreeLibrary せず保険モードと同じ扱いにする
         const std::size_t leftoverObjects = ApplicationBase::ObjectRegistry().CountAliveOfModule(oldModule);
         const std::size_t leftoverCasters = Module::Serialization::SerializationModuleUnloader::CountLeftoverCasters(oldModule);
         const std::size_t leftoverStatics = Module::Serialization::SharedStaticObjects::CountOwnedBy(oldModule);
@@ -217,7 +216,6 @@ namespace NanamiEngine::Core::Application::HotReload
         }
         Module::Serialization::SerializationModuleUnloader::ClearClassVersions();
 
-        // 6. 新しい DLL
         std::string error;
         const bool loaded = LoadGeneration(error);
         if (!loaded)
@@ -225,7 +223,7 @@ namespace NanamiEngine::Core::Application::HotReload
             Module::LogError("HotReload: " + error);
         }
 
-        // 7. アセットとシーンを新しい型で作り直す
+        // NOTE: アセットとシーンを新しい型で作り直す
         ApplicationBase::ResetAssetsDirectory();
         gameWindow->RestoreScenes(snapshots);
 

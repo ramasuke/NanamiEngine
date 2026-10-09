@@ -12,29 +12,24 @@
 
 namespace GamePlay::Prop
 {
-    /**
-     * @brief 突進してきた敵の頭が刺さると折れて倒れる柱。ChargeStuckObstacle と同じ GameObject に付ける
-     * @note 倒れた後は ChargeStuckObstacle を無効にし、standingCollider_ を破棄して通れるようにする
-     */
+    // NOTE: 突進してきた敵の頭が刺さると折れて倒れる柱。ChargeStuckObstacle と同じ GameObject に付ける
+    // NOTE: 倒れた後は ChargeStuckObstacle を無効にし、standingCollider_ を破棄して通れるようにする
     class ChargeBreakPillar final : public Component::ComponentBase,
                                     public LifeCycleCallback::IUpdatable
     {
     public:
         // NOTE: コライダーは子に付いているので、当たった GameObject から親をさかのぼって探す
         [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindFrom(GameObject::IGameObject& hitObject);
-        /** @brief position に一番近い柱。RPC の受信側が同じ柱を特定するのに使う */
+        // NOTE: position に一番近い柱。RPC の受信側が同じ柱を特定するのに使う
         [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindNear(const glm::vec3& position);
-        /** @brief position に一番近い、まだ立っている登場演出用の柱 */
+        // NOTE: position に一番近い、まだ立っている登場演出用の柱
         [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindIntroTarget(const glm::vec3& position);
-        /** @brief center から radius 以内の立っている柱を揺らす */
+        // NOTE: center から radius 以内の立っている柱を揺らす
         static void TrembleAll(const glm::vec3& center, float radius);
 
-        /**
-         * @brief fallDirection へ倒す。2回目以降は何もしない
-         * @return 今回倒れたなら true
-         */
+        // NOTE: fallDirection へ倒す。今回倒れたなら true で、2 回目以降は何もしない
         bool Collapse(const glm::vec3& fallDirection);
-        /** @brief 上半分をぐらつかせ、小石と砂ぼこりを落とす。倒れた後は何もしない */
+        // NOTE: 上半分をぐらつかせ、小石と砂ぼこりを落とす。倒れた後は何もしない
         void Tremble();
         [[nodiscard]] bool IsCollapsed() const { return isCollapsed_; }
         [[nodiscard]] int  CollapseDamage() const { return collapseDamage_; }
@@ -45,20 +40,20 @@ namespace GamePlay::Prop
         void UpdateTremble();
         [[nodiscard]] glm::vec3 DustPosition() const;
 
-        /** 折れる位置が原点の上半分。倒れる向きに回す */
+        // NOTE: 折れる位置が原点の上半分。倒れる向きに回す
         [[serialize(0)]] FIELD(GameObject::IGameObject) top_;
-        /** 立っている間だけの当たり。倒れたら破棄する */
+        // NOTE: 立っている間だけの当たり。倒れたら破棄する
         [[serialize(0)]] FIELD(GameObject::IGameObject) standingCollider_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) dustPoint_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) breakParticle_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) landParticle_;
         [[serialize(0)]] FIELD(Asset::SoundFile) breakSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile) landSound_;
-        /** 刺さった敵に入れるダメージ。0 なら入れない */
+        // NOTE: 刺さった敵に入れるダメージ。0 なら入れない
         [[serialize(0)]] int   collapseDamage_    = 30;
         [[serialize(0)]] float fallAngle_deg_     = 84.0f;
         [[serialize(0)]] float fallDuration_secs_ = 1.1f;
-        /** 敵の登場演出で最初に突進される柱 */
+        // NOTE: 敵の登場演出で最初に突進される柱
         [[serialize(1)]] bool  isIntroTarget_     = false;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) trembleParticle_;
         [[serialize(1)]] FIELD(Asset::SoundFile) trembleSound_;

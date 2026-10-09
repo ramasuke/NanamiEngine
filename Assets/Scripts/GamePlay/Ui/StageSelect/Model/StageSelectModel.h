@@ -4,9 +4,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * ステージ選択画面のModel。選択中のステージだけを持つ
-     */
+    // NOTE: ステージ選択画面の Model。選択中のステージだけを持つ
     class StageSelectModel final
     {
     public:

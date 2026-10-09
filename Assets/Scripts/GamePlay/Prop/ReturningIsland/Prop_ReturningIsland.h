@@ -16,35 +16,32 @@ namespace GameCore
 
 namespace GamePlay::Prop
 {
-    /** @brief 雲の下から戻ってくる島と階段。シーン上の位置が戻った位置 */
+    // NOTE: 雲の下から戻ってくる島と階段。シーン上の位置が戻った位置
     class ReturningIsland final : public Component::ComponentBase
     {
     public:
-        /** @brief 戻る前の島と階段を隠し、コライダーごと雲の下へ退避させる。シーンに入ったときに一度だけ呼ぶ */
+        // NOTE: 戻る前の島と階段を隠し、コライダーごと雲の下へ退避させる。シーンに入ったときに一度だけ呼ぶ
         void Sink();
 
-        /** @brief 戻った島と階段を出し、橋の出口をふさぐ壁をどける(シーンでは島と階段を隠してある) */
+        // NOTE: 戻った島と階段を出し、橋の出口をふさぐ壁をどける(シーンでは島と階段を隠してある)
         void Show();
 
-        /**
-         * @brief Sink で退避させた島が雲の下からせり上がり、階段が手前から1段ずつ架かる
-         * @param canStart 演出を始めてよいか。ロード画面が明けるまで false を返す
-         * @param onReturned 戻りきった瞬間 (スキップ・シーンを抜けたときはその場) に一度だけ呼ぶ
-         */
+        // NOTE: Sink で退避させた島が雲の下からせり上がり、階段が手前から1段ずつ架かる
+        // NOTE: canStart が true を返すまで演出を始めない。onReturned は戻りきった瞬間 (中断時はその場) に一度だけ呼ぶ
         Coroutine::Task<void> PlayReturnAsync(
             std::weak_ptr<GameCore::IPlayerAvatar> playerAvatar, std::function<bool()> canStart, std::function<void()> onReturned);
 
     private:
         [[nodiscard]] bool IsCanceled() const { return DestroyCancellationToken().IsCancellationRequested(); }
 
-        /** 子が1段ずつの足場。子の並び順に架かる */
+        // NOTE: 子が1段ずつの足場。子の並び順に架かる
         [[serialize(0)]] FIELD(GameObject::IGameObject) stairs_;
-        /** LookAt で島を追うカメラ。シーンに置いた位置から動かない */
+        // NOTE: LookAt で島を追うカメラ。シーンに置いた位置から動かない
         [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera) camera_;
-        /** カメラが見る所。島の子(一緒に上がってくる物)にする */
+        // NOTE: カメラが見る所。島の子(一緒に上がってくる物)にする
         [[serialize(0)]] FIELD(GameObject::IGameObject) focus_;
         [[serialize(0)]] IslandReturnShot shot_;
-        /** 戻るまで島の縁の橋の出口をふさぐ壁。戻ったら雲の下へどける */
+        // NOTE: 戻るまで島の縁の橋の出口をふさぐ壁。戻ったら雲の下へどける
         [[serialize(1)]] FIELD(GameObject::IGameObject) blockers_;
 
 #pragma region Serialization Function

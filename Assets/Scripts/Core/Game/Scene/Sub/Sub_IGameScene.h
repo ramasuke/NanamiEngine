@@ -7,19 +7,13 @@ namespace GameCore::Scene::Sub
     public:
         virtual ~IGameScene() = default;
 
-        /**
-         * @brief Sceneが変更される直前の事前処理
-         * @warning Sceneインスタンスが生成されたときの初期化関数ではなく、Sceneが変更される直前に呼ばれる。
-         */
+        // NOTE: 積まれる直前の事前処理。インスタンス生成時の初期化ではない
         virtual void Init()      = 0;
         
-        /**
-         * @brief Sceneが変更されたされた時の後処理
-         * @warning Sceneインスタンスが破棄されたときの関数ではなく、Sceneが変更された後に呼ばれるだけの処理。
-         */
+        // NOTE: 外された時の後処理。インスタンスの破棄時ではない
         virtual void Dispose()   = 0;
         
-        /** @brief Scene状態のDebug描画 */
+        // NOTE: シーン状態のデバッグ描画
         virtual void OnDrawGui() = 0;
     };
 }

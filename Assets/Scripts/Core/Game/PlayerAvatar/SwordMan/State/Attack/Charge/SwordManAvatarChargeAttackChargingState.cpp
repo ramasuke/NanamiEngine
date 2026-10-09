@@ -23,7 +23,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarChargeAttackChargingState::DoUpdate()
     {
-        // 溜め中はその場で停止し、攻撃対象へ向き直るだけ
+        // NOTE: 溜め中はその場で停止し、攻撃対象へ向き直るだけ
         RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
         if (!isFullyCharged_ && ChargeElapsed_secs() >= Status().ChargeAttackMaxCharge_secs())

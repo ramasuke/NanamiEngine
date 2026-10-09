@@ -26,33 +26,33 @@ namespace GameCore::PlayerAvatar
         };
 
         void Setup(const std::vector<Asset::ItemStack>& initialItems);
-        /** @brief Setup かセーブからの読み込みを通ったか。通っていなければ初期所持を入れる */
+        // NOTE: Setup かセーブからの読み込みを通ったか。通っていなければ初期所持を入れる
         [[nodiscard]] bool IsSetUp() const { return isSetUp_; }
 
         [[nodiscard]] const std::vector<Slot>& Slots        () const { return slots_; }
         [[nodiscard]] std::size_t              SelectedIndex() const { return selectedIndex_; }
-        /** @brief 選択中の枠。ポーチが空なら nullptr */
+        // NOTE: 選択中の枠。ポーチが空なら nullptr
         [[nodiscard]] const Slot*              Selected     () const;
         [[nodiscard]] bool                     CanUseSelected() const;
-        /** @brief 選択中の枠に残りがあり効果も持つならそのアイテム。使えなければ nullptr */
+        // NOTE: 選択中の枠に残りがあり効果も持つならそのアイテム。使えなければ nullptr
         [[nodiscard]] std::shared_ptr<Asset::ItemData> SelectedUsableItem() const;
-        /** @brief 中身の入れ替わりを1つの数で表す。UIはこれが変わったときだけ絵を作り直す */
+        // NOTE: 中身の入れ替わりを表す番号。表示側はこれが変わったときだけ作り直せばよい
         [[nodiscard]] std::uint32_t            Revision     () const { return revision_; }
 
-        /** @param direction 正で右隣、負で左隣。端は反対側へ回り込む */
+        // NOTE: direction が正なら右隣、負なら左隣。端は反対側へ回り込む
         void Cycle(int direction);
-        /** @brief 選択中のアイテムの効果を target に掛けて1つ減らす @param user 使ったアバター @return 使ったアイテム。使えなかったら nullptr */
+        // NOTE: 選択中のアイテムの効果を target に掛けて 1 つ減らし、使ったアイテムを返す。使えなかったら nullptr
         std::shared_ptr<Asset::ItemData> UseSelected(Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user);
-        /** @brief item の効果を target に掛けて1つ減らす。モーションの途中で選択が変わっても、決めたアイテムを使えるように item で指す @return 使えたか */
+        // NOTE: item の効果を target に掛けて 1 つ減らす。選択が途中で変わっても使えるよう item で指す。使えたら true
         bool Use(const Asset::ItemData& item, Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user);
 
-        /** @brief 使うモーションへ入る直前に、どのアイテムを使うかを預ける。受け取ったステートが TakePendingUse で取り出す */
+        // NOTE: 使うモーションに入る直前に使うアイテムを預けておく。TakePendingUse で取り出すと空に戻る
         void SetPendingUse(std::shared_ptr<Asset::ItemData> item) { pendingUse_ = std::move(item); }
         [[nodiscard]] std::shared_ptr<Asset::ItemData> TakePendingUse() { return std::exchange(pendingUse_, nullptr); }
 
         [[nodiscard]] int CountOf(const Asset::ItemData& item) const;
         [[nodiscard]] int ReceivableCount(const Asset::ItemData& item) const;
-        /** @brief 同じアイテムの枠に積む。枠が無ければ末尾に足す @return 実際に入った数 */
+        // NOTE: 同じアイテムの枠に積む。枠が無ければ末尾に足す。実際に入った数を返す
         int Add(const std::shared_ptr<Asset::ItemData>& item, int count);
 
     private:
@@ -69,7 +69,7 @@ namespace GameCore::PlayerAvatar
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
-            // ItemStack の FIELD は複製すると save の assert に掛かるので、その場で作って書く
+            // NOTE: ItemStack の FIELD は複製すると save の assert に掛かるので、その場で作って書く
             std::vector<Asset::ItemStack> stacks;
             stacks.reserve(slots_.size());
             for (const auto& slot : slots_)

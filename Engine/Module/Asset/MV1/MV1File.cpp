@@ -17,7 +17,7 @@ namespace NanamiEngine::Module::Asset
         if (dxLibHandle_ == -1)
             return;
 
-        // LoadDxLibHandle で複製されたモデルは DxLib 側で基底データを参照カウントしているため、元を先に消しても壊れない
+        // NOTE: LoadDxLibHandle で複製されたモデルは DxLib 側で基底データを参照カウントしているため、元を先に消しても壊れない
         MV1DeleteModel(dxLibHandle_);
     }
 
@@ -25,7 +25,7 @@ namespace NanamiEngine::Module::Asset
 
     void Mv1File::RequestLoad() const
     {
-        // 読み込みに失敗したファイルを毎回読み直さないよう、Unload されるまでは 1 回だけ試す
+        // NOTE: 読み込みに失敗したファイルを毎回読み直さないよう、Unload されるまでは 1 回だけ試す
         if (isLoadAttempted_)
             return;
 
@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::Asset
 
     void Mv1File::Unload()
     {
-        // 複製済みのモデルは DxLib 側の参照カウントで生き残る
+        // NOTE: 複製済みのモデルは DxLib 側の参照カウントで生き残る
         if (dxLibHandle_ != -1)
             MV1DeleteModel(dxLibHandle_);
 
@@ -45,7 +45,7 @@ namespace NanamiEngine::Module::Asset
 
     void Mv1File::OnDoubleClick()
     {
-        // AddContent には自身の shared_ptr が必要なので ObjectRegistry から引く(.meta の有無に関わらず AssetFactory が登録している)
+        // NOTE: AddContent には自身の shared_ptr が必要なので ObjectRegistry から引く
         const auto self = Core::Application::ApplicationBase::ObjectRegistry().Catch<Mv1File>(guid_).lock();
         if (!self)
         {
@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::Asset
         }
 
         const auto window = Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::ModelViewWindow>();
-        // ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、AddContent より先に切り替える
+        // WARNING: ComponentGroup::Add<T> はカレント MainWindow の LifeCycle に登録するため、AddContent より先に切り替える
         Core::Application::ApplicationBase::OnChangeWindow(window);
 
         if (window->Contains(guid_))
@@ -68,7 +68,7 @@ namespace NanamiEngine::Module::Asset
     bool Mv1File::IsLoadCompleted() const
     {
         RequestLoad();
-        // 非同期ロード中は dxLibHandle_ が -1 ではないので CheckHandleASyncLoad で完了を判定する(TRUE: まだロード中)
+        // NOTE: 非同期ロード中は dxLibHandle_ が -1 ではないので CheckHandleASyncLoad で完了を判定する(TRUE: まだロード中)
         return dxLibHandle_ != -1 && CheckHandleASyncLoad(dxLibHandle_) == FALSE;
     }
 

@@ -79,7 +79,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
         ImGui::SetNextItemWidth(120.0f);
         ImGui::InputInt("Port", &port_, 0, 0);
-        // 入力途中の値でリスナーを作り直さないよう、確定時にだけ反映する
+        // NOTE: 入力途中の値でリスナーを作り直さないよう、確定時にだけ反映する
         if (ImGui::IsItemDeactivatedAfterEdit())
         {
             port_   = std::clamp(port_, AUTO_MCP_MIN_PORT, AUTO_MCP_MAX_PORT);

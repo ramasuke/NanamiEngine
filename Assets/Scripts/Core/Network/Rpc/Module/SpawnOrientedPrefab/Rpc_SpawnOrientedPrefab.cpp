@@ -8,7 +8,7 @@
 
 namespace
 {
-    // 汎用演出RPC: プレハブを指定位置・向き・拡大率で生成する。パーティクル等の見た目専用
+    // NOTE: 汎用演出RPC: プレハブを指定位置・向き・拡大率で生成する。パーティクル等の見た目専用
     struct SpawnOrientedPrefabRpcRegistration
     {
         SpawnOrientedPrefabRpcRegistration()

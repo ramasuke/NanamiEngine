@@ -92,7 +92,7 @@ namespace GamePlay::PlayerAvatar
         void RequestWakeUp     () override;
         [[nodiscard]] bool IsDowned() const override { return status_->IsDowned(); }
         [[nodiscard]] const GameObject::Transform& WakeableTransform() const override { return Transform(); }
-        // ModelRendererは物理ステップ間を補間した位置に描くので、Transformを追うとカメラとモデルがずれてカクつく
+        // NOTE: ModelRendererは物理ステップ間を補間した位置に描くので、Transformを追うとカメラとモデルがずれてカクつく
         [[nodiscard]] glm::vec3 CameraTargetPosition() const override;
 
         std::weak_ptr<Component::Animator> animatorComponent_;
@@ -254,7 +254,7 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::SaveStatus()
     {
-        // 力尽きたまま保存すると、次に生成した瞬間から倒れている。ゲームオーバー後は出発前の保存から始め直す
+        // NOTE: 力尽きたまま保存すると、次に生成した瞬間から倒れている。ゲームオーバー後は出発前の保存から始め直す
         if (status_->IsDeath())
             return;
 
@@ -339,7 +339,7 @@ namespace GamePlay::PlayerAvatar
         return featStep_->Transform().GetWorldPos();
     }
 
-// PlayerAvatarBase<Traits>をcerealに登録するマクロ
+// NOTE: PlayerAvatarBase<Traits>をcerealに登録するマクロ
 // NOTE: PLAYER_AVATAR_BASE_CLASS_VERSION はヘッダ、REGISTER_PLAYER_AVATAR_BASE は .cpp に書く
 #define PLAYER_AVATAR_BASE_CLASS_VERSION(TraitsType)                             \
 CEREAL_CLASS_VERSION(                                                            \

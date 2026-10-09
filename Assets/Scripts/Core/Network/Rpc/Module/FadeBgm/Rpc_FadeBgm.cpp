@@ -10,7 +10,7 @@
 
 namespace
 {
-    // 汎用演出RPC: 再生中の BGM を下げて止め、指定があれば次の BGM を上げながら流す
+    // NOTE: 汎用演出RPC: 再生中の BGM を下げて止め、指定があれば次の BGM を上げながら流す
     struct FadeBgmRpcRegistration
     {
         FadeBgmRpcRegistration()

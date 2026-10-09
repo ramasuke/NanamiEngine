@@ -7,7 +7,6 @@ namespace NanamiEngine::Core::Application
     class NANAMI_API EditorApplication final : public ApplicationBase
     {
     public:
-        ///初期設定
         EditorApplication();
         static FileSystem::EditorDraggingHand& FileDraggingHand();
 
@@ -16,7 +15,7 @@ namespace NanamiEngine::Core::Application
         void OnExit   () override;
         void OnDrawGui();
 
-        /// 選択中 GameObject に対する Transform ギズモ。1フレーム1回、全ウィンドウ描画後に呼ぶ。
+        // NOTE: 選択中 GameObject の Transform ギズモ。全ウィンドウ描画後に 1 フレーム 1 回呼ぶ
         void OnDrawGizmo();
 
         int   gizmoOperation_     = 7;     // ImGuizmo::TRANSLATE (TRANSLATE_X | _Y | _Z)

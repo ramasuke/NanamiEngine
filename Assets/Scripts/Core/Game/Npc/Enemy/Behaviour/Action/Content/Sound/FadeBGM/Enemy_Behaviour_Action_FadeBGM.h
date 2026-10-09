@@ -8,10 +8,8 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /**
-     * @brief 今の BGM をフェードアウトして止め、bgm_ があればフェードインで流す (空なら無音にするだけ)
-     * NOTE: 毎 Tick 呼ぶとやり直すので OnceExecute か ActionTimeline の Cue に置く
-     */
+    // NOTE: 今の BGM をフェードアウトして止め、bgm_ があればフェードインで流す
+    // WARNING: 毎 Tick 呼ぶとフェードをやり直すので、一度だけ実行されるノードの下に置く
     class FadeBGM final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

@@ -11,9 +11,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    /**
-     * RpcIdごとに登録されたハンドラを呼び出すレジストリ
-     */
+    // NOTE: RpcIdごとに登録されたハンドラを呼び出すレジストリ
     class NANAMI_API RpcHandlerRegistry final : public SingletonBase<RpcHandlerRegistry>
     {
     public:
@@ -22,10 +20,10 @@ namespace NanamiEngine::Module::Network
     public:
         using Handler = std::function<void(const Core::Network::ByteBuffer&, size_t&)>;
 
-        /** @param module 登録元のモジュール (Rpc<> のテンプレートが NANAMI_CURRENT_MODULE() を渡す) */
+        // NOTE: module は登録元のモジュール。ホットリロード時にまとめて解除するために記録する
         void Register(Core::Network::RpcId id, Handler handler, Core::ModuleHandle module = {});
         void Invoke(Core::Network::RpcId id, const Core::Network::ByteBuffer& buffer, size_t& offset) const;
-        /** @brief module が登録したハンドラを消す。戻り値は消した数 */
+        // NOTE: module が登録したハンドラを消す。戻り値は消した数
         std::size_t UnregisterModule(Core::ModuleHandle module);
 
     private:

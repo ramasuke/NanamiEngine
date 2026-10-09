@@ -22,7 +22,7 @@
 
 namespace GameCore::Scene::Main
 {
-    /** @brief OnEnterAsync の結果 */
+    // NOTE: OnEnterAsync の結果
     struct EnterResult final
     {
         bool        succeeded = false;
@@ -33,9 +33,7 @@ namespace GameCore::Scene::Main
         [[nodiscard]] explicit operator bool() const { return succeeded; }
     };
 
-    /**
-     * @brief メインシーンの基底。入場に失敗したら FallbackSceneOnFailure へ逃がす
-     */
+    // NOTE: メインシーンの基底。入場に失敗したら FallbackSceneOnFailure へ逃がす
     template<typename ContextT>
     requires std::derived_from<ContextT, SceneContextBase>
     class GameMainSceneBase : public IGameScene
@@ -49,16 +47,15 @@ namespace GameCore::Scene::Main
     private:
         void Exit() override;
         void Dispose() override;
-        /** @brief 読み込み中の入場を止める */
         void CancelEnter();
-        /** @brief 読み込んだメインシーンとサブシーンを外す */
+        // NOTE: 読み込んだメインシーンとサブシーンを外す
         void Unload();
         [[nodiscard]] bool IsEntered() const override { return isEntered_; }
         [[nodiscard]] std::shared_ptr<SceneContextBase> BaseContext() const override { return context_; }
         Coroutine::Task<void> EnterAsync(NanamiEngine::R4::CancellationToken token);
-        /** @brief 入場の失敗をロード画面に出しセーフ処理 */
+        // NOTE: 入場の失敗をロード画面に出しセーフ処理
         void FailEnter(const NanamiEngine::R4::CancellationToken& token, const std::string& message);
-        /** @brief 失敗の表示を少し見せてからセーフ処理 */
+        // NOTE: 失敗の表示を少し見せてからセーフ処理
         Coroutine::Task<void> FallbackAfterFailureAsync(NanamiEngine::R4::CancellationToken token, SceneType fallback);
 
         std::shared_ptr<ContextT> context_;
@@ -69,7 +66,7 @@ namespace GameCore::Scene::Main
         bool isEntered_ = false;
 
     protected:
-        /** template method pattern */
+        // NOTE: 派生シーンが埋める部分（テンプレートメソッドパターン）
         virtual void DoExit() = 0;
         virtual void OnInit() {}
         [[nodiscard]] virtual std::vector<Sub::SceneType> SubScenes() const = 0;
@@ -77,14 +74,14 @@ namespace GameCore::Scene::Main
         virtual Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) = 0;
         virtual void OnEntered() = 0;
         
-        /** @brief 入場に失敗したときのセーフ処理　*/
+        // NOTE: 入場に失敗したときの逃がし先。空なら逃がさずそのまま
         [[nodiscard]] virtual std::optional<SceneType> FallbackSceneOnFailure() const { return SceneType::MainIsland; }
 
-        /** @brief SandBox pattern */
+        // NOTE: 派生シーンに渡す部品の窓口（サンドボックスパターン）
         [[nodiscard]] std::shared_ptr<ContextT>   Context()                    const { return context_; }
         [[nodiscard]] GameProgresion              MainScenarioProgression()    const { return LoadGameProgression();   }
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
-        /** @brief GameManage.scene と一緒に常駐しているロード画面 */
+        // NOTE: GameManage.scene と一緒に常駐しているロード画面
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return baseContext_.LoadingScreen(); }
         [[nodiscard]] std::weak_ptr<NanamiEngine::Scene::Scene> MainScene() const { return mainScene_; }
     };

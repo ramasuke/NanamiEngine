@@ -22,7 +22,7 @@ namespace GamePlay::Ui
             return pad.connected && pad.IsDown(GamepadButton::Y);
         }
 
-        /** @brief 話しかけた時の押しっぱなしで送らないよう、押し始めだけを拾う */
+        // NOTE: 話しかけた時の押しっぱなしで送らないよう、押し始めだけを拾う
         class AdvanceInput final
         {
         public:
@@ -38,7 +38,7 @@ namespace GamePlay::Ui
             bool wasDown_ = true;
         };
 
-        /** @brief 先頭から count 文字分のバイト数 (UTF-8 の文字の途中で切らない) */
+        // NOTE: 先頭から count 文字分のバイト数 (UTF-8 の文字の途中で切らない)
         size_t Utf8PrefixBytes(const std::string& text, const size_t count)
         {
             size_t chars = 0;
@@ -125,7 +125,7 @@ namespace GamePlay::Ui
 
         Entity().lock()->SetEnable(false);
 
-        // NOTE: 閉じた E を押したまま表示中を解くと話しかけてしまう
+        // NOTE: 送りキーを押したまま表示中を解くと、すぐ話しかけ直してしまう
         while (IsAdvanceInputDown())
             co_await Coroutine::WaitYield();
 

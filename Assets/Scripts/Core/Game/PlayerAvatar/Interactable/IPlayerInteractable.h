@@ -10,7 +10,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace GameCore::PlayerAvatar
 {
-    /** 調べたときに何をする対象か。操作ガイドの文言を選ぶのに使う */
+    // NOTE: 調べたときに何をする対象か。操作ガイドの文言を選ぶのに使う
     enum class PlayerInteractKind : std::uint8_t
     {
         Talk,
@@ -27,7 +27,7 @@ namespace GameCore::PlayerAvatar
         virtual void OnInteractable() = 0;
         virtual void OnExitInteractable() = 0;
         virtual void OnInteract() = 0;
-        /** false の間は範囲内にいても調べる対象にならない */
+        // NOTE: false の間は範囲内にいても調べる対象にならない
         [[nodiscard]] virtual bool CanInteract() const { return true; }
         [[nodiscard]] virtual PlayerInteractKind InteractKind() const { return PlayerInteractKind::Talk; }
         [[nodiscard]] virtual const NanamiEngine::Module::GameObject::Transform& InteractableTransform() const = 0;

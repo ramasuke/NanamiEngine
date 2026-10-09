@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Application::Display
 {
-    /** メインウィンドウの表示方法。描画解像度 (AppConfiguration の WindowWidth/Height) はどのモードでも変わらない */
+    // NOTE: メインウィンドウの表示方法。描画解像度 (AppConfiguration の WindowWidth/Height) はどのモードでも変わらない
     enum class WindowDisplayMode
     {
         Windowed,

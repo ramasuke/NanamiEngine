@@ -13,7 +13,7 @@ void GameCore::PlayerAvatar::SwordMan::State::GetUpState::DoFixedUpdate()
 
 void GameCore::PlayerAvatar::SwordMan::State::GetUpState::DoUpdate()
 {
-    // Invulnerable while getting up: drop hits instead of carrying them into Idle.
+    // NOTE: 起き上がり中は無敵。食らったダメージを Idle へ持ち越さない
     Status().DiscardDamage();
 
     UpdateTransitions();

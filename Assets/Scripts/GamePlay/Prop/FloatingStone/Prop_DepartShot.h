@@ -4,14 +4,14 @@
 
 namespace GamePlay::Prop
 {
-    /** @brief ステージで石が飛び去る演出(FloatingStone::PlayDepartAsync)の尺と距離 */
+    // NOTE: ステージで石が飛び去る演出の尺と距離
     struct DepartShot
     {
         // NOTE: ボスを倒した直後は攻撃ボタンを連打しているので、始まってしばらくはスキップを受け付けない
         float skipGrace_secs    = 1.5f;
-        /** 石のモデルの結晶の中ほど(モデルの単位)。LookAt と光の尾はここに合わせる */
+        // NOTE: 石のモデルの結晶の中ほど(モデルの単位)。LookAt と光の尾はここに合わせる
         float stoneCenterHeight = 8.5f;
-        /** ボスが倒れきるのを待つ時間 */
+        // NOTE: ボスが倒れきるのを待つ時間
         float delay_secs        = 2.5f;
         float shake_secs        = 1.6f;
         float rise_secs         = 2.6f;
@@ -21,7 +21,7 @@ namespace GamePlay::Prop
         float riseHeight        = 70.0f;
         float riseTurnDegrees   = 120.0f;
         float flyTurnDegrees    = 540.0f;
-        /** 浮き上がった所から飛び去る先。拠点の島の方角(空の高いところ)へ向ける */
+        // NOTE: 浮き上がった所から飛び去る先。拠点の島の方角(空の高いところ)へ向ける
         glm::vec3 flyOffset     = glm::vec3(-500.0f, 900.0f, -700.0f);
 
         void OnDrawGui();

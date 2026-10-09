@@ -20,14 +20,14 @@ namespace NanamiEngine::AssetUpdater::Dist
         using std::runtime_error::runtime_error;
     };
 
-    /** Cancel で子プロセスを止めたとき */
+    // NOTE: Cancel で子プロセスを止めたとき
     class NANAMI_API DistCanceledError : public std::runtime_error
     {
     public:
         DistCanceledError() : std::runtime_error("canceled") {}
     };
 
-    /** rclone を同期で呼ぶ。失敗は DistUploadError、Cancel は DistCanceledError で抜ける */
+    // NOTE: rclone を同期で呼ぶ。失敗は DistUploadError、Cancel は DistCanceledError で抜ける
     class NANAMI_API Rclone final
     {
     public:
@@ -38,22 +38,22 @@ namespace NanamiEngine::AssetUpdater::Dist
         Rclone(const Rclone&)            = delete;
         Rclone& operator=(const Rclone&) = delete;
 
-        /** files/ にあるブロブのハッシュ */
+        // NOTE: files/ にあるブロブのハッシュ
         [[nodiscard]] std::unordered_set<std::string> ListBlobHashes();
-        /** stagingDir の中身を files/ へ上げる。rclone の進捗はログへ流す */
+        // NOTE: stagingDir の中身を files/ へ上げる。rclone の進捗はログへ流す
         void UploadBlobs(const std::filesystem::path& stagingDir);
         [[nodiscard]] std::unordered_set<std::string> RootFileNames();
         [[nodiscard]] std::string ReadFile(const std::string& remoteName);
         void UploadFile(const std::filesystem::path& local, const std::string& remoteName, const std::string& header);
 
-        /** いま公開中の manifest.json。まだ一度もリリースしていなければ nullopt */
+        // NOTE: いま公開中の manifest.json。まだ一度もリリースしていなければ nullopt
         [[nodiscard]] std::optional<AssetManifest> ReadLiveManifest();
-        /** 同名がすでにあり、中身が違うなら true。NOTE: --immutable は copyto では効かない */
+        // NOTE: 同名がすでにあり、中身が違うなら true (rclone の --immutable は copyto では効かないので自前で見る)
         [[nodiscard]] bool VersionedConflicts(const std::filesystem::path& local, const std::string& remoteName);
-        /** 一度置いたら中身を変えさせない。同じ中身なら何もせず false、無ければ上げて true */
+        // NOTE: 一度置いたら中身を変えさせない。同じ中身なら何もせず false、無ければ上げて true
         bool UploadFileOnce(const std::filesystem::path& local, const std::string& remoteName, const std::string& header);
 
-        /** 別スレッドから呼んでよい。実行中の rclone を止める */
+        // NOTE: 別スレッドから呼んでよい。実行中の rclone を止める
         void Cancel();
 
     private:

@@ -5,7 +5,6 @@ namespace NanamiEngine::Module::Component
 {
     namespace
     {
-        // 🔧 共通：expired削除
         void RemoveExpired(CollisionListener::Container& container)
         {
             for (auto it = container.begin(); it != container.end();)

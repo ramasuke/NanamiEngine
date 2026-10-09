@@ -40,12 +40,12 @@ namespace NanamiEngine::Core::PopupWindow
                 if (!node)
                     continue;
 
-                // 末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
+                // NOTE: 末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
                 const bool isPlaying = i + 1 == currentNodes.size();
                 const auto* clip = dynamic_cast<AnimationTree::AnimationClipNode*>(node.get());
                 if (!clip)
                 {
-                    // AnimatorEntryNode（開始直後で、まだどのクリップにも遷移していない）
+                    // NOTE: AnimatorEntryNode（開始直後で、まだどのクリップにも遷移していない）
                     ImGui::BulletText("Entry");
                     continue;
                 }
@@ -64,7 +64,7 @@ namespace NanamiEngine::Core::PopupWindow
 
         if (tree)
         {
-            // 実行中のインスタンスなので読み取り専用（選択・Inspector 表示のみ）
+            // NOTE: 実行中のインスタンスなので読み取り専用（選択・Inspector 表示のみ）
             tree->OnDrawGraphEditorGui(true);
             tree->OnDrawGui();
         }

@@ -18,7 +18,7 @@ namespace NanamiEngine::DebugSheet
         constexpr bool IS_GAME_BUILD =
             Core::Application::Configuration::APPLICATION_MODE == Core::Application::Configuration::ApplicationMode::Game;
 
-        /** @brief エディタではプレイ中（一時停止中を含む）。ゲームビルドは起動時に Play するので常に true */
+        // NOTE: エディタではプレイ中（一時停止中を含む）。ゲームビルドは起動時に Play するので常に true
         bool IsGameRunning()
         {
             const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
@@ -80,7 +80,7 @@ namespace NanamiEngine::DebugSheet
         const std::size_t removed = RemovePagesOfModule(root_, module);
         if (removed > 0)
         {
-            // 消したページを開いていたかもしれないので、ページスタックはルートに戻す
+            // NOTE: 消したページを開いていたかもしれないので、ページスタックはルートに戻す
             stack_.clear();
             stack_.push_back(&root_);
             isSortDirty_ = true;
@@ -223,7 +223,6 @@ namespace NanamiEngine::DebugSheet
             ImGui::SameLine();
         }
 
-        // NOTE: ボタンの行の縦中央にタイトルを置く
         const ImVec2 titlePosition = ImGui::GetCursorScreenPos();
         ImGui::GetWindowDrawList()->AddText(
             ImVec2(titlePosition.x + 4.0f, titlePosition.y + (Metrics::CELL_HEIGHT - ImGui::GetTextLineHeight()) * 0.5f),

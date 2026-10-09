@@ -15,7 +15,7 @@ namespace GamePlay::Ui
         using LibCore::Tween::Ease;
         using LibCore::Tween::Ms;
 
-        /** @brief delaySecs だけ 0 のまま待ってから、durationSecs で 1 まで一定の速さで上がる */
+        // NOTE: delaySecs だけ 0 のまま待ってから、durationSecs で 1 まで一定の速さで上がる
         tweeny::tween<float> GameOverDelayedRate(const float delaySecs, const float durationSecs)
         {
             return tweeny::from(0.0f).to(0.0f).during(Ms(delaySecs))
@@ -34,7 +34,7 @@ namespace GamePlay::Ui
         if (const auto title = titleButton_.get())
             titleBasePos_ = title->Transform().GetLocalPos();
 
-        // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく
+        // NOTE: 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく
         SetVisualEnabled(false);
         lastTickMs_ = Time::NowMilliseconds();
     }
@@ -119,7 +119,7 @@ namespace GamePlay::Ui
         const float deltaSecs = static_cast<float>(nowMs - lastTickMs_) / 1000.0f;
         lastTickMs_ = nowMs;
 
-        // GetNowCount は int なのでいつか折り返す。シーン破棄のような重いフレームで一気に進みすぎないよう上限も掛ける
+        // NOTE: ミリ秒は int なのでいつか折り返す。重いフレームで一気に進みすぎないよう上限も掛ける
         return std::clamp(deltaSecs, 0.0f, 0.25f);
     }
 
@@ -128,7 +128,7 @@ namespace GamePlay::Ui
         veilTween_.Play(tweeny::from(0.0f).to(static_cast<float>(veilBlendRate_))
             .during(Ms(veilFadeSecs_)).via(Ease(EaseType::SmoothStep)));
 
-        // 下から勢いよく持ち上がって少し浮き、加速しながら落ちて止まる
+        // NOTE: 下から勢いよく持ち上がって少し浮き、加速しながら落ちて止まる
         slabOffsetTween_.Play(tweeny::from(slabRiseDistance_px_).to(slabRiseDistance_px_).during(Ms(slabDelaySecs_))
             .to(-slabOvershoot_px_).during(Ms(slabRiseSecs_ * slabPeakRate_)).via(Ease(EaseType::OutCubic))
             .to(0.0f).during(Ms(slabRiseSecs_ * (1.0f - slabPeakRate_))).via(Ease(EaseType::InQuad)));

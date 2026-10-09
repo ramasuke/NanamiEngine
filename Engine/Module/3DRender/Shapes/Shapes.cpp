@@ -13,7 +13,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawLine3D(const glm::vec3& from, c
 void NanamiEngine::Module::Render3D::Shapes::DrawCube3DFromVertices(const std::array<glm::vec3, 8>& vertices,
                                                                     const int& edgeColor)
 {
-    // 立方体の辺を構成するインデックスペア
     static const int EDGES[12][2] = {
         {0,1}, {1,2}, {2,3}, {3,0}, 
         {4,5}, {5,6}, {6,7}, {7,4}, 
@@ -41,7 +40,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
     const int& color)
 {
     constexpr int segment = 16;
-    // 円柱部分の上下円
     std::array<glm::vec3, segment> bottom{};
     std::array<glm::vec3, segment> top{};
 
@@ -58,7 +56,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
         top[i] = t0;
     }
 
-    // 円柱側面 + 上下の円周
     for (int i = 0; i < segment; i++)
     {
         int n = (i + 1) % segment;
@@ -73,7 +70,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
                    VGet(top[i].x, top[i].y, top[i].z), color);
     }
 
-    // 半球（上下）
     for (int i = 0; i < segment; i += 2)  // ゴチャつくので 2 本に 1 本だけ経線
     {
         constexpr int hemiSeg = 8;
@@ -86,7 +82,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
             float a0 = static_cast<float>(j) / hemiSeg * glm::half_pi<float>();
             float a1 = static_cast<float>(j + 1) / hemiSeg * glm::half_pi<float>();
 
-            // ---- 下半球 ----
             {
                 auto p0 = glm::vec3(dx * radius * std::cos(a0),
                                           -halfHeight - radius * std::sin(a0),
@@ -103,7 +98,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
                            VGet(p1.x, p1.y, p1.z), color);
             }
 
-            // ---- 上半球 ----
             {
                 auto p0 = glm::vec3(dx * radius * std::cos(a0),
                                           halfHeight + radius * std::sin(a0),
@@ -165,7 +159,7 @@ void NanamiEngine::Module::Render3D::Shapes::DrawSphere3D(
 {
     constexpr int segment = 16;
 
-    // 3つの直交する円ワイヤーフレーム球
+    // NOTE: 直交する 3 つの円で球を表す
     for (int i = 0; i < segment; i++)
     {
         const float t0 = static_cast<float>(i)     / segment * glm::two_pi<float>();
@@ -174,13 +168,10 @@ void NanamiEngine::Module::Render3D::Shapes::DrawSphere3D(
         const float c0 = std::cos(t0), s0 = std::sin(t0);
         const float c1 = std::cos(t1), s1 = std::sin(t1);
 
-        // XY平面
         DxLib::DrawLine3D(VGet(center.x + radius * c0, center.y + radius * s0, center.z),
                    VGet(center.x + radius * c1, center.y + radius * s1, center.z), color);
-        // XZ平面
         DxLib::DrawLine3D(VGet(center.x + radius * c0, center.y, center.z + radius * s0),
                    VGet(center.x + radius * c1, center.y, center.z + radius * s1), color);
-        // YZ平面
         DxLib::DrawLine3D(VGet(center.x, center.y + radius * c0, center.z + radius * s0),
                    VGet(center.x, center.y + radius * c1, center.z + radius * s1), color);
     }
@@ -195,7 +186,6 @@ void NanamiEngine::Module::Render3D::Shapes::DrawMeshWireFrame3D(
     if (vertices.empty() || indices.empty())
         return;
 
-    // 三角形数検証
     assert(indices.size() % 3 == 0);
 
     auto transformPoint = [&](const glm::vec3& v)

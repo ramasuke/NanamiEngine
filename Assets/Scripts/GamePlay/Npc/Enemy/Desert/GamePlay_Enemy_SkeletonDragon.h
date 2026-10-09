@@ -3,7 +3,7 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    /** 骸竜。光の浮遊石に起こされた守り竜の亡骸で、城塞の神殿前に居着く砂漠のボス */
+    // NOTE: 骸竜。光の浮遊石に起こされた守り竜の亡骸で、城塞の神殿前に居着く砂漠のボス
     class SkeletonDragon final : public GameCore::Npc::BossEnemyBase
     {
     private:

@@ -9,7 +9,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::LockPlayerCannon::DoTick(const TickContext& context)
     {
-        // NOTE: 乗っている Player は UseCanon ステートが IsLocked を見て降りる
+        // NOTE: 乗っているプレイヤーはロックを見て自分で降りる
         if (const auto sceneContext = Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>())
         {
             sceneContext->PlayerControllabeCanon().Lock();

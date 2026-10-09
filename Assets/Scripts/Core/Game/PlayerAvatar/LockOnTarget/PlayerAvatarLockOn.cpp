@@ -108,7 +108,7 @@ namespace GameCore::PlayerAvatar
         const glm::vec3 forward   = cameraRot * glm::vec3(0.0f, 0.0f, 1.0f);
         const glm::vec3 right     = cameraRot * glm::vec3(1.0f, 0.0f, 0.0f);
 
-        // 画面の横位置。Update 中は DxLib のカメラがエディタの Scene ビューのままのことがあるので、Brain の姿勢から求める
+        // NOTE: 画面の横位置。Update 中は DxLib のカメラがエディタの Scene ビューのままのことがあるので、Brain の姿勢から求める
         const auto screenXOf = [&](const glm::vec3& point) -> std::optional<float>
         {
             const glm::vec3 diff = point - cameraPos;
@@ -131,7 +131,7 @@ namespace GameCore::PlayerAvatar
         if (candidates.empty())
             return;
 
-        // 向かう側で一番近い点。無ければ(端にいる、今の点が画面外)反対側の端へ回る
+        // NOTE: 向かう側で一番近い点。無ければ(端にいる、今の点が画面外)反対側の端へ回る
         const AimCandidate* next = nullptr;
         if (const auto currentX = screenXOf(ILockOnTarget::PositionOf(*currentTarget)))
         {
@@ -171,7 +171,7 @@ namespace GameCore::PlayerAvatar
         if (distance <= 0.0f)
             return true;
 
-        // 敵は遮蔽物に含めない
+        // NOTE: 敵は遮蔽物に含めない
         Physics::LayerMask mask = Physics::CreateLayerMask();
         Physics::AddLayer(mask, Physics::Layer::Default);
 

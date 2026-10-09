@@ -18,11 +18,8 @@ namespace Editor::Npc::Friendly::Behaviour
     public:
         using CreateFunc = std::function<std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase>()>;
 
-        /** アクション型登録 */
         void Register(const std::string& typeName, CreateFunc function);
-        /** アクション生成 */
         [[nodiscard]] std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase> Create(const std::string& typeName) const;
-        /** 登録済み型一覧 */
         [[nodiscard]]
         const std::unordered_map<std::string, CreateFunc>& CreatableActions() const { return creatableActionFactories_; }
 

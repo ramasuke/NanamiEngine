@@ -13,7 +13,7 @@
 
 namespace GamePlay::Prop
 {
-    // GrassField の草をチャンクごとの頂点バッファにまとめ、風の揺れは頂点シェーダーで付けて描画する
+    // NOTE: GrassField の草をチャンクごとの頂点バッファにまとめ、風の揺れは頂点シェーダーで付けて描画する
     class GrassRenderer final : public Component::ComponentBase,
                                 public LifeCycleCallback::IRenderable,
                                 public Component::IShaderConstantBufferHost
@@ -23,7 +23,7 @@ namespace GamePlay::Prop
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
 
     private:
-        // Grass_VS.hlsl / Grass_PS.hlsl の GrassBuffer と同じ並び
+        // WARNING: Grass_VS.hlsl / Grass_PS.hlsl の GrassBuffer と同じ並びにする
         struct GrassCB
         {
             float wind[4];           

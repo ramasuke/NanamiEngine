@@ -37,7 +37,7 @@ namespace NanamiEngine::UiFlow
                 screenId_, ControlLock::Channel::PlayerControl));
         }
 
-        // 開くのに使った入力を押したままでも、開いた直後の入力として拾わない
+        // NOTE: 開くのに使った入力を押したままでも、開いた直後の入力として拾わない
         input_.SetRepeat(repeatDelay_secs_, repeatInterval_secs_);
         input_.WaitForRelease();
         onOpened_.OnNext(R4::Unit{});
@@ -103,7 +103,7 @@ namespace NanamiEngine::UiFlow
 
     void UiScreen::Reveal()
     {
-        // 上の画面を閉じるのに使った入力で、こちらまで動かない
+        // NOTE: 上の画面を閉じるのに使った入力で、こちらまで動かない
         state_ = ScreenState::Opened;
         input_.WaitForRelease();
         onRevealed_.OnNext(R4::Unit{});

@@ -20,7 +20,7 @@ namespace NanamiEngine::Core::MainWindow
         static MainWindowFactory& Instance();
 
     public:
-        /** @param category ツールバーのメニューでの入れ子 ("A::B") */
+        // NOTE: category はツールバーのメニューでの入れ子 ("A::B")
         template <typename T>
         void Register(const std::string& name, const std::string& category)
         {
@@ -39,7 +39,7 @@ namespace NanamiEngine::Core::MainWindow
             modules_   [name] = NANAMI_CURRENT_MODULE();
         }
 
-        /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
+        // NOTE: module が登録したウィンドウ種別を消す。戻り値は消した数
         std::size_t UnregisterModule(const ModuleHandle module)
         {
             std::size_t count = 0;

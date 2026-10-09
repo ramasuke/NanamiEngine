@@ -42,7 +42,7 @@ namespace NanamiEngine::Module::Component
         [[serialize(0)]] float maxYawDeg_       = 70.0f;
         [[serialize(0)]] float maxPitchDeg_     = 25.0f;
         
-        // これより後ろにいる相手は見ようとせず正面に戻る
+        // NOTE: これより後ろにいる相手は見ようとせず正面に戻る
         [[serialize(0)]] float giveUpYawDeg_    = 110.0f;
         [[serialize(0)]] float followSharpness_ = 6.0f;
 

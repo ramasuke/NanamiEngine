@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
-    /** @brief StoryProgress のフラグが expected_ と同じなら Success */
+    // NOTE: StoryProgress のフラグが expected_ と同じなら Success
     class IsStoryFlag final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

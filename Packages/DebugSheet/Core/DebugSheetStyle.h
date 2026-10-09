@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::DebugSheet
 {
-    /** @brief シート専用の配色。エディタの ImGui と見分けがつくよう濃紺 + オレンジにする */
+    // NOTE: シート専用の配色。エディタの ImGui と見分けがつくよう濃紺 + オレンジにする
     namespace Palette
     {
         struct NANAMI_API Rgba { float r, g, b, a; };
@@ -30,7 +30,7 @@ namespace NanamiEngine::DebugSheet
         constexpr float FONT_SCALE   = 1.3f;
     }
 
-    /** @brief 生存中だけシートのスタイルを積む。エディタ側のスタイルは壊さない */
+    // NOTE: 生存中だけシートのスタイルを積む。エディタ側のスタイルは壊さない
     class NANAMI_API ScopedStyle final
     {
     public:

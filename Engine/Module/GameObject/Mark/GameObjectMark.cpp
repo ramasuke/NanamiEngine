@@ -100,7 +100,7 @@ namespace NanamiEngine::Module::GameObject
                 if (selected)
                     ImGui::SetItemDefaultFocus();
 
-                // Selectable は行幅いっぱいに広がり SameLine で横に並べられないので、行の上に直接描く
+                // NOTE: Selectable は行幅いっぱいに広がり SameLine で横に並べられないので、行の上に直接描く
                 const ImVec2 itemMin = ImGui::GetItemRectMin();
                 const ImVec2 itemMax = ImGui::GetItemRectMax();
                 const float  centerY = (itemMin.y + itemMax.y) * 0.5f;

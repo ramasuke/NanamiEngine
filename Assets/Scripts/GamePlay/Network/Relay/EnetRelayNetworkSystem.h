@@ -19,9 +19,7 @@ struct _ENetPeer;
 
 namespace GamePlay::Network
 {
-    /**
-     * 中継サーバー経由の INetworkSystem。ホストかクライアントかは中継サーバーの返事 で決まる。
-     */
+    // NOTE: 中継サーバー経由の INetworkSystem。ホストかクライアントかは中継サーバーの返事で決まる
     class EnetRelayNetworkSystem final : public NanamiEngine::Core::Network::INetworkSystem
     {
     public:
@@ -46,14 +44,14 @@ namespace GamePlay::Network
         NanamiEngine::R4::Observable<NanamiEngine::Core::Network::PlayerId> OnConnectPlayer() override;
 
         void OnRelayConnected();
-        /** ホストとして部屋に入った。自分に PlayerId 0 を振る */
+        // NOTE: ホストとして部屋に入った。自分に PlayerId 0 を振る
         void BecomeHost();
         void OnControlReceived(const std::uint8_t* data, std::size_t size);
         void OnGameDataReceived(const std::uint8_t* data, std::size_t size);
         void OnRelayDisconnected(std::uint32_t reason);
         void OnPeerJoined(std::uint8_t slot);
         void OnPeerLeft(std::uint8_t slot);
-        /** ホストでは target の slotを先頭に付けて送る */
+        // NOTE: ホストでは target の slot を先頭に付けて送る
         void SendEncoded(const NanamiEngine::Core::Network::Packet& packet, std::optional<std::uint8_t> target);
 
     private:
@@ -70,7 +68,7 @@ namespace GamePlay::Network
         std::queue<NanamiEngine::Core::Network::Packet> receivedQueue_;
         NanamiEngine::Core::Network::PlayerId playerId_ = NanamiEngine::Core::Network::PlayerId::Invalid();
 
-        // ホストのみ使用: 次に割り当てる PlayerIdと、中継サーバーの slot との対応
+        // NOTE: ホストのみ使用: 次に割り当てる PlayerId と、中継サーバーの slot との対応
         int nextPlayerId_ = 0;
         std::map<NanamiEngine::Core::Network::PlayerId, std::uint8_t> slotsByPlayer_;
         std::map<std::uint8_t, NanamiEngine::Core::Network::PlayerId> playersBySlot_;

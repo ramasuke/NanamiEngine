@@ -3,10 +3,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * Network上で同期するParameterのネットワーク上で共通のID
-     * フォーマット: 上位32bit = NetworkObjectId, 下位32bit = オブジェクト内paramIndex
-     */
+    // NOTE: 同期する値のネットワーク共通 ID。上位 32bit = NetworkObjectId、下位 32bit = オブジェクト内の添字
     struct NANAMI_API ParameterId final
     {
         explicit ParameterId(uint64_t id = UINT64_MAX);

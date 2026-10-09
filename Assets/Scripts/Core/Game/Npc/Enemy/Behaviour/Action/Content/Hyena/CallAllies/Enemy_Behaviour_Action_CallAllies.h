@@ -26,7 +26,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] FIELD(Asset::EnemyFactory) enemyFactory_;
         [[serialize(0)]] FIELD(Asset::SoundFile)    howlSound_;
 
-        //NOTE: Tickが途切れた = 一度見失ったとみなして抽選し直すための、前回Tickの時刻
+        // NOTE: 前回 Tick の時刻。途切れていたら一度見失ったとみなして抽選し直す
         float lastTickedTime_secs_ = -1.0f;
         bool  isHowling_           = false;
         float howlElapsed_secs_    = 0.0f;

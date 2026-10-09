@@ -33,7 +33,7 @@ namespace GameCore::Scene::Sub
         }
         catch (const NanamiEngine::Module::Exception::NanamiException& exception)
         {
-            // Scene ファイルの破損などで Push に失敗した。登録しないので Pop 側は何もしない
+            // NOTE: Scene ファイルの破損などで Push に失敗した。登録しないので Pop 側は何もしない
             NanamiEngine::Module::LogError("SubGameSceneGroup: シーンの Push に失敗しました: " + std::string(exception.what()));
             co_return false;
         }
@@ -46,7 +46,7 @@ namespace GameCore::Scene::Sub
         if (it == scenes_.end())
             return;
 
-        // Dispose 中に Push / Pop されても壊れないよう、先に外してから片付ける
+        // WARNING: Dispose 中に Push / Pop されても壊れないよう、先に外してから片付ける
         const auto scene = it->second;
         scenes_.erase(it);
         scene->Dispose();

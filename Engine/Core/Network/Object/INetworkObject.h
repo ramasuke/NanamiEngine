@@ -3,7 +3,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /** Network上で共有しているオブジェクト */
+    // NOTE: Network上で共有しているオブジェクト
     class NANAMI_API INetworkObject
     {
     public:

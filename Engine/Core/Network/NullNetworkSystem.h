@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    /** 通信しない INetworkSystem。何も送らず、何も受け取らない */
+    // NOTE: 通信しない INetworkSystem。何も送らず、何も受け取らない
     class NANAMI_API NullNetworkSystem final : public INetworkSystem
     {
     public:

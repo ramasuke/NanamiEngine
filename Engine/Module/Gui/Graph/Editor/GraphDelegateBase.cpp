@@ -29,7 +29,7 @@ namespace NanamiEngine::Module::Gui::Graph
 
         Rebuild();
 
-        // 削除済みノードの選択を掃除する
+        // NOTE: 削除済みノードの選択を掃除する
         std::unordered_set<Guid, GuidHash> alive;
         for (GraphEditor::NodeIndex i = 0; i < GetNodeCount(); ++i)
             alive.insert(NodeGuid(i));

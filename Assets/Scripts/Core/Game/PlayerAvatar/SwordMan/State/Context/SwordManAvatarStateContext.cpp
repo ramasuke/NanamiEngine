@@ -28,7 +28,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , successAvoidRollingParticle_(successAvoidRollingParticle)
         , resources_            (resources          )
     {
-        // 初期所持はセーブにポーチが無いとき(初回・v21 より前のセーブ)だけ入れる
+        // NOTE: 初期所持品はセーブにポーチが無いとき（初回や旧版のセーブ）だけ入れる
         if (const auto resource = resources.lock(); resource && !status->Pouch().IsSetUp())
             status->SetupPouch(resource->InitialItems());
     }

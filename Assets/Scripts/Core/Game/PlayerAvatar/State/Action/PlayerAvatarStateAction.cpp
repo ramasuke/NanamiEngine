@@ -26,7 +26,7 @@ namespace GameCore::PlayerAvatar::State
         flatForward.y = 0.0f;
         if (glm::length2(flatForward) < 0.0001f)
         {
-            // 真上・真下を向いているときは画面の上方向を前とみなす
+            // NOTE: 真上・真下を向いているときは画面の上方向を前とみなす
             flatForward = cameraRot * glm::vec3(0, 1, 0);
             flatForward.y = 0.0f;
         }
@@ -64,11 +64,10 @@ namespace GameCore::PlayerAvatar::State
         const glm::quat deltaRot   = glm::rotation(currentForward, targetForward);
         const glm::quat targetRot  = deltaRot * currentRot;
     
-        // 実際に回す割合
+        // NOTE: 1 ステップに rotateSpeed 分だけ回る補間率
         const float angleDiff = glm::angle(deltaRot);
         const float t = angleDiff < 0.0001f ? 1.0f : glm::min(1.0f, rotateSpeed * Time::FixedDeltaTime() / angleDiff);
         
-        // 徐々に回転
         playerTransform.SetWorldRot(glm::slerp(currentRot, targetRot, t));
     }
 
@@ -104,7 +103,7 @@ namespace GameCore::PlayerAvatar::State
         if (normal.y >= std::cos(glm::radians(stateContext_->MaxWalkableSlope_deg())))
             return horizontalVelocity;
 
-        // 急な面は壁とみなし、面に沿って横へ滑る成分だけ残す
+        // NOTE: 急な面は壁とみなし、面に沿って横へ滑る成分だけ残す
         const glm::vec3 wallNormal(normal.x, 0.0f, normal.z);
         if (glm::length2(wallNormal) < 0.0001f)
             return horizontalVelocity;

@@ -56,7 +56,7 @@ namespace NanamiEngine::Module::Physics
             if (!bodyA || !bodyB)
                 continue;
 
-            // Collisionのみ通す
+            // NOTE: Collisionのみ通す
             if (bodyA->IsSensor() || bodyB->IsSensor())
                 continue;
 
@@ -66,7 +66,6 @@ namespace NanamiEngine::Module::Physics
             if (aData->IsExpired() || bData->IsExpired())
                 continue;
 
-            // A
             for (const auto& weak : aData->Components().Catches<Callback::ICollisionExitable>())
             {
                 if (const auto comp = weak.lock())
@@ -75,7 +74,6 @@ namespace NanamiEngine::Module::Physics
                 }
             }
 
-            // B
             for (const auto& weak : bData->Components().Catches<Callback::ICollisionExitable>())
             {
                 if (const auto comp = weak.lock())

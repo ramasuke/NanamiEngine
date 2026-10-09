@@ -7,9 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    /**
-     * 画像を 12 時から時計回りに扇形で削って描く。100% をまたぐ弧は2回に分けて描く
-     */
+    // NOTE: 画像を 12 時から時計回りに扇形で削って描く。100% をまたぐ弧は2回に分けて描く
     class NANAMI_API CircleGaugeRenderer final : public Component::ComponentBase,
                                       public LifeCycleCallback::IInitRenderable,
                                       public LifeCycleCallback::IUserInterfaceRenderable
@@ -18,7 +16,7 @@ namespace NanamiEngine::Module::NanamiUi
         void SetBlendRate(int blendRate);
         [[nodiscard]] int GetBlendRate() const { return blendRate_; }
         void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite);
-        /** @brief 描く割合（0〜1） */
+        // NOTE: 描く割合（0〜1）
         void SetFillRate(float fillRate);
         [[nodiscard]] float GetFillRate() const { return fillRate_; }
 
@@ -31,9 +29,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] int blendRate_ = 255;
         [[serialize(0)]] FIELD(Asset::SpriteFile) spriteFile_;
         [[serialize(0)]] int renderOrder_ = 0;
-        /** @brief 12 時を 0、1周を 100 とした描き始め */
+        // NOTE: 12 時を 0、1周を 100 とした描き始め
         [[serialize(0)]] float startPercent_ = 0.0f;
-        /** @brief fillRate が 1 のときに描く長さ（1周 = 100） */
+        // NOTE: fillRate が 1 のときに描く長さ（1周 = 100）
         [[serialize(0)]] float spanPercent_ = 100.0f;
         [[serialize(0)]] float fillRate_ = 1.0f;
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Module/Namespace/EngineNamespace.h"
 #include "Engine/Core/Network/Packet/Dispatcher/Packet_Dispatch_PacketDispatcherBase.h"
 #include "Engine/Core/Network/IPacketSender.h"
@@ -24,7 +24,7 @@ namespace GameCore::Network
     protected:
         [[nodiscard]] Core::Network::IPacketSender& PacketSender() const { return packetSender_; }
 
-        // Server/Client 共通のゲームロジック
+        // NOTE: Server/Client 共通のゲームロジック
         virtual void OnReceive(const Core::Network::Packet& packet) = 0;
 
     private:

@@ -21,7 +21,7 @@ namespace GamePlay::Ui
     void EventBoardPresenter::OnStart()
     {
         screen_ = RequireComponent<UiFlow::UiScreen>();
-        // 調べるたびに二重に生えるのを防ぐ
+        // NOTE: 調べるたびに二重に生えるのを防ぐ
         if (!screen_->Open())
         {
             isClosed_ = true;
@@ -140,7 +140,7 @@ namespace GamePlay::Ui
             CurrentCursor().Move(-1);
         if (input.IsPressed(UiAction::Down))
             CurrentCursor().Move(1);
-        // 頁は Q / E (LB / RB) のほか、左右でも切り替わる
+        // NOTE: 頁は左右の操作でも切り替わる
         if (input.IsPressed(UiAction::TabPrev) || input.IsPressed(UiAction::Left))
             SwitchTab(-1);
         if (input.IsPressed(UiAction::TabNext) || input.IsPressed(UiAction::Right))
@@ -177,7 +177,7 @@ namespace GamePlay::Ui
         if (currentTab_ != EventBoardTabType::Restoration || suspendedAvatar_.expired())
             return false;
 
-        // NOTE: お金が足りなくても A は出す。押すと断りの音で足りないと分かる(店と同じ)
+        // NOTE: お金が足りなくても A は出す。押すと断りの音で足りないと分かる
         const auto entry = restorationModel_->Selected();
         return entry && entry->state == RestorationBoardState::Open;
     }
@@ -240,7 +240,7 @@ namespace GamePlay::Ui
         const auto quest = source ? source->Clone() : nullptr;
         if (!owner || !quest)
             return;
-        // 受注中・達成済みは BoardQuest の guid で見分ける(QuestType は週ごとの依頼で使い回す)
+        // NOTE: 受注中・達成済みは BoardQuest の guid で見分ける(QuestType は週ごとの依頼で使い回す)
         quest->SetBoardQuestGuid(boardQuest->GetGuid().Value());
 
         if (!owner->PlayerStatus().Quest().Subscribe(quest))

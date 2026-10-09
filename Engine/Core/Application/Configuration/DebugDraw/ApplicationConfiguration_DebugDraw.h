@@ -12,7 +12,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    /** @brief エディタでシーン全体のコライダーを描画するかの設定。StaticMesh 等は重いので種類・レイヤー・Trigger で絞り込める */
+    // NOTE: エディタでシーン全体のコライダーを描画するかの設定。StaticMesh 等は重いので種類・レイヤー・Trigger で絞り込める
     class NANAMI_API DebugDrawConfiguration final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;

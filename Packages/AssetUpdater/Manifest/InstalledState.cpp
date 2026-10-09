@@ -98,12 +98,12 @@ namespace NanamiEngine::AssetUpdater
         {
             if (it->is_directory())
             {
-                // ジャンクションの先は配信の対象にしない
+                // NOTE: ジャンクションの先は配信の対象にしない
                 if (GetFileAttributesW(it->path().c_str()) & FILE_ATTRIBUTE_REPARSE_POINT)
                     it.disable_recursion_pending();
                 continue;
             }
-            // .meta は本体のエントリに畳む。本体の無い .meta は manifest.json にも出ない
+            // NOTE: .meta は本体のエントリに畳む。本体の無い .meta は manifest.json にも出ない
             if (it->is_regular_file() && !InstalledStateIsMeta(it->path()))
                 files.push_back(it->path());
         }
@@ -147,7 +147,7 @@ namespace NanamiEngine::AssetUpdater
         }
         std::ranges::sort(entries, {}, &InstalledStateEntry::path);
 
-        // 途中で失敗しても、前の installed.json を壊さない
+        // NOTE: 途中で失敗しても、前の installed.json を壊さない
         std::filesystem::path temporary = installedState_;
         temporary += INSTALLED_STATE_TEMP_SUFFIX;
         {

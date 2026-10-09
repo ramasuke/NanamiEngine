@@ -62,7 +62,7 @@ namespace GameCore
 
     void Game::InitStageLoadingScene()
     {
-        // メインシーンを入れ替えても出し続けるので contents_ に残す
+        // NOTE: メインシーンの入れ替えを跨いで出し続けるのでウィンドウに直接置く
         const auto scene = stageLoadingSceneFile_->LoadScene();
         Core::Application::ApplicationBase::GameWindow()->AddContent(scene);
         stageLoadingScene_ = scene;
@@ -90,7 +90,7 @@ namespace GameCore
             return;
         }
 
-        // ロード画面と同じく、メインシーンの入れ替えを跨いで残す
+        // NOTE: ロード画面と同じく、メインシーンの入れ替えを跨いで残す
         const auto scene = gameOverSceneFile_->LoadScene();
         Core::Application::ApplicationBase::GameWindow()->AddContent(scene);
         gameOverScene_ = scene;
@@ -98,7 +98,7 @@ namespace GameCore
 
     void Game::OnAwake()
     {
-        // 保存してある音量を最初の音が鳴る前に反映する
+        // NOTE: 保存してある音量を最初の音が鳴る前に反映する
         (void)GameSettings::GetInstance();
 
         InitStageLoadingScene();
@@ -120,7 +120,7 @@ namespace GameCore
 #if NANAMI_DEBUG_SHEET_ENABLED
     void Game::OnUserInterfaceRender()
     {
-        // NOTE: UI プレイ中以外は Sheet 側で開かない
+        // NOTE: プレイ中以外は Sheet 側が開かないので、ここでは判定しない
         auto& debugSheet = NanamiEngine::DebugSheet::Sheet::Instance();
         debugSheet.Update();
         debugSheet.Render();
@@ -137,7 +137,7 @@ namespace GameCore
         // NOTE: SoundPlayer が先に破棄されていれば、そちらの OnDestroy で止まっている
         GamePlay::Sound::SoundPlayer::StopAllBgm();
 
-        // NOTE: End / ホットリロードでセーブが走らないよう Dispose ではなく Shutdown で外す
+        // NOTE: End / ホットリロードでセーブが走らないよう Dispose で外す
         if (sceneGroup_)
             sceneGroup_->Dispose();
         if (subSceneGroup_)

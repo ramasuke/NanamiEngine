@@ -16,11 +16,11 @@ namespace GameCore::Network
             : CustomDispatcherBase(defaultDispatchers, playerIdProvider, packetSender)
             , playerAvatarFactory_(playerAvatarFactory)
     {
-        // NOTE: 中継サーバー経由ではホストかどうかが接続後に決まるので、ここでは IsServer() で絞らない(通知はホストにしか来ない)
+        // NOTE: 中継経由ではホストかどうかが接続後に決まるので IsServer() で絞らない (通知はホストにしか来ない)
         newPlayerSubscription_ = PacketSender().OnConnectPlayer().Subscribe(
             [this](const Core::Network::PlayerId joined)
             {
-                // 既に破棄されたアバター(離脱者)の履歴は再送せずに捨てる
+                // NOTE: 既に破棄されたアバター(離脱者)の履歴は再送せずに捨てる
                 for (auto it = spawnPacketHistory_.begin(); it != spawnPacketHistory_.end();)
                 {
                     if (DefaultDispatch().FindNetworkObject(it->rootId).lock())
@@ -35,7 +35,7 @@ namespace GameCore::Network
                 }
             });
 
-        // 離脱者のアバター本体は SessionDispatcher が破棄済み。ここでは付属のステータスUI等を片付ける
+        // NOTE: 離脱者のアバター本体は SessionDispatcher が破棄済み。ここでは付属のステータスUI等を片付ける
         playerLeftSubscription_ = DefaultDispatch().Session().OnPlayerLeft().Subscribe(
             [this](const Core::Network::PlayerId left)
             {

@@ -15,7 +15,7 @@ namespace NanamiEngine::Core::Toolbar
             context.popupWindows.Catch<PopupWindow::BuildSettingsWindow>().front()->RequestFocus();
         }
 
-        // Build Settings を閉じていても進み具合が分かるよう、ビルド中はツールバーにも出す
+        // NOTE: Build Settings を閉じていても進み具合が分かるよう、ビルド中はツールバーにも出す
         if (auto& gameBuilder = Application::Build::GameBuilder::Instance(); gameBuilder.IsBusy())
         {
             ImGui::SameLine();

@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    /** @brief LocalPrefs を subPath ごとにまとめて編集するメニュー */
+    // NOTE: LocalPrefs を subPath ごとにまとめて編集するメニュー
     class NANAMI_API LocalPrefsToolbarWidget final : public IEditorToolbarWidget
     {
     public:

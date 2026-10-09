@@ -16,11 +16,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (context.EnemyStatus()->Get().Health() > StatusParameter::Health(0))
             return TickStatus::Failure;
 
-        // 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を破棄させる
+        // NOTE: 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を破棄させる
         if (context.IsNetworkAuthority())
             GameCore::Network::EnemyDeathRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
 
-        // 協力プレイでは各ピアがそれぞれのプレイヤーの記録帳に付ける
+        // NOTE: 協力プレイでは各ピアがそれぞれのプレイヤーの記録帳に付ける
         if (const auto enemy = context.EnemyGameObject().Components().Catch<EnemyBase>().lock())
             enemy->NotifyDefeated();
 

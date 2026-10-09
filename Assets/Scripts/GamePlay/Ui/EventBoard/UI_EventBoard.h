@@ -15,7 +15,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 木札の並び順 */
+    // NOTE: 木札の並び順
     enum class EventBoardTabType : int
     {
         Quest = 0,
@@ -26,7 +26,7 @@ namespace GamePlay::Ui
 
     constexpr size_t EVENT_BOARD_TAB_COUNT = 4;
 
-    /** @brief 操作ガイドの A に何を出すか */
+    // NOTE: 操作ガイドの A に何を出すか
     enum class EventBoardConfirmHint
     {
         None,
@@ -36,13 +36,11 @@ namespace GamePlay::Ui
 
     [[nodiscard]] std::string_view ToEventBoardTabLabel(EventBoardTabType type);
 
-    /**
-     * @brief 掲示板の見出しと頁を prefab から生成し、選んだ見出しの頁だけを出す
-     */
+    // NOTE: 掲示板の見出しと頁を prefab から生成し、選んだ見出しの頁だけを出す
     class EventBoardUi final : public Component::ComponentBase
     {
     public:
-        /** @brief 見出しと頁を作る。2回目以降は何もしない */
+        // NOTE: 見出しと頁を作る。2回目以降は何もしない
         void Build();
 
         [[nodiscard]] std::shared_ptr<EventBoardQuestPage>  QuestPage () const { return questPage_ .lock(); }
@@ -51,12 +49,10 @@ namespace GamePlay::Ui
         [[nodiscard]] std::shared_ptr<EventBoardRestorationPage> RestorationPage() const { return restorationPage_.lock(); }
         [[nodiscard]] std::shared_ptr<EventBoardTab>        Tab(EventBoardTabType type) const;
 
-        /**
-         * @brief 選んだ見出しの頁だけを出す。復興の頁では暗幕を外す
-         * WARNING: 子の部品が全部有効に戻るので、このあと頁を Bind し直すこと
-         */
+        // NOTE: 選んだ見出しの頁だけを出す。復興の頁では暗幕を外す
+        // WARNING: 子の部品が全部有効に戻るので、このあと頁を Bind し直すこと
         void ShowTab(EventBoardTabType type) const;
-        /** @brief 操作ガイドに「A 受注する」「A 直す」のどちらかを出すか、A を出さないか */
+        // NOTE: 操作ガイドに「A 受注する」「A 直す」のどちらかを出すか、A を出さないか
         void ShowConfirmHint(EventBoardConfirmHint hint) const;
 
     private:

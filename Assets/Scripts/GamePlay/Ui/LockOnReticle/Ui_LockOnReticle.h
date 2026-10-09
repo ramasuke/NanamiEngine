@@ -12,7 +12,7 @@ namespace GameCore::PlayerAvatar
 
 namespace GamePlay::Ui
 {
-    // ロック中の対象に照準を、未ロック時は次に狙う候補にマーカーを重ねる
+    // NOTE: ロック中の対象に照準を、未ロック時は次に狙う候補にマーカーを重ねる
     // NOTE: 親の CameraGroup の状態を毎フレーム参照する
     class LockOnReticle final : public Component::ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
@@ -34,7 +34,7 @@ namespace GamePlay::Ui
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
         [[nodiscard]] std::shared_ptr<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase> CatchCameraGroup();
-        // カメラから遠いほど小さく、近いほど大きくする倍率
+        // NOTE: カメラから遠いほど小さく、近いほど大きくする倍率
         [[nodiscard]] float DistanceScaleRate(const glm::vec3& worldPos) const;
         void DrawSprite(
             const std::shared_ptr<Asset::SpriteFile>& sprite,
@@ -53,7 +53,7 @@ namespace GamePlay::Ui
         bool      wasEngaged_      = false;
         std::weak_ptr<GameObject::IGameObject> lockedTarget_;
         glm::vec3 lockOnPointWorld_ = {};
-        // 確定・解除演出。3本とも同じ長さで、終わりは scaleRateTween_ で判定する
+        // NOTE: 確定・解除演出。3本とも同じ長さで、終わりは scaleRateTween_ で判定する
         LibCore::Tween::TweenPlayer<float> scaleRateTween_;
         LibCore::Tween::TweenPlayer<float> alphaTween_;
         LibCore::Tween::TweenPlayer<float> bracketAngleTween_;
@@ -75,7 +75,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float engageStartScaleRate_  = 2.0f;
         [[serialize(0)]] float releaseDuration_secs_  = 0.22f;
         [[serialize(0)]] float releaseEndScaleRate_   = 1.5f;
-        // reticleScale_ / candidateScale_ はこの距離での大きさ
+        // NOTE: reticleScale_ / candidateScale_ はこの距離での大きさ
         [[serialize(1)]] float referenceDistance_     = 60.0f;
         [[serialize(1)]] float minDistanceScale_      = 0.15f;
         [[serialize(1)]] float maxDistanceScale_      = 1.6f;
@@ -83,7 +83,7 @@ namespace GamePlay::Ui
         [[serialize(3)]] float candidateFade_secs_         = 0.15f;
         [[serialize(3)]] float candidatePulsePeriod_secs_  = 1.4f;
         [[serialize(3)]] float lockedBreathPeriod_secs_    = 1.6f;
-        /** 確定演出でブラケットが回りながらスナップしてくる角度 */
+        // NOTE: 確定演出でブラケットが回りながらスナップしてくる角度
         [[serialize(3)]] float engageBracketAngle_rad_     = 3.14159265f * 0.25f;
 
 #pragma region Serialization Function

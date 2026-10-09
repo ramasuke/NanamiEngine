@@ -25,7 +25,7 @@ namespace GamePlay::Prop
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) destroyParticle_;
         [[serialize(1)]] FIELD(GameObject::IGameObject) particlePos_;
         [[serialize(4)]] FIELD(Asset::DropTable) dropTable_;
-        // 破棄はフレーム末なので、同じフレームの2発目で二重に壊れないようにする
+        // NOTE: 破棄はフレーム末なので、同じフレームの2発目で二重に壊れないようにする
         bool isBroken_ = false;
 
 #pragma region Serialization Function

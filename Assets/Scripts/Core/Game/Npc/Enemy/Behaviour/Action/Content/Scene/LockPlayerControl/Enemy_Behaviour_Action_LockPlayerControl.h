@@ -6,7 +6,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief 演出のあいだ全ピアのプレイヤー操作を止める */
+    // NOTE: 演出のあいだ全ピアのプレイヤー操作を止める
     class LockPlayerControl final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

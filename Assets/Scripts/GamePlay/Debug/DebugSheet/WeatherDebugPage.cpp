@@ -13,7 +13,7 @@ namespace GamePlay::Debug
 {
     namespace
     {
-        /** @brief 今のメインシーンの Sandstorm。砂漠以外では無い */
+        // NOTE: 今のメインシーンの Sandstorm。砂漠以外では無い
         std::shared_ptr<Weather::Sandstorm> FindSandstorm()
         {
             std::shared_ptr<Weather::Sandstorm> found;

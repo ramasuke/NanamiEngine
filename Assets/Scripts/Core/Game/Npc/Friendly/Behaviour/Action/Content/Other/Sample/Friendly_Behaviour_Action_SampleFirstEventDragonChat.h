@@ -30,10 +30,10 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ActionBase>(this));
-            // v0 はドラゴンのプレハブを直接持っていた。今は EnemyFactory 側にあるので読み捨てる
+            // NOTE: 旧版のドラゴンのプレハブ。今は enemyFactory_ が持つので読み捨てる
             [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) firstEventDragonPrefab_;
             if (version == 0) archive(CEREAL_NVP(firstEventDragonPrefab_));
-            // v1 までは出現位置をワールド座標で持っていた。今はシーンコンテキストのマーカーを使うので読み捨てる
+            // NOTE: 旧版の出現位置。今はシーンコンテキストのマーカーを使うので読み捨てる
             [[serialize(0)]] glm::vec3 appearFirstEventDragonPosition_;
             if (version <= 1) archive(CEREAL_NVP(appearFirstEventDragonPosition_));
             if (version >= 1) archive(CEREAL_NVP(enemyFactory_));

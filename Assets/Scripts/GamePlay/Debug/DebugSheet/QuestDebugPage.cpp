@@ -14,7 +14,7 @@ namespace GamePlay::Debug
     {
         using QuestJournal = GameCore::PlayerAvatar::Quest::QuestJournal;
 
-        /** @param avatar 報酬を受け取る手元のアバター。居なければ達成させない */
+        // NOTE: avatar は報酬を受け取る手元のアバター。居なければ達成させない
         void DrawQuest(QuestJournal& journal, const GameCore::PlayerAvatar::QuestType type, GameCore::IPlayerAvatar* avatar)
         {
             namespace Widgets = NanamiEngine::DebugSheet::Widgets;

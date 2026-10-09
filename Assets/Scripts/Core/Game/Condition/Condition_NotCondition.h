@@ -5,7 +5,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief condition_ を満たしていなければ解放。空なら解放 */
+    // NOTE: condition_ を満たしていなければ解放。空なら解放
     class NotCondition final : public ICondition
     {
     public:

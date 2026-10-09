@@ -11,7 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    // ボスのHP表示。shards_ の結晶1本が HP の 1/結晶数 で、最後の要素から欠けていく
+    // NOTE: ボスのHP表示。shards_ の結晶1本が HP の 1/結晶数 で、最後の要素から欠けていく
     class BossHealthGauge final : public Component::ComponentBase,
                                   public LifeCycleCallback::IUpdatable
     {
@@ -38,7 +38,7 @@ namespace GamePlay::Ui
 
         float targetRate_ = 1.0f;
         float value_ = 0.0f;
-        // 登場時に 0 から満ちていく上限
+        // NOTE: 登場時に 0 から満ちていく上限
         LibCore::Tween::TweenPlayer<float> introFill_;
         float pulseTime_secs_ = 0.0f;
 
@@ -63,7 +63,7 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v3 で結晶を Slider にし、トレイルを各 Slider に任せた
+            // NOTE: 旧版の結晶とトレイルの設定。今は使わないので読み捨てる
             FIELD(GameObject::IGameObject) shardsObject_;
             float trailDelay_secs_ = 0.0f;
             float trailSpeed_perSec_ = 0.0f;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <type_traits>
@@ -14,7 +14,7 @@ namespace NanamiEngine::Module::Network
 {
     class NetworkRunnerBase;
 
-    /** ネットワーク上で共通の動作を持たせたい、もしくはネットワーク上で同期させたい処理がある場合に継承するコンポーネントクラス */
+    // NOTE: ネットワークで同期する処理を持つコンポーネントの基底
     class NANAMI_API NetworkComponent : public Component::ComponentBase,
                              public INetworkAwakable,
                              public INetworkTickable
@@ -60,11 +60,9 @@ namespace NanamiEngine::Module::Network
             networkObjects_.push_back(obj);
         }
 
-        /** API: 自身がSpawnしたオブジェクトかを判別する */
+        // NOTE: 自分が生成したオブジェクトか
         [[nodiscard]] bool HasStateAuthority() const;
-        /** API: このオブジェクトのNetworkObjectIdを取得する */
         [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const;
-        /** API: シングルトンのNetworkRunnerへのサンドボックスアクセス */
         [[nodiscard]] NetworkRunnerBase& NetworkRunner() const;
 
     private:

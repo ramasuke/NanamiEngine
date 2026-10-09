@@ -62,7 +62,7 @@ namespace GameCore::Scene::GrassLand
             , int duration_msecs);
         static Coroutine::Task<bool> WaitShotAsync(std::shared_ptr<StageArrivalMovie> self, int duration_msecs);
         void DisableShotCameras() const;
-        /** @brief 補間せずにカメラを pos に置き、lookAt を向かせる*/
+        // NOTE: 補間せずにカメラを pos に置き、lookAt を向かせる
         void SnapCamera(const glm::vec3& pos, const glm::vec3& lookAt) const;
         void MarkOverviewSeen() const;
         void ReleaseCaption();

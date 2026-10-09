@@ -46,13 +46,13 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] virtual JPH::RefConst<JPH::Shape> CreateColliderShape() const = 0;
         [[nodiscard]] virtual Physics::ColliderShapeKind ShapeKind() const = 0;
         [[nodiscard]] unsigned int DebugDrawColor(unsigned int normalColor) const;
-        // 形状を作り直した時に呼ぶ。次の Flush で Body に反映される
+        // NOTE: 形状を作り直した時に呼ぶ。次の Flush で Body に反映される
         void NotifyShapeChanged() const;
         virtual void OnAwake();
         [[nodiscard]] virtual std::pair<JPH::Vec3, JPH::Quat> CalcWorldTransformInternal() const;
-        // 物理シミュレーション中の、この形状のワールド原点。Body が無ければ nullopt
+        // NOTE: 物理シミュレーション中の、この形状のワールド原点。Body が無ければ nullopt
         [[nodiscard]] std::optional<std::pair<JPH::Vec3, JPH::Quat>> SimulatedWorldTransform() const;
-        // v6 より前のデータに入っていた motion。RigidBody への移行漏れの警告にだけ使う
+        // NOTE: 旧版のデータに入っていた motion。RigidBody への移行漏れの警告にだけ使う
         void SetLegacyMotion(Physics::MotionType motionType, Physics::Constraints constraints);
 
         [[serialize(4)]] glm::vec3 offset_         = glm::vec3(0, 0, 0);
@@ -93,7 +93,7 @@ namespace NanamiEngine::Module::Component
                 archive(CEREAL_NVP(friction_));
                 return;
             }
-            // v5 以前は motion 系の項目も持っていた。並び順を崩さないよう、同じ順番で一時変数に読む
+            // NOTE: 旧版は motion 系の項目も持っていた。並び順を崩さないよう同じ順番で一時変数に読む
             float legacyMass = 1.0f;
             bool legacyIsGravity = true;
             Physics::MotionType legacyMotionType = Physics::MotionType::Static;

@@ -43,7 +43,7 @@ namespace GamePlay::Ui
         }
 
         screen_ = RequireComponent<UiFlow::UiScreen>();
-        // 会話のたびに二重に生えるのを防ぐ
+        // NOTE: 会話のたびに二重に生えるのを防ぐ
         if (!screen_->Open())
         {
             Discard();
@@ -78,7 +78,7 @@ namespace GamePlay::Ui
                 current->ShowCharacter(index);
         }).AddTo(this);
 
-        // 今いるキャラに合わせて開く
+        // NOTE: 今いるキャラに合わせて開く
         const auto owner = GameCore::PlayerAvatar::Owner();
         suspendedAvatar_ = owner;
         if (owner)
@@ -94,7 +94,7 @@ namespace GamePlay::Ui
             }
         }
 
-        // Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
+        // NOTE: Select は同じ index だと通知を出さないので、初期表示はここで一度だけ作る
         view_->HighlightRow(model_->SelectedIndex());
         if (const auto character = model_->Selected())
             view_->ShowDetail(*character);

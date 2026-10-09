@@ -8,7 +8,7 @@
 
 namespace GamePlay::Ui
 {
-    // ローカルプレイヤーのHPに応じて、赤ビネットの鼓動・彩度低下・心音、ダウン中の暗転を出す
+    // NOTE: ローカルプレイヤーのHPに応じて、赤ビネットの鼓動・彩度低下・心音、ダウン中の暗転を出す
     class LowHealthScreenEffect final : public Component::ComponentBase,
                                         public LifeCycleCallback::IAwakable,
                                         public LifeCycleCallback::IUpdatable

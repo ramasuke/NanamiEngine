@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         GamePlay::Sound::SoundPlayer::StopAllBgm();
         GamePlay::Sound::SoundPlayer::PlayBgm(bgm_.get());
 
-        // 権威側限定Tickなら、他ピアにも同じBGMへ切り替えさせる
+        // NOTE: 権威側限定Tickなら、他ピアにも同じBGMへ切り替えさせる
         if (bgm_ && context.IsNetworkAuthority())
         {
             GameCore::Network::PlayBgmRpc::Send(

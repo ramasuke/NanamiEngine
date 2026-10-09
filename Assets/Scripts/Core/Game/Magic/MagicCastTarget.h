@@ -4,7 +4,7 @@
 
 namespace GameCore::Magic
 {
-    // 撃った人の画面で決めた狙い。RPC でそのまま他の画面へ送り、全員が同じ場所へ撃つ
+    // NOTE: 撃った人の画面で決めた狙い。RPC でそのまま他の画面へ送り、全員が同じ場所へ撃つ
     struct MagicCastTarget final
     {
         glm::vec3 origin    {0.0f};

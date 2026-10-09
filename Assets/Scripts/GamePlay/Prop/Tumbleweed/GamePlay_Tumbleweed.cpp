@@ -48,7 +48,7 @@ namespace GamePlay::Prop
         if (add > 0.0f)
             rigidBody.AddLinearVelocity(direction * add);
 
-        // 転がる向きの回転。地面との摩擦任せだと跳ねている間に止まって見える
+        // NOTE: 転がる向きの回転。地面との摩擦任せだと跳ねている間に止まって見える
         if (radius_ > 0.0f)
         {
             const float     spinDeg   = (std::max)(along, 0.0f) / radius_ * 180.0f / glm::pi<float>();
@@ -62,7 +62,7 @@ namespace GamePlay::Prop
             return;
 
         hopTimer_secs_ = RandomRange(hopMin_secs_, hopMax_secs_);
-        // 跳ねている最中に重ねると空へ飛んでいく
+        // NOTE: 跳ねている最中に重ねると空へ飛んでいく
         if (std::abs(velocity.y) < hopSpeed_ * 0.25f)
             rigidBody.AddLinearVelocity(UP * hopSpeed_ * intensity * RandomRange(0.5f, 1.0f));
     }
@@ -70,7 +70,7 @@ namespace GamePlay::Prop
     void Tumbleweed::SlowDown(NanamiEngine::Module::Component::RigidBody& rigidBody, const float deltaTime) const
     {
         glm::vec3 velocity = rigidBody.LinearVelocity();
-        // 止まった Body を毎ステップ起こさない
+        // NOTE: 止まった Body を毎ステップ起こさない
         if (velocity.x * velocity.x + velocity.z * velocity.z < 0.01f)
             return;
 
@@ -92,7 +92,7 @@ namespace GamePlay::Prop
         if (!roamedAway && !fellOff)
             return;
 
-        //NOTE: 置き場所の真上なら地形に埋まらない。Transform を動かせば次の OnBeginPhysics で Body も移る
+        // NOTE: 置き場所の真上なら地形に埋まらない。Transform を動かせば次の OnBeginPhysics で Body も移る
         Transform().SetWorldPos(home_ + UP * returnHeight_);
         rigidBody.SetLinearVelocity(glm::vec3(0.0f));
         rigidBody.SetAngularVelocity(glm::vec3(0.0f));

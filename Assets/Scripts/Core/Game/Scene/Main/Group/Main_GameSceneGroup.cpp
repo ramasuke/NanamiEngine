@@ -55,7 +55,7 @@ namespace GameCore::Scene::Main
 
     void GameSceneGroup::Update()
     {
-        // 覆っている途中・入場待ちの途中に来た要求は、行き先を差し替えて覆い直す
+        // NOTE: 覆っている途中・入場待ちの途中に来た要求は、行き先を差し替えて覆い直す
         if (pendingRequest_)
             BeginCovering();
 
@@ -94,7 +94,7 @@ namespace GameCore::Scene::Main
     {
         assert(scenes_.contains(type) && "Scene not registered");
 
-        // 同じフレームに複数来たら最後の 1 件だけを通す。途中の行き先を読み込んでも捨てるだけになる
+        // NOTE: 同じフレームに複数来たら最後の 1 件だけを通す。途中の行き先を読み込んでも捨てるだけになる
         pendingRequest_ = ChangeRequest{ type, options };
     }
 
@@ -137,7 +137,7 @@ namespace GameCore::Scene::Main
 
     void GameSceneGroup::SwitchScene(const ChangeRequest& request)
     {
-        //WARNING: 処理としては消した方が良いが、実行タイミング敵に物理でエラーがはっせいしていたため残す。
+        // WARNING: 切り替え直後のフレームを飛ばさないと物理でエラーが出る
         Time::SkipNextFrame();
         Time::SkipNextFrame();
 

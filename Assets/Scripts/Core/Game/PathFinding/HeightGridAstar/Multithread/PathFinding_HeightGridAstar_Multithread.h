@@ -13,17 +13,15 @@
 
 namespace GameCore::PathFinding
 {
-    /**
-     * searchIntervalSec 間隔でバックグラウンド検索し、結果を Path() で返す
-     * @note 探索ループでは STL イテレータを作らない (Debug の MSVC STL はイテレータ毎に共通ロックを取り極端に遅い)
-     */
+    // NOTE: searchIntervalSec 間隔でバックグラウンド検索し、結果を Path() で返す
+    // NOTE: 探索ループでは STL イテレータを作らない (Debug の MSVC STL はイテレータ毎に共通ロックを取り極端に遅い)
     class HeightGridAstar
     {
     public:
         HeightGridAstar()  = default;
         ~HeightGridAstar();
 
-        /** 検索完了時にキャッシュを更新し、必要なら新しい検索を起動する */
+        // NOTE: 検索完了時にキャッシュを更新し、必要なら新しい検索を起動する
         void Tick(
             const std::shared_ptr<NanamiEngine::Module::Asset::HeightGridMap>& grid,
             const glm::vec3& start,
@@ -37,7 +35,7 @@ namespace GameCore::PathFinding
         void ClearPath()      { hasPath_ = false; searchTimer_ = 0.0f; } // 即座に再探索を起動させる
 
     private:
-        /** open リストの要素。f = 始点からのコスト + ゴールまでの推定距離 */
+        // NOTE: open リストの要素。f = 始点からのコスト + ゴールまでの推定距離
         struct OpenNode
         {
             float f;

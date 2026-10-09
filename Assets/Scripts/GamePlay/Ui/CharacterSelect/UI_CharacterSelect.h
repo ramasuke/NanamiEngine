@@ -12,7 +12,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief キャラ選択画面の見た目。キャラの3Dは描かない (展示台のモデルが担当) */
+    // NOTE: キャラ選択画面の見た目。キャラの3Dは描かない (展示台のモデルが担当)
     class CharacterSelectUi final : public Component::ComponentBase
     {
     public:
@@ -29,7 +29,7 @@ namespace GamePlay::Ui
 
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailNameText_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) detailReadingText_;
-        // 腕っぷし / しぶとさ / 身軽さ の順に並べる
+        // NOTE: 腕っぷし / しぶとさ / 身軽さ の順に並べる
         [[serialize(0)]] std::vector<FIELD(StageDifficultyPips)> detailStatPips_;
         [[serialize(0)]] std::vector<FIELD(NanamiUi::TextRenderer)> detailDescriptionLines_;
 

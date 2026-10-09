@@ -28,10 +28,8 @@ namespace GamePlay::Npc::Friendly
 {
     class FriendlyNpc;
 
-    /**
-     * @brief FriendlyNpc が近くのプレイヤーを目で追い、攻撃されたりぶつかられたりしたら驚いて振り向く
-     * @note  リアクション中は FriendlyNpc が BehaviourTree を止める
-     */
+    // NOTE: 友好 NPC が近くのプレイヤーを目で追い、攻撃やぶつかりに驚いて振り向く
+    // NOTE: リアクション中 (IsReacting) は使う側が BehaviourTree を止める
     class FriendlyNpcReaction final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable,
                                       public Physics::Callback::ICollisionEnterable,
@@ -67,26 +65,26 @@ namespace GamePlay::Npc::Friendly
         [[nodiscard]] glm::vec3 PlayerLookPosition(const GameCore::IPlayerAvatar& player);
         [[nodiscard]] std::shared_ptr<Component::Animator> ReadyAnimator() const;
 
-        // 座っている NPC は体を回さず頭だけで追う
+        // NOTE: 座っている NPC は体を回さず頭だけで追う
         [[serialize(0)]] bool  canTurnBody_               = true;
         [[serialize(0)]] float noticeRadius_              = 60.0f;
         [[serialize(0)]] float chatTurnSpeed_radPerSec_   = 3.0f;
         [[serialize(0)]] float reactTurnSpeed_radPerSec_  = 6.0f;
-        // プレイヤーがこれ以上の速さでぶつかってきたら反応する(歩き 24 / 走り 70)
+        // NOTE: プレイヤーがこれ以上の速さでぶつかってきたら反応する
         [[serialize(0)]] float bumpSpeedThreshold_        = 45.0f;
         [[serialize(0)]] float reactionCooldown_secs_     = 0.6f;
-        // Animator の State に入れる値。-1 ならアニメーションを変えない
+        // NOTE: Animator の State に入れる値。-1 ならアニメーションを変えない
         [[serialize(0)]] int   hitAnimatorState_          = 2;
         [[serialize(0)]] int   bumpAnimatorState_         = 3;
         [[serialize(0)]] std::string hitClipName_         = "Hit";
         [[serialize(0)]] std::string bumpClipName_        = "Bump";
-        // クリップが見つからない・終わらない時の上限
+        // NOTE: クリップが見つからない・終わらない時の上限
         [[serialize(0)]] float hitMaxDuration_secs_       = 3.0f;
         [[serialize(0)]] float bumpMaxDuration_secs_      = 2.5f;
         [[serialize(0)]] float hitShakeAmplitude_         = 0.6f;
         [[serialize(0)]] float bumpShakeAmplitude_        = 0.3f;
         [[serialize(0)]] float shakeDuration_secs_        = 0.2f;
-        // これ以上の水平速度で動いている間は歩いているとみなす
+        // NOTE: これ以上の水平速度で動いている間は歩いているとみなす
         [[serialize(1)]] float movingSpeedThreshold_      = 3.0f;
         // NOTE: クリップの終わり際で戻すと遷移のブレンドで最後まで見える
         [[serialize(1)]] float clipEndNormalizedTime_     = 0.9f;

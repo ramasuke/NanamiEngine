@@ -11,7 +11,7 @@ namespace GamePlay::Prop
 {
     void AirShip::OnShootDown()
     {
-        // 乗っていた NPC は落ちる前に逃げたことにする
+        // NOTE: 乗っていた NPC は落ちる前に逃げたことにする
         const auto hidePassengers = [](const auto& self, GameObject::IGameObject& gameObject) -> void
         {
             for (const auto& child : gameObject.Transform().GetChildren())

@@ -107,7 +107,6 @@ namespace Editor::Npc::Behaviour
         {
             ImGui::PushID(static_cast<int>(i));
 
-            // 並び替えボタン
             if (ImGui::ArrowButton("Up", ImGuiDir_Up))
             {
                 if (i > 0) std::swap(children_[i], children_[i - 1]);
@@ -120,12 +119,10 @@ namespace Editor::Npc::Behaviour
             }
             ImGui::SameLine();
 
-            //表示
             const std::string label = std::format("Child {} : {}", i, children_[i]->NodeName());
 
             ImGui::Selectable(label.c_str(), false);
 
-            //右クリックメニュー
             if (ImGui::BeginPopupContextItem("ChildContext"))
             {
                 if (ImGui::MenuItem("Delete"))

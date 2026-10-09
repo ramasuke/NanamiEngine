@@ -28,7 +28,7 @@ namespace GameCore::Network
             Asset::EnemyFactory& enemyFactory);
         ~EnemySpawnDispatcher() override;
 
-        /** @param prefab nullptr なら EnemyFactory の kind の prefab */
+        // NOTE: prefab が nullptr なら kind の既定の prefab
         std::shared_ptr<Module::GameObject::IGameObject> DispatchSendPacket(
             Npc::Enemy::EnemyKind kind,
             const std::shared_ptr<Asset::PrefabGameObjectFile>& prefab,
@@ -38,7 +38,7 @@ namespace GameCore::Network
         void OnReceive(const Core::Network::Packet& packet) override;
 
     private:
-        // 後入りへ再送するスポーン履歴(ホストのみ保持)。ルートの NetworkObjectId がまだ登録されているものだけ再送する
+        // NOTE: 後入りへ再送するスポーン履歴(ホストのみ保持)。ルートの NetworkObjectId がまだ登録されているものだけ再送する
         struct HistoryEntry
         {
             Core::Network::NetworkObjectId rootId;

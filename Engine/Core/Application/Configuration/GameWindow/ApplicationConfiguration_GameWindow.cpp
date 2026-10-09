@@ -107,7 +107,7 @@ namespace NanamiEngine::Core::Application::Configuration
                 ImGui::PushID(static_cast<int>(i));
                 Module::GameObject::DrawMarkPreviewGui(mark);
                 ImGui::SameLine();
-                // "LabelRed" → "Red"
+                // NOTE: "LabelRed" → "Red"
                 const char* colorName = Module::GameObject::ToName(mark) + std::strlen(groupName);
                 if (ImGui::Checkbox(colorName, &showMarkFlags_[i]))
                     changed = true;

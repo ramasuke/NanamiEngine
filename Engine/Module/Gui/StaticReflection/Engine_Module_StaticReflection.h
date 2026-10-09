@@ -13,18 +13,15 @@
 
 namespace NanamiEngine::Module::StaticReflection
 {
-    /** ノード構造 */
     template <typename T>
     struct NodeTree
     {
         std::string name;
         std::unordered_map<std::string, std::unique_ptr<NodeTree>> children;
 
-        // 生成関数
         std::function<std::unique_ptr<T>()> createFunc = nullptr;
     };
 
-    /** 文字列分割 */
     inline std::vector<std::string> Split(const std::string& str, const std::string& delimiter)
     {
         std::vector<std::string> result;
@@ -42,7 +39,6 @@ namespace NanamiEngine::Module::StaticReflection
         return result;
     }
 
-    /**  ツリー構築 */
     template <typename T>
     NodeTree<T> BuildTree(
         const std::unordered_map<std::string, std::function<std::unique_ptr<T>()>>& elements)
@@ -74,7 +70,6 @@ namespace NanamiEngine::Module::StaticReflection
         return root;
     }
 
-    /** ImGui描画 */
     template <typename T>
     void DrawTreeGui(NodeTree<T>& node, std::unique_ptr<T>& outObject)
     {
@@ -82,7 +77,6 @@ namespace NanamiEngine::Module::StaticReflection
         {
             if (child->children.empty())
             {
-                // leaf
                 if (ImGui::MenuItem(name.c_str()))
                 {
                     if (child->createFunc)
@@ -119,7 +113,7 @@ namespace NanamiEngine::Module::StaticReflection
         }
     }
 
-    /** DrawTreeGui と同じ入れ子メニューを、呼び出し元のコールバックで描く。カテゴリも項目も名前順に並べる */
+    // NOTE: DrawTreeGui と同じ入れ子メニューを、呼び出し元のコールバックで描く。カテゴリも項目も名前順に並べる
     inline void DrawCategoryMenu(const std::vector<CategoryMenuItem>& items)
     {
         std::vector<const CategoryMenuItem*> sortedItems;

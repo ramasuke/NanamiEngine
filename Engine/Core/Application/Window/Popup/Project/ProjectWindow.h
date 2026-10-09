@@ -14,7 +14,7 @@ namespace NanamiEngine::Core::FileSystem
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    /** @brief Project内でリネーム編集中のファイルの状態（同時に1件のみ）。Reload Assets でツリーが作り直されるのでパスで覚える */
+    // NOTE: リネーム編集中のファイルの状態 (同時に 1 件のみ)。Reload Assets でツリーが作り直されるのでパスで覚える
     struct NANAMI_API FileRenameState
     {
         std::string targetPath;
@@ -45,10 +45,10 @@ namespace NanamiEngine::Core::PopupWindow
         ::Guid& Guid()      override { return guid_; }
 
     private:
-        /** @brief Reload Assets でツリーが作り直されるので、開いているフォルダはパスで覚えて毎回引き直す */
+        // NOTE: Reload Assets でツリーが作り直されるので、開いているフォルダはパスで覚えて毎回引き直す
         FileSystem::Directory& CurrentDirectory();
 
-        //NOTE: ImGUIのラベル情報のために現在開いているProjectWindowの数をカウントする
+        // NOTE: ImGui のウィンドウ ID を重複させないための通し番号
         static int counter_;
         int id_;
         ::Guid guid_;

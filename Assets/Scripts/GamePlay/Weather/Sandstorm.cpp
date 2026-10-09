@@ -114,7 +114,7 @@ namespace GamePlay::Weather
         if (!IsEnable() || intensity_ <= 0.0f)
             return;
 
-        //NOTE: プレイヤーの移動(OnFixedUpdate)が水平速度を上書きした後なので、ここで足した分は必ず残る
+        // NOTE: プレイヤーの移動(OnFixedUpdate)が水平速度を上書きした後なので、ここで足した分は必ず残る
         const glm::vec3 direction  = GetWindDirection();
         const float     deltaTime  = Time::FixedDeltaTime();
         const float     targetSpeed = pushSpeed_ * intensity_;
@@ -203,7 +203,7 @@ namespace GamePlay::Weather
                     return;
                 }
 
-                // 他人のアバターと同期物は持ち主の画面で動かす。タンブルウィードは自分で転がる
+                // NOTE: 他人のアバターと同期物は持ち主の画面で動かす。タンブルウィードは自分で転がる
                 if (std::ranges::find(otherPlayers, rigidBody.get()) != otherPlayers.end()
                     || !gameObject->Components().Catch<NanamiEngine::Module::Network::NetworkComponent>().expired()
                     || !gameObject->Components().Catch<Prop::Tumbleweed>().expired())
@@ -246,7 +246,7 @@ namespace GamePlay::Weather
         if (!sandParticle_)
             return;
 
-        // 砂はカメラの周りにだけ出し、風下へ向ける
+        // NOTE: 砂はカメラの周りにだけ出し、風下へ向ける
         if (particlesPlaying_)
         {
             const glm::vec3 direction = GetWindDirection();
@@ -259,7 +259,7 @@ namespace GamePlay::Weather
         if (shouldPlay == particlesPlaying_)
             return;
 
-        //NOTE: Loop の ParticleSystem は有効な間ずっと再生し直すので、凪の間は無効にしておく
+        // NOTE: Loop の ParticleSystem は有効な間ずっと再生し直すので、凪の間は無効にしておく
         particlesPlaying_ = shouldPlay;
         if (shouldPlay)
         {

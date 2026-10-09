@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::Application
         void Clear();
 
     private:
-        // デシリアライズ中のワーカースレッドからも積まれる。
+        // NOTE: デシリアライズ中のワーカースレッドからも積まれるので mutex で守る
         std::stack<std::weak_ptr<T>> addContentStack_;
         std::mutex addContentMutex_;
         std::stack<std::weak_ptr<T>> contents_;

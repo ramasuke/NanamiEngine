@@ -14,9 +14,7 @@ namespace GameCore::PlayerAvatar
 namespace GamePlay::PlayerAvatar
 {
     using namespace GameCore::PlayerAvatar;
-    /**
-     * @brief アバターの子に置く拾い範囲。センサーに入った IPlayerPickable を、拾えるようになった時点で拾う
-     */
+    // NOTE: アバターの子に置く拾い範囲。センサーに入った IPlayerPickable を、拾えるようになった時点で拾う
     class PickupArea final : public Component::ComponentBase,
                              public LifeCycleCallback::IUpdatable,
                              public Physics::Callback::ISensorEnterable,

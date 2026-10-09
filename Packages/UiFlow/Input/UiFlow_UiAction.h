@@ -7,7 +7,7 @@
 
 namespace NanamiEngine::UiFlow
 {
-    /** @brief メニュー操作の論理アクション */
+    // NOTE: メニュー操作の論理アクション
     enum class UiAction : std::uint8_t
     {
         Up,
@@ -18,17 +18,17 @@ namespace NanamiEngine::UiFlow
         Cancel,
         TabPrev,
         TabNext,
-        /** メニューを開く / 閉じる */
+        // NOTE: メニューを開く / 閉じる
         Menu,
-        /** 1 文字消す */
+        // NOTE: 1 文字消す
         Erase,
-        /** 値を上げる / 下げる。上下の移動と別に使う 2 組目の上下 */
+        // NOTE: 値を上げる / 下げる。上下の移動と別に使う 2 組目の上下
         ValueUp,
         ValueDown,
         Count,
     };
 
-    /** @brief スティックを方向キーとして読む向き */
+    // NOTE: スティックを方向キーとして読む向き
     enum class StickDirection : std::uint8_t
     {
         Up,
@@ -41,7 +41,7 @@ namespace NanamiEngine::UiFlow
         RightStickRight,
     };
 
-    /** @brief 1 つのアクションに割り当てる入力。どれかが押されていれば押されている */
+    // NOTE: 1 つのアクションに割り当てる入力。どれかが押されていれば押されている
     struct NANAMI_API UiBinding
     {
         std::vector<Platform::Input::Key>           keys;

@@ -20,7 +20,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             lookAt->SetTarget(context.EnemyGameObjectPtr());
         }
 
-        // 権威側限定Tickなら、他ピアのシーン上の同じカメラも同じ優先度にする
+        // NOTE: 権威側限定Tickなら、他ピアのシーン上の同じカメラも同じ優先度にする
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::ScenePurposeCameraRpc::Send(

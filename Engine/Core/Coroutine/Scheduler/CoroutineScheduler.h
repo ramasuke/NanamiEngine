@@ -14,12 +14,12 @@ namespace Coroutine
     {
     public:
         void Invoke();
-        // 物理の固定ステップごと(OnFixedUpdate の後、OnBeginPhysics の前)に呼ばれる
+        // NOTE: 物理の固定ステップごと (OnFixedUpdate の後、OnBeginPhysics の前) に呼ぶ
         void InvokeFixed(float fixedDeltaTime);
         void AllClear();
 
         void RegisterTickable(ITickableWaitable* tickable) { pendingTickables_.push_back(tickable); }
-        // 物理と同じ固定ステップで Tick される。物理ボディを動かす待機はこちらに登録する
+        // NOTE: 物理と同じ固定ステップで Tick される。物理ボディを動かす待機はこちらに登録する
         void RegisterFixedTickable(ITickableWaitable* tickable) { pendingFixedTickables_.push_back(tickable); }
         void RegisterEvent(IEventWaitable* event) { pendingEvents_.push_back(event); }
         void RegisterTask(std::coroutine_handle<> awaited, std::coroutine_handle<> awaiting);
@@ -38,7 +38,7 @@ namespace Coroutine
         std::vector<std::pair<std::coroutine_handle<>, std::coroutine_handle<>>> coroutines_;
         std::vector<std::pair<std::coroutine_handle<>, std::coroutine_handle<>>> pendingCoroutines_;
 
-        // RegisterFuture はワーカースレッドから呼ばれるので、ここだけ保護する
+        // NOTE: RegisterFuture はワーカースレッドから呼ばれるので、ここだけ保護する
         std::vector<std::coroutine_handle<>> pendingResume_;
         std::mutex pendingResumeMutex_;
     };

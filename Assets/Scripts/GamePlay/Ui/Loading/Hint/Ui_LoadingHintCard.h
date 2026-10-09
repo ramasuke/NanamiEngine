@@ -9,11 +9,12 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief ロード画面の操作ヒント1行。NOTE: アバターが居ないので入力デバイスは自前で判定する */
+    // NOTE: ロード画面の操作ヒント1行
+    // NOTE: アバターが居ないので入力デバイスは自前で判定する
     class LoadingHintCard final : public Component::ComponentBase
     {
     public:
-        /** @brief 表示を作り直す。ロード画面を出すたびに呼ぶ */
+        // NOTE: 表示を作り直す。ロード画面を出すたびに呼ぶ
         void Reset();
 
     private:

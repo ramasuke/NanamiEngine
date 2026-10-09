@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::R4
 {
-    ///NOTE: cereal で保存でき、インスペクタで編集できる ReactiveProperty（R3 の SerializableReactiveProperty<T>）
+    // NOTE: cereal で保存でき、インスペクタで編集できる ReactiveProperty（R3 の SerializableReactiveProperty<T>）
     template <typename T>
     class SerializableReactiveProperty final : public ReactiveProperty<T>
     {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../../../PathFinding/HeightGridAstar/Multithread/PathFinding_HeightGridAstar_Multithread.h"
 #include "../../../../../../../PathFinding/PathFinding_GridDirections.h"
 
@@ -15,11 +15,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** HeightGridMap の格子グリッドで PathFinder を使い、スポーン地点周辺をランダムに徘徊するアクション。
-     * NOTE:
-     * - Moving: PathFinding で目標地点へ移動する。到達したらIdle。
-     * - Idle: waitTimeMin_, waitTimeMax_秒待機した後、新しい目標地点を選んでMoving。
-     */
+    // NOTE: 経路探索でスポーン地点周辺をランダムに徘徊する。目標に着いたら少し待って次の目標を選ぶ
     class WanderMove final : public ActionBase
     {
     public:

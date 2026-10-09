@@ -15,9 +15,7 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 掲示板に貼った告知1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える。
-     */
+    // NOTE: 掲示板に貼った告知1枚。行は表示窓の分だけ作って使い回すので、中身は Bind のたびに差し替える
     class EventBoardRow final : public Component::ComponentBase,
                                 public LifeCycleCallback::IAwakable
     {
@@ -28,7 +26,7 @@ namespace GamePlay::Ui
 
     private:
         void OnAwake() override;
-        /** @brief 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える */
+        // NOTE: 生成直後に Bind が来ても困らないよう、自前の参照はここで揃える
         void EnsureComponents();
         void RefreshAppearance() const;
 

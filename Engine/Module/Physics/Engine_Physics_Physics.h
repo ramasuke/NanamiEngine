@@ -12,7 +12,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Physics
 {
-    // 当たった GameObject から isPartOfParent_ の RigidBody をさかのぼり、ダメージ等を受ける持ち主の GameObject を返す
+    // NOTE: 当たった GameObject から親の RigidBody をさかのぼり、ダメージを受ける持ち主を返す
     [[nodiscard]] NANAMI_API std::shared_ptr<GameObject::IGameObject> FindBodyOwner(const std::shared_ptr<GameObject::IGameObject>& gameObject);
 
     NANAMI_API RaycastHit Raycast          (const glm::vec3  & origin, const glm::vec3& direction, float maxDistance, LayerMask layerMask);

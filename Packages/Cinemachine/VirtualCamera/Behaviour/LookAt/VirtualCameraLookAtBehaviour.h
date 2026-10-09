@@ -15,7 +15,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         void SetTarget(const std::shared_ptr<GameObject::IGameObject>& target);
         [[nodiscard]] bool HasTarget() const { return static_cast<bool>(target_); }
         void SetOffsetPos(glm::vec3 lookAtTargetOffset);
-        /** @brief 次のOnUpdateを待たずに、今の位置からtargetへ向ける */
+        // NOTE: 次のOnUpdateを待たずに、今の位置からtargetへ向ける
         void LookAtTarget() const;
 
     private:

@@ -27,7 +27,7 @@ namespace GameCore::Scene::Main
         [[nodiscard]] Sub::IGameSceneStack& SubSceneStack() const { return *subSceneStack_; }
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return *loadingScreen_; }
         void ClearSubScenes() const;
-        /** @brief GameSceneGroup へ遷移を頼む。シーン自身が別のシーンへ逃がすときに使う */
+        // NOTE: シーン自身が別のシーンへ逃がすときに遷移を頼む
         void RequestChangeScene(const SceneType type, const SceneTransitionOptions options = {}) const { requestChangeScene_(type, options); }
         
     private:

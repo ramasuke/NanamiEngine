@@ -10,12 +10,12 @@
 
 #include "../Exception/Engine_Module_Exception.h"
 
-// cereal での読み書きのヘルパー。cereal / iostream の例外は必ず SerializationException 系に変換して投げる
+// NOTE: cereal での読み書きのヘルパー。cereal / iostream の例外は必ず SerializationException 系に変換して投げる
 namespace NanamiEngine::Module::Serialization
 {
     namespace Detail
     {
-        /** 開いた入力ストリームに対して ArchiveT を作り read を呼ぶ。cereal / iostream の例外を DeserializeException に変換する */
+        // NOTE: stream 上に ArchiveT を作って read を呼ぶ。cereal / iostream の例外は DeserializeException にする
         template <class ArchiveT, class ReadFn>
         void ReadWith(std::istream& stream, const std::string& label, ReadFn&& read)
         {
@@ -26,7 +26,7 @@ namespace NanamiEngine::Module::Serialization
             }
             catch (const Exception::NanamiException&)
             {
-                // ネストした読み込みが既に変換済みの例外を投げた場合はそのまま通す
+                // NOTE: ネストした読み込みが既に変換済みの例外を投げた場合はそのまま通す
                 throw;
             }
             catch (const std::exception& exception)
@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::Serialization
             }
         }
 
-        /** 開いた出力ストリームに対して ArchiveT を作り write を呼ぶ。cereal / iostream の例外を SerializeException に変換する */
+        // NOTE: stream 上に ArchiveT を作って write を呼ぶ。cereal / iostream の例外は SerializeException にする
         template <class ArchiveT, class WriteFn>
         void WriteWith(std::ostream& stream, const std::string& label, WriteFn&& write)
         {
@@ -55,7 +55,7 @@ namespace NanamiEngine::Module::Serialization
         }
     }
 
-    /** 開けなければ FileNotFoundException、cereal の失敗は DeserializeException を投げる */
+    // NOTE: 開けなければ FileNotFoundException、cereal の失敗は DeserializeException を投げる
     template <class ReadFn>
     void LoadJsonFile(const std::string& filePath, ReadFn&& read)
     {
@@ -66,8 +66,8 @@ namespace NanamiEngine::Module::Serialization
         Detail::ReadWith<cereal::JSONInputArchive>(ifStream, filePath, std::forward<ReadFn>(read));
     }
 
-    /** ファイルが無い(または 0 byte)ときは何もせず false を返す。破損は DeserializeException を投げる
-     *  NOTE: 0 byte も未作成扱いにするのは cereal が空ストリームで例外を投げるため */
+    // NOTE: ファイルが無い(または 0 byte)ときは何もせず false を返す。破損は DeserializeException を投げる
+    // NOTE: 0 byte も未作成扱いにするのは cereal が空ストリームで例外を投げるため
     template <class ReadFn>
     bool LoadJsonFileIfExists(const std::string& filePath, ReadFn&& read)
     {
@@ -81,7 +81,7 @@ namespace NanamiEngine::Module::Serialization
         return true;
     }
 
-    /** ファイルを開き JSONOutputArchive を write に渡す。開けない・cereal の失敗は SerializeException を投げる */
+    // NOTE: 開けない・cereal の失敗は SerializeException を投げる
     template <class WriteFn>
     void SaveJsonFile(const std::string& filePath, WriteFn&& write)
     {
@@ -92,7 +92,7 @@ namespace NanamiEngine::Module::Serialization
         Detail::WriteWith<cereal::JSONOutputArchive>(ofStream, filePath, std::forward<WriteFn>(write));
     }
 
-    /** in-memory バイナリ（stringstream など）からの読み込み。label は例外メッセージ用の識別子 */
+    // NOTE: in-memory バイナリ（stringstream など）からの読み込み。label は例外メッセージ用の識別子
     template <class ReadFn>
     void LoadPortableBinary(std::istream& stream, const std::string& label, ReadFn&& read)
     {

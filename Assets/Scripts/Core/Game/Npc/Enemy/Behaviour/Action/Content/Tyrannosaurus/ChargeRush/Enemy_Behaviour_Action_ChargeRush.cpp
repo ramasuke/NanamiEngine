@@ -37,7 +37,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             return false;
         }
 
-        /** @brief 倒した柱から受けるダメージ */
+        // NOTE: 倒した柱から受けるダメージ
         class PillarCollapseDamage final : public GameCore::IDamage
         {
         public:
@@ -150,7 +150,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         auto& transform = context.EnemyTransform();
         const glm::vec3 selfPos = transform.GetWorldPos();
 
-        // 一番近いプレイヤーへ向き直る
+        // NOTE: 一番近いプレイヤーへ向き直る
         bool      hasTarget = false;
         float     nearestSq = 0.0f;
         glm::vec3 toTarget(0.0f);

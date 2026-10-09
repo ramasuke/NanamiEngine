@@ -23,19 +23,17 @@ namespace NanamiEngine::AssetUpdater::Dist
         std::uint64_t         size = 0;
     };
 
-    /** マニフェストが参照する全ブロブ (本体 + .meta)。中身が同じものは 1 つにまとまる。キーはハッシュ */
+    // NOTE: マニフェストが参照する全ブロブ (本体 + .meta)。中身が同じものは 1 つにまとまる。キーはハッシュ
     [[nodiscard]] NANAMI_API std::map<std::string, DistBlob> BlobsOf(const AssetManifest& manifest, const std::filesystem::path& repoRoot);
 
-    /** remote に無いものだけ (ハッシュ順) */
+    // NOTE: remote に無いものだけ (ハッシュ順)
     [[nodiscard]] NANAMI_API std::vector<DistBlob> PlanUpload(const std::map<std::string, DistBlob>& blobs, const std::unordered_set<std::string>& existing);
 
-    /**
-     * stagingDir/<hash> へコピーしながらハッシュを取り直し、食い違ったものを返す。
-     * stagingDir が空ならコピーせずに検証だけする (dry-run)
-     */
+    // NOTE: stagingDir/<hash> へコピーしながらハッシュを取り直し、食い違ったものを返す
+    // NOTE: stagingDir が空ならコピーせず検証だけする
     [[nodiscard]] NANAMI_API std::vector<std::string> StageBlobs(const std::vector<DistBlob>& blobs, const std::filesystem::path& stagingDir,
                                                                  const std::function<bool()>& isCanceled = {});
 
-    /** 公開中の版にある、実行中は差し替えられないファイル (フォント) のうち、変更・削除されるもの */
+    // NOTE: 公開中の版にある、実行中は差し替えられないファイル (フォント) のうち、変更・削除されるもの
     [[nodiscard]] NANAMI_API std::vector<std::string> LockedFileChanges(const AssetManifest& live, const AssetManifest& next);
 }

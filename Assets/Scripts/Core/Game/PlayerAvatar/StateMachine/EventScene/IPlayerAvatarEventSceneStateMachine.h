@@ -7,8 +7,7 @@ namespace GameCore::PlayerAvatar
     {
     public:
         virtual ~IPlayerAvatarEventSceneStateMachine() = default;
-        ///@brief Stateの変更
-        ///NOTE: 演出用に動きを差し替える
+        // NOTE: 演出用に動きを差し替える
         virtual void OnChangeState(EventSceneStateType type) = 0;
     };
 }

@@ -24,7 +24,7 @@ namespace NanamiEngine::AssetUpdater
         std::string error;
     };
 
-    /** 同期通信。呼び出したスレッドをブロックする。1つのセッションで接続を使い回す */
+    // NOTE: 同期通信。呼び出したスレッドをブロックする。1つのセッションで接続を使い回す
     class NANAMI_API WinHttpClient final
     {
     public:
@@ -35,14 +35,14 @@ namespace NanamiEngine::AssetUpdater
         WinHttpClient& operator=(const WinHttpClient&) = delete;
 
         [[nodiscard]] HttpGetResult GetString(const std::string& url);
-        /** 受け取るたびにそのバイト数を onReceived に渡す */
+        // NOTE: 受け取るたびにそのバイト数を onReceived に渡す
         [[nodiscard]] HttpDownloadResult DownloadToFile(const std::string& url,
                                                         const std::filesystem::path& destination,
                                                         const std::stop_token& stopToken,
                                                         const std::function<void(std::uint64_t)>& onReceived);
 
     private:
-        // windows.h をヘッダに持ち込まないため HINTERNET を void* で持つ
+        // NOTE: windows.h をヘッダに持ち込まないため HINTERNET を void* で持つ
         void*       session_ = nullptr;
         std::string openError_;
     };

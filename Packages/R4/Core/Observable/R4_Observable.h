@@ -9,7 +9,7 @@
 
 namespace NanamiEngine::R4
 {
-    ///NOTE: 購読できる値の流れ（R3 の Observable<T>）。コピーしても同じ流れを指す
+    // NOTE: 購読できる値の流れ（R3 の Observable<T>）。コピーしても同じ流れを指す
     template <typename T>
     class Observable final
     {
@@ -71,13 +71,13 @@ namespace NanamiEngine::R4
             return Observable(source_.take_until(other.source_).as_dynamic());
         }
 
-        //NOTE: token がキャンセルされたら完了する
+        // NOTE: token がキャンセルされたら完了する
         [[nodiscard]] Observable TakeUntil(const CancellationToken& token) const
         {
             const auto cancelled = rxcpp::observable<>::create<Unit>([token](rxcpp::subscriber<Unit> subscriber)
             {
                 const auto registration = rxcpp::composite_subscription();
-                // 購読側が先に解除された時もここが呼ばれるので、そのときは流さない
+                // NOTE: 購読側が先に解除された時もここが呼ばれるので、そのときは流さない
                 registration.add([subscriber]
                 {
                     if (subscriber.is_subscribed())
@@ -97,20 +97,20 @@ namespace NanamiEngine::R4
             return Observable(source_.distinct_until_changed().as_dynamic());
         }
 
-        //NOTE: 購読した瞬間に value を先に流す
+        // NOTE: 購読した瞬間に value を先に流す
         [[nodiscard]] Observable Prepend(T value) const
         {
             return Observable(source_.start_with(std::move(value)).as_dynamic());
         }
 
-        //NOTE: 値を流す前に action を挟む（値は変えない）
+        // NOTE: 値を流す前に action を挟む（値は変えない）
         template <typename ActionF>
         [[nodiscard]] Observable Do(ActionF action) const
         {
             return Observable(source_.tap(std::move(action)).as_dynamic());
         }
 
-        //NOTE: (一つ前の値, 今の値)
+        // NOTE: (一つ前の値, 今の値)
         [[nodiscard]] Observable<std::tuple<T, T>> Pairwise() const
         {
             return Observable<std::tuple<T, T>>(source_.pairwise().as_dynamic());

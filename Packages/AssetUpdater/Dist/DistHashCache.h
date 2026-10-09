@@ -42,7 +42,7 @@ namespace NanamiEngine::AssetUpdater::Dist
 
     struct NANAMI_API DistFileStat
     {
-        /** Unix 時刻のナノ秒 (Python の st_mtime_ns と同じ値なので、tools/dist 時代のキャッシュもそのまま効く) */
+        // NOTE: Unix 時刻のナノ秒。旧版のキャッシュと同じ値なのでそのまま読める
         std::int64_t  mtimeNs = 0;
         std::uint64_t size    = 0;
     };

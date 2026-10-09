@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::MainWindow
         explicit GameWindow();
 
         void AddContent(const std::shared_ptr<Scene::Scene>& content) override;
-        /** @brief 外したシーンだけが使っていた画像・モデルは、読み込み中でないフレームで解放する */
+        // NOTE: 外したシーンだけが使っていた画像・モデルは、読み込み中でないフレームで解放する
         void RemoveContent(const std::shared_ptr<Scene::Scene>& content);
         void ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene);
         [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }
@@ -44,48 +44,46 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
         void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject);
 
-        /**
-         * @brief シーンをワーカースレッドで読み込み始める。完了したフレームで自動的にメインシーンへ差し替わる
-         * @return 既に別のシーンを読み込み中なら false（何もしない）
-         */
+        // NOTE: シーンをワーカースレッドで読み込み始め、完了したフレームでメインシーンへ差し替える
+        // NOTE: 別のシーンを読み込み中なら何もせず false
         bool BeginLoadSceneAsync(const std::string& filePath);
-        /** @brief 読み込み中のシーンを捨てる。捨てたシーンはメインシーンにならない。ワーカーの完了は待つ */
+        // NOTE: 読み込み中のシーンを捨てる。捨てたシーンはメインシーンにならない。ワーカーの完了は待つ
         void CancelSceneLoad();
         [[nodiscard]] bool IsSceneLoading() const;
-        /** @brief 読み込み中のシーンのデシリアライズ進捗。総数が読めるまでは 0 */
+        // NOTE: 読み込み中のシーンのデシリアライズ進捗。総数が読めるまでは 0
         [[nodiscard]] float SceneLoadProgress01() const;
-        /** @brief 直近の BeginLoadSceneAsync 以降に読み込みが失敗したか */
+        // NOTE: 直近の BeginLoadSceneAsync 以降に読み込みが失敗したか
         [[nodiscard]] bool HasSceneLoadFailed() const;
-        /** @brief BeginLoadSceneAsync で最後に読み込んだシーン */
+        // NOTE: BeginLoadSceneAsync で最後に読み込んだシーン
         [[nodiscard]] std::weak_ptr<Scene::Scene> LastAsyncLoadedScene() const { return lastAsyncLoadedScene_; }
 
-        /** @brief 開いているシーンのメモリ上の写し (ゲーム DLL の差し替えをまたいで戻すため) */
+        // NOTE: 開いているシーンのメモリ上の写し (ゲーム DLL の差し替えをまたいで戻すため)
         struct NANAMI_API SceneSnapshot
         {
             std::string filePath;
             std::string json;
             bool        isMain = false;
         };
-        /** @brief 開いている全シーンを JSON にして返す。失敗したシーンは飛ばす */
+        // NOTE: 開いている全シーンを JSON にして返す。失敗したシーンは飛ばす
         [[nodiscard]] std::vector<SceneSnapshot> TakeSceneSnapshots() const;
-        /** @brief プレイを止め、全シーンを破棄する (End と違って初期シーンは読み直さない) */
+        // NOTE: プレイを止め、全シーンを破棄する (End と違って初期シーンは読み直さない)
         void UnloadAllScenes();
-        /** @brief TakeSceneSnapshots の写しからシーンを作り直す。1 つも戻せなければ初期シーンを読む */
+        // NOTE: TakeSceneSnapshots の写しからシーンを作り直す。1 つも戻せなければ初期シーンを読む
         void RestoreScenes(const std::vector<SceneSnapshot>& snapshots);
 
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;
         void Play();
         void Stop();
-        /** @brief プレイを終了し、全シーンを破棄して初期シーンを読み直す */
+        // NOTE: プレイを終了し、全シーンを破棄して初期シーンを読み直す
         void End();
         void OnUpdate() override;
         void OnSave  () override;
         void OnDrawGui(MainWindowDrawGuiContext context) override;
         void DrawGameObjectMarks() const;
-        /** @brief 非同期読み込みを 1 フレーム分進め、完了していればメインシーンへ差し替える */
+        // NOTE: 非同期読み込みを 1 フレーム分進め、完了していればメインシーンへ差し替える
         void UpdateAsyncSceneLoad();
-        /** @brief シーンの差し替え・削除のあと、開いているどのシーンからも参照されない画像・モデルを解放する */
+        // NOTE: シーンの差し替え・削除のあと、開いているどのシーンからも参照されない画像・モデルを解放する
         void ReleaseUnusedAssetsIfPending();
 
         std::queue<std::weak_ptr<GameObject::IGameObject>> removeGameObjectQueue_;

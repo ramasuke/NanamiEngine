@@ -28,8 +28,7 @@ namespace NanamiEngine::Module::GameObject
         
         void InitComponentGroup(const std::weak_ptr<IGameObject>& gameObject);
         [[nodiscard]] std::weak_ptr<IGameObject> Entity() const { return ownerGameObject_; }
-        //NOTE: この関数を何かしらの方法でカプセル化した方が安全
-        //WARNING: エンジン開発者以外使用しないでください。
+        // WARNING: エンジン内部用。全 Component の GUID を振り直す
         void ResetGuid() const;
 
         template <class T, typename = std::enable_if_t<std::is_base_of_v<Component::ComponentBase, T>>>
@@ -45,12 +44,11 @@ namespace NanamiEngine::Module::GameObject
         std::vector<std::weak_ptr<T>> Catches();
         void OnDrawGui();
         void SetEnable(bool enable) const;
-        //Entityが破棄される時に呼ばれる。
         void OnDestroy();
 
     private:
         void MoveAdd(const std::shared_ptr<Component::ComponentBase>& move);
-        //NOTE: Component を破棄する時の共通処理（OnDestroy / トークンのキャンセル / Registry からの登録解除）
+        // NOTE: Component を破棄する時の共通処理（OnDestroy / トークンのキャンセル / Registry からの登録解除）
         void DestroyComponent(const std::shared_ptr<Component::ComponentBase>& component);
 
         std::vector<std::shared_ptr<Component::ComponentBase>> components_;

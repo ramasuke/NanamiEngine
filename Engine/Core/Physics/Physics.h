@@ -57,7 +57,7 @@ namespace NanamiEngine::Core
         std::unique_ptr<Module::Physics::EngineContactListener> contactListener_;
         JPH::Ref<Module::Physics::RigidBodyGroupFilter> rigidBodyGroupFilter_;
         JPH::PhysicsSystem physicsSystem_;
-        // physicsSystem_ より先に破棄されるよう後ろに置く
+        // WARNING: physicsSystem_ より先に破棄されるよう後ろに置く
         std::unique_ptr<Module::Physics::BodyAssembler> bodyAssembler_;
     };
 }

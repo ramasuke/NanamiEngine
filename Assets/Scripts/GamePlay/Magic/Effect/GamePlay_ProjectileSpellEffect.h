@@ -10,7 +10,7 @@
 
 namespace GamePlay::Magic
 {
-    // 弾を飛ばす。ロックオン中は対象の重心へ、していなければ正面へ
+    // NOTE: 弾を飛ばす。ロックオン中は対象の重心へ、していなければ正面へ
     class ProjectileSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:
@@ -18,11 +18,11 @@ namespace GamePlay::Magic
         void Execute(const GameCore::Magic::IMagicCaster& caster, const GameCore::Magic::MagicCastTarget& target) const override;
 
     private:
-        /** @brief MagicProjectile と RigidBody を持つプレハブ */
+        // NOTE: MagicProjectile と RigidBody を持つプレハブ
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) projectilePrefab_;
         [[serialize(0)]] GameCore::Damage::PhysicsPower power_ = GameCore::Damage::PhysicsPower(8);
         [[serialize(0)]] float speed_ = 220.0f;
-        /** @brief ロックオンしていない時に狙う距離。弾はこの距離を飛び切ったら弾ける */
+        // NOTE: ロックオンしていない時に狙う距離。弾はこの距離を飛び切ったら弾ける
         [[serialize(0)]] float range_ = 250.0f;
         // NOTE: 狙った点を通り過ぎても少しは飛ばし、ロックオン対象の手前で消えないようにする
         [[serialize(1)]] float lifetimeMargin_ = 1.2f;

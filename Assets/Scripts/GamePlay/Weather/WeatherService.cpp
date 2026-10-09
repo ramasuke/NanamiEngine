@@ -23,7 +23,7 @@ namespace GamePlay::Weather
     void WeatherService::SetStorm(const float targetIntensity, const float blendSeconds)
     {
         const float target = std::clamp(targetIntensity, 0.0f, 1.0f);
-        //NOTE: BTのSequenceは毎フレーム子0から再Tickされるので、同じ目標の指定は無視して進行を二重に進めない
+        // NOTE: 同じ目標の指定は無視し、毎フレーム呼ばれても進行を二重に進めない
         if (target == stormTarget_)
             return;
 

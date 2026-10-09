@@ -34,7 +34,7 @@ void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoFixedUpdat
         Status().DiscardDamage();
     }
 
-    // ジャスト回避すれば残りの転がりを打ち切ってカウンター魔法を撃てる
+    // NOTE: ジャスト回避すれば残りの転がりを打ち切ってカウンター魔法を撃てる
     if (isAvoided_ && MIN_ROLL_BEFORE_COUNTER_SECS <= During_secs() && CanCounterCast() && Input().Cast().IsPressed() && TryBeginCast())
         return;
 

@@ -20,10 +20,10 @@ namespace GamePlay::Prop
 {
     namespace
     {
-        // 砂嵐の外では当たり判定をここまで下げておく
+        // NOTE: 砂嵐の外では当たり判定をここまで下げておく
         constexpr float HIDDEN_DEPTH = 10000.0f;
 
-        /** 骸竜の NetworkGameObject。居なければ空 */
+        // NOTE: 骸竜の NetworkGameObject。居なければ空
         std::shared_ptr<NanamiEngine::Module::Network::NetworkGameObject> FindSkeletonDragon()
         {
             std::shared_ptr<NanamiEngine::Module::Network::NetworkGameObject> found;

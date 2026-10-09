@@ -21,10 +21,8 @@ namespace NanamiEngine::Core::Application::Configuration
 
 namespace NanamiEngine::Core::Application::AutoMcp
 {
-    /**
-     * @brief 127.0.0.1 の TCP で 1 行 1 JSON の {"id","cmd","args"} を受け {"id","ok","result"|"error"} を返す
-     * NOTE: スレッドは使わず毎フレームポーリングする
-     */
+    // NOTE: 127.0.0.1 の TCP で 1 行 1 JSON の {"id","cmd","args"} を受け {"id","ok","result"|"error"} を返す
+    // NOTE: スレッドは使わず毎フレームポーリングする
     class NANAMI_API AutoMcpServer final
     {
         friend class ::NanamiEngine::Core::Application::EditorApplication;
@@ -32,15 +30,15 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         static AutoMcpServer& Instance();
 
-        /** @brief AutoMcpConfiguration に合わせて待ち受けを開始・停止する。ポートが変わっていれば張り直す */
+        // NOTE: AutoMcpConfiguration に合わせて待ち受けを開始・停止する。ポートが変わっていれば張り直す
         void ApplyConfiguration();
         void Stop();
 
-        /** @brief ImGui::NewFrame 直後に呼ぶ */
+        // NOTE: ImGui::NewFrame 直後に呼ぶ
         void OnFrameBegin();
-        /** @brief 3D 描画 (RenderVertex) 後、ImGui 描画前に呼ぶ */
+        // NOTE: 3D 描画 (RenderVertex) 後、ImGui 描画前に呼ぶ
         void OnSceneRendered();
-        /** @brief ImGui 描画後、ScreenFlip 前に呼ぶ */
+        // NOTE: ImGui 描画後、ScreenFlip 前に呼ぶ
         void OnFrameEnd();
 
         [[nodiscard]] bool               IsListening()   const;

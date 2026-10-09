@@ -9,7 +9,7 @@
 #include "../glm/vec3.hpp"
 
 
-// ImVec2演算ヘルパー
+// NOTE: ImVec2演算ヘルパー
 inline ImVec2  operator+ (const ImVec2& lhs, const ImVec2& rhs) { return {lhs.x + rhs.x, lhs.y + rhs.y};  }
 inline ImVec2  operator- (const ImVec2& lhs, const ImVec2& rhs) { return {lhs.x - rhs.x, lhs.y - rhs.y};  }
 inline ImVec2& operator+=(      ImVec2& lhs, const ImVec2& rhs) { lhs.x += rhs.x; lhs.y += rhs.y; return lhs;}

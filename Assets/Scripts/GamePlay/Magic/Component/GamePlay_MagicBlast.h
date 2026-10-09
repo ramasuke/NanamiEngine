@@ -11,16 +11,14 @@
 
 namespace GamePlay::Magic
 {
-    // 範囲の魔法と罠のプレハブに付ける。センサーに入っている敵へまとめてダメージを入れて消える
+    // NOTE: 範囲の魔法と罠のプレハブに付ける。センサーに入っている敵へまとめてダメージを入れて消える
     class MagicBlast final : public Component::ComponentBase,
                              public LifeCycleCallback::IUpdatable,
                              public Physics::Callback::ISensorEnterable,
                              public Physics::Callback::ISensorExitable
     {
     public:
-        /**
-         * @brief delay_secs 後に起爆する。detonateOnEnter_ なら敵が入った時点で起爆する
-         */
+        // NOTE: delay_secs 後に起爆する。detonateOnEnter_ なら敵が入った時点で起爆する
         void Arm(const std::weak_ptr<GameObject::IGameObject>& caster,
                  GameCore::Damage::PhysicsPower power,
                  float delay_secs);
@@ -43,7 +41,7 @@ namespace GamePlay::Magic
         [[serialize(0)]] bool  detonateOnEnter_ = false;
         [[serialize(1)]] float hitShakeIntensity_     = 0.6f;
         [[serialize(1)]] float hitShakeDuration_secs_ = 0.18f;
-        /** @brief 撃ち手が表記のプレハブを持たないとき(剣士が置いた爆弾など)に使う */
+        // NOTE: 撃ち手が表記のプレハブを持たないとき(剣士が置いた爆弾など)に使う
         [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile) dealDamageTextPrefab_;
 
         std::vector<BlastTarget> targets_;

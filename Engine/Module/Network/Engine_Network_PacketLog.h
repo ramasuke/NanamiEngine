@@ -26,12 +26,11 @@ namespace NanamiEngine::Module::Network
 
     // NOTE: 以下はすべてスレッドセーフ
 
-    /** @brief パケットの送受信を記録し、同じ内容をEngineLog（Module::Log）にも流す */
+    // NOTE: パケットの送受信を記録し、同じ内容をEngineLog（Module::Log）にも流す
     NANAMI_API void LogPacket(PacketDirection direction, Core::Network::PacketType rawType,
                    Core::Network::DeliveryMode delivery, std::size_t byteSize);
 
-    /** @brief NetworkLoggerWindow等が使用するスレッドセーフなログ履歴のスナップショットを返す */
+    // NOTE: ログ履歴のスナップショットを返す
     NANAMI_API std::vector<PacketLogRecord> PacketLogHistory();
-    /** @brief 保持しているパケットログ履歴をクリアする */
     NANAMI_API void ClearPacketLogHistory();
 }

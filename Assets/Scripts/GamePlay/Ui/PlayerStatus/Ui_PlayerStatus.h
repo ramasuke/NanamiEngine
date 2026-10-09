@@ -33,7 +33,7 @@ namespace GamePlay::Ui
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> SelectHealthGaugeSprite(float healthRate) const;
 
         [[serialize(10)]] FIELD(NanamiUi::Slider) healthBar_;
-        // 被ダメ時に現在HPの数字を赤くする時間（onDamageHealthBarFrame_ があればフレーム差し替えにも使う）
+        // NOTE: 被ダメ時に現在HPの数字を赤くする時間（onDamageHealthBarFrame_ があればフレーム差し替えにも使う）
         [[serialize(2)]] float displayOnDamageHealthBarDuration_secs_ = 0.0f;
         [[serialize(2)]] FIELD(Asset::SpriteFile) onDamageHealthBarFrame_;
         [[serialize(10)]] FIELD(Component::ImageRenderer) healthBarFrame_;
@@ -45,13 +45,13 @@ namespace GamePlay::Ui
 
         [[serialize(10)]] FIELD(NanamiUi::TextRenderer) hpCurrentText_;
         [[serialize(10)]] FIELD(NanamiUi::TextRenderer) hpMaxText_;
-        // HP残量で HealthBar のゲージ画像を切り替える（未設定なら切り替えない）
+        // NOTE: HP残量で HealthBar のゲージ画像を切り替える（未設定なら切り替えない）
         [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeNormalSprite_;
         [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeCautionSprite_;
         [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeDangerSprite_;
         [[serialize(9)]] float cautionHealthRate_ = 0.5f;
         [[serialize(9)]] float dangerHealthRate_ = 0.25f;
-        // 現在HPの数字の色（被ダメ中は危険色）
+        // NOTE: 現在HPの数字の色（被ダメ中は危険色）
         [[serialize(9)]] Color32 healthTextNormalColor_  = Color32(255, 255, 255);
         [[serialize(9)]] Color32 healthTextCautionColor_ = Color32(255, 214, 90);
         [[serialize(9)]] Color32 healthTextDangerColor_  = Color32(255, 96, 80);

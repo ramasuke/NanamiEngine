@@ -4,10 +4,10 @@
 #include <string>
 #include <utility>
 
-// エンジン共通の例外階層。すべて NanamiException (std::runtime_error 派生) の子
+// NOTE: エンジン共通の例外階層
 namespace NanamiEngine::Module::Exception
 {
-    /** エンジンが投げる全例外の基底 */
+    // NOTE: エンジンが投げる全例外の基底
     class NANAMI_API NanamiException : public std::runtime_error
     {
     public:
@@ -32,7 +32,7 @@ namespace NanamiEngine::Module::Exception
         std::string filePath_;
     };
 
-    /** ファイルを開けなかった */
+    // NOTE: ファイルを開けなかった
     class NANAMI_API FileNotFoundException final : public SerializationException
     {
     public:
@@ -42,7 +42,7 @@ namespace NanamiEngine::Module::Exception
         }
     };
 
-    /** ファイルは開けたが cereal が読み込みに失敗した */
+    // NOTE: ファイルは開けたが cereal が読み込みに失敗した
     class NANAMI_API DeserializeException final : public SerializationException
     {
     public:
@@ -58,7 +58,7 @@ namespace NanamiEngine::Module::Exception
         std::string innerMessage_;
     };
 
-    /** 書き込みに失敗した（出力ファイルを開けない・rename 失敗・cereal 失敗） */
+    // NOTE: 書き込みに失敗した（出力ファイルを開けない・rename 失敗・cereal 失敗）
     class NANAMI_API SerializeException final : public SerializationException
     {
     public:
@@ -74,7 +74,7 @@ namespace NanamiEngine::Module::Exception
         std::string innerMessage_;
     };
 
-    /** ネットワークパケットのデシリアライズ失敗 */
+    // NOTE: ネットワークパケットのデシリアライズ失敗
     class NANAMI_API PacketDeserializeException final : public NanamiException
     {
     public:

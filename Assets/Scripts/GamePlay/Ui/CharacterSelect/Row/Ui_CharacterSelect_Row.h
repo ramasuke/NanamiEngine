@@ -13,7 +13,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief キャラクター選択の名簿の1行 (手配書1枚)。中身は Initialize で流し込む */
+    // NOTE: キャラクター選択の名簿の1行 (手配書1枚)。中身は Initialize で流し込む
     class CharacterSelectRow final : public Component::ComponentBase,
                                      public LifeCycleCallback::IAwakable
     {
@@ -26,7 +26,7 @@ namespace GamePlay::Ui
 
     private:
         void OnAwake() override;
-        /** @brief 生成直後に Initialize が来ても困らないよう、自前の参照はここで揃える */
+        // NOTE: 生成直後に Initialize が来ても困らないよう、自前の参照はここで揃える
         void EnsureComponents();
         void RefreshAppearance() const;
 
@@ -41,7 +41,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) unselectedBillSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) lockedBillSprite_;
         [[serialize(0)]] FIELD(Asset::SoundFile) hoverSound_;
-        // 選択中の手配書は一回り大きく見せる
+        // NOTE: 選択中の手配書は一回り大きく見せる
         [[serialize(0)]] float selectedScale_ = 1.08f;
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 

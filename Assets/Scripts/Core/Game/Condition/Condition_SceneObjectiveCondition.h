@@ -7,7 +7,7 @@
 
 namespace GameCore::Condition
 {
-    /** @brief 今のメインシーンに一時的な目標(SceneContextBase::SetNavigationObjective)が立っている */
+    // NOTE: 今のメインシーンに一時的な目標 objectiveId_ が立っていれば満たす
     class SceneObjectiveCondition final : public ICondition
     {
     public:

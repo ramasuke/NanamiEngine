@@ -12,7 +12,7 @@ namespace GamePlay::PlayerAvatar
 {
     void PlayerHitShakeReceiver::Play(const glm::vec3& direction, const float amplitude, const float duration_secs)
     {
-        // EnemyBaseのOnAwake中にRequireComponentで動的追加されるため、Awakeに頼らずここで取得する
+        // NOTE: 他のコンポーネントの OnAwake 中に動的追加されることがあるので、Awake に頼らずここで取得する
         if (modelRenderer_.expired())
             modelRenderer_ = Components().Catch<Component::ModelRenderer>();
 
@@ -48,7 +48,7 @@ namespace GamePlay::PlayerAvatar
             return;
         }
 
-        // 当たった瞬間に押し込まれ、減衰しながら振動して戻る
+        // NOTE: 当たった瞬間に押し込まれ、減衰しながら振動して戻る
         const float elapsed_secs = envelope_.Progress() * duration_secs_;
         modelRenderer->SetRenderOffset(direction_ * (envelope_.Value() * std::cos(elapsed_secs * 2.0f * std::numbers::pi_v<float> * shakeFrequency_hz_)));
     }

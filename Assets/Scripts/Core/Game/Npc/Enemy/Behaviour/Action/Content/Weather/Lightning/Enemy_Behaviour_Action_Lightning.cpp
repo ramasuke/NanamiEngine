@@ -9,11 +9,11 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::Lightning::DoTick(const TickContext& context)
     {
         auto* weather = GamePlay::Weather::WeatherService::Instance();
-        //NOTE: 天候は演出なので、シーンに WeatherService が無くてもツリーは止めない
+        // NOTE: 天候は演出なので、シーンに WeatherService が無くてもツリーは止めない
         if (!weather)
             return TickStatus::Success;
 
-        //WARNING: 単発演出。Sequenceの再Tickで毎フレーム落雷しないよう、必ずOnceExecuteの下に置くこと
+        // WARNING: 単発演出なので、一度だけ実行されるノードの下に置く (毎 Tick 来ると毎フレーム落雷する)
         weather->Lightning(intensity_, durationSeconds_);
 
         if (context.IsNetworkAuthority())

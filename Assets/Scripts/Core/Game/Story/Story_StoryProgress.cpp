@@ -87,7 +87,7 @@ namespace GameCore::Story
             return;
 
         ImGui::PushID("StoryProgress");
-        // NOTE: その場で反映して保存する。RestorationGate の見た目もすぐ切り替わる
+        // NOTE: その場で反映して保存する
         const StorySaveData before = data_;
         data_.OnDrawGui();
         if (data_.flags != before.flags || data_.restoredFacilities != before.restoredFacilities)

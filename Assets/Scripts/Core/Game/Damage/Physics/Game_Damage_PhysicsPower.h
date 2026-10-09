@@ -8,9 +8,9 @@ namespace GameCore::Damage
     {
         explicit PhysicsPower(int physicsPower = 0, Damage::FlinchPower flinchPower = Damage::FlinchPower());
         [[nodiscard]] int Value() const { return value_; }
-        /** @brief 敵の怯み耐性を超えると怯ませる(攻撃もキャンセルされる) */
+        // NOTE: 敵の怯み耐性を超えると怯ませる(攻撃もキャンセルされる)
         [[nodiscard]] Damage::FlinchPower FlinchPower() const { return flinchPower_; }
-        /** @brief 怯み値はそのままに威力だけを差し替える */
+        // NOTE: 怯み値はそのままに威力だけを差し替える
         [[nodiscard]] PhysicsPower WithValue(const int value) const { return PhysicsPower(value, flinchPower_); }
         void OnDrawGui();
         

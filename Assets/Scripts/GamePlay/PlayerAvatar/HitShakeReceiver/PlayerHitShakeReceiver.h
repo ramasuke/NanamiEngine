@@ -9,9 +9,7 @@ namespace NanamiEngine::Module::Component
 
 namespace GamePlay::PlayerAvatar
 {
-    /**
-     * @brief プレイヤーの攻撃を受けたときに、同じGameObjectのModelRendererの描画位置だけを減衰振動させる
-     */
+    // NOTE: プレイヤーの攻撃を受けたときに、同じGameObjectのModelRendererの描画位置だけを減衰振動させる
     class PlayerHitShakeReceiver final : public Component::ComponentBase,
                                          public LifeCycleCallback::IUpdatable
     {
@@ -24,7 +22,7 @@ namespace GamePlay::PlayerAvatar
         std::weak_ptr<Component::ModelRenderer> modelRenderer_;
         glm::vec3 direction_     = {};
         float     duration_secs_ = 0.0f;
-        // 振幅の減衰 amplitude * (1 - t)^2
+        // NOTE: 振幅の減衰 amplitude * (1 - t)^2
         LibCore::Tween::TweenPlayer<float> envelope_;
 
         [[serialize(1)]] float shakeFrequency_hz_ = 18.0f;

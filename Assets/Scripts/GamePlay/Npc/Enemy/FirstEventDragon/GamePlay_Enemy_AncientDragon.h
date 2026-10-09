@@ -4,16 +4,16 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    /** 古竜。序章のドラゴンと同じ姿で、巣 (DragonNestScene) で戦う終章のボス */
+    // NOTE: 古竜。序章のドラゴンと同じ姿で、巣 (DragonNestScene) で戦う終章のボス
     class AncientDragon final : public GameCore::Npc::BossEnemyBase
     {
     private:
         void DoUpdate() override;
         [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return GameCore::Npc::Enemy::EnemyKind::AncientDragon; }
 
-        /** 巣の外へ落ちたら戻す位置 (心臓の山の上空) */
+        // NOTE: 巣の外へ落ちたら戻す位置 (心臓の山の上空)
         [[serialize(0)]] glm::vec3 respawnPosition_ = glm::vec3(750.0f, 300.0f, 720.0f);
-        /** これより下へ落ちたら戻す (巣の底は y 100) */
+        // NOTE: これより下へ落ちたら戻す
         [[serialize(0)]] float fallLimitY_ = 0.0f;
 
 #pragma region Serialization Function

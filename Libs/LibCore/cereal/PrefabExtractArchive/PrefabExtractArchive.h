@@ -13,21 +13,16 @@ namespace LibCore {
         static constexpr bool is_saving = true;
         static constexpr bool is_loading = false;
 
-        // ========= コンストラクタ =========
         PrefabExtractArchive()
             : cereal::OutputArchive<PrefabExtractArchive>(this)
         {
         }
 
-        // ========= cereal 必須 API =========
-        // OutputArchive を継承する場合、saveBinary は絶対に必要
+        // NOTE: OutputArchive の派生に必須。抽出専用なので何も書かないが、多相情報を辿るには存在すること自体が要る
         void saveBinary(const void* data, size_t size)
         {
-            // 今回は抽出専用なので何もしなくて良い
-            // （ポリモーフィック情報の読み取りには saveBinary が存在することが重要）
         }
 
-        // ========= cereal から呼ばれる入口 =========
         template<class T>
         ArchiveType& operator&(T&& value)
         {
@@ -40,14 +35,10 @@ namespace LibCore {
             return process(value);
         }
 
-        // ========= メイン処理 =========
         template<class T>
         ArchiveType& process(T& value)
         {
             cereal::prologue(*this, value);
-
-            // save() or serialize() を呼ぶ
-            // cereal::access::member_serialize(*this, value);
 
             classify(value);
 
@@ -55,8 +46,6 @@ namespace LibCore {
             return *this;
         }
 
-
-        // ========= classify（自由） =========
         template<class T>
         void classify(T&) {}
 

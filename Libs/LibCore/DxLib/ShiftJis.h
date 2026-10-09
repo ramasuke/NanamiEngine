@@ -4,7 +4,7 @@
 
 namespace LibCore::Dxlib
 {
-    // MultiByte ビルドの DxLib は文字列引数を Shift-JIS として解釈する
+    // NOTE: MultiByte ビルドの DxLib は文字列引数を Shift-JIS として解釈する
     inline std::string Utf8ToShiftJis(const std::string& utf8)
     {
         int wideSize = MultiByteToWideChar(
@@ -38,7 +38,7 @@ namespace LibCore::Dxlib
         return sjis;
     }
 
-    // DxLib が返す文字列(モデルのフレーム名・アニメ名など)を ImGui 表示用に UTF-8 へ戻す
+    // NOTE: DxLib が返す文字列(モデルのフレーム名・アニメ名など)を ImGui 表示用に UTF-8 へ戻す
     inline std::string ShiftJisToUtf8(const std::string& sjis)
     {
         const int wideSize = MultiByteToWideChar(932, 0, sjis.c_str(), -1, nullptr, 0);

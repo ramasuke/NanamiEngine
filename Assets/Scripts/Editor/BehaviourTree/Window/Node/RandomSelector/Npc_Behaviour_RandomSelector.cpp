@@ -34,7 +34,7 @@ namespace Editor::Npc::Behaviour
     void RandomSelectorNode::PickNextChild()
     {
         currentRunningNodeIndex_ = PickWeightedIndex();
-        // 前回この枝を選んだときの WaitSeconds 等の経過を持ち越さない
+        // NOTE: 前回この枝を選んだときの WaitSeconds 等の経過を持ち越さない
         children_[currentRunningNodeIndex_]->ResetRuntimeState();
     }
 
@@ -153,7 +153,6 @@ namespace Editor::Npc::Behaviour
         {
             ImGui::PushID(static_cast<int>(i));
 
-            // 並び替えボタン
             if (ImGui::ArrowButton("Up", ImGuiDir_Up))
             {
                 if (i > 0)
@@ -173,21 +172,17 @@ namespace Editor::Npc::Behaviour
             }
             ImGui::SameLine();
 
-            // 重み入力
             ImGui::SetNextItemWidth(60.0f);
             ImGui::DragInt("##w", &weights_[i], 1.0f, 0, 100);
             ImGui::SameLine();
 
-            // 実効確率表示
             const float prob = totalWeight > 0 ? weights_[i] * 100.0f / static_cast<float>(totalWeight) : 0.0f;
             ImGui::TextDisabled("(%.1f%%)", prob);
             ImGui::SameLine();
 
-            // ラベル
             const std::string label = std::format("Child {} : {}", i, children_[i]->NodeName());
             ImGui::Selectable(label.c_str(), false);
 
-            // 右クリックメニュー
             if (ImGui::BeginPopupContextItem("ChildContext"))
             {
                 if (ImGui::MenuItem("Delete"))

@@ -11,14 +11,14 @@
 
 namespace GamePlay::Magic
 {
-    // 照射・吐息の魔法のプレハブに付ける。撃っている間センサーに入っている敵へ一定間隔でダメージを入れ、時間が来たら消える
+    // NOTE: 照射・吐息の魔法のプレハブに付ける。センサー内の敵へ一定間隔でダメージを入れ、時間が来たら消える
     class MagicChannel final : public Component::ComponentBase,
                                public LifeCycleCallback::IUpdatable,
                                public Physics::Callback::ISensorEnterable,
                                public Physics::Callback::ISensorExitable
     {
     public:
-        /** @brief 生成直後に呼ぶ。duration_secs の間 tickInterval_secs ごとに当て、見た目が消えるのを待ってから自分も消える */
+        // NOTE: 生成直後に呼ぶ。duration_secs の間 tickInterval_secs ごとに当て、見た目が消えるのを待ってから自分も消える
         void Begin(const std::weak_ptr<GameObject::IGameObject>& caster,
                    GameCore::Damage::PhysicsPower powerPerTick,
                    float duration_secs,
@@ -36,12 +36,12 @@ namespace GamePlay::Magic
         void OnTriggerExit (const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void ApplyTick();
 
-        /** @brief 1回当てるたびに当たった所へ出す。無くてもよい */
+        // NOTE: 1回当てるたびに当たった所へ出す。無くてもよい
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) hitPrefab_;
         [[serialize(0)]] float hitEffectLifeTime_secs_ = 0.8f;
-        /** @brief 当て終わってから消えるまでの時間。見た目の消え際を切らないため */
+        // NOTE: 当て終わってから消えるまでの時間。見た目の消え際を切らないため
         [[serialize(0)]] float linger_secs_ = 0.5f;
-        /** @brief 1回当てるごとの揺れ。何体に当たっても 1 回分 */
+        // NOTE: 1回当てるごとの揺れ。何体に当たっても 1 回分
         [[serialize(1)]] float hitShakeIntensity_     = 0.15f;
         [[serialize(1)]] float hitShakeDuration_secs_ = 0.08f;
 

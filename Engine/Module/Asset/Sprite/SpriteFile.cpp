@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::Asset
 
     void SpriteFile::RequestLoad() const
     {
-        // 読み込みに失敗したファイルを毎フレーム読み直さないよう、Unload されるまでは 1 回だけ試す
+        // NOTE: 読み込みに失敗したファイルを毎フレーム読み直さないよう、Unload されるまでは 1 回だけ試す
         if (isLoadAttempted_)
             return;
 

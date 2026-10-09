@@ -11,7 +11,7 @@
 
 namespace GamePlay::Ui
 {
-    /** @brief 掲示板に並べる催し1件。表示用の文字列は開いた時刻で作っておく */
+    // NOTE: 掲示板に並べる催し1件。表示用の文字列は開いた時刻で作っておく
     struct EventBoardEntry
     {
         std::shared_ptr<Asset::EventNotice> notice;
@@ -20,9 +20,7 @@ namespace GamePlay::Ui
         std::string statusText;
     };
 
-    /**
-     * 催しの一覧のModel。開いた時刻で終わった告知・書式の崩れた告知・解放条件を満たさない告知を落とし、開催中→開催予定の順に並べる。
-     */
+    // NOTE: 催しの一覧のModel。終わった・書式の崩れた・未解放の告知を落とし、開催中→開催予定の順に並べる
     class EventBoardModel final
     {
     public:

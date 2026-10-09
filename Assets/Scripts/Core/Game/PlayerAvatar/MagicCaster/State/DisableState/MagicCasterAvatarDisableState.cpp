@@ -7,7 +7,7 @@ void GameCore::PlayerAvatar::MagicCaster::State::DisableState::DoEnter()
     if (ExpiredCamera())
         return;
 
-    // 操作できない間はロックオンを外す。ReleaseLockOn は FollowFromBehind へ戻す
+    // NOTE: 操作できない間はロックオンを外す。ReleaseLockOn は FollowFromBehind へ戻す
     if (CameraGroup().IsLockedOn())
         CameraGroup().ReleaseLockOn();
     else

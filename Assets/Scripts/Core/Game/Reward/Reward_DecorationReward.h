@@ -5,7 +5,7 @@
 
 namespace GameCore::Reward
 {
-    /** @brief 島の飾り decoration_ を手に入れる。もう持っていれば何も起きない */
+    // NOTE: 島の飾り decoration_ を手に入れる。もう持っていれば何も起きない
     class DecorationReward final : public IReward
     {
     public:

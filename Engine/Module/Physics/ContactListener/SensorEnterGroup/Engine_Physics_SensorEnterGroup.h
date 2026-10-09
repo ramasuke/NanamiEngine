@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::Physics
 
     private:
         std::vector<PendingEnter> pending_;
-        // OnContactAddedはJoltのジョブスレッドから同時に呼ばれ得るため、書き込みのみ保護する。
+        // WARNING: OnContactAdded は Jolt のジョブスレッドから同時に呼ばれ得るため、書き込みだけ保護する
         std::mutex addMutex_;
     };
 }

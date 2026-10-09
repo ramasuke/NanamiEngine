@@ -11,7 +11,7 @@ namespace GameCore::Reward
 {
     class IReward;
 
-    /// 報酬を名前から作る。インスペクタの「報酬を足す」が列挙する
+    // NOTE: 報酬を名前から作る。登録した種類がインスペクタで足せる一覧になる
     class RewardFactory final : public SingletonBase<RewardFactory>
     {
     public:

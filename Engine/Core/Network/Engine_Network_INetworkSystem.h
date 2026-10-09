@@ -20,7 +20,7 @@ namespace NanamiEngine::Core::Network
         virtual void SetPlayerId(PlayerId playerId) = 0;
         [[nodiscard]] virtual INetworkObjectInstanceRegistry& GetInstanceRegistry() = 0;
         [[nodiscard]] virtual ConnectionState GetConnectionState() const = 0;
-        /** ホストとして待ち受けているポート。クライアントは 0 */
+        // NOTE: ホストとして待ち受けているポート。クライアントは 0
         [[nodiscard]] virtual std::uint16_t ListenPort() const = 0;
     };
 }

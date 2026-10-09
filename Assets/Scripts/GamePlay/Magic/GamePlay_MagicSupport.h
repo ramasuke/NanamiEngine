@@ -10,9 +10,7 @@ namespace GameCore::PlayerAvatar::Item
 
 namespace GamePlay::Magic
 {
-    /**
-     * @brief center から radius 以内のアバターのうち、このピアが所有するものに apply を呼ぶ
-     */
+    // NOTE: center から radius 以内のアバターのうち、このピアが所有するものに apply を呼ぶ
     void ForEachSupportTarget(const glm::vec3& center,
                               float radius,
                               const std::function<void(GameCore::PlayerAvatar::Item::IItemEffectTarget&)>& apply);

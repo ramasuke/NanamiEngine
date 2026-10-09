@@ -6,7 +6,7 @@
 
 namespace GameCore::Story
 {
-    /** @brief onDefeat に condition.bossKind が流れたら onClear(condition.flag) を呼ぶ。購読は自分が持ち、破棄か Dispose で外す */
+    // NOTE: 条件のボスが倒されたら onClear を呼ぶ。購読は自分が持ち、破棄か Dispose で外す
     class StageClearWatcher final
     {
     public:
@@ -15,7 +15,7 @@ namespace GameCore::Story
         StageClearWatcher(const StageClearWatcher&) = delete;
         StageClearWatcher& operator=(const StageClearWatcher&) = delete;
 
-        /** @note 見張り中なら前の購読を外してから繋ぎ直す */
+        // NOTE: 見張り中なら前の購読を外してから繋ぎ直す
         void Watch(
             const NanamiEngine::R4::Observable<Npc::Enemy::EnemyKind>& onDefeat,
             const StageClearCondition& condition,

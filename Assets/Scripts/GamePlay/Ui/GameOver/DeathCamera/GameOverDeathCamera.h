@@ -10,10 +10,8 @@
 
 namespace GamePlay::Ui
 {
-    /**
-     * @brief 力尽きたプレイヤーを、背中側へ回り込みながら上へ引いて見下ろすカメラ
-     * NOTE: 仮想カメラは Brain のあるシーンにしか登録できないので、メインシーンへ生成する
-     */
+    // NOTE: 力尽きたプレイヤーを、背中側へ回り込みながら上へ引いて見下ろすカメラ
+    // WARNING: 仮想カメラは Brain のあるシーンにしか登録できないので、メインシーンへ生成すること
     class GameOverDeathCamera final : public Component::ComponentBase,
                                       public LifeCycleCallback::IUpdatable
     {
@@ -38,7 +36,7 @@ namespace GamePlay::Ui
         float startPitch_rad_ = 0.0f;
         float startDistance_ = 0.0f;
         glm::vec3 startLookAtOffset_ = glm::vec3(0.0f);
-        // 0..1 の進行度(OutQuad)。終わった後も 1 のまま毎フレーム当て続ける
+        // NOTE: 0..1 の進行度(OutQuad)。終わった後も 1 のまま毎フレーム当て続ける
         LibCore::Tween::TweenPlayer<float> shotTween_;
         bool isPlaying_ = false;
 

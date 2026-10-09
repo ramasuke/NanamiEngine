@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar::MagicCaster::State
 {
-    // 魔法の中身は知らず、IMagicSpell の時間で溜めて撃つだけ
+    // NOTE: 魔法の中身は知らず、IMagicSpell の時間で溜めて撃つだけ
     class CastState final : public MagicCasterAvatarStateBase
     {
     public:
@@ -18,7 +18,7 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
 
         void SpawnCastEffect();
-        /** @brief ロックオンで向きを変えている間も、詠唱の演出を足元と向きに合わせ続ける */
+        // NOTE: ロックオンで向きを変えている間も、詠唱の演出を足元と向きに合わせ続ける
         void FollowCastEffect() const;
 
         std::shared_ptr<const Magic::IMagicSpell> spell_;

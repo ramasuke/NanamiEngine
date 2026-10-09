@@ -99,7 +99,6 @@ namespace NanamiEngine::Module::NanamiUi
         const int fontHandle = fontFile_->DxLibHandle();
         const int lineHeight = GetFontSizeToHandle(fontHandle);
 
-        // テキストの実サイズを計算
         std::vector<std::string> lines;
         std::vector<int> lineWidths;
         int newW = 1;
@@ -119,12 +118,11 @@ namespace NanamiEngine::Module::NanamiUi
             lines.emplace_back();
             lineWidths.push_back(0);
         }
-        // 縁取りがはみ出して切れないよう上下左右に余白を取る
+        // NOTE: 縁取りがはみ出して切れないよう上下左右に余白を取る
         const int edge = std::max(GetFontEdgeSizeToHandle(fontHandle), 0);
         const int newH = std::max(lineHeight * static_cast<int>(lines.size()), 1) + edge * 2;
         newW = std::max(newW, 1) + edge * 2;
 
-        // サイズが変わった場合は古いスクリーンを解放して再生成
         if (textScreen_ != -1 && (screenW_ != newW || screenH_ != newH))
         {
             DeleteGraph(textScreen_);
@@ -135,7 +133,7 @@ namespace NanamiEngine::Module::NanamiUi
 
         if (textScreen_ == -1)
         {
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の SetDrawScreen で完了待ちに入る
+            // NOTE: 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の SetDrawScreen で完了待ちに入る
             const int useASyncLoad = GetUseASyncLoadFlag();
             SetUseASyncLoadFlag(FALSE);
             textScreen_ = MakeScreen(screenW_, screenH_, TRUE);
@@ -192,7 +190,7 @@ namespace NanamiEngine::Module::NanamiUi
         const float y = Transform().GetWorldPos().y;
         const auto font = fontFile_.get();
 
-        // 縮小描画だと細い線が欠けるので、画面上の大きさのハンドルで描き端数だけ拡大率で渡す
+        // NOTE: 縮小描画だと細い線が欠けるので、画面上の大きさのハンドルで描き端数だけ拡大率で渡す
         const float fontSize = static_cast<float>(font->Size());
         const float pixelSizeY = fontSize * Transform().GetWorldScale().y;
         if (pixelSizeY <= 0.0f)

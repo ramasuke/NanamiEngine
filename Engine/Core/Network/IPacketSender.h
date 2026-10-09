@@ -15,9 +15,9 @@ namespace NanamiEngine::Core::Network
     public:
         virtual ~IPacketSender() = default;
         virtual void Send(const Packet& packet) = 0;
-        /** ホストのみ: target の 1 人にだけ送る */
+        // NOTE: ホストのみ: target の 1 人にだけ送る
         virtual void SendTo(PlayerId target, const Packet& packet) = 0;
-        /** ホストのみ: クライアントが参加して PlayerId を割り当てた直後に通知する */
+        // NOTE: ホストのみ: クライアントが参加して PlayerId を割り当てた直後に通知する
         virtual R4::Observable<PlayerId> OnConnectPlayer() = 0;
     };
 }

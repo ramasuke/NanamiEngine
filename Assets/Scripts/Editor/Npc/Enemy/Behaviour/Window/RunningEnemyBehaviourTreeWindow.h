@@ -7,9 +7,7 @@
 
 namespace Editor::Npc::Enemy
 {
-    /**
-     * @note 実行中の敵の BehaviourTree をリアルタイムに覗くPopupWindow
-     */
+    // NOTE: 実行中の敵の BehaviourTree をリアルタイムに覗く PopupWindow
     class RunningEnemyBehaviourTreeWindow final : public Core::PopupWindow::IPopupWindow
     {
     public:

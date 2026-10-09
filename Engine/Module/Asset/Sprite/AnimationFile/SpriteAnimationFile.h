@@ -13,8 +13,8 @@ namespace NanamiEngine::Module::Asset
     public:
         enum class AnimationSourceType : int
         {
-            Individual, //1枚ずつ
-            SpriteSheet //1枚から分割
+            Individual, // 1枚ずつ
+            SpriteSheet // 1枚から分割
         };
 
         explicit SpriteAnimationFile(std::string contentPath = "");
@@ -37,7 +37,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] AnimationSourceType sourceType_ = AnimationSourceType::Individual;
         [[serialize(0)]] std::vector<FIELD(SpriteFile)> sprites_;
         
-        /** SpriteSheet */
+        // NOTE: SpriteSheet のときだけ使う
         [[serialize(0)]] FIELD(SpriteFile) sprite_;
         [[serialize(0)]] int splitCount_  = 1;
         [[serialize(0)]] int splitXCount_ = 1;

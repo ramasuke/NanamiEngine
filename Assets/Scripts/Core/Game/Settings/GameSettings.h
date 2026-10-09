@@ -23,7 +23,7 @@ namespace GameCore
         [[nodiscard]] ChatAdvanceMode GetChatAdvanceMode() const { return chatAdvanceMode_; }
         void SetChatAdvanceMode(const ChatAdvanceMode mode) { chatAdvanceMode_ = mode; }
 
-        /** 音量は 0..VOLUME_STEPS の段階。変えるとすぐエンジンの音量に反映する */
+        // NOTE: 音量は 0..VOLUME_STEPS の段階。変えるとすぐエンジンの音量に反映する
         static constexpr int VOLUME_STEPS = 10;
         [[nodiscard]] int GetMasterVolume() const { return masterVolume_; }
         [[nodiscard]] int GetBgmVolume() const { return bgmVolume_; }

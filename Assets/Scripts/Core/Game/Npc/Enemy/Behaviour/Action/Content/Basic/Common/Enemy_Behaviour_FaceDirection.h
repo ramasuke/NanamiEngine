@@ -8,7 +8,7 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    // 水平面上で前方向(-Z)から direction への角度(deg, -180..180)。右が正
+    // NOTE: 水平面上で前方向(-Z)から direction への角度(deg, -180..180)。右が正
     // NOTE: DxLib は左手系なので、-Z を向いたときの右は -X
     inline bool SignedHorizontalAngleDeg(const GameObject::Transform& transform, glm::vec3 direction, float& outDeg)
     {
@@ -25,7 +25,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         return true;
     }
 
-    // 水平面上で前方向(-Z)を direction へ最大 rotateSpeedDeg (deg/sec) で回す
+    // NOTE: 水平面上で前方向(-Z)を direction へ最大 rotateSpeedDeg (deg/sec) で回す
     inline void RotateTowardsHorizontal(GameObject::Transform& transform, glm::vec3 direction, const float rotateSpeedDeg)
     {
         direction.y = 0.0f;

@@ -13,9 +13,7 @@ namespace NanamiEngine::Core::Network
 
 namespace NanamiEngine::Core::Network
 {
-    /**
-     * セッション管理
-     */
+    // NOTE: 離脱した参加者の所有物の引き継ぎと、新規参加者への所有者テーブルの配布
     class NANAMI_API SessionDispatcher final : public PacketDispatcherBase
     {
     public:
@@ -27,7 +25,7 @@ namespace NanamiEngine::Core::Network
 
         void ReceivePacket(const Packet& packet) override;
 
-        /** 離脱した PlayerId を通知する */
+        // NOTE: 離脱した PlayerId を通知する
         [[nodiscard]] R4::Observable<struct PlayerId> OnPlayerLeft() const { return onPlayerLeft_.AsObservable(); }
 
     private:

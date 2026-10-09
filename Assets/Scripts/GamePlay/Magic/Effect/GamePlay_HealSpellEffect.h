@@ -9,7 +9,7 @@
 
 namespace GamePlay::Magic
 {
-    // 撃ち手のまわりにいる自分と仲間の体力を戻す
+    // NOTE: 撃ち手のまわりにいる自分と仲間の体力を戻す
     class HealSpellEffect final : public GameCore::Magic::IMagicSpellEffect
     {
     public:

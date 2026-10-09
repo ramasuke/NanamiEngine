@@ -16,8 +16,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         void OnDrawGui();
 
     private:
-        /** templateMethodパターン */
-        //LifeCycleCallback::Update()で呼ばれる。
+        // NOTE: Template Method パターン
         virtual TickStatus DoTick(const Action::TickContext& context) = 0;
         virtual void DoReset();
         virtual void DoDrawGui();

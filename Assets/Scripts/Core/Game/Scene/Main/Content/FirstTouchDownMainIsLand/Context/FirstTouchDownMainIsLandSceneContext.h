@@ -66,16 +66,16 @@ namespace GameCore::Scene
         [[serialize(14)]] FIELD(GameObject::IGameObject)              firstEventDragonSpawnPos_;
         [[serialize(16)]] FIELD(GamePlay::Prop::Canon)                playerControllabeCanon_;
         [[serialize(19)]] FIELD(Asset::PrefabGameObjectFile)          swordManCameraGroupPrefab_;
-        /** 冒頭のカット。子の VirtualCamera を上から順に映し、その子(あれば)の位置・向きへ動かす */
+        // NOTE: 冒頭のカット。子の VirtualCamera を上から順に映し、その子(あれば)の位置・向きへ動かす
         [[serialize(23)]] FIELD(GameObject::IGameObject)              openingShots_;
         [[serialize(23)]] std::vector<float>                          openingShotDurations_secs_;
-        /** 甲板の小物。子孫の RigidBody は航行中 Kinematic で、着いたら Dynamic にする */
+        // NOTE: 甲板の小物。子孫の RigidBody は航行中 Kinematic で、着いたら Dynamic にする
         [[serialize(24)]] FIELD(GameObject::IGameObject)              airShipDeckProps_;
-        /** 最後のカット(主人公→追従カメラ)で、寄り始めるまで溜める割合 */
+        // NOTE: 最後のカット(主人公→追従カメラ)で、寄り始めるまで溜める割合
         [[serialize(25)]] float                                       heroHoldRate_      = 0.3f;
-        /** 最後のカットで、追従カメラの向きへ振り向き始める割合 */
+        // NOTE: 最後のカットで、追従カメラの向きへ振り向き始める割合
         [[serialize(25)]] float                                       heroTurnStartRate_ = 0.7f;
-        /** 最後のカットで注視する、主人公の足元からの高さ */
+        // NOTE: 最後のカットで注視する、主人公の足元からの高さ
         [[serialize(25)]] float                                       heroLookHeight_    = 12.0f;
 
 #pragma region Serialization Function

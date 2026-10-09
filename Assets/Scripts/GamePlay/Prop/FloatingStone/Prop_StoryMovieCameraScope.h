@@ -21,7 +21,7 @@ namespace NanamiEngine::CineMachine
 
 namespace GamePlay::Prop::StoryMovie
 {
-    /** @brief カメラとプレイヤーの操作を演出のあいだだけ借りる */
+    // NOTE: カメラとプレイヤーの操作を演出のあいだだけ借りる
     class CameraScope final
     {
     public:

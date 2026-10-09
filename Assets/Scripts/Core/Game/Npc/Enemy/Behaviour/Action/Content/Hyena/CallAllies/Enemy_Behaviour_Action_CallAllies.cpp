@@ -63,7 +63,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             const glm::vec3 position = context.EnemyTransform().GetWorldPos();
             GamePlay::Sound::SoundPlayer::PlaySe(*howlSound_.get(), position);
 
-            // 権威側限定Tickなら、Tickしていない他ピアにも同じSEを鳴らさせる
+            // NOTE: 権威側限定Tickなら、Tickしていない他ピアにも同じSEを鳴らさせる
             if (context.IsNetworkAuthority())
             {
                 GameCore::Network::PlaySeRpc::Send(

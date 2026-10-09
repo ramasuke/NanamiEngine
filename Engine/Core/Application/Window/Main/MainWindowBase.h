@@ -44,7 +44,7 @@ namespace NanamiEngine::Core::MainWindow
     template <typename ContentT> requires std::derived_from<ContentT, Module::Object::IObject>
     void MainWindowBase<ContentT>::RemoveContent(const std::shared_ptr<ContentT>& content)
     {
-        // シーンの読み込み失敗などで content が空のまま Dispose される場合の保険
+        // NOTE: 読み込み失敗などで content が空のまま外される場合の保険
         if (!content)
             return;
 

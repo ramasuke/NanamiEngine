@@ -37,7 +37,7 @@ namespace GamePlay::Ui
 
     void StageSelectStageUi::RefreshAppearance()
     {
-        // 選択中の行は枠グローが出るので、枠入りのホバー用スプライトは重ねない
+        // NOTE: 選択中の行は枠グローが出るので、枠入りのホバー用スプライトは重ねない
         const bool showHoverSprite = isHovering_ && !isHighlighted_;
         const auto sprite = isLocked_
             ? lockedRowSprite_.get()

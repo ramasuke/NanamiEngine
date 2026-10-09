@@ -27,7 +27,7 @@ namespace NanamiEngine::AssetUpdater
         {
             if (segment.empty() || segment == "." || segment == "..")
                 return false;
-            // Windows は末尾のドットと空白を黙って落とすので、別の名前で同じファイルを指せてしまう
+            // NOTE: Windows は末尾のドットと空白を黙って落とすので、別の名前で同じファイルを指せてしまう
             if (segment.back() == '.' || segment.back() == ' ')
                 return false;
             for (const char character : segment)
@@ -71,7 +71,7 @@ namespace NanamiEngine::AssetUpdater
         if (error)
             return std::nullopt;
 
-        // 途中にジャンクションなどがあっても Assets/ の外へは出さない
+        // NOTE: 途中にジャンクションなどがあっても Assets/ の外へは出さない
         const std::filesystem::path relative = resolved.lexically_relative(assetsRoot);
         if (relative.empty() || *relative.begin() == L"..")
             return std::nullopt;

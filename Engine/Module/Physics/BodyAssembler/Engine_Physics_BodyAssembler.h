@@ -11,7 +11,7 @@
 #include "Jolt/Core/Reference.h"
 #include "Jolt/Physics/Body/BodyID.h"
 #include "Jolt/Physics/Collision/CollisionGroup.h"
-// NOTE: RigidBodyEntry / ColliderEntry の unique_ptr<UserData> が完全型を要る (export されたクラスは暗黙のデストラクタも実体化される)
+// NOTE: export されたクラスは暗黙のデストラクタも実体化されるので、unique_ptr<UserData> には完全型が要る
 #include "../UserData/Engine_Physics_UserData.h"
 
 namespace JPH
@@ -39,10 +39,8 @@ namespace NanamiEngine::Module::Physics
 {
     struct UserData;
 
-    /**
-     * @brief RigidBody と Collider から Jolt の Body を組み立てる。両方の Component を知っているのはここだけ
-     * @note Body は登録時でなく Flush() (Awake フェーズ直後と物理ステップ直前) で作る
-     */
+    // NOTE: RigidBody と Collider から Jolt の Body を組み立てる。両方の Component を知っているのはここだけ
+    // NOTE: Body は登録時でなく Flush() (Awake フェーズ直後と物理ステップ直前) で作る
     class NANAMI_API BodyAssembler final
     {
     public:
@@ -64,7 +62,7 @@ namespace NanamiEngine::Module::Physics
         void PullTransform(const Component::RigidBody& rigidBody) const;
         // NOTE: OnUpdatedPhysics より前に全 Body を書き戻す(補間の取り込みが呼び出し順に左右されないように)
         void PullTransforms() const;
-        // RigidBody に付いている Sensor を、自分の Transform の位置へ動かす
+        // NOTE: RigidBody に付いている Sensor を、自分の Transform の位置へ動かす
         void MoveSensor(const Component::ColliderBase& collider) const;
         // NOTE: Body は Awake 時の姿勢で作られるので、Instantiate 後に動かした Transform へ root 以下の Body を合わせる
         void SyncTransforms(GameObject::IGameObject& root) const;
@@ -74,7 +72,7 @@ namespace NanamiEngine::Module::Physics
         [[nodiscard]] std::optional<std::pair<glm::vec3, glm::vec3>> WorldBounds(const Component::ColliderBase& collider) const;
         [[nodiscard]] std::optional<glm::vec3> CenterOfMassPosition(const Component::ColliderBase& collider) const;
         [[nodiscard]] std::optional<std::pair<JPH::Vec3, JPH::Quat>> ShapeWorldTransform(const Component::ColliderBase& collider) const;
-        // 登録の有無に関係なく、階層をたどって一番近い RigidBody を持つ GameObject を返す(Inspector 表示用)
+        // NOTE: 登録の有無に関係なく、階層をたどって一番近い RigidBody を持つ GameObject を返す
         [[nodiscard]] static std::shared_ptr<GameObject::IGameObject> FindRigidBodyObject(const Component::ColliderBase& collider);
 
     private:
@@ -82,7 +80,7 @@ namespace NanamiEngine::Module::Physics
         {
             std::weak_ptr<Component::RigidBody> rigidBody;
             JPH::CollisionGroup::GroupID groupId = JPH::CollisionGroup::cInvalidGroup;
-            // Body に実際に使う GroupID。isPartOfParent_ なら親の RigidBody のもの
+            // NOTE: Body に実際に使う GroupID。isPartOfParent_ なら親の RigidBody のもの
             JPH::CollisionGroup::GroupID collisionGroupId = JPH::CollisionGroup::cInvalidGroup;
             JPH::BodyID bodyId;
             std::unique_ptr<UserData> userData;
@@ -95,10 +93,10 @@ namespace NanamiEngine::Module::Physics
         {
             std::weak_ptr<Component::ColliderBase> collider;
             const Component::RigidBody* owner = nullptr;
-            // RigidBody がない Collider と Sensor だけが自分の Body を持つ
+            // NOTE: RigidBody がない Collider と Sensor だけが自分の Body を持つ
             JPH::BodyID bodyId;
             std::unique_ptr<UserData> userData;
-            // RigidBody にまとめられている時の形状と、RigidBody 原点からの相対姿勢
+            // NOTE: RigidBody にまとめられている時の形状と、RigidBody 原点からの相対姿勢
             JPH::RefConst<JPH::Shape> attachedShape;
             JPH::Vec3 relativePosition = JPH::Vec3::sZero();
             JPH::Quat relativeRotation = JPH::Quat::sIdentity();

@@ -18,7 +18,6 @@ void GameCore::PlayerAvatar::SwordMan::State::DeathState::DoUpdate()
 {
     if (During_secs() > Status().DeathStateDuration_secs())
     {
-        // Game::Instance().Scenes().RequestChangeScene<Scene::Main::TitleScene>();
     }
 }
 

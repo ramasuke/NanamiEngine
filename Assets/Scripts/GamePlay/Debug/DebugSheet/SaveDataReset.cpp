@@ -35,7 +35,7 @@ namespace GamePlay::Debug
             return gameWindow && gameWindow->IsPlaying();
         }
 
-        /** @brief アバターの居ない Title に落ち着いているか。プレイ中だけ呼ぶ */
+        // NOTE: アバターの居ない Title に落ち着いているか。プレイ中だけ呼ぶ
         bool IsSettledOnTitle()
         {
             const auto& scenes = GameCore::Game::Instance().Scenes();

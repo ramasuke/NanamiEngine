@@ -4,7 +4,7 @@
 
 namespace GameCore::Magic
 {
-    // 詠唱モーション。値は MagicCasterAnimation.animTree の CastMotion パラメータの値そのもの
+    // WARNING: 詠唱モーション。値は MagicCasterAnimation.animTree の CastMotion パラメータと一致させる
     enum class MagicCastMotion : int
     {
         OneHandThrust    = 0,
@@ -19,7 +19,7 @@ namespace GameCore::Magic
         TwoHandBeam      = 9,
         TwoHandPushHold  = 10,
         TwoHandPray      = 11,
-        /** ジャスト回避後のカウンター魔法。TwoHandBurst の放出直前から速めに再生する */
+        // NOTE: ジャスト回避後のカウンター魔法。TwoHandBurst の放出直前から速めに再生する
         CounterBurst     = 12,
     };
 

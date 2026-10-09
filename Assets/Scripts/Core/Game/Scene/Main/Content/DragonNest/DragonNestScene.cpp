@@ -61,7 +61,7 @@ namespace GameCore::Scene::Main
 
     Coroutine::Task<EnterResult> DragonNestScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
     {
-        // Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
+        // WARNING: Context の FIELD は読み込んだシーン内の GameObject を指す。読み込みが済むまで触らない
         Context()->Init();
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
@@ -96,7 +96,7 @@ namespace GameCore::Scene::Main
             }
         }
 
-        // カバーが明ける前に画を作っておく
+        // NOTE: カバーが明ける前に画を作っておく
         arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<DragonNestSceneContext>>(
             playerAvatar_, Context(), Story::StoryFlag::DragonNestOverviewSeen);
         arrivalMovie_->Begin();
@@ -118,7 +118,7 @@ namespace GameCore::Scene::Main
         using GameObjectPtr = std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>;
         namespace Movie = GamePlay::Prop::StoryMovie;
 
-        /** @brief 散っていく心臓1つ。浮き上がってから、それぞれの向きへ空の彼方へ飛んでいく */
+        // NOTE: 散っていく心臓1つ。浮き上がってから、それぞれの向きへ空の彼方へ飛んでいく
         struct FlyingHeart
         {
             GameObjectPtr heart;
@@ -138,9 +138,7 @@ namespace GameCore::Scene::Main
             return camera && camera->DestroyCancellationToken().IsCancellationRequested();
         }
 
-        /**
-         * @brief 巣の心臓が空へ散る演出を流して拠点の島へ戻る。カメラが破棄されたら止まる
-         */
+        // NOTE: 巣の心臓が空へ散る演出を流して拠点の島へ戻る。カメラが破棄されたら止まる
         Coroutine::Task<void> PlayHeartScatterAsync(
             std::shared_ptr<DragonNestSceneContext> context, std::weak_ptr<IPlayerAvatar> playerAvatar)
         {
@@ -167,7 +165,7 @@ namespace GameCore::Scene::Main
                 if (const auto drift = heart->Components().Catch<GamePlay::Prop::FloatingDrift>().lock())
                     drift->SetEnable(false);
 
-                // 黄金角で散らして、どの方角の空にも心臓が飛んでいくようにする
+                // NOTE: 黄金角で散らして、どの方角の空にも心臓が飛んでいくようにする
                 const float index = static_cast<float>(i);
                 const float angle = glm::radians(137.5f * index);
                 const float up    = 0.55f + 0.35f * std::fmod(index * 0.618f, 1.0f);
@@ -188,7 +186,7 @@ namespace GameCore::Scene::Main
             Movie::CameraScope scope(playerAvatar, camera, lookTarget, lookOffset);
             scope.Begin();
 
-            // 心臓の山が割れるように光って、心臓が次々に浮き上がる
+            // NOTE: 心臓の山が割れるように光って、心臓が次々に浮き上がる
             if (const auto burst = context->HeartBurst())
                 NanamiEngine::Scene::GameObject::Instantiate(burst, center);
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(0.8f, 2.5f);
@@ -273,7 +271,7 @@ namespace GameCore::Scene::Main
     {
         isStageCleared_ = true;
 
-        // 初めて立てたときだけ。倒し直しでは心臓はもう散っている
+        // NOTE: 初めて立てたときだけ。倒し直しでは心臓はもう散っている
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
 

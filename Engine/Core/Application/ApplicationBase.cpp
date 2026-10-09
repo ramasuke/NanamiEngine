@@ -30,7 +30,7 @@
 
 namespace
 {
-    /** DxLib の非同期ロードスレッド数。*/
+    // NOTE: DxLib の非同期ロードスレッド数
     int ApplicationBaseAsyncLoadThreadNum()
     {
         constexpr unsigned int minThreadNum = 2;
@@ -40,7 +40,7 @@ namespace
         return static_cast<int>(std::clamp(hardwareThreadNum / 2, minThreadNum, maxThreadNum));
     }
 
-    /** directory 以下の全アセットの Guid を集める */
+    // NOTE: directory 以下の全アセットの Guid を集める
     void CollectAssetGuids(NanamiEngine::Core::FileSystem::Directory& directory, std::vector<::Guid>& outGuids)
     {
         for (auto& file : directory.Files())
@@ -63,7 +63,6 @@ namespace NanamiEngine::Core::Application
     
     ApplicationBase::ApplicationBase()
     {
-        /** ApplicationConfiguの初期化 */
         Configuration::AppConfiguration::Load();
         Configuration::NetworkConfiguration::Load();
         Configuration::PhysicsConfiguration::Load();
@@ -90,16 +89,13 @@ namespace NanamiEngine::Core::Application
         Display::WindowDisplayModeController::ApplyAfterInit();
         SetDrawScreen          (DX_SCREEN_BACK);
 
-        /** リソースの初期化 */
         SetUseASyncLoadFlag(true);
         assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
 
-        /** Windowの初期化 */
         SetUseSetDrawScreenSettingReset(false);
         MainWindows_().MakeWindow<MainWindow::GameWindow>();
         OnChangeWindow<MainWindow::GameWindow>();
 
-        /** Sceneの初期化 */
         const auto initScene = std::make_shared<Scene::Scene>(Configuration::BuildConfiguration::StartScenePath());
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
@@ -107,7 +103,6 @@ namespace NanamiEngine::Core::Application
         physics_.emplace();
         Physics().Initialize();
 
-        /** Effekseerの初期化 */
         Effekseer_Init(Configuration::AppConfiguration::GetParticleMax());
         SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
         Effekseer_SetGraphicsDeviceLostCallbackFunctions();
@@ -183,7 +178,7 @@ namespace NanamiEngine::Core::Application
         if (assetsDirectory_)
             CollectAssetGuids(assetsDirectory_.value(), oldAssetGuids);
 
-        // emplace で古いアセットが破棄されてから新しいアセットが登録される
+        // NOTE: emplace で古いアセットが破棄されてから新しいアセットが登録される
         assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
         for (const auto& guid : oldAssetGuids)
         {

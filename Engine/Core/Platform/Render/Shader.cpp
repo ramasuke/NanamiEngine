@@ -13,7 +13,7 @@ namespace NanamiEngine::Platform::Render
         static_assert(static_cast<int>(ShaderStage::Vertex) == DX_SHADERTYPE_VERTEX);
         static_assert(static_cast<int>(ShaderStage::Pixel)  == DX_SHADERTYPE_PIXEL);
 
-        // ShaderVertex3D を VERTEX3DSHADER としてそのまま渡すので、並びが同じであること
+        // NOTE: ShaderVertex3D を VERTEX3DSHADER としてそのまま渡すので、並びが同じであること
         static_assert(sizeof(VertexColor8)   == sizeof(COLOR_U8));
         static_assert(sizeof(ShaderVertex3D) == sizeof(VERTEX3DSHADER));
         static_assert(offsetof(ShaderVertex3D, position)       == offsetof(VERTEX3DSHADER, pos));
@@ -35,7 +35,7 @@ namespace NanamiEngine::Platform::Render
 
     int ConstantBuffer::Create(const int sizeInBytes)
     {
-        // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、Map / Update で完了待ちに入って固まる
+        // WARNING: 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、Map / Update で完了待ちに入って固まる
         const AsyncLoad::SyncLoadScope sync;
         return CreateShaderConstantBuffer(sizeInBytes);
     }

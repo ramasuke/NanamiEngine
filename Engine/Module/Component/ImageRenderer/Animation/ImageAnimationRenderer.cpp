@@ -35,7 +35,6 @@ namespace NanamiEngine::Module::NanamiUi
             return;
         }
 
-        // アニメーション更新
         timer_ += Time::DeltaTime();
 
         const auto& handles = animationFile_->GetSpritesHandle();

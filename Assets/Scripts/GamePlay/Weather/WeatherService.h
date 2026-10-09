@@ -20,12 +20,12 @@ namespace GamePlay::Weather
     public:
         static WeatherService* Instance() { return instance_; }
 
-        /** @brief 嵐の強さを blendSeconds かけて targetIntensity(0..1) へ寄せる */
+        // NOTE: 嵐の強さを blendSeconds かけて targetIntensity(0..1) へ寄せる
         void SetStorm(float targetIntensity, float blendSeconds);
-        /** @brief 落雷。閃光と、thunderDelay_secs_ 後の雷鳴 */
+        // NOTE: 落雷。閃光と、thunderDelay_secs_ 後の雷鳴
         void Lightning(float intensity, float durationSeconds);
         [[nodiscard]] float GetStormIntensity() const { return stormIntensity_; }
-        /** @brief 既にその強さを目標にしているか。BTアクションが毎フレーム同じ指示を送らないための判定 */
+        // NOTE: 既にその強さを目標にしているか。毎フレーム同じ指示を送らないための判定
         [[nodiscard]] bool HasStormTarget(const float targetIntensity) const
         {
             return std::clamp(targetIntensity, 0.0f, 1.0f) == stormTarget_;
@@ -60,9 +60,9 @@ namespace GamePlay::Weather
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderNearSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound1_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound2_;
-        // シーン固有の雲 (巣の嵐の壁など)。空のドームと同じく嵐の強さで回転を速める
+        // NOTE: シーン固有の雲 (巣の嵐の壁など)。空のドームと同じく嵐の強さで回転を速める
         [[serialize(0)]] FIELD(Component::Rotator)           wallRotator_;
-        // 晴れのフォグ。あれば晴れの間もフォグを掛け、嵐へはこの値から補間する
+        // NOTE: 晴れのフォグ。あれば晴れの間もフォグを掛け、嵐へはこの値から補間する
         [[serialize(0)]] FIELD(SceneFog)                     clearFog_;
 
         [[serialize(0)]] NanamiEngine::Color32 clearSkyTint_ = NanamiEngine::Color32(255, 255, 255);
@@ -82,19 +82,19 @@ namespace GamePlay::Weather
         [[serialize(0)]] int   flashMaxBlendRate_     = 235;
         [[serialize(0)]] float lightningLightBoost_   = 1.6f;
         [[serialize(0)]] float thunderDelay_secs_     = 0.25f;
-        // 1発目の鋭いピークが減衰しきる前に2発目を重ねると「近い雷」に見える
+        // NOTE: 1発目の鋭いピークが減衰しきる前に2発目を重ねると「近い雷」に見える
         [[serialize(0)]] float firstFlashDecay_secs_  = 0.05f;
         [[serialize(0)]] float secondFlashDelay_secs_ = 0.11f;
         [[serialize(0)]] float secondFlashDecay_secs_ = 0.09f;
         [[serialize(0)]] float secondFlashStrength_   = 0.65f;
-        // 落雷で空そのものが白く抜ける量。1.0にすると白飛びしすぎる
+        // NOTE: 落雷で空そのものが白く抜ける量。1.0にすると白飛びしすぎる
         [[serialize(0)]] float skyFlashWeight_ = 0.7f;
         [[serialize(0)]] float distantFlashStrength_      = 0.28f;
         [[serialize(0)]] float distantFlashDuration_secs_ = 0.5f;
         [[serialize(0)]] float distantThunderThreshold_        = 0.5f;
         [[serialize(0)]] float distantThunderMinInterval_secs_ = 6.0f;
         [[serialize(0)]] float distantThunderMaxInterval_secs_ = 10.0f;
-        // シーンを開いた時点の嵐の強さ(0..1)。0 なら晴れで始まる
+        // NOTE: シーンを開いた時点の嵐の強さ(0..1)。0 なら晴れで始まる
         [[serialize(0)]] float initialStormIntensity_   = 0.0f;
         [[serialize(0)]] float clearWallRotateSpeedDeg_ = 1.5f;
         [[serialize(0)]] float stormWallRotateSpeedDeg_ = 6.0f;
@@ -108,7 +108,7 @@ namespace GamePlay::Weather
         float pendingThunder_secs_ = -1.0f;
         float distantThunderTimer_secs_ = 0.0f;
         bool  particlesPlaying_ = false;
-        // WindowLifeCycle が起動時に Config から入れたライト色。ここへ戻すのが「晴れ」
+        // NOTE: 起動時に Config から入ったライト色。ここへ戻すのが「晴れ」
         glm::vec3 clearLightColor_ = glm::vec3(1.0f, 1.0f, 1.0f);
         std::mt19937 random_{std::random_device{}()};
 
@@ -211,7 +211,7 @@ namespace GamePlay::Weather
         }
 
     private:
-        // version 1 までは色を 0..1 の glm::vec3 で保存していた
+        // NOTE: 旧版は色を 0..1 の glm::vec3 で保存していたので読み替える
         template<class Archive>
         static void LoadColor(Archive& archive, const std::uint32_t version, const char* name, NanamiEngine::Color32& color)
         {

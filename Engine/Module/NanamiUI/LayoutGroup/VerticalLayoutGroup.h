@@ -7,7 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // 子をY軸方向に一列に並べる
+    // NOTE: 子をY軸方向に一列に並べる
     class NANAMI_API VerticalLayoutGroup final : public Component::ComponentBase,
                                                  public LifeCycleCallback::ILateUpdatable
     {
